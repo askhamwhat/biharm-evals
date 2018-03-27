@@ -10,17 +10,16 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     Evaluates the Green function 
 c
-c     G(x,y) = (S_zk(r) - S_0(r))/zk^2 ,
+c     G(x,y) = (i*H_0^(1)(zk*r)/4 - log(r)/(2*pi))/zk^2 ,
 c
-c     where S_zk is the fundamental solution of the Yukawa equation
-c     and S_0 is the fundamental solution of the Laplace equation and 
+c     where H_0^(1) is the Hankel function of the first kind and
 c     r = sqrt( (x_1-y_1)^2 + (x_2-y_2)^2),
 c     and its derivatives stably (with the derivatives on the
 c     "x" or "target" variable).
 c
 c     INPUTS
 c
-c     zk - real *8, modified helmholtz parameter
+c     zk - complex *16 helmholtz parameter
 c     zx(2) - real *8, coordinates of target
 c     zy(2) - real *8, coordinates of source
 c     ifpot - if equal to 1, compute potential
@@ -58,17 +57,15 @@ c     global variables
       complex *16 der3(4), der4(5), der5(6)
       integer ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
 c     local variables
-      real *8 dx, dy, r, r2, r3, r4, r5, r6
-      real *8 dx2, dx3, dx4, dx5, dy2, dy3, dy4, dy5
-      real *8 g0, g1, g2, g3, g4, g5, dtemp
-      real *8 g0temp, g1temp, g2temp, g3temp
-      integer if1, if2, if3, if0, ifders
-      real *8 rscale, pih
+      real *8 r, r2, r3, r4, r5, r6
+      real *8 dx, dy, dx2, dx3, dx4, dx5, dy2, dy3, dy4, dy5
+      integer ifders
+      real *8 rscale
       integer nmax, ifder, j
-      complex *16 z, eye, hvec(0:10), hder(0:10), diffs(0:5)
-      complex *16 zkh      
-      real *8 kvec(0:10), ders(0:5)
+      complex *16 z, eye, eyeo4, hvec(0:10), diffs(0:5), ders(0:5)
+      complex *16 zkh, ztemp, zkr
       data eye /(0.0d0,1.0d0)/
+      data eyeo4 /(0.0d0,0.25d0)/
 
       dx = zx(1) - zy(1)
       dy = zx(2) - zy(2)
@@ -90,127 +87,125 @@ c     local variables
 
       nmax = 5
 
-c     get values of difference kernel and higher modes
+c     get values of difference functions up to nmax-th order
       
       rscale = 1.0d0
       ifders = 0
-      call diffsloghank(r,zk,rscale,diffs,ifders,ders,kvec,nmax)
+      call diffsloghank(r,zk,rscale,diffs,ifders,ders,hvec,nmax)
 
-c     get values of modified Bessel functions
+c     rescale
 
-      ifder = 0
-      rscale = 1.0d0
+      zkr = zk*r
 
+c     compute r derivatives using only like order terms to minimize
+c     cancellation
 
-      pih = 2.0d0*atan(1.0d0)
+      ztemp = eyeo4/(zk**2)
+      ders(0) = diffs(0)*ztemp
+      ztemp = -zk*ztemp
+      ders(1) = diffs(1)*ztemp
+      ztemp = -zk*ztemp
+      ders(2) = ztemp*(diffs(2)-diffs(1)/zkr)
+      ztemp = -zk*ztemp
+      ders(3) = ztemp*(diffs(3)-3.0d0*diffs(2)/zkr)
+      ztemp = -zk*ztemp
+      ders(4) = ztemp*(diffs(4)-(5.25d0*diffs(3)
+     1     -0.75d0*hvec(1))/zkr)
+      ztemp = -zk*ztemp
+      ders(5) = ztemp*(diffs(5)-(7.5d0*diffs(4)
+     1     -2.5d0*hvec(2))/zkr)
       
-
-c     combine to get values of derivatives of G 
-c     with respect to r
-
-      dtemp = 1.0d0/(4.0d0*pih*zk**2)
-      zkh = 0.5d0*zk
-
-      g0 = diffs(0)*dtemp
-      dtemp = -dtemp*zk
-      g1 = diffs(1)*dtemp
-      dtemp = -dtemp*zkh
-      g2 = (diffs(2)+hvec(0))*dtemp
-      dtemp = -dtemp*zkh
-      g3 = (diffs(3)+3.0d0*hvec(1))*dtemp
-      dtemp = -dtemp*zkh
-      g4 = (diffs(4)+3.0d0*hvec(0)+4.0d0*hvec(2))*dtemp
-      dtemp = -dtemp*zkh
-      g5 = (diffs(5)+10.0d0*hvec(1)+5.0d0*hvec(3))*dtemp
-      
-      if0 = 1
-      if1 = 1
-      if2 = 1
-      if3 = 1
-
 c     evaluate potential and derivatives
 
       if (ifpot .eq. 1) then
-         pot = g0
+         pot = ders(0)
       endif
       
       if (ifgrad .eq. 1) then
-         grad(1) = dx*g1/r
-         grad(2) = dy*g1/r
+         grad(1) = dx*ders(1)/r
+         grad(2) = dy*ders(1)/r
       endif
 
       if (ifhess .eq. 1) then
-         hess(1) = dx2*g2/r2+g1*(1.0d0/r-dx2/r3)
-         hess(2) = dx*dy*(g2/r2-g1/r3)
-         hess(3) = dy2*g2/r2+g1*(1.0d0/r-dy2/r3)
+         hess(1) = dx2*ders(2)/r2+ders(1)*(1.0d0/r-dx2/r3)
+         hess(2) = dx*dy*(ders(2)/r2-ders(1)/r3)
+         hess(3) = dy2*ders(2)/r2+ders(1)*(1.0d0/r-dy2/r3)
       endif
 
       if (ifder3 .eq. 1) then
-         der3(1) = (dx3*g3+3.0d0*dy2*dx*(g2/r-g1/r2))/r3
-         der3(2) = dx2*dy*(g3/r3-3.0d0*(g2/r4-g1/r5)) + 
-     1        dy*(g2/r2-g1/r3)
-         der3(3) = dx*dy2*(g3/r3-3.0d0*(g2/r4-g1/r5)) + 
-     1        dx*(g2/r2-g1/r3)
-         der3(4) = (dy3*g3+3.0d0*dx2*dy*(g2/r-g1/r2))/r3
+         der3(1) = (dx3*ders(3)+3.0d0*dy2*dx*(ders(2)/r-ders(1)/r2))/r3
+         der3(2) = dx2*dy*(ders(3)/r3-3.0d0*(ders(2)/r4-ders(1)/r5)) + 
+     1        dy*(ders(2)/r2-ders(1)/r3)
+         der3(3) = dx*dy2*(ders(3)/r3-3.0d0*(ders(2)/r4-ders(1)/r5)) + 
+     1        dx*(ders(2)/r2-ders(1)/r3)
+         der3(4) = (dy3*ders(3)+3.0d0*dx2*dy*(ders(2)/r-ders(1)/r2))/r3
       endif
 
       if (ifder4 .eq. 1) then
-         der4(1) = (dx4*(g4-6.0d0*g3/r+15.0d0*(g2/r2-g1/r3)))/r4 +
-     1        (dx2*6.0d0*(g3-3.0d0*(g2/r-g1/r2)))/r3 +
-     2        (3.0d0*(g2-g1/r))/r2
-         der4(2) = (dx3*dy*(g4-6.0d0*g3/r+15.0d0*(g2/r2-g1/r3)))/r4 + 
-     1        (3.0d0*dx*dy*(g3-3.0d0*(g2/r-g1/r2)))/r3
-         der4(3) = dx2*dy2*(g4-6.0d0*g3/r+15.0d0*g2/r2-15.0d0*g1/r3)/r4
-     1        + g3/r - 2.0d0*g2/r2 + 2.0d0*g1/r3
-         der4(4) = dx*dy3*(g4-6.0d0*g3/r+15.0d0*(g2/r2-g1/r3))/r4 + 
-     1        3.0d0*dx*dy*(g3-3.0d0*(g2/r-g1/r2))/r3
-         der4(5) = dy4*(g4-6.0d0*g3/r+15.0d0*(g2/r2-g1/r3))/r4 +
-     1        dy2*6.0d0*(g3-3.0d0*(g2/r-g1/r2))/r3 +
-     2        3.0d0*(g2-g1/r)/r2        
+         der4(1) = (dx4*(ders(4)-6.0d0*ders(3)/r+15.0d0*(ders(2)/r2
+     1        -ders(1)/r3)))/r4 +
+     1        (dx2*6.0d0*(ders(3)-3.0d0*(ders(2)/r-ders(1)/r2)))/r3 +
+     2        (3.0d0*(ders(2)-ders(1)/r))/r2
+         der4(2) = (dx3*dy*(ders(4)-6.0d0*ders(3)/r+15.0d0*(ders(2)/r2
+     1        -ders(1)/r3)))/r4 + 
+     1        (3.0d0*dx*dy*(ders(3)-3.0d0*(ders(2)/r-ders(1)/r2)))/r3
+         der4(3) = dx2*dy2*(ders(4)-6.0d0*ders(3)/r+15.0d0*ders(2)/r2
+     1        -15.0d0*ders(1)/r3)/r4
+     1        + ders(3)/r - 2.0d0*ders(2)/r2 + 2.0d0*ders(1)/r3
+         der4(4) = dx*dy3*(ders(4)-6.0d0*ders(3)/r+15.0d0*(ders(2)/r2
+     1        -ders(1)/r3))/r4 + 
+     1        3.0d0*dx*dy*(ders(3)-3.0d0*(ders(2)/r-ders(1)/r2))/r3
+         der4(5) = dy4*(ders(4)-6.0d0*ders(3)/r+15.0d0*(ders(2)/r2
+     1        -ders(1)/r3))/r4 +
+     1        dy2*6.0d0*(ders(3)-3.0d0*(ders(2)/r-ders(1)/r2))/r3 +
+     2        3.0d0*(ders(2)-ders(1)/r)/r2        
       endif
 
       if (ifder5 .eq. 1) then
-         der5(1) = (dx5*g5+10.0d0*dy2*dx3*g4/r +
-     1        (15.0d0*dy4*dx-30.0d0*dy2*dx3)*g3/r2 +
-     2        (60.0d0*dy2*dx3-45.0d0*dy4*dx)*g2/r3 +
-     3        (45.0d0*dy4*dx-60.0d0*dy2*dx3)*g1/r4)/r5
-         der5(2) = (dy*dx4*g5+(6.0d0*dy3*dx2-4.0d0*dy*dx4)*g4/r +
-     1        (3.0d0*dy5+12.0d0*dy*dx4-30.0d0*dy3*dx2)*g3/r2 +
-     2        (72.0d0*dy3*dx2-9.0d0*dy5-24.0d0*dy*dx4)*g2/r3 +
-     3        (9.0d0*dy5-72.0d0*dy3*dx2+24.0d0*dy*dx4)*g1/r4)/r5
-         der5(3) = (dy2*dx3*g5+(3.0d0*dy4*dx-6.0d0*dy2*dx3+dx5)*g4/r +
-     1        (27.0d0*dy2*dx3-15.0d0*dy4*dx-3.0d0*dx5)*g3/r2 +
-     2        (36.0d0*dy4*dx-63.0d0*dy2*dx3+6.0d0*dx5)*g2/r3 +
-     3        (63.0d0*dy2*dx3-36.0d0*dy4*dx-6.0d0*dx5)*g1/r4)/r5
-         der5(4) = (dx2*dy3*g5+(3.0d0*dx4*dy-6.0d0*dx2*dy3+dy5)*g4/r +
-     1        (27.0d0*dx2*dy3-15.0d0*dx4*dy-3.0d0*dy5)*g3/r2 +
-     2        (36.0d0*dx4*dy-63.0d0*dx2*dy3+6.0d0*dy5)*g2/r3 +
-     3        (63.0d0*dx2*dy3-36.0d0*dx4*dy-6.0d0*dy5)*g1/r4)/r5
-         der5(5) = (dx*dy4*g5+(6.0d0*dx3*dy2-4.0d0*dx*dy4)*g4/r +
-     1        (3.0d0*dx5+12.0d0*dx*dy4-30.0d0*dx3*dy2)*g3/r2 +
-     2        (72.0d0*dx3*dy2-9.0d0*dx5-24.0d0*dx*dy4)*g2/r3 +
-     3        (9.0d0*dx5-72.0d0*dx3*dy2+24.0d0*dx*dy4)*g1/r4)/r5
-         der5(6) = (dy5*g5+10.0d0*dx2*dy3*g4/r +
-     1        (15.0d0*dx4*dy-30.0d0*dx2*dy3)*g3/r2 +
-     2        (60.0d0*dx2*dy3-45.0d0*dx4*dy)*g2/r3 +
-     3        (45.0d0*dx4*dy-60.0d0*dx2*dy3)*g1/r4)/r5
+         der5(1) = (dx5*ders(5)+10.0d0*dy2*dx3*ders(4)/r +
+     1        (15.0d0*dy4*dx-30.0d0*dy2*dx3)*ders(3)/r2 +
+     2        (60.0d0*dy2*dx3-45.0d0*dy4*dx)*ders(2)/r3 +
+     3        (45.0d0*dy4*dx-60.0d0*dy2*dx3)*ders(1)/r4)/r5
+         der5(2) = (dy*dx4*ders(5)
+     1        +(6.0d0*dy3*dx2-4.0d0*dy*dx4)*ders(4)/r +
+     1        (3.0d0*dy5+12.0d0*dy*dx4-30.0d0*dy3*dx2)*ders(3)/r2 +
+     2        (72.0d0*dy3*dx2-9.0d0*dy5-24.0d0*dy*dx4)*ders(2)/r3 +
+     3        (9.0d0*dy5-72.0d0*dy3*dx2+24.0d0*dy*dx4)*ders(1)/r4)/r5
+         der5(3) = (dy2*dx3*ders(5)
+     1        +(3.0d0*dy4*dx-6.0d0*dy2*dx3+dx5)*ders(4)/r +
+     1        (27.0d0*dy2*dx3-15.0d0*dy4*dx-3.0d0*dx5)*ders(3)/r2 +
+     2        (36.0d0*dy4*dx-63.0d0*dy2*dx3+6.0d0*dx5)*ders(2)/r3 +
+     3        (63.0d0*dy2*dx3-36.0d0*dy4*dx-6.0d0*dx5)*ders(1)/r4)/r5
+         der5(4) = (dx2*dy3*ders(5)
+     1        +(3.0d0*dx4*dy-6.0d0*dx2*dy3+dy5)*ders(4)/r +
+     1        (27.0d0*dx2*dy3-15.0d0*dx4*dy-3.0d0*dy5)*ders(3)/r2 +
+     2        (36.0d0*dx4*dy-63.0d0*dx2*dy3+6.0d0*dy5)*ders(2)/r3 +
+     3        (63.0d0*dx2*dy3-36.0d0*dx4*dy-6.0d0*dy5)*ders(1)/r4)/r5
+         der5(5) = (dx*dy4*ders(5)
+     1        +(6.0d0*dx3*dy2-4.0d0*dx*dy4)*ders(4)/r +
+     1        (3.0d0*dx5+12.0d0*dx*dy4-30.0d0*dx3*dy2)*ders(3)/r2 +
+     2        (72.0d0*dx3*dy2-9.0d0*dx5-24.0d0*dx*dy4)*ders(2)/r3 +
+     3        (9.0d0*dx5-72.0d0*dx3*dy2+24.0d0*dx*dy4)*ders(1)/r4)/r5
+         der5(6) = (dy5*ders(5)+10.0d0*dx2*dy3*ders(4)/r +
+     1        (15.0d0*dx4*dy-30.0d0*dx2*dy3)*ders(3)/r2 +
+     2        (60.0d0*dx2*dy3-45.0d0*dx4*dy)*ders(2)/r3 +
+     3        (45.0d0*dx4*dy-60.0d0*dx2*dy3)*ders(1)/r4)/r5
       endif
 
 
       return
       end
 
-      subroutine helmbhgreen(beta,zx,zy,ifpot,pot,ifgrad,grad,
+      subroutine helmbhgreen(zk,zx,zy,ifpot,pot,ifgrad,grad,
      1     ifhess,hess)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-c     Evaluates the Green's function (S_beta - S_0)/beta^2 
-c     and its derivatives stably (with the derivatives on the
-c     "x" or "target" variable).
+c     Evaluates the Green's function and its derivatives stably
+c     (with the derivatives on the "x" or "target" variable).
 c
 c     INPUTS
 c
-c     beta - real *8, modified helmholtz parameter
+c     zk - complex *16, helmholtz parameter
 c     zx(2) - real *8, coordinates of target
 c     zy(2) - real *8, coordinates of source
 c     ifpot - if equal to 1, compute potential
@@ -219,37 +214,37 @@ c     ifhess - if equal to 1, compute hessian
 c
 c     OUTPUTS
 c
-c     pot - real *8, potential, if requested
-c     grad(2) - real *8, gradient, if requested
-c     hess(3) - real *8, hessian, if requested
+c     pot - complex *16, potential, if requested
+c     grad(2) - complex *16, gradient, if requested
+c     hess(3) - complex *16, hessian, if requested
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, zx(2), zy(2), pot, grad(2), hess(3)
+      real *8 zx(2), zy(2)
+      complex *16 zk, pot, grad(2), hess(3)
       integer ifpot, ifgrad, ifhess
 c     local variables
-      real *8 der3(4), der4(5), der5(6)
+      complex *16 der3(4), der4(5), der5(6)
       integer ifder3, ifder4, ifder5
 
       ifder3 = 0
       ifder4 = 0
       ifder5 = 0
       
-      call helmbhgreen_all(beta,zx,zy,ifpot,pot,ifgrad,grad,
+      call helmbhgreen_all(zk,zx,zy,ifpot,pot,ifgrad,grad,
      1     ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
 
       return
       end
 
-      subroutine helmbhgreend1(beta,zx,zy,ifpot,pot,ifgrad,grad,
+      subroutine helmbhgreend1(zk,zx,zy,ifpot,pot,ifgrad,grad,
      1     ifhess,hess,dir1)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     Evaluates a directional derivative of the Green's function 
-c     G = (S_beta - S_0)/beta^2 at the source ("y" variable)
-c     and its derivatives stably (with the derivatives on the
-c     "x" or "target" variable).
+c     at the source ("y" variable) and its derivatives stably (with
+c     the derivatives on the "x" or "target" variable).
 c
 c     The potential is (nabla_y * dir1) G
 c     The gradient is grad_x (nabla_y * dir1) G
@@ -257,27 +252,29 @@ c     The hessian is hess_x (nabla_y * dir1) G
 c
 c     INPUTS
 c
-c     beta - real *8, modified helmholtz parameter
+c     zk - complex *16, modified helmholtz parameter
 c     zx(2) - real *8, coordinates of target
 c     zy(2) - real *8, coordinates of source
+c     dir1(2) - real *8, vector determining direction of derivative
 c     ifpot - if equal to 1, compute potential
 c     ifgrad - if equal to 1, compute gradient
 c     ifhess - if equal to 1, compute hessian
 c
 c     OUTPUTS
 c
-c     pot - real *8, potential, if requested
-c     grad(2) - real *8, gradient, if requested
-c     hess(3) - real *8, hessian, if requested
+c     pot - complex *16, potential, if requested
+c     grad(2) - complex *16, gradient, if requested
+c     hess(3) - complex *16, hessian, if requested
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, zx(2), zy(2), pot, grad(2), hess(3), dir1(2)
+      complex *16 zk, pot, grad(2), hess(3)
+      real *8 zx(2), zy(2), dir1(2)
       integer ifpot, ifgrad, ifhess
 c     local variables
-      real *8 potloc, gradloc(2), hessloc(3), der3(4), der4(5)
-      real *8 der5(6)
+      complex *16 potloc, gradloc(2), hessloc(3), der3(4), der4(5)
+      complex *16 der5(6)
       integer ifder3, ifder4, ifder5, ifpotloc, ifgradloc, ifhessloc
 
       ifpotloc = 0
@@ -291,7 +288,7 @@ c     local variables
       if (ifgrad .eq. 1) ifhessloc = 1
       if (ifhess .eq. 1) ifder3 = 1
 
-      call helmbhgreen_all(beta,zx,zy,ifpotloc,potloc,ifgradloc,gradloc,
+      call helmbhgreen_all(zk,zx,zy,ifpotloc,potloc,ifgradloc,gradloc,
      1     ifhessloc,hessloc,ifder3,der3,ifder4,der4,ifder5,der5)
 
       if (ifpot .eq. 1) then
@@ -312,46 +309,42 @@ c     local variables
       return
       end
 
-      subroutine helmbhgreend2(beta,zx,zy,ifpot,pot,ifgrad,grad,
+      subroutine helmbhgreend2(zk,zx,zy,ifpot,pot,ifgrad,grad,
      1     ifhess,hess,dir1,dir2)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-c     Evaluates the Green's function (S_beta - S_0)/beta^2 
-c     and its derivatives stably (with the derivatives on the
+c     Evaluates double directional derivatives (on y) of the Green's
+c     function and its derivatives stably (with the derivatives on the
 c     "x" or "target" variable).
 c
 c     INPUTS
 c
-c     beta - real *8, modified helmholtz parameter
+c     zk - complex *16, modified helmholtz parameter
 c     zx(2) - real *8, coordinates of target
 c     zy(2) - real *8, coordinates of source
+c     dir1(2), dir2(2) - real *8, vectors determining directions of
+c                        derivatives
 c     ifpot - if equal to 1, compute potential
 c     ifgrad - if equal to 1, compute gradient
 c     ifhess - if equal to 1, compute hessian
 c
 c     OUTPUTS
 c
-c     pot - real *8, potential, if requested
-c     grad(2) - real *8, gradient, if requested
-c     hess(3) - real *8, hessian, if requested
+c     pot - complex *16, potential, if requested
+c     grad(2) - complex *16, gradient, if requested
+c     hess(3) - complex *16, hessian, if requested
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, zx(2), zy(2), pot, grad(2), hess(3), dir1(2)
-      real *8 dir2(2)
+      complex *16 zk, pot, grad(2), hess(3)
+      real *8 zx(2), zy(2), dir1(2), dir2(2)
       integer ifpot, ifgrad, ifhess
 c     local variables
-      real *8 r, r2, dx, dy, g0, g1, g2, g3, temp1, dx2, dy2
-      real *8 r3, pi, r4, r5
-      real *8 g, gx, gy, gxx, gxy, gyy, gxxx, gxxy, gxyy, gyyy
-      real *8 gxxxx, gxxxy, gxxyy, gxyyy, gyyyy
       real *8 quadvec(3)
       integer if0, if1, if2, if3
       integer ifpot1,ifgrad1,ifhess1,ifder3,ifder4,ifder5
-      real *8 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
-
-      pi = 4.0d0*datan(1.0d0)
+      complex *16 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
 
 c     convert two directional derivatives to xx, xy, yy
 
@@ -366,7 +359,7 @@ c     convert two directional derivatives to xx, xy, yy
       ifder4 = 1
       ifder5 = 0
 
-      call helmbhgreen_all(beta,zx,zy,ifpot1,potloc,ifgrad1,gradloc,
+      call helmbhgreen_all(zk,zx,zy,ifpot1,potloc,ifgrad1,gradloc,
      1     ifhess1,hessloc,ifder3,der3,ifder4,der4,ifder5,der5)
 
       if (ifpot .eq. 1) then
@@ -441,7 +434,8 @@ c     local variables
       real *8 logcs0(0:pmax), logcs1(0:pmax), rscale2
       complex *16 cs0(0:pmax), cs1(0:pmax)
       complex *16 zkr, zkrh, zkrh2p, hder(0:1), z2iopi, ztemp, zlogtemp
-      complex *16 ztemp0, ztemp1, ztempl0, ztempl1, zkrhsc, zkrh2
+      complex *16 ztemp0, ztemp1, ztempl0, ztempl1, zkrhsc, zkrh2, zkh
+      complex *16 diffstop, diffs2
       data z2iopi / (0.0d0,0.636619772367581343075535053d0) /
 
 c     H0-2*i*log(zk*r)/pi is sum of two power series (for small arg)
@@ -558,14 +552,18 @@ c     note: can remove some of the redundancy here later...
          diffs(1) = ztemp1*zkrh + ztempl1*ztemp*zkrh
 
          diffs(1) = diffs(1)*rscale
-         
-c     simple recursion for rest
-         if (n .ge. 2) then
 
+         diffs2 = 0.0d0
+
+         if (n .ge. 2 .or. ifders .eq. 1) then
 c     recursion formula is bad for diffs(2)
 c     explicitly cancel the log terms, reusing the above
-            diffs(2) = (ztemp1-ztemp0
+            diffs2 = (ztemp1-ztemp0
      1           +(ztempl1-ztempl0-1.0d0)*ztemp)*rscale2
+         endif
+c     simple recursion for rest
+         if (n .ge. 2) then
+            diffs(2) = diffs2
             ztemp = diffs(2)
 c     recursion formula pretty good for the rest
             do j = 2,n-1
@@ -574,7 +572,23 @@ c     recursion formula pretty good for the rest
                diffs(j+1) = ztemp
             enddo
          endif
-         
+
+         if (ifders .eq. 1) then
+            
+            ders(0) = -diffs(1)*zk/rscale
+            
+            zkh = 0.5d0*zk
+            do j = 1,n-1
+               ders(j) = zkh*(hvec(j-1)*rscale-diffs(j+1)/rscale)
+            enddo
+
+c     use recursion formula for diffs(n+1) implicitly
+            ders(n) = zkh*(2*hvec(n-1)*rscale-diffs(n)*n/zkrh)
+c     fix if n = 1 (recursion formula for diffs(2) is unstable in this regime)
+            if (n .eq. 1) ders(1) = zkh*(2*hvec(0)*rscale-diffs2/rscale)
+            
+         endif
+
       else
 
 c     directly evaluate
@@ -587,13 +601,23 @@ c     directly evaluate
             ztemp = (j*ztemp)*zkrhsc
             diffs(j+1) = hvec(j+1) + ztemp
          enddo
+
+         if (ifders .eq. 1) then
+            
+            ders(0) = -diffs(1)*zk/rscale
+            
+            zkh = 0.5d0*zk
+            do j = 1,n-1
+               ders(j) = zkh*(hvec(j-1)*rscale-diffs(j+1)/rscale)
+            enddo
+
+c     use recursion formula for diffs(n+1) implicitly
+            ders(n) = zkh*(2*hvec(n-1)*rscale-diffs(n)*n/zkrh)
+            
+         endif
+         
       endif
 
-
-      if (ifders .eq. 1) then
-
-
-      endif
 
       return
       end
@@ -717,8 +741,7 @@ c     directly evaluate
 
 
       if (ifders .eq. 1) then
-
-
+         
       endif
 
       return

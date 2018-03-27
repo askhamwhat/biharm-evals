@@ -27,6 +27,11 @@ testhelmbhrouts: $(OBJS)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
 	cd $(TMP_DIR); ./$@
 
+testhelmbhders: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	cd $(TMP_DIR); ./$@
+
 clean: 
 	cd $(BIN_DIR); rm -f *
 	cd $(TMP_DIR); rm -f *
