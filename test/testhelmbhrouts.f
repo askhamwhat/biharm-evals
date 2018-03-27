@@ -101,10 +101,10 @@ c     parameters
          rsmaxin(i) = 0.0d0
       enddo
                
-      write(*,*) "RUNNING TEST (ON FIRST QUADRANT)..."
+      write(*,*) "RUNNING TEST (ON FIRST AND SECOND QUADRANT)..."
 
-      do i = 1,ntheta/4
-         do j = 1,nrscale-2
+      do i = 1,ntheta/2-1
+         do j = 1,nrscale-3
             
             call diffsloghank(rs(j,i),zks(j,i),rscales(j,i),
      1           diffs,ifders,ders,hvec,nterms)

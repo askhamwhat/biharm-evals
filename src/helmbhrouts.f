@@ -1,16 +1,8 @@
-cc Copyright (C) 2017: Travis Askham
+cc Copyright (C) 2018: Travis Askham
 cc Contact: askhamwhat@gmail.com
 cc 
 cc This program is free software; you can redistribute it and/or modify 
-cc it under the terms of the GNU General Public License as published by 
-cc the Free Software Foundation; either version 2 of the License, or 
-cc (at your option) any later version.  This program is distributed in 
-cc the hope that it will be useful, but WITHOUT ANY WARRANTY; without 
-cc even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
-cc PARTICULAR PURPOSE.  See the GNU General Public License for more 
-cc details. You should have received a copy of the GNU General Public 
-cc License along with this program; 
-cc if not, see <http://www.gnu.org/licenses/>.
+cc it under the terms of the BSD-3-Clause License
       
       subroutine helmbhgreen_all(zk,zx,zy,ifpot,pot,ifgrad,grad,
      1     ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
@@ -50,19 +42,20 @@ c     hess(1) = d_x1 d_x1 G(x,y)
 c     hess(2) = d_x1 d_x2 G(x,y)
 c     hess(3) = d_x2 d_x2 G(x,y)
 c
-c     pot - real *8, potential, if requested
-c     grad(2) - real *8, gradient, if requested
-c     hess(3) - real *8, hessian, if requested
-c     der3(4) - real *8, 3rd order derivatives, if requested.
-c     der4(5) - real *8, 4th order derivatives, if requested.
-c     der5(6) - real *8, 5th order derivatives, if requested.
+c     pot - complex *16, potential, if requested
+c     grad(2) - complex *16, gradient, if requested
+c     hess(3) - complex *16, hessian, if requested
+c     der3(4) - complex *16, 3rd order derivatives, if requested.
+c     der4(5) - complex *16, 4th order derivatives, if requested.
+c     der5(6) - complex *16, 5th order derivatives, if requested.
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
       complex *16 zk
-      real *8 zx(2), zy(2), pot, grad(2), hess(3)
-      real *8 der3(4), der4(5), der5(6)
+      real *8 zx(2), zy(2)
+      complex *16 pot, grad(2), hess(3)
+      complex *16 der3(4), der4(5), der5(6)
       integer ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
 c     local variables
       real *8 dx, dy, r, r2, r3, r4, r5, r6
@@ -447,7 +440,8 @@ c     local variables
       parameter (pmax = 12)
       real *8 logcs0(0:pmax), logcs1(0:pmax), rscale2
       complex *16 cs0(0:pmax), cs1(0:pmax)
-      complex *16 zkr, zkrh, zkrh2p, hder(0:1), z2iopi, ztemp
+      complex *16 zkr, zkrh, zkrh2p, hder(0:1), z2iopi, ztemp, zlogtemp
+      complex *16 ztemp0, ztemp1, ztempl0, ztempl1, zkrhsc, zkrh2
       data z2iopi / (0.0d0,0.636619772367581343075535053d0) /
 
 c     H0-2*i*log(zk*r)/pi is sum of two power series (for small arg)
@@ -474,7 +468,7 @@ c     (multiplied later by 2*i/pi)
 
 c     coefficients of (zk*r/2)^(2*j)
 
-      data cs0 / (0.100000000000000000D+001,-0.738042951086872253D-001),
+      data cs0 / (0.100000000000000000D+001,0.367466905196615962D+000),
      1     ( -0.100000000000000000D+001 ,   0.269152867170965382D+000),
      2     (  0.250000000000000000D+000 ,  -0.146865688338689013D+000),
      3     ( -0.277777777777777778D-001 ,   0.222130373373319398D-001),
@@ -528,41 +522,58 @@ c     coefficients of (zk*r/2)^(2*j+1)
       rscale2 = rscale**2
       zkr = zk*r
       zkrh = 0.5d0*zkr
+      zkrh2 = zkrh**2
+      zkrhsc = rscale/zkrh
 
 c     get Hankel function values 
 
       ifder = 0
       call h2dall(n,zkr,rscale,hvec,ifder,hder)
 
-      if (abs(zkrh) .le. 1.0d0) then
+      if (abs(zkr) .le. 1.0d0) then
 
 c     small arg, use power series to evaluate stably...
 c     note: there's some trickery in here around the log terms
 
-         diffs(0) = log(zk)*z2iopi
-         diffs(1) = 0.0d0
-         ztemp = log(zkrh)*z2iopi
+         ztemp0 = 0.0d0
+         ztemp1 = 0.0d0
+         ztempl0 = 0.0d0
+         ztempl1 = 0.0d0
          zkrh2p = 1.0d0
 
+c     note: can remove some of the redundancy here later...
+         
          do p = 0,pmax
-            diffs(0) = diffs(0) + logcs0(p)*zkrh2p*ztemp
-            diffs(0) = diffs(0) + cs0(p)*zkrh2p
-            zkrh2p = zkrh2p*zkrh
-            diffs(1) = diffs(1) + logcs1(p)*zkrh2p*ztemp
-            diffs(1) = diffs(1) + cs1(p)*zkrh2p
-            zkrh2p = zkrh2p*zkrh
+            ztemp0 = ztemp0 + cs0(p)*zkrh2p
+            ztempl0 = ztempl0 + logcs0(p)*zkrh2p
+            ztemp1 = ztemp1 + cs1(p)*zkrh2p
+            ztempl1 = ztempl1 + logcs1(p)*zkrh2p
+            zkrh2p = zkrh2p*zkrh2
          enddo
 
-c     simple recursion for rest
+         zlogtemp = cdlog(zk/2.0d0)*z2iopi
+         
+         ztemp = cdlog(zkrh)*z2iopi
+         diffs(0) = ztemp0 + zlogtemp + ztempl0*ztemp
+         diffs(1) = ztemp1*zkrh + ztempl1*ztemp*zkrh
 
          diffs(1) = diffs(1)*rscale
-         ztemp = diffs(1)
-         do j = 1,n-1
-            ztemp = ((j*rscale)*ztemp)/zkrh
-     1           - hvec(j-1)*rscale2
-            diffs(j+1) = ztemp
-         enddo
+         
+c     simple recursion for rest
+         if (n .ge. 2) then
 
+c     recursion formula is bad for diffs(2)
+c     explicitly cancel the log terms, reusing the above
+            diffs(2) = (ztemp1-ztemp0
+     1           +(ztempl1-ztempl0-1.0d0)*ztemp)*rscale2
+            ztemp = diffs(2)
+c     recursion formula pretty good for the rest
+            do j = 2,n-1
+               ztemp = (j*ztemp)*zkrhsc
+     1              - hvec(j-1)*rscale2
+               diffs(j+1) = ztemp
+            enddo
+         endif
          
       else
 
@@ -573,7 +584,7 @@ c     directly evaluate
          ztemp = z2iopi/zkr
          diffs(1) = hvec(1) + ztemp*rscale
          do j = 1,n-1
-            ztemp = ((j*rscale)*ztemp)/zkrh
+            ztemp = (j*ztemp)*zkrhsc
             diffs(j+1) = hvec(j+1) + ztemp
          enddo
       endif
@@ -615,6 +626,8 @@ c     local variables
 c     J0-1 and J1-zk*r/2 are given as power series
 c     coefficients are precomputed
 
+c     J0-1, coefficients of (zk*r)^(2*j)
+
       data cs0 /   0.000000000000000000D+000,
      1     -0.250000000000000000D+000,
      2     0.156250000000000000D-001,
@@ -629,6 +642,8 @@ c     coefficients are precomputed
      1     -0.149633439673404522D-021,
      2     0.259780277210771740D-024 /
 
+c     J1-zk*r/2, coefficients of (zk*r)^(2*j+1)
+      
       data cs1 /   0.000000000000000000D+000,
      1     -0.625000000000000000D-001,
      2     0.260416666666666667D-002,
