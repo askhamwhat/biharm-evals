@@ -88,70 +88,70 @@ c     parameters
 
       write(*,*) "READING IN DATA ..."
       do i = 1,ntheta
-         do ii = 1,nrscale*nperr
-            read(21,*,iostat=ios) dkr, dki, x1, x2, y1, y2,
-     1           dgr, dgi 
-            if (ios .ne. 0) then
-               write(*,*) "bad read"
-               stop
-            endif
-            read(31,*,iostat=ios) dgxr, dgxi, dgyr, dgyi
-            if (ios .ne. 0) then
-               write(*,*) "bad read d1"
-               stop
-            endif
-            read(32,*,iostat=ios) dgxxr, dgxxi, dgxyr, dgxyi,
-     1           dgyyr, dgyyi
-            if (ios .ne. 0) then
-               write(*,*) "bad read d2"
-               stop
-            endif
-            read(33,*,iostat=ios) dgxxxr, dgxxxi, dgxxyr, dgxxyi,
-     1           dgxyyr, dgxyyi, dgyyyr, dgyyyi
-            if (ios .ne. 0) then
-               write(*,*) "bad read d3"
-               stop
-            endif
-            read(34,*,iostat=ios) dgxxxxr, dgxxxxi, dgxxxyr, dgxxxyi,
-     1           dgxxyyr, dgxxyyi, dgxyyyr, dgxyyyi, dgyyyyr, dgyyyyi
-            if (ios .ne. 0) then
-               write(*,*) "bad read d4"
-               stop
-            endif
-            read(35,*,iostat=ios) dgxxxxxr, dgxxxxxi, dgxxxxyr,dgxxxxyi,
-     1           dgxxxyyr, dgxxxyyi, dgxxyyyr, dgxxyyyi, dgxyyyyr,
-     2           dgxyyyyi, dgyyyyyr, dgyyyyyi
-            if (ios .ne. 0) then
-               write(*,*) "bad read d5"
-               stop
-            endif
-            zks(ii,i) = dkr+eye*dki
-            zx(1,ii,i) = x1
-            zx(2,ii,i) = x2
-            zy(1,ii,i) = y1
-            zy(2,ii,i) = y2
-            pot(ii,i) = (dgr + eye*dgi)
-            grad(1,ii,i) = (dgxr + eye*dgxi)
-            grad(2,ii,i) = (dgyr + eye*dgyi)
-            hess(1,ii,i) = (dgxxr + eye*dgxxi)
-            hess(2,ii,i) = (dgxyr + eye*dgxyi)
-            hess(3,ii,i) = (dgyyr + eye*dgyyi)
-            der3(1,ii,i) = (dgxxxr + eye*dgxxxi)
-            der3(2,ii,i) = (dgxxyr + eye*dgxxyi)
-            der3(3,ii,i) = (dgxyyr + eye*dgxyyi)
-            der3(4,ii,i) = (dgyyyr + eye*dgyyyi)
-            der4(1,ii,i) = (dgxxxxr + eye*dgxxxxi)
-            der4(2,ii,i) = (dgxxxyr + eye*dgxxxyi)
-            der4(3,ii,i) = (dgxxyyr + eye*dgxxyyi)
-            der4(4,ii,i) = (dgxyyyr + eye*dgxyyyi)
-            der4(5,ii,i) = (dgyyyyr + eye*dgyyyyi)
-            der5(1,ii,i) = (dgxxxxxr + eye*dgxxxxxi)
-            der5(2,ii,i) = (dgxxxxyr + eye*dgxxxxyi)
-            der5(3,ii,i) = (dgxxxyyr + eye*dgxxxyyi)
-            der5(4,ii,i) = (dgxxyyyr + eye*dgxxyyyi)
-            der5(5,ii,i) = (dgxyyyyr + eye*dgxyyyyi)
-            der5(6,ii,i) = (dgyyyyyr + eye*dgyyyyyi)
-         enddo
+      do ii = 1,nrscale*nperr
+         read(21,*,iostat=ios) dkr, dki, x1, x2, y1, y2,
+     1        dgr, dgi 
+         if (ios .ne. 0) then
+            write(*,*) "bad read"
+            stop
+         endif
+         read(31,*,iostat=ios) dgxr, dgxi, dgyr, dgyi
+         if (ios .ne. 0) then
+            write(*,*) "bad read d1"
+            stop
+         endif
+         read(32,*,iostat=ios) dgxxr, dgxxi, dgxyr, dgxyi,
+     1        dgyyr, dgyyi
+         if (ios .ne. 0) then
+            write(*,*) "bad read d2"
+            stop
+         endif
+         read(33,*,iostat=ios) dgxxxr, dgxxxi, dgxxyr, dgxxyi,
+     1        dgxyyr, dgxyyi, dgyyyr, dgyyyi
+         if (ios .ne. 0) then
+            write(*,*) "bad read d3"
+            stop
+         endif
+         read(34,*,iostat=ios) dgxxxxr, dgxxxxi, dgxxxyr, dgxxxyi,
+     1        dgxxyyr, dgxxyyi, dgxyyyr, dgxyyyi, dgyyyyr, dgyyyyi
+         if (ios .ne. 0) then
+            write(*,*) "bad read d4"
+            stop
+         endif
+         read(35,*,iostat=ios) dgxxxxxr, dgxxxxxi, dgxxxxyr,dgxxxxyi,
+     1        dgxxxyyr, dgxxxyyi, dgxxyyyr, dgxxyyyi, dgxyyyyr,
+     2        dgxyyyyi, dgyyyyyr, dgyyyyyi
+         if (ios .ne. 0) then
+            write(*,*) "bad read d5"
+            stop
+         endif
+         zks(ii,i) = dkr+eye*dki
+         zx(1,ii,i) = x1
+         zx(2,ii,i) = x2
+         zy(1,ii,i) = y1
+         zy(2,ii,i) = y2
+         pot(ii,i) = (dgr + eye*dgi)
+         grad(1,ii,i) = (dgxr + eye*dgxi)
+         grad(2,ii,i) = (dgyr + eye*dgyi)
+         hess(1,ii,i) = (dgxxr + eye*dgxxi)
+         hess(2,ii,i) = (dgxyr + eye*dgxyi)
+         hess(3,ii,i) = (dgyyr + eye*dgyyi)
+         der3(1,ii,i) = (dgxxxr + eye*dgxxxi)
+         der3(2,ii,i) = (dgxxyr + eye*dgxxyi)
+         der3(3,ii,i) = (dgxyyr + eye*dgxyyi)
+         der3(4,ii,i) = (dgyyyr + eye*dgyyyi)
+         der4(1,ii,i) = (dgxxxxr + eye*dgxxxxi)
+         der4(2,ii,i) = (dgxxxyr + eye*dgxxxyi)
+         der4(3,ii,i) = (dgxxyyr + eye*dgxxyyi)
+         der4(4,ii,i) = (dgxyyyr + eye*dgxyyyi)
+         der4(5,ii,i) = (dgyyyyr + eye*dgyyyyi)
+         der5(1,ii,i) = (dgxxxxxr + eye*dgxxxxxi)
+         der5(2,ii,i) = (dgxxxxyr + eye*dgxxxxyi)
+         der5(3,ii,i) = (dgxxxyyr + eye*dgxxxyyi)
+         der5(4,ii,i) = (dgxxyyyr + eye*dgxxyyyi)
+         der5(5,ii,i) = (dgxyyyyr + eye*dgxyyyyi)
+         der5(6,ii,i) = (dgyyyyyr + eye*dgyyyyyi)
+      enddo
       enddo
 
       do i = 0,5
@@ -164,59 +164,59 @@ c     parameters
       write(*,*) "other angles can have branch cut problems"
 
       do i = 1,ntheta/2+1,ntheta/2
-         do ii = 1,nrscale*nperr
-            call helmbhgreen_all(zks(ii,i),zx(1,ii,i),zy(1,ii,i),
-     1           ifpot,pot1,ifgrad,grad1,ifhess,hess1,ifder3,der31,
-     2           ifder4,der41,ifder5,der51)
-            
-            
-            err = cdabs(pot1-pot(ii,i))/cdabs(pot(ii,i))
-            if (err .gt. errmax(0)) errmax(0) = err
-            err = cdabs(grad1(1)-grad(1,ii,i))/(cdabs(grad(1,ii,i)))
-            if (err .gt. errmax(1)) errmax(1) = err
-            err = cdabs(grad1(2)-grad(2,ii,i))/(cdabs(grad(2,ii,i)))
-            if (err .gt. errmax(1)) errmax(1) = err
-            err = cdabs(hess1(1)-hess(1,ii,i))/(cdabs(hess(1,ii,i)))
-            if (err .gt. errmax(2)) errmax(2) = err
-            err = cdabs(hess1(2)-hess(2,ii,i))/(cdabs(hess(2,ii,i)))
-            if (err .gt. errmax(2)) errmax(2) = err
-            err = cdabs(hess1(3)-hess(3,ii,i))/(cdabs(hess(3,ii,i)))
-            if (err .gt. errmax(2)) errmax(2) = err
-            err = cdabs(der31(1)-der3(1,ii,i))/(cdabs(der3(1,ii,i)))
-            if (err .gt. errmax(3)) errmax(3) = err
-            err = cdabs(der31(2)-der3(2,ii,i))/(cdabs(der3(2,ii,i)))
-            if (err .gt. errmax(3)) errmax(3) = err
-            err = cdabs(der31(3)-der3(3,ii,i))/(cdabs(der3(3,ii,i)))
-            if (err .gt. errmax(3)) errmax(3) = err
-            err = cdabs(der31(4)-der3(4,ii,i))/(cdabs(der3(4,ii,i)))
-            if (err .gt. errmax(3)) errmax(3) = err
-            err = cdabs(der41(1)-der4(1,ii,i))/(cdabs(der4(1,ii,i)))
-            if (err .gt. errmax(4)) errmax(4) = err
-            err = cdabs(der41(2)-der4(2,ii,i))/(cdabs(der4(2,ii,i)))
-            if (err .gt. errmax(4)) errmax(4) = err
-            err = cdabs(der41(3)-der4(3,ii,i))/(cdabs(der4(3,ii,i)))
-            if (err .gt. errmax(4)) errmax(4) = err
-            err = cdabs(der41(4)-der4(4,ii,i))/(cdabs(der4(4,ii,i)))
-            if (err .gt. errmax(4)) errmax(4) = err
-            err = cdabs(der41(5)-der4(5,ii,i))/(cdabs(der4(5,ii,i)))
-            if (err .gt. errmax(4)) errmax(4) = err
-            err = cdabs(der51(1)-der5(1,ii,i))/(cdabs(der5(1,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-            err = cdabs(der51(2)-der5(2,ii,i))/(cdabs(der5(2,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-            err = cdabs(der51(3)-der5(3,ii,i))/(cdabs(der5(3,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-            err = cdabs(der51(4)-der5(4,ii,i))/(cdabs(der5(4,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-            err = cdabs(der51(5)-der5(5,ii,i))/(cdabs(der5(5,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-            err = cdabs(der51(6)-der5(6,ii,i))/(cdabs(der5(6,ii,i)))
-            if (err .gt. errmax(5)) errmax(5) = err
-         enddo
+      do ii = 1,nrscale*nperr
+         call helmbhgreen_all(zks(ii,i),zx(1,ii,i),zy(1,ii,i),
+     1        ifpot,pot1,ifgrad,grad1,ifhess,hess1,ifder3,der31,
+     2        ifder4,der41,ifder5,der51)
+         
+         
+         err = cdabs(pot1-pot(ii,i))/cdabs(pot(ii,i))
+         if (err .gt. errmax(0)) errmax(0) = err
+         err = cdabs(grad1(1)-grad(1,ii,i))/(cdabs(grad(1,ii,i)))
+         if (err .gt. errmax(1)) errmax(1) = err
+         err = cdabs(grad1(2)-grad(2,ii,i))/(cdabs(grad(2,ii,i)))
+         if (err .gt. errmax(1)) errmax(1) = err
+         err = cdabs(hess1(1)-hess(1,ii,i))/(cdabs(hess(1,ii,i)))
+         if (err .gt. errmax(2)) errmax(2) = err
+         err = cdabs(hess1(2)-hess(2,ii,i))/(cdabs(hess(2,ii,i)))
+         if (err .gt. errmax(2)) errmax(2) = err
+         err = cdabs(hess1(3)-hess(3,ii,i))/(cdabs(hess(3,ii,i)))
+         if (err .gt. errmax(2)) errmax(2) = err
+         err = cdabs(der31(1)-der3(1,ii,i))/(cdabs(der3(1,ii,i)))
+         if (err .gt. errmax(3)) errmax(3) = err
+         err = cdabs(der31(2)-der3(2,ii,i))/(cdabs(der3(2,ii,i)))
+         if (err .gt. errmax(3)) errmax(3) = err
+         err = cdabs(der31(3)-der3(3,ii,i))/(cdabs(der3(3,ii,i)))
+         if (err .gt. errmax(3)) errmax(3) = err
+         err = cdabs(der31(4)-der3(4,ii,i))/(cdabs(der3(4,ii,i)))
+         if (err .gt. errmax(3)) errmax(3) = err
+         err = cdabs(der41(1)-der4(1,ii,i))/(cdabs(der4(1,ii,i)))
+         if (err .gt. errmax(4)) errmax(4) = err
+         err = cdabs(der41(2)-der4(2,ii,i))/(cdabs(der4(2,ii,i)))
+         if (err .gt. errmax(4)) errmax(4) = err
+         err = cdabs(der41(3)-der4(3,ii,i))/(cdabs(der4(3,ii,i)))
+         if (err .gt. errmax(4)) errmax(4) = err
+         err = cdabs(der41(4)-der4(4,ii,i))/(cdabs(der4(4,ii,i)))
+         if (err .gt. errmax(4)) errmax(4) = err
+         err = cdabs(der41(5)-der4(5,ii,i))/(cdabs(der4(5,ii,i)))
+         if (err .gt. errmax(4)) errmax(4) = err
+         err = cdabs(der51(1)-der5(1,ii,i))/(cdabs(der5(1,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+         err = cdabs(der51(2)-der5(2,ii,i))/(cdabs(der5(2,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+         err = cdabs(der51(3)-der5(3,ii,i))/(cdabs(der5(3,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+         err = cdabs(der51(4)-der5(4,ii,i))/(cdabs(der5(4,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+         err = cdabs(der51(5)-der5(5,ii,i))/(cdabs(der5(5,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+         err = cdabs(der51(6)-der5(6,ii,i))/(cdabs(der5(6,ii,i)))
+         if (err .gt. errmax(5)) errmax(5) = err
+      enddo
       enddo
 
       write(*,*) "WORST CASE RELATIVE ERROR BY DERIVATIVE ORDER"
-
+      
       do i = 0,5
          write(*,*) i, errmax(i)
       enddo
