@@ -10,7 +10,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     Evaluates the Green function 
 c
-c     G(x,y) = (i*H_0^(1)(zk*r)/4 - log(r)/(2*pi))/zk^2 ,
+c     G(x,y) = (i*H_0^(1)(zk*r)/4 + log(r)/(2*pi))/zk^2 ,
 c
 c     where H_0^(1) is the Hankel function of the first kind and
 c     r = sqrt( (x_1-y_1)^2 + (x_2-y_2)^2),

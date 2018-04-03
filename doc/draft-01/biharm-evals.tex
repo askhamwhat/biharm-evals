@@ -1,0 +1,220 @@
+\documentclass[preprint,12pt]{article} 
+\usepackage{b}
+\usepackage[a4paper]{geometry}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\usepackage[small,it]{caption}
+\usepackage{empheq}
+
+\usepackage{subcaption}
+
+\usepackage{cleveref}
+\crefname{equation}{}{}
+\Crefname{equation}{}{}
+\crefname{eqnarray}{}{}
+\Crefname{eqnarray}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\xx{{\bf x}}
+\def\yy{{\bf y}}
+\def\ss{{\bf s}}
+\def\tt{{\bf t}}
+\def\uu{{\bf u}}
+\def\ff{{\bf f}}
+\def\GG{{\bf G}}
+\def\II{{\bf I}}
+\def\TT{{\bf T}}
+\def\bsigma{{\boldsymbol \sigma}}
+\def\bnu{{\boldsymbol \nu}}
+\def\btau{{\boldsymbol \tau}}
+\def\bigo{\mathcal{O}}
+\def\littleo{o}
+
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{An integral equation method for the biharmonic
+Dirichlet eigenvalue problem in two dimensions}
+\author{Askham and Rachh}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+Results of some quick googling:
+
+Finite element methods.
+\begin{itemize}
+\item Stokes eigenvalue problem: nonconforming finite
+  element methods \cite{jia2009approximation}.
+\end{itemize}
+
+Integral equation methods.
+\begin{itemize}
+\item Book on elastodynamic eigenvalue problems
+  \cite{kitahara2014boundary}
+\end{itemize}
+\section{Mathematical Preliminaries}
+
+\subsection{Notation}
+
+Bold symbols are vectors or tensors.
+$\xx = (x_1,x_2)^\intercal$ then $\xx^\bot = (-x_2,x_1)^\intercal$.
+Similarly, $\nabla^\intercal = (-\partial_{x_2},\partial_{x_1})^\intercal$
+
+\subsection{Green's functions}
+
+$\Delta$
+\begin{equation}
+  G_L(\xx,\yy) = -\frac{1}{2\pi} \log |\xx-\yy|
+\end{equation}
+
+$\Delta + k^2$
+\begin{equation}
+  G_H(\xx,\yy) = \frac{i}{4} H_0^{(1)}(k|\xx-\yy|)
+\end{equation}
+
+$\Delta(\Delta + k^2)$
+\begin{equation}
+  G_{BH}(\xx,\yy) = -\frac{1}{k^2}
+  \left (\frac{1}{2\pi} \log |\xx-\yy| +
+  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right )
+\end{equation}
+
+\section{Integral Equation Formulation}
+
+\subsection{The Helmholtz Stokeslet formulation}
+
+In this section, we review the derivation of the
+modified Stokeslet, but for the imaginary parameter
+regime --- which we will call the Helmholtz Stokeslet ---
+which is the appropriate setting for the Stokes
+eigenvalue problem.
+The original modified Stokeslet is more well known,
+and is of particular interest for its application to
+numerical simulations of the unsteady Stokes equations
+\cite{pozrikidis1992boundary,biros2002embedded}.
+
+To begin, we restate the Stokes eigenvalue
+problem as
+\begin{align}
+  \nabla p - \Delta \uu - k^2 \uu &= 0 \; , \label{eq:helmstokes}\\
+  \nabla \cdot \uu &= 0 \; . \label{eq:helmstokescty}
+\end{align}
+Consider the solution of this problem where a
+$\delta$ centered at $\yy$ with strength $\ff$
+has been added to the right-hand side, i.e.
+
+\begin{align}
+  \nabla p - \Delta \uu - k^2 \uu &= \delta_\yy \ff \; ,
+  \label{eq:helmstokes_charge} \\
+  \nabla \cdot \uu &= 0 \; .
+\end{align}
+Note that
+
+\begin{equation}
+  \Delta G_L(\xx,\yy) = \delta_\yy(\xx) \; .
+\end{equation}
+If we substitute this expression into
+\eqref{eq:helmstokes_charge} and take the divergence,
+we obtain
+
+\begin{equation}
+  p = \nabla G_L(\xx,\yy) \cdot \ff \; .
+\end{equation}
+We then have, formally,
+
+\begin{align}
+  \uu &= - (\Delta + k^2)^{-1} ( \Delta G_L \ff
+  - \nabla (\nabla G_L \cdot \ff ) ) \\
+  &= \left ( -\Delta + \nabla \otimes \nabla \right )
+  G_{BH} \ff \; .
+\end{align}
+The tensor
+
+\begin{equation}
+  \GG = - \II \Delta G_{BH} + \nabla \otimes \nabla G_{BH}
+\end{equation}
+is then the equivalent of a Stokeslet
+\cite{pozrikidis1992boundary} for the problem
+\eqref{eq:helmstokes}.
+
+A related object is the stresslet, which is defined
+in terms of the stress tensor of a velocity, pressure
+pair induced by a Stokeslet. For these tensors, we find
+that it is more convenient to express them in index notation
+with the Einstein index summing convention.
+Recall that the stress tensor $\bsigma$ is defined as 
+
+\begin{equation}
+  \sigma_{ij} = -p \delta_{ij} + \left ( \partial_{x_j}u_i
+  +\partial_{x_i} u_j \right ) \; ,
+\end{equation}
+where $\delta_{ij}$ is the standard Kronecker delta notation.
+The stresslet $\TT$ is defined to be
+
+\begin{align}
+  T_{ijk} &= - \partial_{x_j} G_L \delta_{ik}
+  + \partial_{x_k} \left ( -\Delta G_{BH} \delta_{ij} +
+  \partial_{x_i} \left(\partial_{x_j} G_{BH} \right) \right)
+  \nonumber \\
+  & \qquad+ \partial_{x_i} \left ( -\Delta G_{BH} \delta_{kj} +
+  \partial_{x_k} \left(\partial_{x_j} G_{BH} \right) \right)
+  \; .
+\end{align}
+Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} G_L f_i$ be a
+solution of the Stokes equations induced by a Stokeslet.
+Then the corresponding stress tensor is given by
+$\sigma_{ik} = T_{ijk} f_j$.
+
+For the layer potentials of the next section, the following
+formulas are useful. Let $\bnu$ be a given vector. When
+summing over the third index, we obtain
+
+\begin{equation}
+  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla G_L
+  + \partial_\nu \left ( -\Delta G_{BH} \II
+  + \nabla \otimes \nabla G_{BH} \right)
+  + \nabla \otimes \left ( -\Delta G_{BH} \bnu
+  + \partial_{\nu} \nabla G_{BH} \right) \; .
+\end{equation}
+%\begin{align}
+% -\Delta G_{BH} \bnu
+% + \partial_{\nu} \nabla G_{BH} &=
+% ( (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_1 G_{BH} +
+% (\partial_{x_1x_1}\nu_1 + \partial_{x_2x_1} \nu_2 )G_{BH},
+% (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_2 G_{BH} +
+% (\partial_{x_1x_2}\nu_1 + \partial_{x_2x_2} \nu_2 )G_{BH}) \\
+% &= (-\partial_{x_2} \partial_\tau G_{BH},
+% \partial_{x_1} \partial_\tau G_{BH})
+%\end{align}
+%\begin{equation}
+%  \begin{pmatrix}
+%    -\partial_{x_2x_2} & \partial_{x_1x_2} \\
+%    \partial_{x_1x_2} & -\partial_{x_1x_1}
+%  \end{pmatrix} = -\nabla^\bot \otimes \nabla^\bot
+%\end{equation}
+Let $\btau = \bnu^\bot$. Then
+
+\begin{equation}
+  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla G_L
+  - \nabla^\bot \otimes \nabla^\bot \partial_\nu G_{BH}
+  +\nabla \otimes \nabla^\bot \partial_\tau G_{BH} \; .
+\end{equation}
+
+\subsection{Layer potentials}
+
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
