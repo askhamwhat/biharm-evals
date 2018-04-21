@@ -8,9 +8,15 @@ SRC_DIR = ../src
 
 OBJS = hank103.o \
 	cdjseval2d.o \
-	helmbhrouts.o \
+	helmbhrouts.o hbhrouts2d.o\
 	helmrouts2d.o \
-	prini.o
+	prini.o \
+	chunks_helmstokes_kerndefs.o \
+	dlaran.o \
+	chunks.o \
+	hkrand.o \
+	legeexps.o \
+	pplot.o
 
 LOBJS = $(patsubst %.o,$(BIN_DIR)/%.o,$(OBJS))
 
@@ -28,6 +34,11 @@ testhelmbhrouts: $(OBJS)
 	cd $(TMP_DIR); ./$@
 
 testhelmbhders: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	cd $(TMP_DIR); ./$@
+
+testhbhstokesgreenid: $(OBJS)
 	mkdir -p $(TMP_DIR)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
 	cd $(TMP_DIR); ./$@

@@ -62,7 +62,7 @@ c     local variables
       integer ifders
       real *8 rscale
       integer nmax, ifder, j
-      complex *16 z, eye, eyeo4, hvec(0:10), diffs(0:5), ders(0:5)
+      complex *16 z, eye, eyeo4, hvec(0:10), diffs(0:10), ders(0:10)
       complex *16 zkh, ztemp, zkr
       data eye /(0.0d0,1.0d0)/
       data eyeo4 /(0.0d0,0.25d0)/

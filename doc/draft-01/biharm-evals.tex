@@ -25,7 +25,10 @@
 \def\GG{{\bf G}}
 \def\II{{\bf I}}
 \def\TT{{\bf T}}
+\def\SS{{\bf S}}
+\def\DD{{\bf D}}
 \def\bsigma{{\boldsymbol \sigma}}
+\def\bmu{{\boldsymbol \mu}}
 \def\bnu{{\boldsymbol \nu}}
 \def\btau{{\boldsymbol \tau}}
 \def\bigo{\mathcal{O}}
@@ -213,6 +216,35 @@ Let $\btau = \bnu^\bot$. Then
 
 \subsection{Layer potentials}
 
+We now use the Stokeslet and stresslet definitions
+of the previous section to define the standard single
+and double layer potentials of the Stokes eigenvalue
+problem. The single layer potential is defined to
+be
+
+\begin{equation}
+  \SS \bmu (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+  \, dS(\yy) \; .
+\end{equation}
+The double layer potential is defined to be
+
+\begin{equation}
+  \DD \bmu (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
+  \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+\end{equation}
+where $\bnu$ denotes the outward unit normal to the boundary.
+If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
+where $\btau = \bmu^\bot$ is the positively oriented unit
+tangent to the curve, then we have
+
+\begin{align}
+  \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy) \right )^\intercal
+  \bmu(\yy) &= \left ( - \nabla G_L(\xx,\yy) + 2 \nabla^\bot
+  \partial_{\nu\tau} G_{BH}(\xx,\yy) \right ) \mu_\nu(\yy) \nonumber \\
+  & \qquad+
+  \nabla^\bot \left (\partial_{\tau\tau}-\partial_{\nu\nu} \right )
+  G_{BH}(\xx,\yy) \mu_\tau(\yy) \; .
+\end{align}
 
 \bibliographystyle{plain}
 \bibliography{refs}
