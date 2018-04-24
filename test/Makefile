@@ -35,17 +35,17 @@ VPATH = $(SRC_DIR):$(BIN_DIR)
 
 testhelmbhrouts: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
 	cd $(TMP_DIR); ./$@
 
 testhelmbhders: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
 	cd $(TMP_DIR); ./$@
 
 testhbhstokesgreenid: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
 	cd $(TMP_DIR); ./$@
 
 testhbhstokesmatform: $(OBJS)
