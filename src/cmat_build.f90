@@ -316,6 +316,271 @@
       end subroutine
 
 
+<<<<<<< HEAD
+=======
+
+
+
+      subroutine blas2(m, n, a, x, y)
+        implicit real *8 (a-h,o-z)
+        real *8 :: a(m,n), x(n), y(m)
+        character *1 :: trans
+
+        trans = 'n'
+        alpha = 1
+        lda = m
+        incx = 1
+        beta = 0
+        incy = 1
+
+        call dgemv(trans, m, n, alpha, a, lda, x, &
+            incx, beta, y, incy)
+
+        return
+      end subroutine
+
+
+
+
+
+      subroutine zblas2(m, n, a, x, y)
+        implicit real *8 (a-h,o-z)
+        complex *16 :: a(m,n), x(n), y(m)
+        character *1 :: trans
+
+        trans = 'n'
+        alpha = 1
+        lda = m
+        incx = 1
+        beta = 0
+        incy = 1
+
+        call zgemv(trans, m, n, alpha, a, lda, x, &
+            incx, beta, y, incy)
+
+        return
+      end subroutine
+
+
+
+
+
+      subroutine zapplymat(norder, wgeo, fkernel, q1, q2, &
+          fgreens, par0, pars1, pars2, ifself, ifnear, iffar, &
+          sigma, pot)
+        implicit real *8 (a-h,o-z)
+        real *8 :: wgeo(*)
+        complex *16 :: q1(*), q2(*), par0, pars1(*), pars2(*)
+        complex *16 :: sigma(*), pot(*)
+        external fkernel, fgreens
+
+        !
+        ! this routine is analogous to zbuildmat, but only applies
+        ! the operator (in blocks)
+        !
+
+        call chunkunpack1(wgeo, k, nch, ichunks, iadjs, iders, &
+            iders2, ihs)
+
+        ntot = k*nch
+        if (norder .ne. k) then
+          call prinf('norder = *', norder, 1)
+          call prinf('k = *', k, 1)
+          call prinf('bomb!!!!*', k, 0)
+          stop
+        endif
+
+        call zapplymat0(norder, k, nch, wgeo, fkernel, q1, q2, &
+            fgreens, par0, pars1, pars2, ifself, ifnear, iffar, &
+            sigma, pot)
+
+        return
+      end subroutine
+
+
+      subroutine zapplymat0(norder, k, nch, wgeo, fkernel, q1, q2, &
+          fgreens, par0, pars1, pars2, ifself, ifnear, iffar, &
+          sigma, pot)
+        real *8 :: wgeo(*)
+        complex *16 :: q1(*), q2(*), par0, pars1(*), pars2(*)
+        complex *16 :: sigma(k,nch), pot(k,nch)
+
+        external fkernel, fgreens
+
+        real *8, allocatable :: xs(:), whts(:)
+        real *8, allocatable :: xs1(:), whts1(:)
+        real *8, allocatable :: xs0(:,:), whts0(:,:)
+        complex *16 :: pottemp(10000)
+        complex *16, allocatable :: tempmat(:,:)
+
+        !
+        ! apply the operator fkernel(fgreens) piece by piece
+        !
+        done = 1
+        allocate(tempmat(k,k))
+
+        itype = 1
+        allocate(xs(k), whts(k))
+        call legerts(itype, k, xs, whts)
+
+        !
+        ! get the bremer near and self quadratures
+        !
+        call get_quads_info(k, nquad1, nquad0)
+        allocate(xs1(nquad1), whts1(nquad1))
+        allocate(xs0(k,k), whts0(k,k))
+        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+
+        !
+        ! initialize the potential
+        !
+        do i = 1,nch
+          do j =1,k
+            pot(j,i) = 0
+          enddo
+        enddo
+
+        do itarget = 1,nch
+          imat = 1 + (itarget-1)*k
+
+          call chunk_neighbors(itarget, wgeo, ibefore, iafter)
+
+          !
+          ! for all target chunks, loop over source chunks
+          !
+          do jsource = 1,nch
+            jmat = 1 + (jsource-1)*k
+
+            if ((jsource .eq. ibefore) .and. (ifnear .ne. 0)) then
+              call znear_buildmat(itarget, jsource, k, wgeo, &
+                  fkernel, q1, q2, fgreens, par0, pars1, pars2, &
+                  nquad1, xs1, whts1, tempmat)
+              call zblas2(k, k, tempmat, sigma(1,jsource), pottemp)
+              call addpot(k, pottemp, pot(1,itarget))
+              cycle
+            endif
+
+            if ((jsource .eq. iafter) .and. (ifnear .ne. 0)) then
+              call znear_buildmat(itarget, jsource, k, wgeo, &
+                  fkernel, q1, q2, fgreens, par0, pars1, pars2, &
+                  nquad1, xs1, whts1, tempmat)
+              call zblas2(k, k, tempmat, sigma(1,jsource), pottemp)
+              call addpot(k, pottemp, pot(1,itarget))
+              cycle
+            endif
+
+            if ((jsource .eq. itarget) .and. (ifself .ne. 0)) then
+              call zdiagonal_buildmat(itarget, k, wgeo, fkernel, &
+                  q1, q2, fgreens, par0, pars1, pars2, xs0, &
+                  whts0, tempmat)
+              call zblas2(k, k, tempmat, sigma(1,jsource), pottemp)
+              call addpot(k, pottemp, pot(1,itarget))
+              cycle
+            endif
+
+            if (iffar .ne. 0) then
+              call zfar_buildmat(itarget, jsource, k, wgeo, &
+                  fkernel, q1, q2, fgreens, par0, pars1, pars2, xs, &
+                  whts, tempmat)
+              call zblas2(k, k, tempmat, sigma(1,jsource), pottemp)
+              call addpot(k, pottemp, pot(1,itarget))
+            endif
+            
+          enddo
+        enddo
+
+      end subroutine
+
+
+
+
+
+      subroutine zapply_self(norder, k, nch, ich, wgeo, fkernel, &
+          q1, q2, fgreens, par0, pars1, pars2, sigma, pot)
+        real *8 :: wgeo(*)
+        complex *16 :: q1(*), q2(*), par0, pars1(*), pars2(*)
+        complex *16 :: sigma(k,nch), pot(k,nch)
+
+        external fkernel, fgreens
+
+        real *8, allocatable :: xs(:), whts(:)
+        real *8, allocatable :: xs1(:), whts1(:)
+        real *8, allocatable :: xs0(:,:), whts0(:,:)
+        complex *16, allocatable :: tempmat(:,:)
+
+        !
+        ! apply the operator fkernel(fgreens) piece by piece
+        !
+        done = 1
+        allocate(tempmat(k,k))
+
+        itype = 1
+        allocate(xs(k), whts(k))
+        call legerts(itype, k, xs, whts)
+
+        !
+        ! get the bremer near and self quadratures
+        !
+        call get_quads_info(k, nquad1, nquad0)
+        allocate(xs1(nquad1), whts1(nquad1))
+        allocate(xs0(k,k), whts0(k,k))
+        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+
+        call zdiagonal_buildmat(ich, k, wgeo, fkernel, &
+            q1, q2, fgreens, par0, pars1, pars2, xs0, &
+            whts0, tempmat)
+        call zblas2(k, k, tempmat, sigma(1,ich), pot(1,ich))
+
+        return
+      end subroutine
+
+
+
+
+      subroutine zapply_near(norder, k, nch, ich, ich_src, wgeo, &
+          fkernel, q1, q2, fgreens, par0, pars1, pars2, sigma, pot)
+        real *8 :: wgeo(*)
+        complex *16 :: q1(*), q2(*), par0, pars1(*), pars2(*)
+        complex *16 :: sigma(k,nch), pot(k,nch)
+
+        external fkernel, fgreens
+
+        real *8, allocatable :: xs(:), whts(:)
+        real *8, allocatable :: xs1(:), whts1(:)
+        real *8, allocatable :: xs0(:,:), whts0(:,:)
+        complex *16, allocatable :: tempmat(:,:)
+
+        !
+        ! apply the operator fkernel(fgreens) piece by piece
+        !
+        done = 1
+        allocate(tempmat(k,k))
+
+        itype = 1
+        allocate(xs(k), whts(k))
+        call legerts(itype, k, xs, whts)
+
+        !
+        ! get the bremer near and self quadratures
+        !
+        call get_quads_info(k, nquad1, nquad0)
+        allocate(xs1(nquad1), whts1(nquad1))
+        allocate(xs0(k,k), whts0(k,k))
+        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+
+        call znear_buildmat(ich, ich_src, k, wgeo, &
+            fkernel, q1, q2, fgreens, par0, pars1, pars2, &
+            nquad1, xs1, whts1, tempmat)
+        call zblas2(k, k, tempmat, sigma(1,ich_src), pot(1,ich))
+
+        return
+      end subroutine
+
+
+
+
+
+>>>>>>> de16f121bc10f6b210c5fadea75023d1c10322ad
       subroutine addpot(k, pot1, pot2)
         implicit real *8 (a-h,o-z)
         complex *16 :: pot1(k), pot2(k)
@@ -328,6 +593,11 @@
       end subroutine
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> de16f121bc10f6b210c5fadea75023d1c10322ad
       
       subroutine zbuildmat(norder, wgeo, fkernel, q1, q2, &
           fgreens, par0, pars1, pars2, ntot, cmat)

@@ -2,15 +2,26 @@
 FC = gfortran
 FFLAGS = -g
 
+BLAS = -lblas
+LAPACK = -llapack
+
 TMP_DIR = ../tmp
 BIN_DIR = ../bin
 SRC_DIR = ../src
 
 OBJS = hank103.o \
 	cdjseval2d.o \
-	helmbhrouts.o \
+	helmbhrouts.o hbhrouts2d.o\
 	helmrouts2d.o \
-	prini.o
+	prini.o \
+	chunks_helmstokes_kerndefs.o \
+	dlaran.o \
+	chunks.o \
+	hkrand.o \
+	legeexps.o \
+	pplot.o \
+	cmat_build.o cmat_build_vec.o\
+	chunks_quads.o
 
 LOBJS = $(patsubst %.o,$(BIN_DIR)/%.o,$(OBJS))
 
@@ -30,6 +41,16 @@ testhelmbhrouts: $(OBJS)
 testhelmbhders: $(OBJS)
 	mkdir -p $(TMP_DIR)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	cd $(TMP_DIR); ./$@
+
+testhbhstokesgreenid: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS)
+	cd $(TMP_DIR); ./$@
+
+testhbhstokesmatform: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
 	cd $(TMP_DIR); ./$@
 
 clean: 
