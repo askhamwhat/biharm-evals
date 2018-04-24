@@ -248,11 +248,7 @@
         return
       end subroutine
 
-
-
-
-
-      subroutine dcopy2(n, x, y)
+      subroutine chunks_dcopy(n, x, y)
         implicit real *8 (a-h,o-z)
         real *8 :: x(n), y(n)
 
@@ -261,7 +257,7 @@
         enddo
 
         return
-      end subroutine dcopy2
+      end subroutine chunks_dcopy
 
 
 
@@ -314,11 +310,6 @@
 
         return
       end subroutine
-
-
-<<<<<<< HEAD
-=======
-
 
 
       subroutine blas2(m, n, a, x, y)
@@ -576,11 +567,6 @@
         return
       end subroutine
 
-
-
-
-
->>>>>>> de16f121bc10f6b210c5fadea75023d1c10322ad
       subroutine addpot(k, pot1, pot2)
         implicit real *8 (a-h,o-z)
         complex *16 :: pot1(k), pot2(k)
@@ -592,12 +578,6 @@
         return
       end subroutine
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> de16f121bc10f6b210c5fadea75023d1c10322ad
       
       subroutine zbuildmat(norder, wgeo, fkernel, q1, q2, &
           fgreens, par0, pars1, pars2, ntot, cmat)
@@ -793,11 +773,11 @@
              iadj_targ, ider_targ, ider2_targ, h_targ)
 
         len = 2*k
-        call dcopy2(len, wgeo(ichunk_src), chunk_src)
-        call dcopy2(len, wgeo(ider_src), der_src)
+        call chunks_dcopy(len, wgeo(ichunk_src), chunk_src)
+        call chunks_dcopy(len, wgeo(ider_src), der_src)
 
-        call dcopy2(len, wgeo(ichunk_targ), chunk_targ)
-        call dcopy2(len, wgeo(ider_targ), der_targ)
+        call chunks_dcopy(len, wgeo(ichunk_targ), chunk_targ)
+        call chunks_dcopy(len, wgeo(ider_targ), der_targ)
 
         call zfar_buildmat0(k, chunk_targ, der_targ, &
             h_targ, chunk_src, der_src, h_src, fkernel, q1, q2, &
@@ -896,11 +876,11 @@
              iadj_targ, ider_targ, ider2_targ, h_targ)
 
         len = 2*k
-        !!call dcopy2(len, wgeo(ichunk_src), chunk_src)
-        !!call dcopy2(len, wgeo(ider_src), der_src)
+        !!call chunks_dcopy(len, wgeo(ichunk_src), chunk_src)
+        !!call chunks_dcopy(len, wgeo(ider_src), der_src)
 
-        !!call dcopy2(len, wgeo(ichunk_targ), chunk_targ)
-        !!call dcopy2(len, wgeo(ider_targ), der_targ)
+        !!call chunks_dcopy(len, wgeo(ichunk_targ), chunk_targ)
+        !!call chunks_dcopy(len, wgeo(ider_targ), der_targ)
 
         call znear_buildmat0(k, wgeo(ichunk_targ), wgeo(ider_targ), &
             h_targ, wgeo(ichunk_src), wgeo(ider_src), h_src, &
