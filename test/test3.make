@@ -1,8 +1,19 @@
 PROJECT = int2
 
+ifndef SYSTEM
+SYSTEM = mac
+endif
+
 FC = gfortran -c -w
 FFLAGS = -O3
+
+ifeq ($(SYSTEM),mac)
 FLINK = gfortran -w -o $(PROJECT) -framework accelerate
+endif
+ifeq ($(SYSTEM),linux)
+FLINK = gfortran -w -o $(PROJECT) 
+FEND = -lblas -llapack
+endif
 
 EFOL = test3Data
 SRC = ../src

@@ -1,9 +1,22 @@
 
+ifndef SYSTEM
+SYSTEM = linux
+endif
+
 FC = gfortran
 FFLAGS = -g
 
+ifeq ($(SYSTEM),linux)
 BLAS = -lblas
 LAPACK = -llapack
+PREO = 
+POSTO = $(BLAS) $(LAPACK)
+endif
+
+ifeq ($(SYSTEM),mac)
+PREO = -framework accelerate
+POSTO = 
+endif
 
 TMP_DIR = ../tmp
 BIN_DIR = ../bin
@@ -35,22 +48,22 @@ VPATH = $(SRC_DIR):$(BIN_DIR)
 
 testhelmbhrouts: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@
 
 testhelmbhders: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@
 
 testhbhstokesgreenid: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@
 
 testhbhstokesmatform: $(OBJS)
 	mkdir -p $(TMP_DIR)
-	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(LOBJS) $(BLAS) $(LAPACK)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@
 
 clean: 
