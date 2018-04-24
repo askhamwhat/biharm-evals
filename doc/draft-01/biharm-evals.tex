@@ -16,13 +16,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\def\xx{{\bf x}}
-\def\yy{{\bf y}}
-\def\ss{{\bf s}}
-\def\tt{{\bf t}}
-\def\uu{{\bf u}}
-\def\ff{{\bf f}}
+\def\br{{\boldsymbol r}}
+\def\bn{{\boldsymbol n}}
+\def\xx{{\boldsymbol x}}
+\def\bx{{\boldsymbol x}}
+\def\yy{{\boldsymbol y}}
+\def\by{{\boldsymbol y}}
+\def\ss{{\boldsymbol s}}
+\def\tt{{\boldsymbol t}}
+\def\uu{{\boldsymbol u}}
+\def\bu{{\boldsymbol u}}
+\def\bl{{\boldsymbol \ell}}
+\def\ff{{\boldsymbol f}}
 \def\GG{{\bf G}}
+\def\Gbh{{G_{BH}}}
 \def\II{{\bf I}}
 \def\TT{{\bf T}}
 \def\bsigma{{\boldsymbol \sigma}}
@@ -212,6 +219,386 @@ Let $\btau = \bnu^\bot$. Then
 \end{equation}
 
 \subsection{Layer potentials}
+
+
+\subsection{The Farkas integral representation} 
+
+As mentioned in the introduction, there are existing 
+integral representations for the solution of the Dirichlet problem for the Helmholtz-biharmonic equation
+\begin{align}
+ \Delta (\Delta + k^2) w &= 0 \mbox{ in } D \; , \label{eq:biharmD1}\\
+ w &= f \mbox{ on }
+ \Gamma \label{eq:biharmD2} \; , \\ 
+ \frac{\partial w}{\partial n} &= g \mbox{ on } 
+ \Gamma \, , \label{eq:biharmD3}
+\end{align}
+In \cite{Farkas89}, 
+the solution is given as the sum of two layer potentials, i.e.
+\begin{equation}
+  w(\xx) = \int_\Gamma K_1^F (\xx,\yy) \sigma_1(\yy) \, dS(\yy)
+  + \int_\Gamma K_2^F(\xx,\yy) \sigma_2(\yy) \, dS(\yy) \; ,
+  \label{eq:farkRep}
+\end{equation}
+where $\sigma_1$ and $\sigma_2$ are unknown densities.
+
+The integral kernels, $K_1^F$ and $K_2^F$ are based on
+derivatives of the Green's function for the biharmonic equation.
+For two points on the plane, $\xx$ and $\yy$, let $\br = \yy - \xx$. Then 
+\begin{align}
+  K_1^F(\xx,\yy) &= \partial_{n_{y}n_{y}n_{y}}\Gbh(\xx,\yy)
+  + 3 \partial_{n_{y}\tau_{y}\tau_{y}}\Gbh(\xx,\yy) + k^{2} \partial_{n_{y}}\Gbh(\xx,\yy)\; , \label{eq:kf1} \\
+  K_2^F(\xx,\yy) &= -\partial_{n_{y}n_{y}}\Gbh(\xx,\yy)
+  + \partial_{\tau_{y}\tau_{y}}\Gbh(\xx,\yy) \label{eq:kf2} \; .
+\end{align}
+More explicitly, we have
+
+\begin{align}
+  K_1^F(\xx,\yy) &=  -\dfrac{\br \cdot \bn(\yy)}{|\br|^2}  \cdot \left( \frac{3 i}{2} H_0^{(1)}(k|\br|) - \frac{5 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{6}{\pi k^2 |\br|^2} + \frac{1}{2\pi}  \right) +     \\
+  & \quad \dfrac{\left(\br \cdot \bn(\yy)\right)^3}{|\br|^4} \cdot \left( 2i H_0^{(1)}(k|\br|) - \frac{7 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{8}{\pi k^2 |\br|^2}  \right) \, , \nonumber \\
+  K_2^F(\xx,\yy) &=  -\left(\frac{1}{2}-\dfrac{\left(\br \cdot \bn(\yy)\right)^2}{|\br|^2} \right)  \cdot \left( \frac{i}{2} H_0^{(1)}(k|\br|) - \frac{i}{k|\br|} H_1^{(1)}(k|\br|) + \frac{2}{\pi k^2 |\br|^2}  \right)\; .
+\end{align}
+
+On enforcing the Dirichlet boundary conditions for
+$w$, we obtain the integral equation
+\begin{equation}
+  \begin{split}
+    \begin{pmatrix}
+      f(\xx) \\
+      g(\xx)
+    \end{pmatrix} &= 
+    \int_\Gamma
+    \begin{pmatrix}
+      K_{11}^F(\xx,\yy) & K_{12}^F(\xx,\yy) \\
+      K_{21}^F(\xx,\yy) & K_{22}^F(\xx,\yy)
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\yy)\\
+      \sigma_2(\yy)
+    \end{pmatrix}
+    \, dS(\yy) \\
+    &\quad + \begin{pmatrix}
+      1/2 & 0 \\
+      -\kappa(\xx) & 1/2
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\xx)\\
+      \sigma_2(\xx)
+    \end{pmatrix} \; , \label{eq:farkIntEq} 
+  \end{split}
+\end{equation}
+where $\kappa$ denotes the signed curvature as
+a function on $\Gamma$ and $\xx$ is a point on $\Gamma$. 
+The kernels are given
+by $K_{11}^F = K_1^F$, $K_{12}^F = K_2^F$,
+\begin{align}
+  K_{21}^F(\xx,\yy) &= \left(K_1^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{21}^{F}(\xx,\yy) \; \label{eq:farkK21},\\
+  K_{22}^F(\xx,\yy) &= \left(K_2^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{22}^{F}(\xx,\yy) \label{eq:farkK22} \; .
+\end{align}
+For a sufficiently smooth and simply connected domain,
+the integral equation \cref{eq:farkIntEq} is invertible.
+The case of a multiply connected domain is not treated
+fully in \cite{Farkas89}, but some of the issues are
+considered.
+
+As mentioned above, the kernels $K^F_1$ and $K^F_2$ are
+constructed with the goal that the $K^F_{ij}$ are
+as smooth as possible. Suppose that the boundary
+$\Gamma$ is of class $C^k$. Then, the kernels,
+$K^F_{ij}(\xx,\yy)$, are $C^{k-2}$ functions on the boundary
+for each $\yy \in \Gamma$.
+Therefore, on a smooth
+boundary, these kernels are smooth. However, on a
+domain with a corner, we note 
+that the kernel $K_{21}^F$
+has a singularity with strength $r^{-2}$ (see~\cref{fig:ker21plot}). 
+This singularity, in addition to the term in \cref{eq:farkIntEq}
+which explicitly involves the
+curvature, makes the representation \cref{eq:farkRep}
+unstable for domains with high curvature (or
+corners).
+
+\section{Integral equation derivation} \label{sec:anapp}
+
+%\subsection{Adapting the completed double layer representation
+%to solve the Dirichlet problem}
+We would like to adapt the completed double layer representation
+for solutions of Stokes flow \cref{eq:biharmV1,eq:biharmV2,eq:biharmV3} to solve 
+the clamped plate problem \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}.
+Let $f$ and $g$ be the boundary data as in \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}. 
+By computing tangential derivatives of $f$ on each
+boundary component, we get the following related Helmholtz-Stokes problem:
+\begin{align}
+ \Delta (\Delta + \lambda^2) \tilde{w}  = 0 &\quad \bx \in D \, ,\nonumber\\
+ \frac{\partial \tilde{w}}{\partial \tau} = 
+ \frac{\partial f}{\partial \tau} 
+&\quad \bx \in \Gamma \label{eq:biharm5} \, ,\\ 
+ \frac{\partial \tilde{w}}{\partial n} = g &\quad \bx 
+\in \Gamma 
+\, . 
+\nonumber
+\end{align}
+There are two main issues to be addressed in using the completed
+double layer representation in this context. First,
+the representation is designed for 
+Helmholtz-Stokes flow, in which the quantities of interest are derivatives
+of the potential $\tilde{w}$ and not $\tilde{w}$ itself; the
+representation for $\tilde{w}$ may not be single-valued. 
+We will establish that, in the context of \cref{eq:biharm5},
+the stream function is necessarily single-valued. We also discuss
+some numerical issues related to evaluating the stream function.
+The second issue to address
+is that the solution $\tilde{w}$ only satisfies the original boundary 
+condition for the value of $\tilde{w}$ up to a constant on 
+each boundary component.
+In fact, for multiply connected domains, the completed double layer 
+representation is incomplete for the Dirichlet
+problem \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}. We present a remedy for this 
+issue and provide some physical intuition.
+%
+%\subsection{Single-valued stream functions}
+%To solve the Dirichlet problem \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3},
+%it is necessary to compute
+%a single-valued biharmonic potential.
+%In the case of a multiply connected domain,
+%there is no guarantee that a single-valued stream 
+%function exists for a given velocity field.
+%
+%Consider the following example.
+%Let $(r,\theta)$ denote standard polar coordinates. It is
+%easy to verify that the velocity field 
+%$\bu=\frac{1}{r}\hat{r}$ 
+%solves the equations of Stokes flow in an annulus centered at the 
+%origin. A stream function for this flow is $w=\theta$, which 
+%is not single-valued; indeed, there are no single-valued
+%stream functions which generate this flow. 
+%
+%Let $D$ be a multiply connected domain with boundary 
+%$\Gamma = \cup_{i=0}^N \Gamma_i$, as in the previous section.
+%We note that the gradient of a stream function is determined 
+%by the velocity field, i.e. 
+%
+%\begin{equation}
+%\nabla w = -\bu^\perp := \begin{pmatrix} 
+%  - u_2 \\ u_1 
+%\end{pmatrix} \; .
+%\end{equation}
+%Therefore, a velocity field has single-valued stream
+%functions if and only if $\bu^\perp$ is conservative.
+%Using standard results from multivariable calculus, 
+%we can  characterize such flows.
+%
+%\begin{proposition} 
+%Suppose that $\bu$ is a divergence-free velocity 
+%field which is $C^1$ on $D$ and continuous on 
+%$D\cup \Gamma$. The field $\bu^\perp$ 
+%is conservative if and only if 
+%
+%\begin{equation}
+% \int_{\Gamma_i} \bu\cdot \bn \, dS 
+%= 0 \quad i=0,1,\ldots N \, .
+%\label{eq:NecSuffStreamFuncExistence}
+%\end{equation}
+%
+%\end{proposition}
+%
+%The equalities \cref{eq:NecSuffStreamFuncExistence}
+%constitute $N$ linearly independent constraints on the 
+%boundary data because the divergence-free condition 
+%\cref{eq:MassConservation} implies that
+%$\int_{\Gamma} \bu \cdot \bn \, dS = 0$. 
+%It turns out that 
+%these conditions are satisfied when the Dirichlet 
+%problem is recast as a Stokes flow \cref{eq:biharm5}, as 
+%it is easily verified that
+%\begin{equation}
+% \int_{\Gamma_i} \bu\cdot \bn \, dS 
+%= \int_{\Gamma_i} \frac{\partial f}{\partial \tau} \, dS =0 \, .
+%\end{equation}
+%Thus, any stream function $\tilde{w}$ obtained for the Stokes
+%flow \cref{eq:biharm5} is necessarily single-valued.
+%% NOT GOING THIS WAY ANYMORE
+%%It can be shown using the Helmholtz Hodge decomposition that the 
+%%conditions \cref{eq:NecSuffStreamFuncExistence} are sufficient for 
+%%the existence of a single-valued stream function. 
+%
+%\subsection{Evaluating the stream function} \label{subsec:stream}
+%
+%Given compatible boundary data for the velocity field $\bu$, 
+%the completed double layer representation for Stokes flow 
+%\cref{eq:IntRepStokes} guarantees the existence of
+%a solution density $\boldsymbol\mu$ 
+%and a corresponding stream function $\tilde{w}$. The Goursat 
+%function formula 
+%for $\tilde{w}$, see \cref{sec:stokeslayer},
+%is necessarily single-valued, as explained above,
+%but it is not immediately obvious from the formula 
+%that this should be true.
+%
+%The difficulty in the representation of $\tilde{w}$ 
+%comes from the part
+%of the stream function corresponding to the double layer potential
+% \cref{eq:wDL}. The 
+%second term in the expression for the double layer potential is
+%\begin{equation}
+% v_1(z) = \mbox{Re}\left[\frac{1}{4\pi i}\int_{\Gamma}\left(
+%\overline{\rho\left(\xi\right)}d\xi+\rho\left(\xi\right)
+%\overline{d\xi}\right)\log\left(\xi-z\right)\right] \, .
+%\end{equation}
+%To compute this term, in a na\"{i}ve numerical implementation,
+%the question of which is the appropriate branch of the 
+%logarithm to use would arise at many steps.
+%To avoid this complication, it is possible instead to compute
+%$v_1$, up to a constant, as the harmonic conjugate of the
+%function 
+%\begin{equation}
+% v_2 = \frac{1}{4\pi}\int_{\Gamma}\left(\overline{\rho\left(\xi\right)}
+%d\xi+\rho\left(\xi\right)\overline{d\xi}\right)\log
+%\left(\left|\xi-z\right|\right) \, . \label{eq:harmconjg}
+%\end{equation}
+%
+%We will use this approach to evalute $v_1$ numerically.
+%As a result of the Cauchy-Riemann equations, the 
+%harmonic conjugate of $v_2$, satisfies the following
+%Neumann problem for the Laplace equation:
+%\begin{align}
+% \Delta v_1 &= 0 &\quad x\in D \, ,\\
+% \frac{\partial v_1}{\partial n} &= -\frac{\partial v_2}{\partial \tau} 
+%&\quad x\in\Gamma \, .
+%\end{align}
+%It is possible then to use standard integral equation
+%methods to compute $v_1$. 
+%
+%Let $v_1 = S^L_\Gamma \sigma$, where $S^L_\Gamma \sigma$ 
+%is the single layer potential for Laplace's equation, given by
+%\begin{equation}
+%S^L_\Gamma\sigma (\bx) = -\frac{1}{2\pi} \int_{\Gamma} \log 
+%\left|\bx - \by \right|\sigma(\by)\, dS \left(\by \right) \, ,
+%\end{equation}
+%where $\sigma\in \mathcal{X}= C^{0,\alpha}\left(\Gamma\right)$, for 
+%some $\alpha \in (0,1)$, is an unknown density 
+%(see \cite{kress1999linear, guenther1988partial}).
+%Imposing the Neumann boundary conditions results in the 
+%following boundary integral equation for $\sigma$:
+%\begin{align}
+%-\frac{\partial v_2}{\partial \tau} (\bx) &= \frac{1}{2} \sigma \left(\bx\right) - \frac{1}{2\pi}\oint_{\Gamma} 
+%\frac{\partial}{\partial n_x}  
+%\log \left| \bx - \by \right |\sigma(\by)\, dS \left(\by \right) 
+%\, , \\
+%-\frac{\partial v_2}{\partial \tau} &= \left( \frac{1}{2}I_{\mathcal{X}} + K^L_\Gamma  \right) \sigma 
+%\, ,
+%\label{eq:BlockSystemRow2P1tmp}
+%\end{align}
+%where the operator $K^L_\Gamma$ is compact, so that the integral equation
+%is second kind.
+%For a derivation of this result, see \cite{kress1999linear}.
+%
+%It is well known that the operator $\frac{1}{2}I_{\mathcal{X}} + K^L_\Gamma$ 
+%has a one dimensional null space. Thus,
+%we choose to solve the above integral equation subject to 
+%the constraint $\int_{\Gamma} \sigma \, dS = 0$. 
+%Furthermore, it is known that solving the Neumann problem subject 
+%to the above constraint is equivalent
+%to solving
+%\begin{align}
+%\left( \frac{1}{2}I_{\mathcal{X}} + K^L_\Gamma  + W_\Gamma \right) \sigma 
+%= -\frac{\partial v_2}{\partial \tau}
+%\label{eq:BlockSystemRow2P1} 
+%\end{align}
+%where $W_\Gamma\sigma = \int_{\Gamma} \sigma \, dS$. 
+%To prove this, we need 
+%the following property of 
+%the Green's function for Laplace's equation.
+%\begin{align}
+%-\frac{1}{2\pi}\oint_{\gamma} \frac{\partial}{\partial n_{\by}}  
+%\log \left|\bx - \by\right|\, dS \left(\by \right) 
+%&=-\frac{1}{2}\quad\bx\in\gamma \, , \label{eq:DLP2}
+%\end{align}
+%Using the above property, it follows that
+%\begin{align}
+% \int_{\Gamma} K^L_\Gamma \sigma \, dS(\x) 
+%= -\frac{1}{2}\int_{\Gamma} \sigma \left(\bx\right) \, dS(\x) 
+%\label{eq:KLint}
+%\end{align}
+%Integrating equation \cref{eq:BlockSystemRow2P1} and using 
+%equation \cref{eq:KLint}, we get
+%\begin{align}
+%\int_{\Gamma} \left( \frac{1}{2}I_{\mathcal{X}} + 
+%K^L_\Gamma  + L \right) \sigma \, dS(\x) 
+%&= -\int_{\Gamma} \frac{\partial v_2}{\partial \tau} \, dS(\x) \\
+%\left|\Gamma\right| L\sigma  &= 0 
+%\end{align}
+%which proves the result.
+
+\subsection{Making the representation complete}
+As mentioned above, the solution $\tilde{w}$ of 
+the auxiliary Helmholtz-Stokes problem \cref{eq:biharm5}
+only satisfies the boundary conditions of the 
+original Dirichlet problem \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}
+up to a constant on each boundary component. For a simply
+connected domain, this constant can be recovered from the
+fact that adding an arbitrary constant to a stream function
+does not change the velocity field. 
+Thus, in simply connected domains, there is an equivalence in the 
+solutions of \cref{eq:biharm5} and \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}.
+
+To analyze the case of a multiply connected domain,
+we first consider
+radially symmetric solutions on an annulus centered at the
+origin. Let $w\left(r\right)$ be a 
+radially symmetric biharmonic-Stokes
+potential. Then $w(r)$ solves the ordinary differential
+equation (ODE)
+\begin{equation}
+\Delta_{r} (\Delta_{r} + k^2)w = 0 \, ,
+\end{equation}
+where $\Delta_{r}$ is the radial component of the Laplacian in polar
+coordinates given by
+$$
+\Delta_{r} = \frac{1}{r}\frac{d}{dr} r \frac{d}{dr} \, .
+$$
+Four linearly independent solutions of this ODE are $1$, $\log{(r)}$, 
+$J_{0}(kr)$, and $H_{0}(kr)$, 
+where $J_{0}$ is the order zero Bessel function of the first kind, and $H_{0}$ is the order zero Hankel function of the first kind.
+For each solution, we can compute the associated velocity field 
+$\bu = \nabla^{\perp} w$. By construction, $\bu$ satisfies 
+the continuity condition \cref{eq:MassConservation}. 
+For the momentum equation \cref{eq:StokesFlowEq} to be 
+satisfied, we need that $\Delta\bu + k^2 \bu$ is a conservative
+vector field, which 
+is equivalent to the condition that 
+$\int_{\gamma} (\Delta\bu + k^2 \bu) \cdot d\bl = 0$ 
+for any closed 
+loop $\gamma$ in the annulus. For $\tilde{w}=1$, $J_{0}(kr)$, and $H_{0}(kr)$,
+the corresponding velocity field satisfies
+$\Delta \bu + k^2 \bu=0$ so that $\Delta \bu$
+is trivially a conservative vector field. 
+On the other hand, for $\tilde{w}=\log{(r)}$, the corresponding velocity field
+satisfies $\Delta \bu + k^2 \bu=\frac{k^2}{r} \hat{\theta}$.
+By considering a curve $\gamma$ encircling the origin,
+we see that $\Delta \bu + k^2 \bu$ is not a conservative vector
+field and that any pressure for the velocity field 
+associated with $\log\left(r\right)$ is not single-valued.
+%
+%The above analysis
+%can be extended to show that any solution of the biharmonic equation 
+%of the form $\log{|r-r_{j}|}$ where $r_{j}$ is located in one of the holes of a multiply connected
+%domain.
+%cannot be represented as a Stokes velocity field. 
+%In simply connected 
+%domains, since there are no holes, corresponding to each solution of the modified biharmonic equation with clamped plate
+%boundary conditions, there exists a solution to . For multiply connected domains with genus $N$, 
+%the set of stream functions for Stokes velocity fields
+%misses an $N$ dimensional space of solutions, corresponding 
+%to biharmonic charges located in the holes of the domain.
+%Following this reasoning, we obtain a complete representation
+%for biharmonic potentials on multiply connected domains
+%by adding $N$ charges, one per each hole of the domain,
+%to the representation for $w$. The details of this approach, and
+%the proof that it is sufficient, is in the next section.
+
+
 
 
 \bibliographystyle{plain}

@@ -22,13 +22,14 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3)
+      complex *16 pot, grad(2), hess(3)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
 c     local variables
-      real *8 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
+      complex *16 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
       integer ifpotloc, ifgradloc, ifhessloc, ifder3, ifder4, ifder5
       integer i
 
@@ -126,13 +127,14 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3)
+      complex *16 pot, grad(2), hess(3)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
 c     local variables
-      real *8 pottemp, gradtemp(2), hesstemp(3)
+      complex *16 pottemp, gradtemp(2), hesstemp(3)
 
       call hbhpotgrad2dall_cdq(beta,source,ns,ifcharge,
      1     charge,ifdipole,dipstr,dipvec,ifquad,quadstr,quadvec,
@@ -162,14 +164,16 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3), der3(4)
+      complex *16 pot, grad(2), hess(3), der3(4)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifder3
 c     local variables
-      real *8 potloc,gradloc(2),hessloc(3),der3loc(4),der4(5),der5(6)
+      complex *16 potloc,gradloc(2),hessloc(3),der3loc(4),der4(5)
+      complex *16 der5(6)
       integer ifpotloc, ifgradloc, ifhessloc, ifder3loc, ifder4, ifder5
       integer i
 
@@ -299,14 +303,15 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3), der3(4)
+      complex *16 pot, grad(2), hess(3), der3(4)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifder3
 c     local variables
-      real *8 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
+      complex *16 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
 
       call hbhpotgrad2dall_cdq3(beta,source,ns,ifcharge,
      1     charge,ifdipole,dipstr,dipvec,ifquad,quadstr,quadvec,
@@ -344,15 +349,16 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*)
       real *8 octstr(*), octvec(4,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3)
+      complex *16 pot, grad(2), hess(3)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifoct
 c     local variables
-      real *8 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
+      complex *16 potloc,gradloc(2),hessloc(3),der3(4),der4(5),der5(6)
       integer ifpotloc, ifgradloc, ifhessloc, ifder3, ifder4, ifder5
       integer i
 
@@ -479,15 +485,16 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*), octstr(*)
       real *8 octvec(4,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3)
+      complex *16 pot, grad(2), hess(3)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifoct
 c     local variables
-      real *8 pottemp, gradtemp(2), hesstemp(3)
+      complex *16 pottemp, gradtemp(2), hesstemp(3)
 
       call hbhpotgrad2dall_cdqo(beta,source,ns,ifcharge,
      1     charge,ifdipole,dipstr,dipvec,ifquad,quadstr,quadvec,
@@ -519,16 +526,17 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*), octstr(*)
       real *8 octvec(4,*)
       real *8 target(2)
-      real *8 pot, grad(2), hess(3), der3(4)
+      complex *16 pot, grad(2), hess(3), der3(4)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifder3, ifoct
 c     local variables
       integer i, ntermstemp
-      real *8 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
+      complex *16 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
       real *8 rscale, rs2, pi, xtemp, ytemp, rtemp, tiny
       complex *16 ima, hexphbh(0:3), hexpy(0:3)
       data ima /(0.0d0,1.0d0)/
@@ -565,7 +573,7 @@ c     local variables
 
          rtemp = dsqrt(xtemp**2+ytemp**2)
 
-         rscale = min(rtemp*beta,1.0d0)
+         rscale = min(rtemp*abs(beta),1.0d0)
          if (rscale .lt. tiny) return
 
          rs2 = rscale*rscale
@@ -607,9 +615,9 @@ c     local variables
      2           + 3.0d0*ima*octvec(4,i))/(rscale*8.0d0*pi)
          endif
 
-         call hbh2dmpeval3(beta,rscale,source(1,i),hexphbh,hexpy,
-     1        ntermstemp,target,pottemp,ifgrad,gradtemp,ifhess,hesstemp,
-     2        ifder3,der3temp)
+cc         call hbh2dmpeval3(beta,rscale,source(1,i),hexphbh,hexpy,
+cc     1        ntermstemp,target,pottemp,ifgrad,gradtemp,ifhess,hesstemp,
+cc     2        ifder3,der3temp)
 
          if (ifpot .eq. 1) pot = pot+pottemp
          if (ifgrad .eq. 1) then
@@ -644,14 +652,15 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
 c     global variables
-      real *8 beta, source(2,*), charge(*), dipstr(*)
+      real *8 source(2,*), charge(*), dipstr(*)
+      complex *16 beta
       real *8 dipvec(2,*), quadstr(*), quadvec(3,*), octstr(*)
       real *8 target(2), octvec(4,*)
-      real *8 pot, grad(2), hess(3), der3(4)
+      complex *16 pot, grad(2), hess(3), der3(4)
       integer ns, ifcharge, ifdipole, ifquad, ifpot, ifgrad, ifhess
       integer ifder3, ifoct
 c     local variables
-      real *8 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
+      complex *16 pottemp, gradtemp(2), hesstemp(3), der3temp(4)
 
       call hbhpotgrad2dall_cdqo3(beta,source,ns,ifcharge,
      1     charge,ifdipole,dipstr,dipvec,ifquad,quadstr,quadvec,

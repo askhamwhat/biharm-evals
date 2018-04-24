@@ -1,0 +1,11 @@
+        test1.f - test the helmholtz farkas representation on smooth
+                  geometries
+        test2.f - test the helmholtz farkas representation on 
+                  capacitor plates
+        test3.f - test the helmholtz farkas representation on 
+                  capacitor plates with square root scaling
+        test4.f - compute condition numbers for helmholtz farkas
+                  representation on capacitor plates with
+                  square root scaling
+
+
