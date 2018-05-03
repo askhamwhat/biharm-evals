@@ -95,7 +95,7 @@ subroutine zhelmstokes_stream_kern(zk,src,targ,&
   external fgreens
   complex *16, intent(out) :: val(2,2)
   ! local
-  complex *16 :: zmats(1,2), zmatd(2,2), cs, cd
+  complex *16 :: zmats(1,2), zmatd(1,2), cs, cd
   complex *16 :: stressmat(2,2,2), nu(2)
   integer :: ifs, ifd, ifstress
   real *8 :: small

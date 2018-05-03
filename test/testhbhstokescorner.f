@@ -328,7 +328,7 @@ c     End of generating boundary data
 
       call prin2('soln=*',soln,24)
 
-c     get integral of exact solution
+c     get integral of exact solution on outer boundary
 
       wintex = 0
       do i = 1,nch
@@ -348,7 +348,7 @@ c     get integral of exact solution
       allocate(wbdry(k,nch))
 
       call wevaltargstoke(zk,nt,targ,wgeos,ncomp,nchs,cms,
-     1     q1,q2,soln,wvals,wbdry,wintex)
+     1     q1,q2,soln,wval,wbdry,wintex)
 
       call prin2('wbdry*',wbdry,12)
       call prin2('pot*',pot,12)
@@ -440,7 +440,8 @@ c     local
       real *8 :: p1,p2,p3,p4,errs(1000)
       integer k, nch, ichunks, iadjs, iders, iders2, ihs
       integer npts, i, j
-      complex *16 :: zero, one, oneint, ztemp, wint
+      complex *16 :: zero, one, oneint, ztemp, wint, zmatt(2,2), mu(2)
+      complex *16 :: zval
       data zero, one / (0.0d0,0.0d0), (1.0d0,0.0d0) /
 
       external fgreenlap, zkernel_sprime, zkernel_slp, fgreensdummy
@@ -448,10 +449,6 @@ c     local
 
       ier = 0
 
-      do i = 1,nt
-         wvals(i) = zero
-      enddo
-      
 c     get dimensions
       call chunkunpack1(wgeo,k,nch,ichunks,iadjs, 
      1     iders,iders2,ihs)
@@ -557,13 +554,17 @@ c     evaluate stream function part of stokes on boundary
       ntot = npts*2
       allocate(streammat(ntot,ntot),b3(ntot))
       ndim = 2
+c     note the stream_kern function is a hack:
+c     in order to use the vector type matrix builder,
+c     every other entry is zero ( the stream
+c     function is scalar while the density is a vector)
       call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_stream_kern,
      1     q1,q2,fgreensdummy,zk,pars1,pars2,ntot,streammat)
 
       call multa(streammat,p1,p2,p3,p4,soln,b3,ntot)
 
       do i = 1,npts
-         b2(i) = b1(i) + b3(2*i-1)
+         wbdry(i) = b1(i) + b3(2*i-1)
       enddo
 
 c     get integral of w along boundary 
@@ -572,7 +573,7 @@ c     get integral of w along boundary
       oneint = zero
       do i = 1,npts
          oneint = oneint + whts(i)*one
-         wint = wint + whts(i)*b2(i)
+         wint = wint + whts(i)*wbdry(i)
       enddo
 
       call prin2('wintex *',wintex,2)
@@ -580,11 +581,37 @@ c     get integral of w along boundary
       call prin2('oneint *',oneint,2)
 
       ztemp = (wintex-wint)/oneint
-      write(*,*) -b1(1)+ztemp
+      write(*,*) b1(1)+ztemp
       write(*,*) b3(1)
 
       do i = 1,npts
-         wbdry(i) = b2(i) + (wintex-wint)/oneint
+         wbdry(i) = wbdry(i) + ztemp
+      enddo
+
+c     get value at targets
+
+      do i = 1,nt
+         wvals(i) = ztemp
+      enddo
+      
+      do ii = 1,nt
+         do i = 1,nch
+            do j = 1,k
+               isrc = ichunks + (i-1)*2*k+2*(j-1)
+               iii = (i-1)*k+j
+               call zhelmstokes_stream_kern(zk,wgeo(isrc),
+     1              targ(1,ii),rnorms(1,j,i),rnorms(1,j,i),
+     2              q1,q2,fgreensdummy,pars1,pars2,zmatt)
+               call zkernel_slp(zk,wgeo(isrc),
+     1              targ(1,ii),rnorms(1,j,i),rnorms(1,j,i),
+     2              q1,q2,fgreenlap,pars1,pars2,zval)
+
+               mu(1) = soln(2*iii-1)
+               mu(2) = soln(2*iii)
+               wvals(ii) = wvals(ii) + whts(iii)*(mu(1)*zmatt(1,1)+
+     1              mu(2)*zmatt(1,2)+zval*b2(iii))
+            enddo
+         enddo
       enddo
 
       
