@@ -396,7 +396,7 @@ c     This subroutine evaluates the difference kernel
 c
 c     diffs(0) = H_0(zk * r) - 2*i*log(r)/pi 
 c
-c     diffs(1) = (H_n(zk*r)+2*i*2^(n-1)*(n-1)!/(pi*(zk*r)^n))*rscale^n
+c     diffs(n) = (H_n(zk*r)+2*i*2^(n-1)*(n-1)!/(pi*(zk*r)^n))*rscale^n
 c
 c     Where H_n is the type 1 Hankel function
 c
@@ -595,8 +595,8 @@ c     directly evaluate
 
          diffs(0) = hvec(0) - dlog(r)*z2iopi
 
-         ztemp = z2iopi/zkr
-         diffs(1) = hvec(1) + ztemp*rscale
+         ztemp = z2iopi*rscale/zkr
+         diffs(1) = hvec(1) + ztemp
          do j = 1,n-1
             ztemp = (j*ztemp)*zkrhsc
             diffs(j+1) = hvec(j+1) + ztemp

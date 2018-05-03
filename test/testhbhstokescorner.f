@@ -21,7 +21,7 @@
       ising = 1
 
       iw2 = 26+icase
-      call biharmdmatgen(iw2,aa,bb,ff,ntot,w(ising))
+      call testhbhstokescorner(iw2,aa,bb,ff,ntot,w(ising))
       
 
       iw = 16 + icase
@@ -40,7 +40,7 @@
 
 c------------------------------------------------------     
 c
-      subroutine biharmdmatgen(ifile,aa,bb,ff,ntot,sing)
+      subroutine testhbhstokescorner(ifile,aa,bb,ff,ntot,sing)
 
       implicit real *8 (a-h,o-z)
 
@@ -65,7 +65,7 @@ c
 c     matrix formation, eigenvalue calculation
 
       real *8, allocatable :: whts(:,:)
-      complex *16, allocatable :: xmat(:,:),xmat2(:,:)
+      complex *16, allocatable :: xmat(:,:),xmat2(:,:), onesmat(:,:)
       complex *16 p1(10),p2,p3,p4
       real *8, allocatable :: cms(:,:)
       
@@ -84,9 +84,10 @@ c     matrix formation, eigenvalue calculation
       complex *16, allocatable :: pottau(:,:)
       complex *16, allocatable :: grad(:,:,:)
       complex *16, allocatable :: potn(:,:)
-      complex *16 gradtmp(2)
+      complex *16, allocatable :: wbdry(:,:)
+      complex *16 gradtmp(2), wintex
       
-      complex *16 sing(*)
+      complex *16 sing(*), q1, q2
 
       integer ncomp, nwiggles
       real *8 tmp, errp, rp
@@ -96,7 +97,7 @@ c     matrix formation, eigenvalue calculation
 
       data eye/(0.0d0,1.0d0)/
 
-      external multa
+      external multa, zhelmstokes_kern, fgreensdummy
 
 
       done = 1
@@ -121,7 +122,7 @@ c     matrix formation, eigenvalue calculation
 
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-c     Get geometry from file
+c     set up geometry
 c
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc      
 
@@ -241,30 +242,30 @@ c     Allocate potential, gradient and potn arrays
 
 
       ntot = 2*k*nch
-      allocate(xmat(ntot,ntot),xmat2(ntot,ntot))
+      allocate(xmat(ntot,ntot),xmat2(ntot,ntot),
+     1     onesmat(ntot,ntot))
 
 
       call prinf('k=*',k,1)
       call prinf('ntot=*',ntot,1)
       call prinf('n=*',n,1)
+      q1 = (0.0d0,0.0d0)
+      q2 = (1.0d0,0.0d0)
+      ndim = 2
+      call zbuildmat_vec(ndim,k,wgeos,zhelmstokes_kern,
+     1     q1,q2,fgreensdummy,zk,pars1,pars2,ntot,
+     2     xmat)
 
-      call formhbiharmdmatfark(k,ntot,n,zk,wgeos,xmat,rkappa,qwts)
+      call normalonesmat(onesmat,whts,rn,k,nch)
+      do j = 1,ntot
+         do i = 1,ntot
+            xmat(i,j) = xmat(i,j) + onesmat(i,j)
+            if (i .eq. j) xmat(i,j) = xmat(i,j)-0.5d0
+            xmat2(i,j) = xmat(i,j)
+         enddo
+      enddo
+      
 
-      call prin2('xmat=*',xmat,24)
-      call prin2('rkappa=*',rkappa,12)
-
-c
-cc
-cc      copy xmat
-c 
-       do i=1,ntot
-       do j=1,ntot
-
-       xmat2(i,j) = xmat(i,j)
-
-       enddo
-       enddo
- 
 c
 c     Allocate potential, gradient and potn arrays
 c
@@ -289,8 +290,8 @@ c
      1                            chunks(2,j,i),pot(j,i),gradtmp)
              potn(j,i) = gradtmp(1)*rn(1,j,i)+gradtmp(2)*rn(2,j,i)
              ii = ii + 1
-             rhs(ii) = pot(j,i)*sqrt(qwts(ii))
-             rhs(ii+n) = potn(j,i)*sqrt(qwts(ii))
+             rhs(2*ii-1) = -gradtmp(2)
+             rhs(2*ii) = gradtmp(1)
          enddo
       enddo
 
@@ -324,23 +325,33 @@ c     End of generating boundary data
       call prinf('niter=*',niter,1)
       call prin2('errs=*',errs,niter)
 
-      do i=1,n
-
-      soln(i) = soln(i)/sqrt(qwts(i))
-      soln(i+n) = soln(i+n)/sqrt(qwts(i))
-
-      enddo
-
 
       call prin2('soln=*',soln,24)
-      
 
+c     get integral of exact solution
+
+      wintex = 0
+      do i = 1,nch
+         do j = 1,k
+            wintex = wintex + whts(j,i)*pot(j,i)
+         enddo
+      enddo
+
+      call prin2('wintex *',wintex,2)
+      
       wval = 0
       wex = 0
       targ(1) = 0.7d0
       targ(2) = 0.27d0
-      call wevaltargfark(zk,targ,xs,ys,dxdt,dydt,dsdt,rnx,rny,rkappa,
-     1        qwts,soln,n,ntot,wval)
+      nt = 1
+
+      allocate(wbdry(k,nch))
+
+      call wevaltargstoke(zk,nt,targ,wgeos,ncomp,nchs,cms,
+     1     q1,q2,soln,wvals,wbdry,wintex)
+
+      call prin2('wbdry*',wbdry,12)
+      call prin2('pot*',pot,12)
 
       call prin2('wval=*',wval,2)
       call gethboundarydata(zk,ncomp,cms,ck,targ(1),targ(2),wex,gradtmp)
@@ -374,91 +385,6 @@ c     1     lw,ltot)
       return
       end
 c----------------------------------------------------------------------
-
-      subroutine formhbiharmdmatfark(k,n,ns,zk,wgeo,xmat,rkappa,qwts)
-      implicit real *8 (a-h,o-z)
-      real *8 wgeo(*),rkappa(*),qwts(*)
-      complex *16 xmat(n,*)
-
-      complex *16 p1(10),p2,zk,par0,pars1,pars2
-
-c     matrix formation, eigenvalue calculation
-
-      complex *16, allocatable :: tempmat(:,:)
-      complex *16 q1,q2 
-      
-      external zfark_kernel, zfark_kernelp
-      external zhfark_ck1,zhfark_ck2 
-
-      done = 1
-
-      allocate(tempmat(ns,ns))
-
-      call prinf('k=*',k,1)
-      call prinf('n=*',n,1)
-      call prinf('ns=*',ns,1)
-
-      do i=1,n
-      do j=1,n
-
-      xmat(i,j) = 0
-
-      enddo
-      enddo
-
-      do i=1,ns
-      do j=1,ns
-
-      tempmat(i,j) = 0
-
-      enddo
-      enddo
-
-
-      q1 = (0,0)
-      q2 = (0,0)
-
-      par0 = zk
-
-      call zbuildmat(k, wgeo, zfark_kernel, q1, q2,
-     1     zhfark_ck1, par0, pars1, pars2, ntot, tempmat)
-      
-      xmat(1:ns,1:ns) = tempmat
-      
-
-      call zbuildmat(k, wgeo, zfark_kernel, q1, q2,
-     1     zhfark_ck2, par0, pars1, pars2, ntot, tempmat)
-
-      xmat(1:ns,ns+1:n) = tempmat
-      
-      call zbuildmat(k, wgeo, zfark_kernelp, q1, q2,
-     1     zhfark_ck1, par0, pars1, pars2, ntot, tempmat)
-
-      xmat(ns+1:n,1:ns) = tempmat
-
-      call zbuildmat(k, wgeo, zfark_kernelp, q1, q2,
-     1     zhfark_ck2, par0, pars1, pars2, ntot, tempmat)
-
-      call prin2('par0=*',par0,2)
-
-      xmat(ns+1:n,ns+1:n) = tempmat
-
-      do i=1,n
-
-      xmat(i,i) = xmat(i,i) + 0.5d0
-
-      enddo
-
-      do i=1,ns
-
-      xmat(i+ns,i) = xmat(i+ns,i)-rkappa(i)
-
-      enddo
-
-      call sqrtscalemat(n,ns,xmat,qwts)
-
-      return
-      end
 
 c-----------------------------------------------------------------------      
 
@@ -499,36 +425,169 @@ cc         pot = pot + cs(i)*log(r)
       return 
       end
 c-------------------------------------------------------------------     
-      subroutine wevaltargfark(zk,targ,xs,ys,dxdt,dydt,dsdt,rnx,rny,
-     1        rkappa,qwts,soln,n,ntot,wval)
+      subroutine wevaltargstoke(zk,nt,targ,wgeo,ncomp,nchs,cms,
+     1     q1,q2,soln,wvals,wbdry,wintex)
 
       implicit real *8 (a-h,o-z)
-      real *8 targ(2),xs(*),ys(*),dxdt(*),dydt(*),dsdt(*),rnx(*),
-     1          rny(*),rkappa(*),qwts(*),src(2),rnsrc(2)
-      complex *16 soln(*),wval,zk,z,val,val2,grad(2),hess(4)
+      real *8 targ(2,*),wgeo(*),cms(2,*)
+      integer ncomp, nchs(*),nt
+      complex *16 soln(*),zk,wvals(*),q1,q2,wbdry(*),wintex
+c     local
+      complex *16, allocatable :: sneu(:,:),
+     1     slay(:,:), b1(:), b2(:), b3(:), work(:),
+     2     streammat(:,:)
+      real *8, allocatable :: rnorms(:,:,:), whts(:)
+      real *8 :: p1,p2,p3,p4,errs(1000)
+      integer k, nch, ichunks, iadjs, iders, iders2, ihs
+      integer npts, i, j
+      complex *16 :: zero, one, oneint, ztemp, wint
+      data zero, one / (0.0d0,0.0d0), (1.0d0,0.0d0) /
 
-      wval = 0
+      external fgreenlap, zkernel_sprime, zkernel_slp, fgreensdummy
+      external zhelmstokes_stream_kern
 
-      done = 1
-      pi = atan(done)*4
+      ier = 0
 
-
-      do i=1,n
+      do i = 1,nt
+         wvals(i) = zero
+      enddo
       
-      src(1) = xs(i)
-      src(2) = ys(i)
-      rnsrc(1) = rnx(i)
-      rnsrc(2) = rny(i)
+c     get dimensions
+      call chunkunpack1(wgeo,k,nch,ichunks,iadjs, 
+     1     iders,iders2,ihs)
 
+      npts = k*nch
+      call prinf('k *',k,1)
+      call prinf('nch *',nch,1)      
 
-      call zhfark_ck1(zk,src,targ,rnsrc,pars2,val,grad,hess)
-      call zhfark_ck2(zk,src,targ,rnsrc,pars2,val2,grad,hess)
+c     normals and smooth integration weights
+      allocate(rnorms(2,k,nch),whts(k*nch))
+      call chunknormals(wgeo,rnorms)
+      call chunkwhts(k,nch,wgeo(ichunks),wgeo(iders), 
+     1     wgeo(ihs),whts)
 
-      wval = wval + val*qwts(i)*soln(i)
-      wval = wval + val2*qwts(i)*soln(i+n)
+c     needed submatrices
+      allocate(sneu(npts,npts),slay(npts,npts), 
+     1     b1(npts),b2(npts))
 
+      do i = 1,npts
+         b1(i) = zero
+         b2(i) = zero
       enddo
 
+      do j = 1,npts
+         do i = 1,npts
+            sneu(i,j) = zero
+            slay(i,j) = zero
+         enddo
+      enddo
+
+c     build kernel matrices
+
+c     neumann problem system matrix (0.5+S'+1*w^T)
+      call zbuildmat(k,wgeo,zkernel_sprime,q1,q2,
+     1     fgreenlap,zk,pars1,pars2,npts,sneu)
+      do i = 1,npts
+         sneu(i,i) = sneu(i,i) + 0.5d0
+      enddo
+      do j = 1,npts
+         do i = 1,npts
+            sneu(i,j) = sneu(i,j) + whts(j)
+         enddo
+      enddo
+
+c     single layer evaluation matrix
+      call zbuildmat(k,wgeo,zkernel_slp,q1,q2,
+     1     fgreenlap,zk,pars1,pars2,npts,slay)
+
+c     grab normal part of density
+      ii = 1
+      do i = 1,nch
+         do j = 1,k
+            b1(ii) = -(soln(2*ii-1)*rnorms(1,j,i) +
+     1           soln(2*ii)*rnorms(2,j,i))
+            ii = ii+1
+         enddo
+      enddo
+
+c     evaluate corresponding single layer potential
+      call multa(slay,p1,p2,p3,p4,b1,b2,npts)
+c     evaluate its tangential derivative
+      ndim = 2
+      call chunkderf(b2,b1,ndim,k,nch,wgeo(ichunks),
+     1     wgeo(iders),wgeo(ihs))
+
+      ztemp = zero
+      do i = 1,npts
+         ztemp = ztemp+whts(i)*b1(i)
+      enddo
+      call prin2('ztemp*',ztemp,2)
+
+c     solve neumann problem with tau deriv of S as data
+
+      ngmrec = 200
+      numit = 200
+      lw = (ngmrec*2 + 4)*npts
+      allocate(work(lw))
+      job = 0
+      ier = 0
+      eps = 1.0d-14
+
+      call prinf('solving neumann problem *',ier,0)
+      
+      call cgmres(ier,npts,sneu,multa,p1,p2,p3,p4,b1,
+     1     eps,numit,b2,niter,errs,ngmrec,work)
+
+      call prin2('errs *',errs,niter)
+
+      ztemp = zero
+      do i = 1,npts
+         ztemp = ztemp+whts(i)*b2(i)
+      enddo
+
+      call prin2('ztemp*',ztemp,2)
+
+c     evaluate this potential back on the boundary 
+c     this is the non-stream function part of a stokes
+c     rep converted into a stream function 
+
+      call multa(slay,p1,p2,p3,p4,b2,b1,npts)
+
+c     evaluate stream function part of stokes on boundary
+      ntot = npts*2
+      allocate(streammat(ntot,ntot),b3(ntot))
+      ndim = 2
+      call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_stream_kern,
+     1     q1,q2,fgreensdummy,zk,pars1,pars2,ntot,streammat)
+
+      call multa(streammat,p1,p2,p3,p4,soln,b3,ntot)
+
+      do i = 1,npts
+         b2(i) = b1(i) + b3(2*i-1)
+      enddo
+
+c     get integral of w along boundary 
+
+      wint = zero
+      oneint = zero
+      do i = 1,npts
+         oneint = oneint + whts(i)*one
+         wint = wint + whts(i)*b2(i)
+      enddo
+
+      call prin2('wintex *',wintex,2)
+      call prin2('wint *',wint,2)
+      call prin2('oneint *',oneint,2)
+
+      ztemp = (wintex-wint)/oneint
+      write(*,*) -b1(1)+ztemp
+      write(*,*) b3(1)
+
+      do i = 1,npts
+         wbdry(i) = b2(i) + (wintex-wint)/oneint
+      enddo
+
+      
       return
       end
 c-----------------------------------------------------------------      
@@ -539,20 +598,15 @@ c
 cc       computes the product a*x = y
 c
       complex *16 a(n,*),p1,p2,p3,p4,x(*),y(*)
+      complex *16 alpha, beta
 
+      beta = 0.0d0
+      incx = 1
+      incy = 1
+      alpha = 1.0d0
 
-      do i=1,n
+      call zgemv ('N', n, n, alpha, a, n, x, incx, beta, y, incy)
 
-      y(i) = 0
-
-      do j=1,n
-
-      y(i) = y(i) + a(i,j)*x(j)
-
-      enddo
-      enddo
-
-      
       return
       end
 c---------------------------------------------

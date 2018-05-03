@@ -71,6 +71,69 @@ subroutine zhelmstokes_kern(zk,src,targ,&
   return
 end subroutine zhelmstokes_kern
 
+subroutine zhelmstokes_stream_kern(zk,src,targ,&
+     src_normal,targ_normal,q1,q2,fgreens,&
+     pars1,pars2,val)
+  !
+  ! Note that this routine returns a 2 x 2
+  ! matrix (as opposed to scalar output)
+  ! fgreens is ignored
+  !
+  ! The output is a linear combo of the
+  ! single and double layer potentials
+  ! with coefficients cs = q1(1) and cd = q2(1)
+  !
+  ! If either coefficient is smaller than
+  ! 1d-16, it is ignored
+  !
+  implicit none
+  complex *16, intent(in) :: zk
+  complex *16, intent(in) :: q1(*), q2(*)
+  complex *16, intent(in) :: pars1(*), pars2(*)  
+  real *8, intent(in) :: src(2), targ(2)
+  real *8, intent(in) :: src_normal(2), targ_normal(2)  
+  external fgreens
+  complex *16, intent(out) :: val(2,2)
+  ! local
+  complex *16 :: zmats(1,2), zmatd(2,2), cs, cd
+  complex *16 :: stressmat(2,2,2), nu(2)
+  integer :: ifs, ifd, ifstress
+  real *8 :: small
+  character :: trans
+  data small / 1d-16 /
+
+  ifs = 1
+  ifd = 1
+  
+  zmats(:,:) = 0.0d0
+  zmatd(:,:) = 0.0d0
+
+  cs = q1(1)
+  cd = q2(1)
+
+  if (abs(cs) .lt. small) ifs = 0
+  if (abs(cd) .lt. small) ifd = 0
+
+  if (ifs .eq. 1) then
+     call zhelmstokeslet_streammat(zk,src,targ, &
+          zmats)
+  end if
+  if (ifd .eq. 1) then
+     trans = 'T'
+     nu(1) = src_normal(1)
+     nu(2) = src_normal(2)
+     call zhelmdouble_streammat(zk,src,targ,nu, &
+          zmatd)
+  end if
+
+  val(1,1) = cs*zmats(1,1) + cd*zmatd(1,1)
+  val(1,2) = cs*zmats(1,2) + cd*zmatd(1,2)
+  val(2,1) = 0
+  val(2,2) = 0
+
+  return
+end subroutine zhelmstokes_stream_kern
+
 
 subroutine zhelmstokeslet_p(zk,src,targ, &
      mu,p)
@@ -290,7 +353,7 @@ subroutine zhelmstressletmat(zk,src,targ,nu, &
   call helmbhgreen_all(zk,targ,src,ifpot,pot,ifgrad,grad, &
        ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
 
-  ! stresslet = -nu outer grad G_L - mat1 + mat2
+  ! stresslet = -nu outer grad G_L - mat1 - mat2
 
   ! matl = -nu outer gradgl
 
@@ -334,3 +397,145 @@ subroutine zhelmstressletmat(zk,src,targ,nu, &
 
   return
 end subroutine zhelmstressletmat
+
+
+subroutine zhelmstokeslet_streammat(zk,src,targ, &
+     zmat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk
+  real *8, intent(in) :: src(2), targ(2)
+  complex *16, intent(out) :: zmat(1,2)
+  ! local
+  integer :: ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
+  complex *16 :: pot, grad(2), hess(3), der3(4), der4(5), der5(6)
+  complex *16 :: pvec(2)
+  
+  ifpot = 0
+  ifgrad = 1
+  ifhess = 0
+  ifder3 = 0
+  ifder4 = 0
+  ifder5 = 0
+
+  ! grab some derivatives of G
+
+  call helmbhgreen_all(zk,targ,src,ifpot,pot,ifgrad,grad, &
+       ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
+
+
+  ! stream function is given by grad perp G dot mu
+
+  zmat(1,1) = -grad(2)
+  zmat(1,2) = grad(1)
+
+  return
+end subroutine zhelmstokeslet_streammat
+
+subroutine zhelmdouble_streammat(zk,src,targ,nu, &
+     zmat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  !
+  ! applied to a vector density mu, this gives the
+  ! stream function part of the double layer potential
+  ! (missing the potential part, i.e. the part due
+  ! to "pressure")
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2)
+  real *8, intent(in) :: src(2), targ(2)
+  complex *16, intent(out) :: zmat(1,2)
+  ! local
+  integer :: ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
+  complex *16 :: pot, grad(2), hess(3), der3(4), der4(5), der5(6)
+  complex *16 :: zmat1(1,2), zmat2(1,2), tau(2)
+  real *8 :: c1,c2
+
+  tau(1) = -nu(2)
+  tau(2) = nu(1)
+  
+  ifpot = 0
+  ifgrad = 0
+  ifhess = 1
+  ifder3 = 0
+  ifder4 = 0
+  ifder5 = 0
+
+  ! grab some derivatives of G
+
+  call helmbhgreen_all(zk,targ,src,ifpot,pot,ifgrad,grad, &
+       ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
+
+  ! mat1
+  ! - gradperp dnu G
+  ! 
+  zmat1(1,1) = hess(2)*nu(1)+hess(3)*nu(2)
+  zmat1(1,2) = -hess(1)*nu(1)-hess(2)*nu(2)
+
+  ! mat2
+  ! grad dtau G
+  ! 
+  zmat2(1,1) = hess(1)*tau(1)+hess(2)*tau(2)
+  zmat2(1,2) = hess(2)*tau(1)+hess(3)*tau(2)
+
+  c1 = -1.0d0
+  c2 = -1.0d0
+  
+  zmat(1,1) = c1*zmat1(1,1) + c2*zmat2(1,1)
+  zmat(1,2) = c1*zmat1(1,2) + c2*zmat2(1,2)
+  
+  return
+end subroutine zhelmdouble_streammat
+
+subroutine normalonesmat(onesmat,whts,rnorms,k,nch)
+  !
+  !     This subroutine returns the matrix which
+  !     gives n(x) \int n(y) \cdot f(y) \, dy
+  !
+  !     Input:
+  !
+  !     whts - the smooth integration weights on the
+  !     boundary chunks
+  !     rnorms - the outward normal along the boundary
+  !     k - the number of points per chunk
+  !     nch - the number of chunks on the boundary
+  !     
+  implicit none
+  !     global
+  complex *16 onesmat(2*k*nch,2*k*nch)
+  real *8 rnorms(2,k,nch), whts(k,nch)
+  integer  k, nch
+  !     local
+  integer i1,i2,i3,j1,j2,j3,imat,jmat
+  real *8 rnormtemp, wht
+
+
+  jmat = 1
+
+  do j1 = 1,nch
+     do j2 = 1,k
+        do j3 = 1,2
+           imat = 1
+           rnormtemp = rnorms(j3,j2,j1)
+           wht = whts(j2,j1)
+           do i1 = 1,nch
+              do i2 = 1,k
+                 do i3 = 1,2
+                    onesmat(imat,jmat) = &
+                         wht*rnormtemp*rnorms(i3,i2,i1)
+                    imat = imat+1
+                 enddo
+              enddo
+           enddo
+           jmat = jmat+1
+        enddo
+     enddo
+  enddo
+
+  return
+end subroutine
+!     
+!     

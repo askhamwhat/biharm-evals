@@ -20,6 +20,10 @@ c
 
       complex *16, allocatable :: sysmat(:,:), dmat(:,:),
      1     onesmat(:,:)
+
+      real *8, allocatable :: rwork(:), sings(:)
+      complex *16, allocatable :: zwork(:), sysmat2(:,:)
+
       
       complex *16 :: veltemp(2), stresstemp(2,2), muexact(2)
       complex *16 :: veldertemp(2,2)
@@ -46,7 +50,10 @@ c
 c     
 c     
 c     define points in exterior and interior of R.
-c     
+c
+
+      scale = 1.0d0
+      
       xout=-6.1d0
       yout=-7.2d0
 
@@ -56,16 +63,23 @@ c
       xyout(1)=xout
       xyout(2)=yout
 
+      xyout(1) = xyout(1)*scale
+      xyout(2) = xyout(2)*scale      
+      
       call prin2('xyout=*',xyout,2)
 
       xyin(1) = xin
       xyin(2) = yin
 
+      xyin(1) = xyin(1)*scale
+      xyin(2) = xyin(2)*scale      
 c     
 c     exact solution is a helmholtz stokes velocity 
 c     field induced by the vector density muexact
 c     
 
+c      zk = (2.2007774101d0,0.0d0)
+c      zk = (5.0d1,0.0d0)
       zk = (1.0d0,0.0d0)
 
       muexact(1) = -0.5d0+hkrand(0)
@@ -75,7 +89,7 @@ c
 c     define then chunk up domain
 c     
       eps10=1.0d-12
-      nover1=4
+      nover1=3
       k=16
 c     
       maxchunks=nmax
@@ -97,6 +111,20 @@ c
 c     
       call chunkfunc(eps10,ifclosed,chsmall,ta,tb,fcurve3,
      1     pars,nover1,k,nch,chunks,adjs,ders,ders2,hs)
+
+
+      do i = 1,nch
+         hs(i) = hs(i)
+         do j = 1,k
+            chunks(1,j,i) = chunks(1,j,i)*scale
+            chunks(2,j,i) = chunks(2,j,i)*scale
+            ders(1,j,i) = ders(1,j,i)*scale
+            ders(2,j,i) = ders(2,j,i)*scale
+            ders2(1,j,i) = ders2(1,j,i)*scale
+            ders2(2,j,i) = ders2(2,j,i)*scale
+         enddo
+      enddo
+      
       hsmax = 0
       do i=1,nch
          if(hsmax.le.hs(i)) hsmax=hs(i)
@@ -164,7 +192,8 @@ c     allocate matrices
       if (mystat .ne. 0) write(*,*) 'fail 2'      
       allocate(onesmat(nmat,nmat),stat=mystat)
       if (mystat .ne. 0) write(*,*) 'fail 3'      
-
+      allocate(sysmat2(nmat,nmat),stat=mystat)
+      if (mystat .ne. 0) write(*,*) 'fail 4'
 c     form matrices
 
 c     double layer mat
@@ -188,9 +217,30 @@ c     "ones" mat ( n(x) \outer \int  n(y) \cdot )
          do i = 1,ntot
             sysmat(i,j) = dmat(i,j) + onesmat(i,j)
             if (i .eq. j) sysmat(i,j) = sysmat(i,j)-0.5d0
+            sysmat2(i,j) = sysmat(i,j)
          enddo
       enddo
       write(*,*) 'done.'
+
+      lzwork = 5*ntot
+      allocate(zwork(lzwork))
+      lrwork = 5*ntot
+      allocate(rwork(lrwork),sings(ntot))
+
+c      call zgesvd( 'N', 'N', ntot, ntot, sysmat2, ntot, sings, dum,
+c     1     ntot, dum, ntot, zwork, lzwork, rwork, info )
+
+      singmin = 1.0d300
+      singmax = 0.0d0
+
+      do i = 1,ntot
+         if (sings(i) .lt. singmin) singmin = sings(i)
+         if (sings(i) .gt. singmax) singmax = sings(i)
+      enddo
+
+      call prin2('singmin *',singmin,1)
+      call prin2('singmax *',singmax,1)
+      call prin2('condest *',singmax/singmin,1)
 
       write(*,*) 'computing LU factors of sysmat ...'
       time1 = second()
@@ -210,7 +260,8 @@ c     "ones" mat ( n(x) \outer \int  n(y) \cdot )
       enddo
       time1 = second()
       nrhs = 1
-      call zgetrs('N', ntot, nrhs, sysmat, ntot, ipiv, dmu, ntot, info )
+      call zgetrs('N', ntot, nrhs, sysmat, ntot, ipiv,
+     1     dmu, ntot, info )
       time2 = second()
       write(*,*) 'done in ', time2-time1, ' seconds.'
 
@@ -259,66 +310,13 @@ c
       call zhelmstokeslet(zk,xyout,xyin,muexact,
      1     velexact,ifstress,stresstemp)
 
-c      write(*,*) velexact(1), velexact(2)
-c      write(*,*) velsum(1), velsum(2)
       write(*,*) velexact(1)/velsum(1), velexact(2)/velsum(2)
-c      write(*,*) velsums(1), velsums(2)
-c      write(*,*) velsumd(1), velsumd(2)
 
       stop
       end
 c     
 c     
 c
-      subroutine normalonesmat(onesmat,whts,rnorms,k,nch)
-c
-c     This subroutine returns the matrix which
-c     gives n(x) \int n(y) \cdot f(y) \, dy
-c
-c     Input:
-c
-c     whts - the smooth integration weights on the
-c     boundary chunks
-c     rnorms - the outward normal along the boundary
-c     k - the number of points per chunk
-c     nch - the number of chunks on the boundary
-c     
-      implicit none
-c     global
-      complex *16 onesmat(2*k*nch,2*k*nch)
-      real *8 rnorms(2,k,nch), whts(k,nch)
-      integer  k, nch
-c     local
-      integer i1,i2,i3,j1,j2,j3,imat,jmat
-      real *8 rnormtemp, wht
-
-
-      jmat = 1
-
-      do j1 = 1,nch
-      do j2 = 1,k
-      do j3 = 1,2
-         imat = 1
-         rnormtemp = rnorms(j3,j2,j1)
-         wht = whts(j2,j1)
-         do i1 = 1,nch
-         do i2 = 1,k
-         do i3 = 1,2
-            onesmat(imat,jmat) =
-     1           wht*rnormtemp*rnorms(i3,i2,i1)
-            imat = imat+1
-         enddo
-         enddo
-         enddo
-         jmat = jmat+1
-      enddo
-      enddo
-      enddo
-
-      return
-      end
-c     
-c     
 c     
       subroutine fcurve3(t,pars,x,y,dxdt,dydt,dxdt2,dydt2)
       implicit real *8 (a-h,o-z)
@@ -327,7 +325,7 @@ c
 c     
       x0=0.0d0
       y0=0.0d0
-      n = 6
+      n = 3
       r0 = 5
 c     
       r = r0

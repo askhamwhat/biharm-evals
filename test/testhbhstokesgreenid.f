@@ -69,7 +69,7 @@ c
 c     define then chunk up domain
 c     
       eps10=1.0d-12
-      nover1=4
+      nover1=6
       k=16
 c     
       maxchunks=nmax

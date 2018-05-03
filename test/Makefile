@@ -28,13 +28,23 @@ OBJS = hank103.o \
 	helmrouts2d.o \
 	prini.o \
 	chunks_helmstokes_kerndefs.o \
+	chunks_helmstokes_matbuild.o \
+	chunks_helmstokes_kerndefs_fark.o \
+	chunks_ders.o \
 	dlaran.o \
 	chunks.o \
 	hkrand.o \
 	legeexps.o \
 	pplot.o \
 	cmat_build.o cmat_build_vec.o\
-	chunks_quads.o
+	chunks_quads.o \
+	corners.o \
+	adapgaus.o \
+	cgmres.o \
+	qerrfun.o \
+	gammanew_eval.o \
+	csvdpiv.o \
+	qleigen_trid.o
 
 LOBJS = $(patsubst %.o,$(BIN_DIR)/%.o,$(OBJS))
 
@@ -62,6 +72,11 @@ testhbhstokesgreenid: $(OBJS)
 	cd $(TMP_DIR); ./$@
 
 testhbhstokesmatform: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
+	cd $(TMP_DIR); ./$@
+
+testhbhstokescorner: $(OBJS)
 	mkdir -p $(TMP_DIR)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@
