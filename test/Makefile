@@ -4,7 +4,7 @@ SYSTEM = linux
 endif
 
 FC = gfortran
-FFLAGS = -g
+FFLAGS = -O3
 
 ifeq ($(SYSTEM),linux)
 BLAS = -lblas
@@ -33,6 +33,8 @@ OBJS = hank103.o \
 	chunks_ders.o \
 	dlaran.o \
 	chunks.o \
+	chunks_multi.o \
+	chunks_multi_extras.o\
 	hkrand.o \
 	legeexps.o \
 	pplot.o \
@@ -77,6 +79,11 @@ testhbhstokesmatform: $(OBJS)
 	cd $(TMP_DIR); ./$@
 
 testhbhstokescorner: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
+	cd $(TMP_DIR); ./$@
+
+testhbhdir: $(OBJS)
 	mkdir -p $(TMP_DIR)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@

@@ -101,17 +101,263 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   integer :: ncomp, nchs(*), ntot, ier
   real *8 :: wgeo(*), ccs(2,*)
   ! local
-  complex *16, allocatable :: staut(:,:), sneut(:,:), &
-       slay(:,:), xx(:,:), yy(:,:), stokesmat(:,:), &
-       onesmat(:,:)
-  real *8, allocatable :: rnorms(:,:,:), whts(:)
+  complex *16, allocatable :: temp1(:,:),temp2(:,:), &
+       xx(:,:), yy(:,:), stokesmat(:,:), work(:), xxlong(:,:), &
+       yylongtrans(:,:), logval(:,:), logvalperp(:,:,:), brmat(:,:)
+  real *8, allocatable :: rnorms(:,:), whts(:)
+  real *8 :: eps, errs(1000), p1,p2,p3,p4
+  integer job, lw, ndim, ngmrec, numit, niter, j1
   integer k, nch, ichunks, iadjs, iders, iders2, ihs
-  integer npts, i, j
-  complex *16 :: zero
-  data zero / (0.0d0,0.0d0) /
+  integer npts, i, j, iii, incx, incy, ind, npts2, jj, ii
+  complex *16 :: zero, alpha, beta, pars1, pars2, one
+  complex *16 :: val, grad(2), hess(2,2)
+  data zero, one / (0.0d0,0.0d0), (1.0d0,0.0d0) /
+  external zkernel_slp, zkernel_sprime
+  external fgreenlap, chs_multatrans, fgreensdummy
+  external zhelmstokes_stream_kern, zhelmstokes_kern
 
+  ! get dimensions
+  call chunkunpack1(wgeo,k,nch,ichunks,iadjs, &
+       iders,iders2,ihs)
   
+  ! normals and smooth integration weights
+  allocate(rnorms(2,k*nch),whts(k*nch))
+  call chunknormals(wgeo,rnorms)
+  call chunkwhts(k,nch,wgeo(ichunks),wgeo(iders), &
+       wgeo(ihs),whts)
+  
+  npts = k*nch
 
+  call prinf('npts*',npts,1)
+
+  allocate(xx(npts,ncomp),yy(npts,ncomp))
+
+  do i = 1,ncomp
+     do j = 1,npts
+        xx(j,i) = zero
+        yy(j,i) = zero
+     enddo
+  enddo
+
+  ! set up integration weights on separate components
+
+  ind = 1
+  do iii = 1,ncomp
+     call prinf('ind *',ind,1)
+     do i = 1,nchs(iii)
+        do j = 1,k
+           xx(ind,iii) = whts(ind)
+           ind = ind+1
+        enddo
+     enddo
+  enddo
+
+  call prinf('ind *',ind,1)
+
+  ! charges and constants
+
+  allocate(logval(npts,ncomp),logvalperp(2,npts,ncomp), &
+       brmat(ncomp,ncomp))
+
+  ! constant
+  
+  do j = 1,npts
+     logval(j,1) = one
+     logvalperp(1,j,1) = zero
+     logvalperp(2,j,1) = zero
+  enddo
+
+  ! log charge
+  
+  do i = 2,ncomp
+     do j = 1,npts
+        call fgreenlap(zk,ccs(1,i),wgeo(ichunks+2*(j-1)), &
+             pars1,pars2,val,grad,hess)
+        logval(j,i) = val
+        logvalperp(1,j,i) = -grad(2)
+        logvalperp(2,j,i) = grad(1)
+     enddo
+  enddo
+
+  ! bottom right matrix is integral of these charges
+  ! on each component
+
+  beta = 0.0d0
+  incx = 1
+  incy = 1
+  alpha = 1.0d0
+
+  call zgemm('T','N',ncomp,ncomp,npts,alpha,xx, &
+       npts,logval,npts,beta,brmat,ncomp)
+
+  ! copy into system matrix
+  ! (bottom right)
+
+  do i = 1,ncomp
+     do j = 1,ncomp
+        sysmat(2*npts+j,2*npts+i) = brmat(j,i)
+     enddo
+  enddo
+
+  ! copy velocity due to charges into system matrix
+  ! (top right)
+
+  do i = 1,ncomp
+     ii = i+2*npts
+     do j = 1,npts
+        jj = 2*j-1
+        sysmat(jj,ii) = logvalperp(1,j,i)
+        jj = 2*j
+        sysmat(jj,ii) = logvalperp(2,j,i)
+     enddo
+  enddo
+
+  ! single layer evaluation matrix in temp1
+  allocate(temp1(npts,npts),temp2(npts,npts))
+  call zbuildmat(k,wgeo,zkernel_slp,q1,q2, &
+       fgreenlap,zk,pars1,pars2,npts,temp1)
+
+  beta = 0.0d0
+  incx = 1
+  incy = 1
+  alpha = 1.0d0
+
+  ! apply transpose to weights vectors (1 per
+  ! boundary component)
+  call zgemm('T','N',npts,ncomp,npts,alpha,temp1, &
+       npts,xx,npts,beta,yy,npts)
+
+  ! matrix for neumann problem in temp2
+
+  call zbuildmat(k,wgeo,zkernel_sprime,q1,q2, &
+       fgreenlap,zk,pars1,pars2,npts,temp2)
+  do i = 1,npts
+     temp2(i,i) = temp2(i,i) + 0.5d0
+  enddo
+  do j = 1,npts
+     do i = 1,npts
+        temp2(i,j) = temp2(i,j) + whts(j)
+     enddo
+  enddo
+
+  ! solve transpose problem for each yy vector
+  
+  ngmrec = 200
+  numit = 200
+  lw = (ngmrec*2 + 4)*npts
+  allocate(work(lw))
+  job = 0
+  ier = 0
+  eps = 1.0d-14
+
+  do i = 1,ncomp
+     call prinf('solving neumann problem, comp *',i,1)
+
+     call cgmres(ier,npts,temp2,chs_multatrans, &
+          p1,p2,p3,p4,yy(1,i), &
+          eps,numit,xx(1,i),niter,errs,ngmrec,work)
+     call prin2('errs *',errs,niter)
+  enddo
+
+  ! form S_tau
+
+  call prinf('forming stau ...*',i,0)
+  do i = 1,npts
+     ndim = 2
+     call chunkderf(temp1(1,i),temp2(1,i),ndim,k,nch, &
+          wgeo(ichunks),wgeo(iders),wgeo(ihs))
+  enddo
+  call prinf('done*',i,0)
+
+  ! apply Stau transpose to solutions of transpose problem
+  beta = 0.0d0
+  incx = 1
+  incy = 1
+  alpha = 1.0d0
+
+  call zgemm('T','N',npts,ncomp,npts,alpha,temp2, &
+       npts,xx,npts,beta,yy,npts)
+
+  ! get whts^T*stream matrix
+
+  npts2 = 2*npts
+  allocate(xxlong(npts2,ncomp),yylongtrans(ncomp,npts2))
+  allocate(stokesmat(npts2,npts2))
+
+  ndim = 2
+  call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_stream_kern, &
+       q1,q2,fgreensdummy,zk,pars1,pars2,npts2, &
+       stokesmat)
+
+  do i = 1,ncomp
+     do j = 1,npts2
+        xxlong(j,i) = zero
+     enddo
+  enddo
+
+  do i = 1,npts2
+     do j = 1,ncomp
+        yylongtrans(j,i) = zero
+     enddo
+  enddo
+
+  ! set up integration weights on separate components
+
+  ind = 1
+  do iii = 1,ncomp
+     call prinf('ind *',ind,1)
+     do i = 1,nchs(iii)
+        do j = 1,k
+           xxlong(2*ind-1,iii) = whts(ind)
+           ind = ind+1
+        enddo
+     enddo
+  enddo
+
+  ! integrate stream function matrix
+  
+  call zgemm('T','N',ncomp,npts2,npts2,alpha,xxlong, &
+       npts2,stokesmat,npts2,beta,yylongtrans,ncomp)
+  
+  ! add these components together and store in
+  ! system matrix (bottom left)
+
+  do j = 1,npts
+     do j1 = 1,2
+        do i = 1,ncomp
+           jj = 2*j-2+j1
+           sysmat(npts2+i,jj) = yylongtrans(i,jj) - &
+                q2*yy(j,i)*rnorms(j1,j)
+        enddo
+     enddo
+  enddo
+
+  ! get stokes system matrix (top left)
+
+  ndim = 2
+  call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_kern, &
+       q1,q2,fgreensdummy,zk,pars1,pars2,npts2, &
+       stokesmat)
+  
+  ! copy in (top left)
+
+  do i = 1,npts2
+     do j = 1,npts2
+        sysmat(j,i) = stokesmat(j,i)
+     enddo
+  enddo
+
+  ! add onesmat modification
+  
+  call normalonesmat(stokesmat,whts,rnorms,k,nch)
+  do j = 1,npts2
+     do i = 1,npts2
+        sysmat(i,j) = sysmat(i,j) + stokesmat(i,j)
+        if (i .eq. j) sysmat(i,j) = sysmat(i,j)-0.5d0*q2
+     enddo
+  enddo
+  
+  
   return
 end subroutine zhbh_stokes_matbuild
 
@@ -171,3 +417,20 @@ subroutine fgreenlap(par0,src,targ,pars1,pars2,val, &
   return
 end subroutine fgreenlap
   
+subroutine chs_multatrans(a,p1,p2,p3,p4,x,y,n)
+  implicit real *8 (a-h,o-z)
+  !
+  !       computes the product a^T*x = y
+  !
+  complex *16 a(n,*),p1,p2,p3,p4,x(*),y(*)
+  complex *16 alpha, beta
+
+  beta = 0.0d0
+  incx = 1
+  incy = 1
+  alpha = 1.0d0
+
+  call zgemv ('T', n, n, alpha, a, n, x, incx, beta, y, incy)
+
+  return
+end subroutine chs_multatrans

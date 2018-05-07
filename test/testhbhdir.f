@@ -1,3 +1,12 @@
+c--------------------------------------------------
+c
+c This file tests the routines for the  Dirichlet 
+c problem of the biharmonic Helmholtz equation on 
+c a domain loaded from a file.
+c
+c
+
+
       program main
       implicit real *8 (a-h,o-z)
       real *8 w(1000000)
@@ -21,7 +30,7 @@
       ising = 1
 
       iw2 = 26+icase
-      call testhbhstokescorner(iw2,aa,bb,ff,ntot,w(ising))
+      call testhbhdir(iw2,aa,bb,ff,ntot,w(ising))
       
 
       iw = 16 + icase
@@ -40,10 +49,14 @@
 
 c------------------------------------------------------     
 c
-      subroutine testhbhstokescorner(ifile,aa,bb,ff,ntot,sing)
+      subroutine testhbhdir(ifile,aa,bb,ff,ntot,sing)
 
       implicit real *8 (a-h,o-z)
 
+      real *8 :: dist, xy(2), xy_norm(2)
+      real *8 :: targdist(10000), targxy(2,10000), targxyn(2,10000)
+      real *8 :: targx(10000), targy(10000)
+      real *8 :: erra(10000)
       real *8, allocatable :: chunks(:,:,:)
       real *8, allocatable :: ders(:,:,:)
       real *8, allocatable :: rn(:,:,:)
@@ -65,7 +78,7 @@ c
 c     matrix formation, eigenvalue calculation
 
       real *8, allocatable :: whts(:,:)
-      complex *16, allocatable :: xmat(:,:),xmat2(:,:), onesmat(:,:)
+      complex *16, allocatable :: sysmat(:,:)
       complex *16 p1(10),p2,p3,p4
       real *8, allocatable :: cms(:,:)
       
@@ -78,7 +91,7 @@ c     matrix formation, eigenvalue calculation
       real *8 chsmalls(1000), tas(1000), tbs(1000)
       real *8 epss(1000), pars(10 000), pars1(100),pars2(100)
 
-      real *8 src(2),targ(2),verts(2,10000),widths(10000)
+      real *8 src(2),targ(2,10000),verts(2,10000),widths(10000)
       
       complex *16, allocatable :: pot(:,:)
       complex *16, allocatable :: pottau(:,:)
@@ -93,7 +106,7 @@ c     matrix formation, eigenvalue calculation
       real *8 tmp, errp, rp
       real *8 errs(1000)
 
-      complex *16 wex,wval,eye
+      complex *16 wex(10000),wval(10000),eye,wgrad(10000)
 
       data eye/(0.0d0,1.0d0)/
 
@@ -122,87 +135,60 @@ c     matrix formation, eigenvalue calculation
 
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-c     set up geometry
+c     Get geometry from file
 c
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc      
 
       lwgeos = 1000000
 
+      ifile = 2
+      open(UNIT=ifile,FILE='../test/domain1')
+
       allocate(wgeos3(lwgeos),wgeos(lwgeos))
+      
+      ncompmax = 100
+      lused = 0
+      ncomp = 0
+      call multichunkfunc_file_by_mode(ifile,wgeos3,
+     1     lwgeos,ncompmax,ncomp,k,lused,ier)
 
-      nverts = 5
+      call prinf('multichunkfunc, ier = *', ier,1)      
+      call prinf('multichunkfunc, k = *', k,1)      
+      call prinf('multichunkfunc, ncomp = *', ncomp,1)      
+      call prinf('multichunkfunc, lused = *', lused,1)      
 
-      verts(1,1) = 0
-      verts(2,1) = 0
-      widths(1) = bb/ff
-
-      verts(1,2) = aa
-      verts(2,2) = 0
-      widths(2) = bb/ff
-
-      verts(1,3) = aa
-      verts(2,3) = bb
-      widths(3) = bb/ff
-
-      verts(1,4) = 0
-      verts(2,4) = bb
-      widths(4) = bb/ff 
-
-      verts(1,5) = 0
-      verts(2,5) = 0
-      widths(5) = bb/ff
-
-      p1 = 0
-      p2 = 0
-
-      i1 = 0
-      i2 = 0
-
-      chsmall = 10
-      ta = 0
-      tb = 2*pi
-      nover = 2
-      pars(1) = 1.0
-      pars(2) = 0.1d0
-
-      ifbell = 1
-
-      eps = 1.0d-9
-      ifclosed = 1
-
-      nch = 0
-
-      call chunkpolysmooth(ier,eps,widths,ifbell,p1,p2,i1,i2,nverts,
-     1      verts,ifclosed,nover,k,nch,chunks,adjs,ders,ders2,hs) 
-
-      pert = 1.0d-2
-
+      rewind(ifile)
+      read(ifile,*) ncomp
+      read(ifile,*) tmp
       allocate(cms(2,ncomp),ck(ncomp))
-      cms(1,1) = 10*aa/2 + hkrand(0)*pert
-      cms(2,1) = 3*bb/2 + hkrand(0)*pert
-
-      ck(1) = hkrand(0)
-
+      do nbod = 1,ncomp
+         read(ifile,*) tmp
+         read(ifile,*) tmp
+         read(ifile,*) tmp
+         read(ifile,*) tmp
+         read(ifile,*) nwiggles
+         read(ifile,*) cms(1,nbod), cms(2,nbod)
+         read(ifile,*) tmp
+         if(nbod.eq.1) cms(1,nbod) = 1.5d0*tmp
+         do j=1,nwiggles
+             read(ifile,*) tmp,tmp
+         enddo
+         ck(nbod) = hkrand(0)
+      enddo
 
 
 c     Allocate potential, gradient and potn arrays
 
       allocate(nchs(ncomp))
+      do nbod = 1,ncomp
+         nchs(nbod) = 0
+      enddo
+      call multichunk_nchs(wgeos3,nchs,ncomp)
 
-      nchs(1) = nch
+      imode = 1
 
-      irefinelev= 0
-      do ii=1,irefinelev
-            nch1 = nch
-            do i=1,nch1
-               call chunksplit1(i,k,nch,chunks,adjs,ders,ders2,hs)
-            enddo
-            do i=1,ncomp
-
-            nchs(i) = 2*nchs(i)
-
-            enddo
-        enddo
+      call multichunk_merge(imode,wgeos3,k,nch,chunks,adjs,ders,
+     1     ders2,hs,ier)
 
       call chunkpack(k,nch,chunks,adjs,ders,ders2,hs,wgeos,lused)
       n = k*nch
@@ -213,7 +199,6 @@ c     Allocate potential, gradient and potn arrays
       call chunkunpack1(wgeos,k,nch,ichunks,iadjs,iders,iders2,ihs)
       
       call chunkwhts(k,nch,wgeos(ichunks),wgeos(iders),wgeos(ihs),whts)
-
       
       i = 0
       do ich=1,nch
@@ -240,32 +225,93 @@ c     Allocate potential, gradient and potn arrays
 
       call pyplot(ifile,xs,ys,n,2,'a*')
 
+c     generate some target points
 
-      ntot = 2*k*nch
-      allocate(xmat(ntot,ntot),xmat2(ntot,ntot),
-     1     onesmat(ntot,ntot))
+      nt = 10
 
+      xmin = 1d200
+      ymin = 1d200
+      xmax = -1d200
+      ymax = -1d200
+
+      hsmin = 1d200
+
+c     bounding box and smallest chunk
+      
+      do i = 1,nch
+         hst = hs(i)
+         if (hst .lt. hsmin) hsmin = hst
+         do j = 1,k
+            xtt = chunks(1,j,i)
+            ytt = chunks(2,j,i)
+            if (xmin .gt. xtt) xmin = xtt
+            if (xmax .lt. xtt) xmax = xtt
+            if (ymin .gt. ytt) ymin = ytt
+            if (ymax .lt. ytt) ymax = ytt
+         enddo
+      enddo
+
+      call prin2('xmin*',xmin,1)
+      call prin2('xmax*',xmax,1)
+      call prin2('ymin*',ymin,1)
+      call prin2('ymax*',ymax,1)
+      call prin2('hsmin*',hsmin,1)
+
+      do i = 1,nt
+         do iii = 1,10000
+
+            targ(1,i) = xmin+(xmax-xmin)*hkrand(0)
+            targ(2,i) = ymin+(ymax-ymin)*hkrand(0)
+            ichmin = 1
+            targdist(i) = 1d200
+            do ich = 1,nch
+               call chunk_dist(ich, wgeos, targ(1,i),
+     1              dist, xy, xy_norm)
+               if (dist .lt. targdist(i)) then
+                  targdist(i) = dist
+                  ichmin = ich
+                  targxy(1,i) = xy(1)
+                  targxy(2,i) = xy(2)
+                  targxyn(1,i) = xy_norm(1)
+                  targxyn(2,i) = xy_norm(2)
+               endif
+            enddo
+
+c     check if inside and at more than a chunk length away
+            dsign = (targxy(1,i)-targ(1,i))*targxyn(1,i) +
+     1           (targxy(2,i)-targ(2,i))*targxyn(2,i)
+            if (dsign .gt. 0 .and. targdist(i) .gt. hs(ichmin)) then
+               write(*,*) 'found targ ', i
+               exit
+            endif
+         enddo
+      enddo
+
+      ifile = ifile + 1
+
+c     plotting
+      do i = 1,nt
+         targx(i) = targ(1,i)
+         targy(i) = targ(2,i)
+      enddo
+
+      itypes = 1
+      itypet = 2
+      call pyplot2(ifile,xs,ys,n,itypes,targx,targy,nt,itypet,'a*')
+
+      ntot = 2*k*nch + ncomp
+      allocate(sysmat(ntot,ntot))
 
       call prinf('k=*',k,1)
       call prinf('ntot=*',ntot,1)
       call prinf('n=*',n,1)
-      q1 = (1.0d0,0.0d0)
-      q2 = (1.0d0,0.0d0)
-      ndim = 2
-      call zbuildmat_vec(ndim,k,wgeos,zhelmstokes_kern,
-     1     q1,q2,fgreensdummy,zk,pars1,pars2,ntot,
-     2     xmat)
+      q1 = (0.0d0,0.0d0)
+      q2 = (2.0d0,0.0d0)
 
-      call normalonesmat(onesmat,whts,rn,k,nch)
-      do j = 1,ntot
-         do i = 1,ntot
-            xmat(i,j) = xmat(i,j) + onesmat(i,j)
-            if (i .eq. j) xmat(i,j) = xmat(i,j)-0.5d0
-            xmat2(i,j) = xmat(i,j)
-         enddo
-      enddo
+      call zhbh_stokes_matbuild(zk,wgeos,ncomp,nchs,cms,
+     1     q1,q2,ntot,sysmat,ier)
+
       
-
 c
 c     Allocate potential, gradient and potn arrays
 c
@@ -286,8 +332,9 @@ c
              pottau(j,i) = 0.0d0
              gradtmp(1) = 0
              gradtmp(2) = 0
-             call gethboundarydata(zk,ncomp,cms,ck,chunks(1,j,i),
-     1                            chunks(2,j,i),pot(j,i),gradtmp)
+             ntt = 1
+             call gethboundarydata(zk,ncomp,cms,ck,ntt,chunks(1,j,i),
+     1                            pot(j,i),gradtmp)
              potn(j,i) = gradtmp(1)*rn(1,j,i)+gradtmp(2)*rn(2,j,i)
              ii = ii + 1
              rhs(2*ii-1) = -gradtmp(2)
@@ -295,8 +342,24 @@ c
          enddo
       enddo
 
+c     get integral of exact solution on each
+c     boundary component
+      
+      ich = 1
+      do nbod = 1,ncomp
+         wintex = 0
+         do i = 1,nchs(nbod)
+            do j = 1,k
+               wintex = wintex + whts(j,ich)*pot(j,ich)
+            enddo
+            ich = ich+1
+         enddo
+         rhs(2*k*nch+nbod) = wintex
+      enddo
+
       call prin2('rhs=*',rhs,24)
 
+      call prin2('rhs end = *',rhs(2*k*nch+1),2*ncomp)
       
 c     End of generating boundary data
 
@@ -318,7 +381,7 @@ c     End of generating boundary data
       ier = 0
       eps = 1.0d-14
 
-      call cgmres(ier,ntot,xmat,multa,p1,p2,p3,p4,rhs,eps,numit,soln,
+      call cgmres(ier,ntot,sysmat,multa,p1,p2,p3,p4,rhs,eps,numit,soln,
      1        niter,errs,ngmrec,work)
 
       call prinf('ier=*',ier,1)
@@ -328,22 +391,11 @@ c     End of generating boundary data
 
       call prin2('soln=*',soln,24)
 
-c     get integral of exact solution on outer boundary
+      call prin2('computed correction=*',soln(2*k*nch+1),2)
 
-      wintex = 0
-      do i = 1,nch
-         do j = 1,k
-            wintex = wintex + whts(j,i)*pot(j,i)
-         enddo
-      enddo
+      wval(1) = 0
+      wex(1) = 0
 
-      call prin2('wintex *',wintex,2)
-      
-      wval = 0
-      wex = 0
-      targ(1) = 0.7d0
-      targ(2) = 0.27d0
-      nt = 1
 
       allocate(wbdry(k,nch))
 
@@ -354,15 +406,22 @@ c     get integral of exact solution on outer boundary
       call prin2('pot*',pot,12)
 
       call prin2('wval=*',wval,2)
-      call gethboundarydata(zk,ncomp,cms,ck,targ(1),targ(2),wex,gradtmp)
+      call gethboundarydata(zk,ncomp,cms,ck,nt,targ(1,1),
+     1     wex,wgrad)
 
       call prin2('wex=*',wex,2)
 
-      erra = abs(wex-wval)/abs(wex)
+      do i = 1,nt
+         erra(i) = abs(wex(i)-wval(i))/abs(wex(i))
+      enddo
 
-      call prin2('erra=*',erra,1)
+      call prin2('erra=*',erra,nt)
+      call prin2('targdist=*',targdist,nt)
 
       call prinf('ntot=*',ntot,1)
+
+      call prin2('ck=*',ck(2),2*(ncomp-1))
+      call prin2('ck like terms=*',soln(2*k*nch+2),2*(ncomp-1))
 
       ier = 0
       eps = 1.0d-12
@@ -373,7 +432,7 @@ c     get integral of exact solution on outer boundary
       allocate(workspace(lw))
       call prinf('computing svd ...*',ier,0)
       time1 = second()
-c      call csvdpiv2(ier,xmat2,ntot,ntot,sing,ncols,eps,workspace,
+c      call csvdpiv2(ier,sysmat2,ntot,ntot,sing,ncols,eps,workspace,
 c     1     lw,ltot)
       time2 = second()      
       call prin2('done. time=*',time2-time1,1)      
@@ -389,7 +448,7 @@ c----------------------------------------------------------------------
 c-----------------------------------------------------------------------      
 
 
-      subroutine gethboundarydata(zk,k,zout,cs,xt,yt,pot,grad)
+      subroutine gethboundarydata(zk,k,zout,cs,nt,targ,pot,grad)
 c     This subroutine computes the biharmic potential given by
 c     \phi = \sum_{j=0}^{k} cs(j) (log (r_j) + h0(r_{j}) where
 c     r_j = sqrt((xt - zout(1,j)**2 + (yt-zout(j))**2). The
@@ -397,31 +456,34 @@ c     subroutine returns the potential and the corresponding
 c     gradient
 
       implicit real *8 (a-h,o-z)
-      integer k,i
-      real *8 zout(2,1:k), cs(1:k), xt,yt,r
-      complex *16 pot,grad(2),zk,ima,z,h0,h1
+      integer k,i,nt
+      real *8 zout(2,1:k), cs(1:k), xt,yt,r,targ(2,*)
+      complex *16 pot(*),grad(2,*),zk,ima,z,h0,h1
 
       data ima/(0.0d0,1.0d0)/
 
 
-      
-      pot = 0.0d0
-      grad(1) = 0.0d0
-      grad(2) = 0.0d0
-      ifexpon = 1
-      do i=1,k
-         r = sqrt((xt-zout(1,i))**2 + (yt-zout(2,i))**2)
-         z = r*zk
-         call hank103(z,h0,h1,ifexpon)
+      do j = 1,nt
+         xt = targ(1,j)
+         yt = targ(2,j)
+         
+         pot(j) = 0.0d0
+         grad(1,j) = 0.0d0
+         grad(2,j) = 0.0d0
+         ifexpon = 1
+         do i=1,k
+            r = sqrt((xt-zout(1,i))**2 + (yt-zout(2,i))**2)
+            z = r*zk
+            call hank103(z,h0,h1,ifexpon)
 
-         pot = pot + cs(i)*(log(r) + h0) 
-cc         pot = pot + cs(i)*log(r) 
-         grad(1) = grad(1) + 
-     1              cs(i)*(xt-zout(1,i))*(1/r**2-h1*zk/r)
-         grad(2) = grad(2) + 
-     1              cs(i)*(yt-zout(2,i))*(1/r**2-h1*zk/r)
+            pot(j) = pot(j) + cs(i)*(log(r) + h0) 
+c     c         pot = pot + cs(i)*log(r) 
+            grad(1,j) = grad(1,j) + 
+     1           cs(i)*(xt-zout(1,i))*(1/r**2-h1*zk/r)
+            grad(2,j) = grad(2,j) + 
+     1           cs(i)*(yt-zout(2,i))*(1/r**2-h1*zk/r)
+         enddo
       enddo
-
       return 
       end
 c-------------------------------------------------------------------     
@@ -441,7 +503,7 @@ c     local
       integer k, nch, ichunks, iadjs, iders, iders2, ihs
       integer npts, i, j
       complex *16 :: zero, one, oneint, ztemp, wint, zmatt(2,2), mu(2)
-      complex *16 :: zval
+      complex *16 :: zval, zgrad(2), zhess(2,2)
       data zero, one / (0.0d0,0.0d0), (1.0d0,0.0d0) /
 
       external fgreenlap, zkernel_sprime, zkernel_slp, fgreensdummy
@@ -501,7 +563,7 @@ c     grab normal part of density
       ii = 1
       do i = 1,nch
          do j = 1,k
-            b1(ii) = -(soln(2*ii-1)*rnorms(1,j,i) +
+            b1(ii) = -q2*(soln(2*ii-1)*rnorms(1,j,i) +
      1           soln(2*ii)*rnorms(2,j,i))
             ii = ii+1
          enddo
@@ -551,17 +613,17 @@ c     rep converted into a stream function
       call multa(slay,p1,p2,p3,p4,b2,b1,npts)
 
 c     evaluate stream function part of stokes on boundary
-      ntot = npts*2
-      allocate(streammat(ntot,ntot),b3(ntot))
+      npts2 = npts*2
+      allocate(streammat(npts2,npts2),b3(npts2))
       ndim = 2
 c     note the stream_kern function is a hack:
 c     in order to use the vector type matrix builder,
-c     every other entry is zero ( the stream
+c     every other row is zero ( the stream
 c     function is scalar while the density is a vector)
       call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_stream_kern,
-     1     q1,q2,fgreensdummy,zk,pars1,pars2,ntot,streammat)
+     1     q1,q2,fgreensdummy,zk,pars1,pars2,npts2,streammat)
 
-      call multa(streammat,p1,p2,p3,p4,soln,b3,ntot)
+      call multa(streammat,p1,p2,p3,p4,soln,b3,npts2)
 
       do i = 1,npts
          wbdry(i) = b1(i) + b3(2*i-1)
@@ -569,32 +631,50 @@ c     function is scalar while the density is a vector)
 
 c     get integral of w along boundary 
 
-      wint = zero
-      oneint = zero
+c      wint = zero
+c      oneint = zero
+c      do i = 1,npts
+c         oneint = oneint + whts(i)*one
+c         wint = wint + whts(i)*wbdry(i)
+c      enddo
+
+c      call prin2('wintex *',wintex,2)
+c      call prin2('wint *',wint,2)
+c      call prin2('oneint *',oneint,2)
+
+c      ztemp = (wintex-wint)/oneint
+
+
+c      call prin2('ztemp *',ztemp,2)
+      
+c      write(*,*) b1(1)+ztemp
+c      write(*,*) b3(1)
+
       do i = 1,npts
-         oneint = oneint + whts(i)*one
-         wint = wint + whts(i)*wbdry(i)
+         wbdry(i) = wbdry(i) + soln(npts2+1)
       enddo
 
-      call prin2('wintex *',wintex,2)
-      call prin2('wint *',wint,2)
-      call prin2('oneint *',oneint,2)
-
-      ztemp = (wintex-wint)/oneint
-      write(*,*) b1(1)+ztemp
-      write(*,*) b3(1)
-
       do i = 1,npts
-         wbdry(i) = wbdry(i) + ztemp
+         do iii = 2,ncomp
+            isrc = ichunks+2*(i-1)
+            call fgreenlap(zk,cms(1,iii),wgeo(isrc),
+     1           pars1,pars2,zval,zgrad,zhess)
+            wbdry(i) = wbdry(i) + zval*soln(npts2+iii)
+         enddo
       enddo
-
+      
 c     get value at targets
 
       do i = 1,nt
-         wvals(i) = ztemp
+         wvals(i) = soln(npts2+1)
       enddo
-      
+
       do ii = 1,nt
+         do iii = 2,ncomp
+            call fgreenlap(zk,cms(1,iii),targ(1,ii),
+     1           pars1,pars2,zval,zgrad,zhess)
+            wvals(ii) = wvals(ii) + zval*soln(npts2+iii)
+         enddo
          do i = 1,nch
             do j = 1,k
                isrc = ichunks + (i-1)*2*k+2*(j-1)
