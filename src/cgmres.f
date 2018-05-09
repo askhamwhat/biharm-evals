@@ -127,7 +127,7 @@ c
         call prinf('in cgmres, niter=*',niter,1)
 cccc        call prinf('in cgmres, m=*',m,1)
 c
-        nsteps=5
+        nsteps=1
 c
         ifrec=0
         if( m .eq. 1 ) ifrec=1

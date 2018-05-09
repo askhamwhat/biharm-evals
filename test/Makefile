@@ -3,10 +3,13 @@ ifndef SYSTEM
 SYSTEM = linux
 endif
 
+SYSTEM = mac
+
+
 FC = gfortran
-FFLAGS = -O3
 
 ifeq ($(SYSTEM),linux)
+FFLAGS = -O3
 BLAS = -lblas
 LAPACK = -llapack
 PREO = 
@@ -14,9 +17,11 @@ POSTO = $(BLAS) $(LAPACK)
 endif
 
 ifeq ($(SYSTEM),mac)
+FFLAGS = -O3
 PREO = -framework accelerate
 POSTO = 
 endif
+
 
 TMP_DIR = ../tmp
 BIN_DIR = ../bin
@@ -84,6 +89,11 @@ testhbhstokescorner: $(OBJS)
 	cd $(TMP_DIR); ./$@
 
 testhbhdir: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
+	cd $(TMP_DIR); ./$@
+
+testhbhdir_ss: $(OBJS)
 	mkdir -p $(TMP_DIR)
 	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
 	cd $(TMP_DIR); ./$@

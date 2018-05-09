@@ -1,4 +1,4 @@
-c--------------------------------------------------
+c-----------------------2--------------------------
 c
 c This file tests the routines for the  Dirichlet 
 c problem of the biharmonic Helmholtz equation on 
@@ -61,6 +61,7 @@ c
       real *8, allocatable :: ders(:,:,:)
       real *8, allocatable :: rn(:,:,:)
       real *8 sc
+      real *8, allocatable :: tails(:,:)
       real *8, allocatable :: ders2(:,:,:),dsdta(:,:)
       real *8, allocatable :: hs(:)
       integer, allocatable :: adjs(:,:)
@@ -71,6 +72,7 @@ c
 
       complex *16, allocatable :: work(:),workspace(:)
       complex *16, allocatable :: rhs(:),soln(:),soln2(:)
+      complex *16, allocatable :: zdens(:,:)
       integer, allocatable :: nchs(:)
 
       complex *16 zk
@@ -92,6 +94,7 @@ c     matrix formation, eigenvalue calculation
       real *8 epss(1000), pars(10 000), pars1(100),pars2(100)
 
       real *8 src(2),targ(2,10000),verts(2,10000),widths(10000)
+      real *8 errmax1(100),errmax2(100)
       
       complex *16, allocatable :: pot(:,:)
       complex *16, allocatable :: pottau(:,:)
@@ -119,7 +122,7 @@ c     matrix formation, eigenvalue calculation
 
       zk = 1.2d0
 
-      eps = 1.0d-12
+      eps = 1.0d-13
       ifclosed = 1
       chsmall = 1.0d-5
       nover = 2
@@ -127,6 +130,7 @@ c     matrix formation, eigenvalue calculation
 
       ncomp = 1
       allocate(chunks(2,k,nchunkmax))
+      allocate(tails(nchunkmax,4))
       allocate(ders(2,k,nchunkmax),dsdta(k,nchunkmax))
       allocate(rn(2,k,nchunkmax))
       allocate(ders2(2,k,nchunkmax))
@@ -191,7 +195,7 @@ c     Allocate potential, gradient and potn arrays
      1     ders2,hs,ier)
 
 
-      irefinelev= 0
+      irefinelev= 1
       do ii=1,irefinelev
          nch1 = nch
          do i=1,nch1
@@ -325,12 +329,69 @@ c     plotting
       call zhbh_stokes_matbuild(zk,wgeos,ncomp,nchs,cms,
      1     q1,q2,ntot,sysmat,ier)
 
+c
+cc     square root scale the matrices
+c
+      do ich = 1,nch
+      do inode =1,k
+
+      ipt = (ich-1)*k + inode
+
+      do jch = 1,nch
+      do jnode = 1,k
+
+      jpt = (jch-1)*k + jnode
+
+      rr = sqrt(whts(inode,ich)/whts(jnode,jch))
+      sysmat(2*ipt-1,2*jpt-1) = sysmat(2*ipt-1,2*jpt-1)*rr
+      sysmat(2*ipt-1,2*jpt) = sysmat(2*ipt-1,2*jpt)*rr
+      sysmat(2*ipt,2*jpt-1) = sysmat(2*ipt,2*jpt-1)*rr
+      sysmat(2*ipt,2*jpt) = sysmat(2*ipt,2*jpt)*rr
+
+      enddo
+      enddo
+      enddo
+      enddo
+
+      do ipt=2*k*nch+1,ntot
+      do jch=1,nch
+      do jnode=1,k
+
+      jpt = (jch-1)*k+jnode
+
+      rr = 1.0d0/sqrt(whts(jnode,jch))
+      sysmat(ipt,2*jpt-1) = sysmat(ipt,2*jpt-1)*rr
+      sysmat(ipt,2*jpt) = sysmat(ipt,2*jpt)*rr
+
+      enddo
+      enddo
+      enddo
+
+      do ich=1,nch
+      do inode=1,k
+      ipt = (ich-1)*k+inode
+
+      rr = sqrt(whts(inode,ich))
+
+      do jpt = 2*k*nch+1,ntot
+
+      sysmat(2*ipt-1,jpt) = sysmat(2*ipt-1,jpt)*rr
+      sysmat(2*ipt,jpt) = sysmat(2*ipt,jpt)*rr
+
+      enddo
+      enddo
+      enddo
+
+     
       
 c
 c     Allocate potential, gradient and potn arrays
 c
       allocate(pot(k,nch),potn(k,nch),grad(2,k,nch),pottau(k,nch))
       allocate(rhs(ntot),soln(ntot),soln2(ntot2))
+
+      nn = k*nch
+      allocate(zdens(nn,2))
       do i=1,ntot
          rhs(i) = 0.0d0
          soln(i) = 0.0d0
@@ -356,6 +417,34 @@ c
          enddo
       enddo
 
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+      zdens(ipt,1) = rhs(2*ipt-1)
+      zdens(ipt,2) = rhs(2*ipt)
+
+      enddo
+      enddo
+
+      do j=1,4
+
+      errmax1(j) = 0
+      errmax2(j) = 0
+
+      do i=1,nch
+
+      tails(i,j) = 0
+
+      enddo
+      enddo
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,1),errmax1(1),
+     1    errmax2(1),tails(1,1))
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,2),errmax1(2),
+     1    errmax2(2),tails(1,2))
+
 c     get integral of exact solution on each
 c     boundary component
       
@@ -374,8 +463,24 @@ c     boundary component
       call prin2('rhs=*',rhs,24)
 
       call prin2('rhs end = *',rhs(2*k*nch+1),2*ncomp)
+c
+cc      square root scale rhs
+c
+      do ich=1,nch
+      do inode = 1,k
+
+      ipt = (ich-1)*k+inode
+      rr= sqrt(whts(inode,ich))
+
+      rhs(2*ipt-1) = rhs(2*ipt-1)*rr
+      rhs(2*ipt) = rhs(2*ipt)*rr
+
+      enddo
+      enddo
+      
 
       ra = 0.0d0
+
       do i=1,ntot
 
       ra = ra + abs(rhs(i))**2
@@ -383,7 +488,6 @@ c     boundary component
       enddo
 
       ra = sqrt(ra)
-
       call prin2('l2 norm of rhs=*',ra,1)
       
 c     End of generating boundary data
@@ -408,6 +512,46 @@ c     End of generating boundary data
 
       call cgmres(ier,ntot,sysmat,multa,p1,p2,p3,p4,rhs,eps,numit,soln,
      1        niter,errs,ngmrec,work)
+
+
+
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+
+      rr = sqrt(1.0d0/whts(inode,ich))
+      soln(2*ipt-1) = soln(2*ipt-1)*rr
+      soln(2*ipt) = soln(2*ipt)*rr
+
+      enddo
+      enddo
+
+      call prin2('soln final=*',soln,48)
+
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+      zdens(ipt,1) = soln(2*ipt-1)
+      zdens(ipt,2) = soln(2*ipt)
+
+      enddo
+      enddo
+
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,1),errmax1(3),
+     1    errmax2(3),tails(1,3))
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,2),errmax1(4),
+     1    errmax2(4),tails(1,4))
+
+
+      call prin2('errmax1=*',errmax1,4)
+      call prin2('errmax2=*',errmax2,4)
+
+c
+cc      compute expansion tails
 
       call prinf('ier=*',ier,1)
       call prinf('niter=*',niter,1)
@@ -436,12 +580,7 @@ c     End of generating boundary data
 
       call prin2('wex=*',wex,2)
 
-      rerr=0
-      ra = 0
       do i = 1,nt
-
-         ra = ra + abs(wex(i))**2
-         rerr = rerr + abs(wex(i)-wval(i))**2
          erra(i) = abs(wex(i)-wval(i))/abs(wex(i))
       enddo
 
@@ -449,9 +588,6 @@ c     End of generating boundary data
       call prin2_long('wex=*',wex,nt)
       call prin2_long('wval=*',wval,nt)
       call prin2('targdist=*',targdist,nt)
-      
-      rerr = sqrt(rerr/ra)
-      call prin2('rerr=*',rerr,1)
 
       call prinf('ntot=*',ntot,1)
 

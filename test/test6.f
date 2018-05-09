@@ -1,76 +1,104 @@
-c--------------------------------------------------
-c
-c This file tests the routines for the  Dirichlet 
-c problem of the biharmonic Helmholtz equation on 
-c a domain loaded from a file.
-c
-c
-
-
-      program main
       implicit real *8 (a-h,o-z)
-      real *8 w(1000000)
+      real *8 w(1000000),xy(2,100),targ(2,100),ck(1000)
 
       call prini(6,13)
-      call prin2('Enter icase*',n,0)
-      read *, icase
-
+      call prin2('Enter n*',n,0)
+      read *, n
 
       aa = 1
       bb = 0.5
+      ff = 1.0d1
 
- 2100 format('data for ff=',e11.5)
- 2110 format('npts=',i7)
- 2120 format('sing=')
- 2130 format(2x,e11.5)
- 2150 format('c  ')
+c
+cc      target locations
+c
+      pert = 0.1
+      ntarg = 4
+      targ(1,1) = aa/4 + (hkrand(0)-0.5)*pert
+      targ(2,1) = bb/4 + (hkrand(0)-0.5)*pert
 
-      ff = 2.5*2**(icase-1.0d0)
+      targ(1,2) = aa/4 + (hkrand(0)-0.5)*pert
+      targ(2,2) = 3*bb/4 + (hkrand(0)-0.5)*pert
+
+      targ(1,3) = 3*aa/4 + (hkrand(0)-0.5)*pert
+      targ(2,3) = bb/4 + (hkrand(0)-0.5)*pert
+
+      targ(1,4) = 3*aa/4 + (hkrand(0)-0.5)*pert
+      targ(2,4) = 3*bb/4 + (hkrand(0)-0.5)*pert
+
+c
+cc
+cc      source locations
+c 
+
+      nsrc = 4
+      xy(1,1) = aa + 0.2 + (hkrand(0)-0.5)*pert
+      xy(2,1) = bb/2 + pert*(hkrand(0)-0.5)
+      ck(1) = hkrand(0)
+
+      xy(1,2) = aa/2+pert*(hkrand(0)-0.5)
+      xy(2,2) = bb+0.2 + (hkrand(0)-0.5)*pert
+      ck(2) = hkrand(0)
+
+      xy(1,3) = -0.2+pert*(hkrand(0)-0.5)
+      xy(2,3) = bb/2+(hkrand(0)-0.5)*pert
+      ck(3) = hkrand(0)
+
+      xy(1,4) = aa/2+pert*(hkrand(0)-0.5)
+      xy(2,4) = -0.2+(hkrand(0)-0.5)*pert
+      ck(4) = hkrand(0)
       
-      ising = 1
+      call prin2('xy=*',xy,2*nsrc)
+c
+cc
 
-      iw2 = 26+icase
-      call testhbhdir(iw2,aa,bb,ff,ntot,w(ising))
-      
+ 2130 format(2x,i6,',',e22.16,',',e22.16)
+ 2140 format(2x,e22.16)
 
-      iw = 16 + icase
-      write(iw,2100) ff
-      write(iw,2110) ntot
-      write(iw,2150)
-      write(iw,2120)
-      do i=1,ntot
+      iw2 = 26
+      iw = 16
+      open(unit=iw,file='fort.18',access='append')
 
-      write(iw,2130) w(ising+2*i-2)
 
-      enddo
+      eps=0.5d-3
+      irefinelev = 0
+      call testhbhdir2(iw2,irefinelev,eps,aa,bb,ff,nsrc,xy,ck,
+     1         ntarg,targ,ntot,erra,rcond)
+
+      call prinf('ntot=*',ntot,1)
+      call prin2('erra=*',erra,1)
+
+      write(iw,2130) ntot,eps,erra
+      write(iw,2140) rcond
 
       stop
       end
 
 c------------------------------------------------------     
 c
-      subroutine testhbhdir(ifile,aa,bb,ff,ntot,sing)
+      subroutine testhbhdir2(ifile,irefinelev,eps,aa,bb,ff,nsrc,xy,ck,
+     1    nt,targ,ntot,errl2,rcond)
 
       implicit real *8 (a-h,o-z)
 
-      real *8 :: dist, xy(2), xy_norm(2)
-      real *8 :: targdist(10000), targxy(2,10000), targxyn(2,10000)
+      real *8 :: dist, xy(2,*), ck(*), targ(2,*), xy_norm(2)
       real *8 :: targx(10000), targy(10000)
       real *8 :: erra(10000)
       real *8, allocatable :: chunks(:,:,:)
       real *8, allocatable :: ders(:,:,:)
       real *8, allocatable :: rn(:,:,:)
       real *8 sc
+      real *8, allocatable :: tails(:,:)
       real *8, allocatable :: ders2(:,:,:),dsdta(:,:)
       real *8, allocatable :: hs(:)
       integer, allocatable :: adjs(:,:)
-      real *8, allocatable :: ck(:)
 
       real *8, allocatable :: wgeos(:)
       real *8, allocatable :: wgeos3(:)
 
       complex *16, allocatable :: work(:),workspace(:)
       complex *16, allocatable :: rhs(:),soln(:),soln2(:)
+      complex *16, allocatable :: zdens(:,:)
       integer, allocatable :: nchs(:)
 
       complex *16 zk
@@ -91,7 +119,8 @@ c     matrix formation, eigenvalue calculation
       real *8 chsmalls(1000), tas(1000), tbs(1000)
       real *8 epss(1000), pars(10 000), pars1(100),pars2(100)
 
-      real *8 src(2),targ(2,10000),verts(2,10000),widths(10000)
+      real *8 src(2),verts(2,10000),widths(10000)
+      real *8 errmax1(100),errmax2(100)
       
       complex *16, allocatable :: pot(:,:)
       complex *16, allocatable :: pottau(:,:)
@@ -100,7 +129,7 @@ c     matrix formation, eigenvalue calculation
       complex *16, allocatable :: wbdry(:,:)
       complex *16 gradtmp(2), wintex
       
-      complex *16 sing(*), q1, q2
+      complex *16 sing(100000), q1, q2
 
       integer ncomp, nwiggles
       real *8 tmp, errp, rp
@@ -119,7 +148,6 @@ c     matrix formation, eigenvalue calculation
 
       zk = 1.2d0
 
-      eps = 1.0d-12
       ifclosed = 1
       chsmall = 1.0d-5
       nover = 2
@@ -127,6 +155,7 @@ c     matrix formation, eigenvalue calculation
 
       ncomp = 1
       allocate(chunks(2,k,nchunkmax))
+      allocate(tails(nchunkmax,4))
       allocate(ders(2,k,nchunkmax),dsdta(k,nchunkmax))
       allocate(rn(2,k,nchunkmax))
       allocate(ders2(2,k,nchunkmax))
@@ -135,74 +164,84 @@ c     matrix formation, eigenvalue calculation
 
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-c     Get geometry from file
+c     Setup geometry
 c
 ccccccccccccccccccccccccccccccccccccccccccccccccccccc      
 
       lwgeos = 1000000
 
-      ifile = 2
-      open(UNIT=ifile,FILE='../test/domain1')
 
       allocate(wgeos3(lwgeos),wgeos(lwgeos))
+      nverts = 5
+
+      verts(1,1) = 0
+      verts(2,1) = 0
+      widths(1) = bb/ff
+
+      verts(1,2) = aa
+      verts(2,2) = 0
+      widths(2) = bb/ff
+
+      verts(1,3) = aa
+      verts(2,3) = bb
+      widths(3) = bb/ff
+
+      verts(1,4) = 0
+      verts(2,4) = bb
+      widths(4) = bb/ff 
+
+      verts(1,5) = 0
+      verts(2,5) = 0
+      widths(5) = bb/ff
+
+      p1 = 0
+      p2 = 0
+
+      i1 = 0
+      i2 = 0
+
+      chsmall = 10
+      ta = 0
+      tb = 2*pi
+      nover = 2
+      pars(1) = 1.0
+      pars(2) = 0.1d0
+
+      ifbell = 1
+
+      ifclosed = 1
+
+      nch = 0
+
+      call chunkpolysmooth(ier,eps,widths,ifbell,p1,p2,i1,i2,nverts,
+     1      verts,ifclosed,nover,k,nch,chunks,adjs,ders,ders2,hs) 
+
+      pert = 1.0d-2
+
+      allocate(cms(2,ncomp))
+      cms(1,1) = 10*aa/2 + hkrand(0)*pert
+      cms(2,1) = 3*bb/2 + hkrand(0)*pert
+
+      call prin2('cms=*',cms,2*ncomp)
+
       
-      ncompmax = 100
-      lused = 0
-      ncomp = 0
-      call multichunkfunc_file_by_mode(ifile,wgeos3,
-     1     lwgeos,ncompmax,ncomp,k,lused,ier)
-
-      call prinf('multichunkfunc, ier = *', ier,1)      
-      call prinf('multichunkfunc, k = *', k,1)      
-      call prinf('multichunkfunc, ncomp = *', ncomp,1)      
-      call prinf('multichunkfunc, lused = *', lused,1)      
-
-      rewind(ifile)
-      read(ifile,*) ncomp
-      read(ifile,*) tmp
-      allocate(cms(2,ncomp),ck(ncomp))
-      do nbod = 1,ncomp
-         read(ifile,*) tmp
-         read(ifile,*) tmp
-         read(ifile,*) tmp
-         read(ifile,*) tmp
-         read(ifile,*) nwiggles
-         read(ifile,*) cms(1,nbod), cms(2,nbod)
-         read(ifile,*) tmp
-         if(nbod.eq.1) cms(1,nbod) = 3.0d0*tmp
-         do j=1,nwiggles
-             read(ifile,*) tmp,tmp
-         enddo
-         ck(nbod) = hkrand(0)
-      enddo
-
-
 c     Allocate potential, gradient and potn arrays
 
       allocate(nchs(ncomp))
-      do nbod = 1,ncomp
-         nchs(nbod) = 0
-      enddo
-      call multichunk_nchs(wgeos3,nchs,ncomp)
 
-      imode = 1
+      nchs(1) = nch
 
-      call multichunk_merge(imode,wgeos3,k,nch,chunks,adjs,ders,
-     1     ders2,hs,ier)
-
-
-      irefinelev= 0
       do ii=1,irefinelev
-         nch1 = nch
-         do i=1,nch1
-            call chunksplit1(i,k,nch,chunks,adjs,ders,ders2,hs)
-         enddo
-         do i=1,ncomp
+            nch1 = nch
+            do i=1,nch1
+               call chunksplit1(i,k,nch,chunks,adjs,ders,ders2,hs)
+            enddo
+            do i=1,ncomp
+
             nchs(i) = 2*nchs(i)
-         enddo
-      enddo
 
-
+            enddo
+        enddo
 
       call chunkpack(k,nch,chunks,adjs,ders,ders2,hs,wgeos,lused)
       n = k*nch
@@ -237,71 +276,10 @@ c     Allocate potential, gradient and potn arrays
       enddo
       enddo
 
-      call pyplot(ifile,xs,ys,n,2,'a*')
+      ifile2 = 23
+      call pyplot(ifile2,xs,ys,n,2,'a*')
 
-c     generate some target points
-
-      nt = 10
-
-      xmin = 1d200
-      ymin = 1d200
-      xmax = -1d200
-      ymax = -1d200
-
-      hsmin = 1d200
-
-c     bounding box and smallest chunk
-      
-      do i = 1,nch
-         hst = hs(i)
-         if (hst .lt. hsmin) hsmin = hst
-         do j = 1,k
-            xtt = chunks(1,j,i)
-            ytt = chunks(2,j,i)
-            if (xmin .gt. xtt) xmin = xtt
-            if (xmax .lt. xtt) xmax = xtt
-            if (ymin .gt. ytt) ymin = ytt
-            if (ymax .lt. ytt) ymax = ytt
-         enddo
-      enddo
-
-      call prin2('xmin*',xmin,1)
-      call prin2('xmax*',xmax,1)
-      call prin2('ymin*',ymin,1)
-      call prin2('ymax*',ymax,1)
-      call prin2('hsmin*',hsmin,1)
-
-      do i = 1,nt
-         do iii = 1,10000
-
-            targ(1,i) = xmin+(xmax-xmin)*hkrand(0)
-            targ(2,i) = ymin+(ymax-ymin)*hkrand(0)
-            ichmin = 1
-            targdist(i) = 1d200
-            do ich = 1,nch
-               call chunk_dist(ich, wgeos, targ(1,i),
-     1              dist, xy, xy_norm)
-               if (dist .lt. targdist(i)) then
-                  targdist(i) = dist
-                  ichmin = ich
-                  targxy(1,i) = xy(1)
-                  targxy(2,i) = xy(2)
-                  targxyn(1,i) = xy_norm(1)
-                  targxyn(2,i) = xy_norm(2)
-               endif
-            enddo
-
-c     check if inside and at more than a chunk length away
-            dsign = (targxy(1,i)-targ(1,i))*targxyn(1,i) +
-     1           (targxy(2,i)-targ(2,i))*targxyn(2,i)
-            if (dsign .gt. 0 .and. targdist(i) .gt. hs(ichmin)) then
-               write(*,*) 'found targ ', i
-               exit
-            endif
-         enddo
-      enddo
-
-      ifile = ifile + 1
+      ifile2 = ifile2 + 1
 
 c     plotting
       do i = 1,nt
@@ -311,7 +289,7 @@ c     plotting
 
       itypes = 1
       itypet = 2
-      call pyplot2(ifile,xs,ys,n,itypes,targx,targy,nt,itypet,'a*')
+      call pyplot2(ifile2,xs,ys,n,itypes,targx,targy,nt,itypet,'a*')
 
       ntot = 2*k*nch + ncomp
       allocate(sysmat(ntot,ntot))
@@ -325,12 +303,69 @@ c     plotting
       call zhbh_stokes_matbuild(zk,wgeos,ncomp,nchs,cms,
      1     q1,q2,ntot,sysmat,ier)
 
+c
+cc     square root scale the matrices
+c
+      do ich = 1,nch
+      do inode =1,k
+
+      ipt = (ich-1)*k + inode
+
+      do jch = 1,nch
+      do jnode = 1,k
+
+      jpt = (jch-1)*k + jnode
+
+      rr = sqrt(whts(inode,ich)/whts(jnode,jch))
+      sysmat(2*ipt-1,2*jpt-1) = sysmat(2*ipt-1,2*jpt-1)*rr
+      sysmat(2*ipt-1,2*jpt) = sysmat(2*ipt-1,2*jpt)*rr
+      sysmat(2*ipt,2*jpt-1) = sysmat(2*ipt,2*jpt-1)*rr
+      sysmat(2*ipt,2*jpt) = sysmat(2*ipt,2*jpt)*rr
+
+      enddo
+      enddo
+      enddo
+      enddo
+
+      do ipt=2*k*nch+1,ntot
+      do jch=1,nch
+      do jnode=1,k
+
+      jpt = (jch-1)*k+jnode
+
+      rr = 1.0d0/sqrt(whts(jnode,jch))
+      sysmat(ipt,2*jpt-1) = sysmat(ipt,2*jpt-1)*rr
+      sysmat(ipt,2*jpt) = sysmat(ipt,2*jpt)*rr
+
+      enddo
+      enddo
+      enddo
+
+      do ich=1,nch
+      do inode=1,k
+      ipt = (ich-1)*k+inode
+
+      rr = sqrt(whts(inode,ich))
+
+      do jpt = 2*k*nch+1,ntot
+
+      sysmat(2*ipt-1,jpt) = sysmat(2*ipt-1,jpt)*rr
+      sysmat(2*ipt,jpt) = sysmat(2*ipt,jpt)*rr
+
+      enddo
+      enddo
+      enddo
+
+     
       
 c
 c     Allocate potential, gradient and potn arrays
 c
       allocate(pot(k,nch),potn(k,nch),grad(2,k,nch),pottau(k,nch))
       allocate(rhs(ntot),soln(ntot),soln2(ntot2))
+
+      nn = k*nch
+      allocate(zdens(nn,2))
       do i=1,ntot
          rhs(i) = 0.0d0
          soln(i) = 0.0d0
@@ -356,6 +391,34 @@ c
          enddo
       enddo
 
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+      zdens(ipt,1) = rhs(2*ipt-1)
+      zdens(ipt,2) = rhs(2*ipt)
+
+      enddo
+      enddo
+
+      do j=1,4
+
+      errmax1(j) = 0
+      errmax2(j) = 0
+
+      do i=1,nch
+
+      tails(i,j) = 0
+
+      enddo
+      enddo
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,1),errmax1(1),
+     1    errmax2(1),tails(1,1))
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,2),errmax1(2),
+     1    errmax2(2),tails(1,2))
+
 c     get integral of exact solution on each
 c     boundary component
       
@@ -374,8 +437,24 @@ c     boundary component
       call prin2('rhs=*',rhs,24)
 
       call prin2('rhs end = *',rhs(2*k*nch+1),2*ncomp)
+c
+cc      square root scale rhs
+c
+      do ich=1,nch
+      do inode = 1,k
+
+      ipt = (ich-1)*k+inode
+      rr= sqrt(whts(inode,ich))
+
+      rhs(2*ipt-1) = rhs(2*ipt-1)*rr
+      rhs(2*ipt) = rhs(2*ipt)*rr
+
+      enddo
+      enddo
+      
 
       ra = 0.0d0
+
       do i=1,ntot
 
       ra = ra + abs(rhs(i))**2
@@ -383,7 +462,6 @@ c     boundary component
       enddo
 
       ra = sqrt(ra)
-
       call prin2('l2 norm of rhs=*',ra,1)
       
 c     End of generating boundary data
@@ -404,10 +482,50 @@ c     End of generating boundary data
       job = 0
       
       ier = 0
-      eps = 1.0d-14
+      epsg = 1.0d-14
 
-      call cgmres(ier,ntot,sysmat,multa,p1,p2,p3,p4,rhs,eps,numit,soln,
+      call cgmres(ier,ntot,sysmat,multa,p1,p2,p3,p4,rhs,epsg,numit,soln,
      1        niter,errs,ngmrec,work)
+
+
+
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+
+      rr = sqrt(1.0d0/whts(inode,ich))
+      soln(2*ipt-1) = soln(2*ipt-1)*rr
+      soln(2*ipt) = soln(2*ipt)*rr
+
+      enddo
+      enddo
+
+      call prin2('soln final=*',soln,48)
+
+      do ich=1,nch
+      do inode=1,k
+
+      ipt = (ich-1)*k+inode
+      zdens(ipt,1) = soln(2*ipt-1)
+      zdens(ipt,2) = soln(2*ipt)
+
+      enddo
+      enddo
+
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,1),errmax1(3),
+     1    errmax2(3),tails(1,3))
+
+      call chunkzres(k,nch,chunks,ders,hs,zdens(1,2),errmax1(4),
+     1    errmax2(4),tails(1,4))
+
+
+      call prin2('errmax1=*',errmax1,4)
+      call prin2('errmax2=*',errmax2,4)
+
+c
+cc      compute expansion tails
 
       call prinf('ier=*',ier,1)
       call prinf('niter=*',niter,1)
@@ -436,22 +554,20 @@ c     End of generating boundary data
 
       call prin2('wex=*',wex,2)
 
-      rerr=0
-      ra = 0
+      errl2 = 0
+      rl2 = 0
       do i = 1,nt
-
-         ra = ra + abs(wex(i))**2
-         rerr = rerr + abs(wex(i)-wval(i))**2
          erra(i) = abs(wex(i)-wval(i))/abs(wex(i))
+         rl2 = rl2 + abs(wex(i))**2
+         errl2 = errl2 + abs(wex(i)-wval(i))**2
       enddo
+
+      errl2 = sqrt(errl2/rl2)
 
       call prin2_long('erra=*',erra,nt)
       call prin2_long('wex=*',wex,nt)
       call prin2_long('wval=*',wval,nt)
       call prin2('targdist=*',targdist,nt)
-      
-      rerr = sqrt(rerr/ra)
-      call prin2('rerr=*',rerr,1)
 
       call prinf('ntot=*',ntot,1)
 
@@ -459,7 +575,7 @@ c     End of generating boundary data
       call prin2('ck like terms=*',soln(2*k*nch+2),2*(ncomp-1))
 
       ier = 0
-      eps = 1.0d-12
+      epss = 1.0d-14
       ncols = 0
       ltot = 0
 
@@ -467,14 +583,15 @@ c     End of generating boundary data
       allocate(workspace(lw))
       call prinf('computing svd ...*',ier,0)
       time1 = second()
-c      call csvdpiv2(ier,sysmat2,ntot,ntot,sing,ncols,eps,workspace,
-c     1     lw,ltot)
+      call csvdpiv2(ier,sysmat,ntot,ntot,sing,ncols,epss,workspace,
+     1     lw,ltot)
       time2 = second()      
       call prin2('done. time=*',time2-time1,1)      
 
       call prinf('ier=*',ier,1)
       call prinf('ncols=*',ncols,1)
 
+      rcond = sing(1)/sing(ntot)
 
       return
       end
