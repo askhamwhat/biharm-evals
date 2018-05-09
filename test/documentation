@@ -9,6 +9,8 @@
                   square root scaling
         test5.f - compute the roots of a function on an interval
                   using Boyd's trick
-                 
+        test6.f - compute convergence and condition number in simply
+                  connected domain
+        test7.f - compute convergence for multiply connected domain
 
 
