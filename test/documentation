@@ -12,5 +12,8 @@
         test6.f - compute convergence and condition number in simply
                   connected domain
         test7.f - compute convergence for multiply connected domain
+        test8.f - test eigenfunctions for stokes on annulus vs
+                  dirichlet
+        test9.f - slow near boundary evaluator
 
 
