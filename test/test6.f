@@ -300,7 +300,7 @@ c     plotting
       q1 = (1.0d0,0.0d0)
       q2 = (1.0d0,0.0d0)
 
-      call zhbh_stokes_matbuild(zk,wgeos,ncomp,nchs,cms,
+      call zhbhstokesmatbuild(zk,wgeos,ncomp,nchs,cms,
      1     q1,q2,ntot,sysmat,ier)
 
 c

@@ -123,7 +123,7 @@ c
 c 
         subroutine legeexps(itype,n,x,u,v,whts)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension x(1),whts(1),u(n,n),v(n,n)
 c 
 c         this subroutine constructs the gaussiaqn nodes
@@ -212,7 +212,7 @@ c
 c 
         subroutine legewhts_old(n,ts,whts,ifwhts)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension ts(1),whts(1)
 c 
 c        this subroutine constructs the nodes and the
@@ -287,7 +287,7 @@ c
 c 
         subroutine legewhts(n,ts,whts,ifwhts)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension ts(1),whts(1),ws2(1000),rats(1000)
 c 
 c        this subroutine constructs the nodes and the
@@ -357,7 +357,7 @@ c
         subroutine legepol_sum(x,n,pol,der,sum)
         implicit real *8 (a-h,o-z)
 c 
-        save
+        
         done=1
         sum=0
 c 
@@ -409,7 +409,7 @@ c
         subroutine legepol(x,n,pol,der)
         implicit real *8 (a-h,o-z)
 c 
-        save
+        
         pkm1=1
         pk=x
 c 
@@ -449,7 +449,7 @@ c
 c 
         subroutine prodend(x,xs,n,i,f)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension xs(1)
 c 
 c      evaluate the product
@@ -485,7 +485,7 @@ c
 c 
         subroutine legepols(x,n,pols)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension pols(1)
 c 
         pkm1=1
@@ -527,7 +527,7 @@ c
 c 
       SUBROUTINE legepolders(X,VALs,ders,N)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 vals(1),ders(1)
 C 
 C     This subroutine computes the values and the derivatives
@@ -586,7 +586,7 @@ c
 c 
         subroutine legepls2(x,n,pols)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension pols(1),pjcoefs1(2000),pjcoefs2(300)
         data ifcalled/0/
 c 
@@ -644,7 +644,7 @@ c
         subroutine legeinmt(n,ainte,adiff,x,whts,endinter,
      1      itype,w)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension ainte(1),w(1),x(1),whts(1),adiff(1),endinter(1)
 c 
 c 
@@ -718,7 +718,7 @@ c
         subroutine legeinm0(n,ainte,adiff,polin,polout,
      1      x,whts,u,v,w,itype,endinter)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension ainte(n,n),u(n,n),v(n,n),w(n,n),
      1      endinter(1),x(n),whts(n),polin(n),polout(n),
      2      adiff(n,n)
@@ -850,7 +850,7 @@ c
 c 
         subroutine legeinte(polin,n,polout)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension polin(1),polout(1)
 c 
 c       this subroutine computes the indefinite integral of the
@@ -906,7 +906,7 @@ c
 c 
         subroutine legediff(polin,n,polout)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension polin(1),polout(1)
 c 
 c       this subroutine differentiates the legendre
@@ -954,7 +954,7 @@ c
 c 
       SUBROUTINE legeFDER(X,VAL,der,PEXP,N)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 PEXP(1)
 C 
 C     This subroutine computes the value and the derivative
@@ -1014,7 +1014,7 @@ c
       SUBROUTINE legeFDE2(X,VAL,der,PEXP,N,
      1    pjcoefs1,pjcoefs2,ninit)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 PEXP(1),pjcoefs1(1),pjcoefs2(1)
 c 
 C     This subroutine computes the value and the derivative
@@ -1106,7 +1106,7 @@ c
 c 
       SUBROUTINE legeexev(X,VAL,PEXP,N)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 PEXP(1)
 C 
 C     This subroutine computes the value o a Legendre
@@ -1150,7 +1150,7 @@ c
       SUBROUTINE legeexe2(X,VAL,PEXP,N,
      1      pjcoefs1,pjcoefs2,ninit)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 PEXP(1),pjcoefs1(1),pjcoefs2(1)
 c 
 C     This subroutine computes the value o a Legendre
@@ -1208,7 +1208,7 @@ c
 c 
         subroutine lematrin(n,m,xs,amatrint,ts,w)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension amatrint(m,n),xs(1),w(1),ts(1)
 c 
 c 
@@ -1265,7 +1265,7 @@ c
 c 
         subroutine levecin(n,x,ts,u,v,coefs,ifinit)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension u(n,n),v(n,n),ts(1),coefs(1)
 c 
 c        This subroutine constructs the coefficients of the
@@ -1323,7 +1323,7 @@ c
 c 
         subroutine lematvec(a,x,y,n)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension a(n,n),x(n),y(n)
 c 
         do 1400 i=1,n
@@ -1342,7 +1342,7 @@ c
 c 
         subroutine matmul(a,b,c,n)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension a(n,n),b(n,n),c(n,n)
 c 
         do 2000 i=1,n
@@ -1383,7 +1383,7 @@ c
         subroutine legeodev(x,nn,coefs,val,ninit,
      1      coepnm1,coepnp1,coexpnp1)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension coepnm1(1),coepnp1(1),
      1            coexpnp1(1),coefs(1)
 c 
@@ -1479,7 +1479,7 @@ c
         subroutine legeevev(x,nn,coefs,val,ninit,
      1      coepnm1,coepnp1,coexpnp1)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension coepnm1(1),coepnp1(1),
      1            coexpnp1(1),coefs(1)
 c 
@@ -1574,7 +1574,7 @@ c
         subroutine legepeven(x,nn,pols,ninit,
      1      coepnm1,coepnp1,coexpnp1)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension pols(1),coepnm1(1),coepnp1(1),
      1            coexpnp1(1)
 c 
@@ -1667,7 +1667,7 @@ c
         subroutine legepodd(x,nn,pols,ninit,
      1      coepnm1,coepnp1,coexpnp1)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension pols(1),coepnm1(1),coepnp1(1),
      1            coexpnp1(1)
 c 
@@ -1751,7 +1751,7 @@ c
 c 
         subroutine legefdeq(x,val,der,coefs,n)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension coefs(1)
 C 
 C     This subroutine computes the value and the derivative
@@ -1827,7 +1827,7 @@ c
 c 
         subroutine legeqs(x,n,pols,ders)
         implicit real *8 (a-h,o-z)
-        save
+        
         dimension pols(1),ders(1)
 c 
 c       This subroutine calculates the values and derivatives of
@@ -1901,7 +1901,7 @@ c
 c 
         subroutine legeq(x,n,pol,der)
         implicit real *8 (a-h,o-z)
-        save
+        
 c 
 c       This subroutine calculates the value and derivative of
 c       a Legendre Q-function at the user-specified point
@@ -1960,7 +1960,7 @@ c
 c 
         subroutine clegeq(x,n,pol,der)
         implicit complex *16 (a-h,o-z)
-        save
+        
         complex *16 ima
         real *8 pi,done,d3
         data ima/(0.0d0,1.0d0)/
@@ -2031,7 +2031,7 @@ c
 c 
       SUBROUTINE legecFDE(X,VAL,der,PEXP,N)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       complex *16 PEXP(1),val,der
 C 
 C     This subroutine computes the value and the derivative
@@ -2087,7 +2087,7 @@ c
       SUBROUTINE legecFD2(X,VAL,der,PEXP,N,
      1    pjcoefs1,pjcoefs2,ninit)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+        
       REAL *8 pjcoefs1(1),pjcoefs2(1)
       complex *16 PEXP(1),val,der
 c 
@@ -2180,7 +2180,7 @@ c
       SUBROUTINE legecva2(X,VAL,PEXP,N,
      1    pjcoefs1,pjcoefs2,ninit)
       IMPLICIT REAL *8 (A-H,O-Z)
-        save
+                 
       REAL *8 pjcoefs1(1),pjcoefs2(1)
       complex *16 PEXP(1),val
 c 
