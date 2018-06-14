@@ -17,7 +17,9 @@
 
 
 \def\br{{\boldsymbol r}}
+\def\bh{{\boldsymbol h}}
 \def\bn{{\boldsymbol n}}
+\def\bT{{\boldsymbol T}}
 \def\xx{{\boldsymbol x}}
 \def\bx{{\boldsymbol x}}
 \def\yy{{\boldsymbol y}}
@@ -40,9 +42,12 @@
 \def\btau{{\boldsymbol \tau}}
 \def\bigo{\mathcal{O}}
 \def\littleo{o}
+\newcommand\dwdn{\frac{\partial w}{\partial n}}
+\newcommand{\cC}{\mathcal C}
 
 \newtheorem{remark}{Remark}
 \newtheorem{proposition}{Proposition}
+\newtheorem{lem}{Lemma}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,36 +78,169 @@ Integral equation methods.
 \item Book on elastodynamic eigenvalue problems
   \cite{kitahara2014boundary}
 \end{itemize}
+
+Consider the pure bending of an isotropic and homogeneous thin clamped
+plate. 
+Let $\Omega$ denote the midline of the thin plate, $\Gamma$ denote the 
+boundary of $\Omega$ and $w$ denote the vertical displacement.
+In this setup, the buckling eigenvalue problem consists of finding 
+eigenvalues $k^{2}$ and corresponding non-trivial eigenfunctions
+(or buckling modes) $w$ which satisfy the homogeneous Dirichlet
+modified Biharmonic problem (with an imaginary parameter $k$) given by
+\begin{align}
+\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:buck1} \\
+w &= 0 \quad \text{on} \quad \Gamma \label{eq:buck2}\\
+\dwdn &=0 \quad \text{on} \quad \Gamma \label{eq:buck3} \,.
+\end{align}
+It is well-known from classical potential theory that, 
+for the buckling eigenvalue problem, there
+exists a countable collection of eigenfrequencies 
+$0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$
+counting multiplicites.
+\begin{remark}
+For notational convenience,  
+we will refer to the modified Biharmonic problem
+with imaginary parameter as the Helmholtz-Biharmonic problem.
+\end{remark}
+
+
 \section{Mathematical Preliminaries}
 
-\subsection{Notation}
-
-Bold symbols are vectors or tensors.
+In this paper, vector-valued
+quantities are denoted by bold, lower-case letters
+(e.g. $\bh$), while tensor-valued quantities are bold
+and upper-case (e.g. $\mathbf{T}$). 
+Subscript indices of non-bold characters (e.g. $h_j$ or $T_{jkl}$)
+are used to denote the entries within a vector ($\bh$) or tensor ($\bT$).
+We use the standard Einstein summation convention; in other words, 
+there is an implied sum taken over the repeated indices of 
+any term (e.g. the symbol $a_{j} b_{j}$ is used to represent the sum
+$\sum_{j} a_{j} b_{j}$).
 $\xx = (x_1,x_2)^\intercal$ then $\xx^\bot = (-x_2,x_1)^\intercal$.
-Similarly, $\nabla^\bot = (-\partial_{x_2},\partial_{x_1})^\intercal$
+Similarly, $\nabla^\bot = (-\partial_{x_2},\partial_{x_1})^\intercal$.
 
-\subsection{Green's functions}
 
-$\Delta$
-\begin{equation}
-  G_L(\xx,\yy) = -\frac{1}{2\pi} \log |\xx-\yy|
-\end{equation}
-
-$\Delta + k^2$
-\begin{equation}
-  G_H(\xx,\yy) = \frac{i}{4} H_0^{(1)}(k|\xx-\yy|)
-\end{equation}
-
-$\Delta(\Delta + k^2)$
+\subsection{The Farkas integral representation}
+Following the treatment of \cite{askham}, the fundamental solution
+of the Helmholtz-Biharmonic equation is given by
 \begin{equation}
   G_{BH}(\xx,\yy) = -\frac{1}{k^2}
   \left (\frac{1}{2\pi} \log |\xx-\yy| +
-  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right )
+  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
 \end{equation}
+where $k$ is the Helmholtz paramater in the Helmholtz-Biharmonic equation,
+and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero.
 
-\section{Integral Equation Formulation}
+In \cite{Farkas89}, Farkas derived integral equation formulations
+for the solution of the Dirichlet problem for the biharmonic equation ($k=0$). 
+In this formulation, the solution 
+$w$ is represented as a sum of two layer potentials
+\begin{equation}
+  w(\xx) = \int_\Gamma K_1^F (\xx,\yy) \sigma_1(\yy) \, dS(\yy)
+  + \int_\Gamma K_2^F(\xx,\yy) \sigma_2(\yy) \, dS(\yy) \; ,
+  \label{eq:farkRep}
+\end{equation}
+where $\sigma_{1}$, and $\sigma_{2}$ are unknown densities, and the kernels
+$K_{1}^{F}$, and $K_{2}^{F}$ are linear combinations of derivatives of
+the biharmonic Green's function and appropriately chosen to get second kind integral equations
+for the unknown densities $\sigma_{1}$ and $\sigma_{2}$ on imposing the boundary conditions.
 
-\subsection{The Helmholtz Stokeslet formulation}
+In \cite{shidongmodbi}, Jiang extended the Farkas formulation for the solution of the modified
+biharmonic equation, albeit for different boundary conditions. With minor modifications, their formulation
+can also be adopted for the solution of the Dirichlet problem for the Helmholtz-biharmonic equation
+\begin{align}
+\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:helmbi} \\
+w &= f \quad \text{on} \quad \Gamma \\
+\dwdn &=g \quad \text{on} \quad \Gamma \,,
+\end{align}
+where $f,g$ are prescribed functions on the boundary. 
+
+For two points on the plane, $\xx$ and $\yy$, let $\br = \yy - \xx$. Let the kernels $K_{1}^{F}$, and 
+$K_{2}^{F}$ be defined by 
+\begin{align}
+  K_1^F(\xx,\yy) &= \partial_{n_{y}n_{y}n_{y}}\Gbh(\xx,\yy)
+  + 3 \partial_{n_{y}\tau_{y}\tau_{y}}\Gbh(\xx,\yy) + k^{2} \partial_{n_{y}}\Gbh(\xx,\yy)\; , \label{eq:kf1} \\
+  K_2^F(\xx,\yy) &= -\partial_{n_{y}n_{y}}\Gbh(\xx,\yy)
+  + \partial_{\tau_{y}\tau_{y}}\Gbh(\xx,\yy) \label{eq:kf2} \; .
+\end{align}
+More explicitly, we have
+\begin{align}
+  K_1^F(\xx,\yy) &=  -\dfrac{\br \cdot \bn(\yy)}{|\br|^2}  \cdot \left( \frac{3 i}{2} H_0^{(1)}(k|\br|) - \frac{5 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{6}{\pi k^2 |\br|^2} + \frac{1}{2\pi}  \right) +     \\
+  & \quad \dfrac{\left(\br \cdot \bn(\yy)\right)^3}{|\br|^4} \cdot \left( 2i H_0^{(1)}(k|\br|) - \frac{7 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{8}{\pi k^2 |\br|^2}  \right) \, , \nonumber \\
+  K_2^F(\xx,\yy) &=  -\left(\frac{1}{2}-\dfrac{\left(\br \cdot \bn(\yy)\right)^2}{|\br|^2} \right)  \cdot \left( \frac{i}{2} H_0^{(1)}(k|\br|) - \frac{i}{k|\br|} H_1^{(1)}(k|\br|) + \frac{2}{\pi k^2 |\br|^2}  \right)\; .
+\end{align}
+
+On enforcing the Dirichlet boundary conditions for
+$w$, we obtain the integral equation
+\begin{equation}
+  \begin{split}
+    \begin{pmatrix}
+      f(\xx) \\
+      g(\xx)
+    \end{pmatrix} &= 
+    \int_\Gamma
+    \begin{pmatrix}
+      K_{11}^F(\xx,\yy) & K_{12}^F(\xx,\yy) \\
+      K_{21}^F(\xx,\yy) & K_{22}^F(\xx,\yy)
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\yy)\\
+      \sigma_2(\yy)
+    \end{pmatrix}
+    \, dS(\yy) \\
+    &\quad + \begin{pmatrix}
+      1/2 & 0 \\
+      -\kappa(\xx) & 1/2
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\xx)\\
+      \sigma_2(\xx)
+    \end{pmatrix} \; , \label{eq:farkIntEq} 
+  \end{split}
+\end{equation}
+where $\kappa$ is the signed curvature at $\xx \in \Gamma$.
+The kernels are given
+by $K_{11}^F = K_1^F$, $K_{12}^F = K_2^F$,
+\begin{align}
+  K_{21}^F(\xx,\yy) &= \left(K_1^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{21}^{F}(\xx,\yy) \; \label{eq:farkK21},\\
+  K_{22}^F(\xx,\yy) &= \left(K_2^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{22}^{F}(\xx,\yy) \label{eq:farkK22} \; .
+\end{align}
+
+The following lemma shows that the integral equation~\cref{eq:farkIntEq} is invertible for smooth domains
+whenever $k$ is not a buckling eigenfrequency. 
+
+\begin{lem}
+Suppose that $\Omega \subset \R^2$ is a simply connected region whose boundary $\Gamma$ is $\cC^{2}$. 
+Furthermore, suppose that $k$ is not a buckling eigenfrequency of $\Omega$, i.e., the only solution $w$ to~\cref{eq:buck1,eq:buck2,eq:buck3} is  $w \equiv 0$. Suppose further that $f,g \in \cC^{2}(\Gamma)$. 
+Then there exists a unique solution $\sigma_{1},\sigma_{2} \in \cC^{2}$ which satisfies~\cref{eq:farkIntEq}. 
+Furthermore, $w(\bx)$ defined via~\cref{eq:farkRep} satisfies the Helmholtz-Biharmonic equation~\cref{eq:helmbi}
+along with the boundary conditions $w(\bx)=f(\bx)$ and $\dwdn(\bx) = g(\bx)$ for $\bx \in\Gamma$. 
+\end{lem}
+
+\begin{proof}
+The proof is a minor modification of the one presented in~\ref{eq:shidongmodbi} and is contained in~\cref{sec:app}.
+\end{proof}
+
+The kernels $K^F_1$ and $K^F_2$ are
+constructed with the goal that the $K^F_{ij}$ are
+as smooth as possible. Suppose that the boundary
+$\Gamma$ is of class $C^k$. Then, the kernels,
+$K^F_{ij}(\xx,\yy)$, are $C^{k-2}$ functions on the boundary
+for each $\yy \in \Gamma$.
+Therefore, on a smooth
+boundary, these kernels are smooth. However, on a
+domain with a corner, we note 
+that the kernel $K_{21}^F$
+has a singularity with strength $r^{-2}$ (see~\cref{fig:ker21plot}). 
+This singularity, in addition to the term in \cref{eq:farkIntEq}
+which explicitly involves the
+curvature, makes the representation \cref{eq:farkRep}
+unstable for domains with high curvature (or
+corners).
+
+\subsection{Helmholtz-Stokes flow in a plane}
 
 In this section, we review the derivation of the
 modified Stokeslet, but for the imaginary parameter
@@ -267,90 +405,10 @@ integral representations for the solution of the Dirichlet problem for the Helmh
 \end{align}
 In \cite{Farkas89}, 
 the solution is given as the sum of two layer potentials, i.e.
-\begin{equation}
-  w(\xx) = \int_\Gamma K_1^F (\xx,\yy) \sigma_1(\yy) \, dS(\yy)
-  + \int_\Gamma K_2^F(\xx,\yy) \sigma_2(\yy) \, dS(\yy) \; ,
-  \label{eq:farkRep}
-\end{equation}
 where $\sigma_1$ and $\sigma_2$ are unknown densities.
 
 The integral kernels, $K_1^F$ and $K_2^F$ are based on
 derivatives of the Green's function for the biharmonic equation.
-For two points on the plane, $\xx$ and $\yy$, let $\br = \yy - \xx$. Then 
-\begin{align}
-  K_1^F(\xx,\yy) &= \partial_{n_{y}n_{y}n_{y}}\Gbh(\xx,\yy)
-  + 3 \partial_{n_{y}\tau_{y}\tau_{y}}\Gbh(\xx,\yy) + k^{2} \partial_{n_{y}}\Gbh(\xx,\yy)\; , \label{eq:kf1} \\
-  K_2^F(\xx,\yy) &= -\partial_{n_{y}n_{y}}\Gbh(\xx,\yy)
-  + \partial_{\tau_{y}\tau_{y}}\Gbh(\xx,\yy) \label{eq:kf2} \; .
-\end{align}
-More explicitly, we have
-
-\begin{align}
-  K_1^F(\xx,\yy) &=  -\dfrac{\br \cdot \bn(\yy)}{|\br|^2}  \cdot \left( \frac{3 i}{2} H_0^{(1)}(k|\br|) - \frac{5 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{6}{\pi k^2 |\br|^2} + \frac{1}{2\pi}  \right) +     \\
-  & \quad \dfrac{\left(\br \cdot \bn(\yy)\right)^3}{|\br|^4} \cdot \left( 2i H_0^{(1)}(k|\br|) - \frac{7 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{8}{\pi k^2 |\br|^2}  \right) \, , \nonumber \\
-  K_2^F(\xx,\yy) &=  -\left(\frac{1}{2}-\dfrac{\left(\br \cdot \bn(\yy)\right)^2}{|\br|^2} \right)  \cdot \left( \frac{i}{2} H_0^{(1)}(k|\br|) - \frac{i}{k|\br|} H_1^{(1)}(k|\br|) + \frac{2}{\pi k^2 |\br|^2}  \right)\; .
-\end{align}
-
-On enforcing the Dirichlet boundary conditions for
-$w$, we obtain the integral equation
-\begin{equation}
-  \begin{split}
-    \begin{pmatrix}
-      f(\xx) \\
-      g(\xx)
-    \end{pmatrix} &= 
-    \int_\Gamma
-    \begin{pmatrix}
-      K_{11}^F(\xx,\yy) & K_{12}^F(\xx,\yy) \\
-      K_{21}^F(\xx,\yy) & K_{22}^F(\xx,\yy)
-    \end{pmatrix}
-    \begin{pmatrix}
-      \sigma_1(\yy)\\
-      \sigma_2(\yy)
-    \end{pmatrix}
-    \, dS(\yy) \\
-    &\quad + \begin{pmatrix}
-      1/2 & 0 \\
-      -\kappa(\xx) & 1/2
-    \end{pmatrix}
-    \begin{pmatrix}
-      \sigma_1(\xx)\\
-      \sigma_2(\xx)
-    \end{pmatrix} \; , \label{eq:farkIntEq} 
-  \end{split}
-\end{equation}
-where $\kappa$ denotes the signed curvature as
-a function on $\Gamma$ and $\xx$ is a point on $\Gamma$. 
-The kernels are given
-by $K_{11}^F = K_1^F$, $K_{12}^F = K_2^F$,
-\begin{align}
-  K_{21}^F(\xx,\yy) &= \left(K_1^F(\xx,\yy)\right )_{n_x} \nonumber \\
-  &= \bn(\xx) \cdot \nabla_{\xx} K_{21}^{F}(\xx,\yy) \; \label{eq:farkK21},\\
-  K_{22}^F(\xx,\yy) &= \left(K_2^F(\xx,\yy)\right )_{n_x} \nonumber \\
-  &= \bn(\xx) \cdot \nabla_{\xx} K_{22}^{F}(\xx,\yy) \label{eq:farkK22} \; .
-\end{align}
-For a sufficiently smooth and simply connected domain,
-the integral equation \cref{eq:farkIntEq} is invertible.
-The case of a multiply connected domain is not treated
-fully in \cite{Farkas89}, but some of the issues are
-considered.
-
-As mentioned above, the kernels $K^F_1$ and $K^F_2$ are
-constructed with the goal that the $K^F_{ij}$ are
-as smooth as possible. Suppose that the boundary
-$\Gamma$ is of class $C^k$. Then, the kernels,
-$K^F_{ij}(\xx,\yy)$, are $C^{k-2}$ functions on the boundary
-for each $\yy \in \Gamma$.
-Therefore, on a smooth
-boundary, these kernels are smooth. However, on a
-domain with a corner, we note 
-that the kernel $K_{21}^F$
-has a singularity with strength $r^{-2}$ (see~\cref{fig:ker21plot}). 
-This singularity, in addition to the term in \cref{eq:farkIntEq}
-which explicitly involves the
-curvature, makes the representation \cref{eq:farkRep}
-unstable for domains with high curvature (or
-corners).
 
 \section{Integral equation derivation} \label{sec:anapp}
 
