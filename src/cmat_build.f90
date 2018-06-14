@@ -656,13 +656,14 @@
         real *8, allocatable :: xs(:), whts(:)
         real *8, allocatable :: xs1(:), whts1(:)
         real *8, allocatable :: xs0(:,:), whts0(:,:)
-        complex *16, allocatable :: tempmat(:,:)
+        !complex *16, allocatable :: tempmat(:,:)
+        complex *16 :: tempmat(10000)
 
         !
         ! actually go ahead and build the matrix, block by block
         !
         done = 1
-        allocate(tempmat(k,k))
+        !allocate(tempmat(k,k))
 
         itype = 1
         allocate(xs(k), whts(k))

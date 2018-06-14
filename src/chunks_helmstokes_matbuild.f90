@@ -1,5 +1,5 @@
 
-subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
+subroutine zhbhstokesmatbuild(zk,wgeo,ncomp,nchs,ccs, &
   q1,q2,ntot,sysmat,ier)
 
   !
@@ -106,6 +106,7 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
        yylongtrans(:,:), logval(:,:), logvalperp(:,:,:), brmat(:,:)
   real *8, allocatable :: rnorms(:,:), whts(:)
   real *8 :: eps, errs(1000), p1,p2,p3,p4
+  real *8 :: time1, time2
   integer job, lw, ndim, ngmrec, numit, niter, j1
   integer k, nch, ichunks, iadjs, iders, iders2, ihs
   integer npts, i, j, iii, incx, incy, ind, npts2, jj, ii
@@ -125,10 +126,18 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   call chunknormals(wgeo,rnorms)
   call chunkwhts(k,nch,wgeo(ichunks),wgeo(iders), &
        wgeo(ihs),whts)
+
+  ier = 0
   
   npts = k*nch
 
   call prinf('npts*',npts,1)
+
+  if (ntot .lt. 0) then
+     ntot = 2*npts+ncomp
+     ier = 1024
+     return
+  endif
 
   allocate(xx(npts,ncomp),yy(npts,ncomp))
 
@@ -214,8 +223,10 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
 
   ! single layer evaluation matrix in temp1
   allocate(temp1(npts,npts),temp2(npts,npts))
+  call prinf('forming slp ...*',i,0)
   call zbuildmat(k,wgeo,zkernel_slp,q1,q2, &
        fgreenlap,zk,pars1,pars2,npts,temp1)
+  call prinf('done.*',i,0)
 
   beta = 0.0d0
   incx = 1
@@ -228,9 +239,10 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
        npts,xx,npts,beta,yy,npts)
 
   ! matrix for neumann problem in temp2
-
+  call prinf('forming sprime ...*',i,0)
   call zbuildmat(k,wgeo,zkernel_sprime,q1,q2, &
        fgreenlap,zk,pars1,pars2,npts,temp2)
+  call prinf('done.*',i,0)
   do i = 1,npts
      temp2(i,i) = temp2(i,i) + 0.5d0
   enddo
@@ -258,7 +270,7 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
           eps,numit,xx(1,i),niter,errs,ngmrec,work)
      call prin2('errs *',errs,niter)
   enddo
-
+  call prinf('done with all Neumann problems.*',i,0)
   ! form S_tau
 
   call prinf('forming stau ...*',i,0)
@@ -275,8 +287,10 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   incy = 1
   alpha = 1.0d0
 
+  call prinf('applying stau ...*',i,0)
   call zgemm('T','N',npts,ncomp,npts,alpha,temp2, &
        npts,xx,npts,beta,yy,npts)
+  call prinf('done.*',i,0)
 
   ! get whts^T*stream matrix
 
@@ -285,9 +299,13 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   allocate(stokesmat(npts2,npts2))
 
   ndim = 2
+  call prinf('building stream function evaluator ...*',i,0)
+  time1 = second()
   call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_stream_kern, &
        q1,q2,fgreensdummy,zk,pars1,pars2,npts2, &
        stokesmat)
+  time2 = second()
+  call prin2('done.*',time2-time1,1)
 
   do i = 1,ncomp
      do j = 1,npts2
@@ -335,9 +353,13 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   ! get stokes system matrix (top left)
 
   ndim = 2
+  call prinf('building stokes kernel ...*',i,0)
+  time1 = second()
   call zbuildmat_vec(ndim,k,wgeo,zhelmstokes_kern, &
        q1,q2,fgreensdummy,zk,pars1,pars2,npts2, &
        stokesmat)
+  time2 = second()
+  call prin2('done.*',time2-time1,1)
   
   ! copy in (top left)
 
@@ -349,7 +371,9 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
 
   ! add onesmat modification
   
+  call prinf('building nullspace correction ...*',i,0)
   call normalonesmat(stokesmat,whts,rnorms,k,nch)
+  call prinf('done.*',i,0)
   do j = 1,npts2
      do i = 1,npts2
         sysmat(i,j) = sysmat(i,j) + stokesmat(i,j)
@@ -359,29 +383,7 @@ subroutine zhbh_stokes_matbuild(zk,wgeo,ncomp,nchs,ccs, &
   
   
   return
-end subroutine zhbh_stokes_matbuild
-
-
-subroutine zkernel_sprimet(par0, src, targ, src_normal, &
-     targ_normal, q1, q2, fgreen, pars1, pars2, val)
-  implicit real *8 (a-h,o-z)
-  real *8, intent(in) :: src(2), targ(2), src_normal(2)
-  real *8, intent(in) :: targ_normal(2), pars1(*), pars2(*)
-  complex *16, intent(in) :: par0, q1, q2
-  complex *16, intent(out) :: val
-
-  complex *16 :: val2, grad2(2), hess2(2,2)
-  !
-  ! this is just a wrapper routine for the kernel of the 
-  ! normal derivative of the single layer (transpose)
-  !
-
-  call fgreen(par0, targ, src, pars1, pars2, val2, &
-       grad2, hess2)
-  val = src_normal(1)*grad2(1) + src_normal(2)*grad2(2)
-
-  return
-end subroutine zkernel_sprimet
+end subroutine zhbhstokesmatbuild
 
 
 subroutine fgreenlap(par0,src,targ,pars1,pars2,val, &

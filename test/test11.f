@@ -6,8 +6,8 @@
       external fdet,fdet2
 
       call prini(6,13)
-      call prin2('Enter n*',n,0)
-      read *, n
+      call prin2('Enter nover*',n,0)
+      read *, nover
 
       done = 1
       pi = atan(done)*4
@@ -74,7 +74,7 @@ cc      enddo
       ck(1) = hkrand(0)
       ck(2) = hkrand(0)
 
-      nchci = 20
+      nchci = 16*2**nover
 
       iw2 = 24
 
@@ -327,7 +327,7 @@ c     Allocate potential, gradient and potn arrays
       q1 = (1.0d0,0.0d0)
       q2 = (1.0d0,0.0d0)
 
-      call zhbh_stokes_matbuild(zk,wgeos,ncomp,nchs,cms,
+      call zhbhstokesmatbuild(zk,wgeos,ncomp,nchs,cms,
      1     q1,q2,ntot,sysmat,ier)
       
 c
@@ -441,14 +441,14 @@ c
       allocate(workspace(lw))
       call prinf('computing svd ...*',ier,0)
       time1 = second()
-      call csvdpiv2(ier,sysmat2,ntot,ntot,sing,ncols,epss,workspace,
-     1     lw,ltot)
+c      call csvdpiv2(ier,sysmat2,ntot,ntot,sing,ncols,epss,workspace,
+c     1     lw,ltot)
       time2 = second()      
       call prin2('done. time=*',time2-time1,1)      
 
       call prinf('ier=*',ier,1)
       call prinf('ncols=*',ncols,1)
-      call prin2('sing=*',sing,2*ncols)
+c      call prin2('sing=*',sing,2*ncols)
 
       call prin2('sing(ntot)=*',sing(ntot)/sing(1),1)
       call prin2('rlam=*',rlam,1)

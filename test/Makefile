@@ -3,9 +3,6 @@ ifndef SYSTEM
 SYSTEM = linux
 endif
 
-SYSTEM = mac
-
-
 FC = gfortran
 
 ifeq ($(SYSTEM),linux)
@@ -62,6 +59,11 @@ VPATH = $(SRC_DIR):$(BIN_DIR)
 
 %.o: %.f90
 	$(FC) $(DBGFL) $(FFLAGS) -c $< -o $(BIN_DIR)/$@
+
+test%: $(OBJS)
+	mkdir -p $(TMP_DIR)
+	$(FC) $(FFLAGS) -o $(TMP_DIR)/$@ $@.f $(PREO) $(LOBJS) $(POSTO) 
+	cd $(TMP_DIR); ./$@
 
 testhelmbhrouts: $(OBJS)
 	mkdir -p $(TMP_DIR)

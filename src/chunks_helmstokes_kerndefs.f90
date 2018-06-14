@@ -53,20 +53,26 @@ subroutine zhelmstokes_kern(zk,src,targ,&
   if (abs(cs) .lt. small) ifs = 0
   if (abs(cd) .lt. small) ifd = 0
 
-  if (ifs .eq. 1) then
-     ifstress = 0
-     call zhelmstokesletmat(zk,src,targ, &
-          mats,ifstress,stressmat)
-  end if
-  if (ifd .eq. 1) then
-     trans = 'T'
-     nu(1) = src_normal(1)
-     nu(2) = src_normal(2)
-     call zhelmstressletmat(zk,src,targ,nu, &
-          matd,trans)
-  end if
+!  if (ifs .eq. 1) then
+!     ifstress = 0
+!     call zhelmstokesletmat(zk,src,targ, &
+!          mats,ifstress,stressmat)
+!  end if
+!  if (ifd .eq. 1) then
+!     trans = 'T'
+!     nu(1) = src_normal(1)
+!     nu(2) = src_normal(2)
+!     call zhelmstressletmat(zk,src,targ,nu, &
+!          matd,trans)
+!  end if
 
-  val = cs*mats + cd*matd
+!  val = cs*mats + cd*matd
+
+  nu(1) = src_normal(1)
+  nu(2) = src_normal(2)
+  call zhelmstokesallmat(zk,src,targ,nu,cs,cd, &
+     val)
+
 
   return
 end subroutine zhelmstokes_kern
@@ -96,6 +102,7 @@ subroutine zhelmstokes_stream_kern(zk,src,targ,&
   complex *16, intent(out) :: val(2,2)
   ! local
   complex *16 :: zmats(1,2), zmatd(1,2), cs, cd
+  complex *16 :: zmatall(1,2)
   complex *16 :: stressmat(2,2,2), nu(2)
   integer :: ifs, ifd, ifstress
   real *8 :: small
@@ -114,20 +121,31 @@ subroutine zhelmstokes_stream_kern(zk,src,targ,&
   if (abs(cs) .lt. small) ifs = 0
   if (abs(cd) .lt. small) ifd = 0
 
-  if (ifs .eq. 1) then
-     call zhelmstokeslet_streammat(zk,src,targ, &
-          zmats)
-  end if
-  if (ifd .eq. 1) then
-     trans = 'T'
-     nu(1) = src_normal(1)
-     nu(2) = src_normal(2)
-     call zhelmdouble_streammat(zk,src,targ,nu, &
-          zmatd)
-  end if
+  !if (ifs .eq. 1) then
+  !   call zhelmstokeslet_streammat(zk,src,targ, &
+  !        zmats)
+  !end if
+  !if (ifd .eq. 1) then
+  !   trans = 'T'
+  !   nu(1) = src_normal(1)
+  !   nu(2) = src_normal(2)
+  !   call zhelmdouble_streammat(zk,src,targ,nu, &
+  !        zmatd)
+  !end if
 
-  val(1,1) = cs*zmats(1,1) + cd*zmatd(1,1)
-  val(1,2) = cs*zmats(1,2) + cd*zmatd(1,2)
+  !val(1,1) = cs*zmats(1,1) + cd*zmatd(1,1)
+  !val(1,2) = cs*zmats(1,2) + cd*zmatd(1,2)
+  !val(2,1) = 0
+  !val(2,2) = 0
+
+  nu(1) = src_normal(1)
+  nu(2) = src_normal(2)
+
+  call zhelmstokesall_streammat(zk,src,targ,nu,cs,cd, &
+     zmatall)
+  
+  val(1,1) = zmatall(1,1)
+  val(1,2) = zmatall(1,2)
   val(2,1) = 0
   val(2,2) = 0
 
@@ -398,6 +416,119 @@ subroutine zhelmstressletmat(zk,src,targ,nu, &
   return
 end subroutine zhelmstressletmat
 
+subroutine zhelmstokesallmat(zk,src,targ,nu,cs,cd, &
+     mat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  ! This function produces a matrix such that
+  ! mat*mu is a stresslet. trans='T' gives the
+  ! transpose of the matrix
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2), cs, cd
+  real *8, intent(in) :: src(2), targ(2)
+  complex *16, intent(out) :: mat(2,2)
+  ! local
+  integer :: ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
+  integer :: ifs, ifd
+  complex *16 :: pot, grad(2), hess(3), der3(4), der4(5), der5(6)
+  complex *16 :: mat1(2,2), mat2(2,2), tau(2), matl(2,2)
+  real *8 :: gradgl(2), pi2, rx, ry, r2, c1,c2,c3,small
+  data small /1d-16/
+
+  pi2 = 8.0d0*datan(1.0d0)
+  rx = targ(1)-src(1)
+  ry = targ(2)-src(2)
+
+  r2 = rx**2 + ry**2
+
+  gradgl(1) = -rx/(r2*pi2)
+  gradgl(2) = -ry/(r2*pi2)
+
+  tau(1) = -nu(2)
+  tau(2) = nu(1)
+  
+  ifs = 1
+  ifd = 1
+  if (abs(cs) .lt. small) ifs = 0
+  if (abs(cd) .lt. small) ifd = 0
+
+  ifpot = 0
+  ifgrad = 0
+  ifhess = ifs
+  ifder3 = ifd
+  ifder4 = 0
+  ifder5 = 0
+
+  ! grab some derivatives of G
+
+  if (ifs .eq. 1 .or. ifd .eq. 1) then
+     call helmbhgreen_all(zk,targ,src,ifpot,pot,ifgrad,grad, &
+          ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
+  endif
+
+  mat(1,1) = 0.0d0
+  mat(2,1) = 0.0d0
+  mat(1,2) = 0.0d0
+  mat(2,2) = 0.0d0
+
+
+  !! SINGLE LAYER
+
+  ! zvel = gradperp (gradperp dot mu) G
+  
+  if (ifs .eq. 1) then
+
+     mat(1,1) = cs*hess(3)
+     mat(2,1) = -cs*hess(2)
+     mat(1,2) = -cs*hess(2)
+     mat(2,2) = cs*hess(1)
+  end if
+
+  !! DOUBLE LAYER = transpose of stresslet
+
+  ! stresslet = -nu outer grad G_L - mat1 - mat2
+
+  ! matl = -nu outer gradgl
+
+  if (ifd .eq. 1) then 
+
+     matl(1,1) = -nu(1)*gradgl(1)
+     matl(2,1) = -nu(2)*gradgl(1)
+     matl(1,2) = -nu(1)*gradgl(2)
+     matl(2,2) = -nu(2)*gradgl(2)
+
+     ! mat1
+     ! -gradperp outer gradperp dnu G
+     ! gradperp outer gradperp = (dx2dx2,-dx1dx2;-dx1dx2,dx1dx1)
+     mat1(1,1) = -der3(3)*nu(1)-der3(4)*nu(2)
+     mat1(2,1) = der3(2)*nu(1)+der3(3)*nu(2)
+     mat1(1,2) = mat1(2,1)
+     mat1(2,2) = -der3(1)*nu(1)-der3(2)*nu(2)
+
+     ! mat2
+     ! grad outer gradperp dtau G
+     ! grad outer gradperp = (-dx1dx2,dx1dx1;-dx2dx2,dx1dx2)
+     mat2(1,1) = -der3(2)*tau(1)-der3(3)*tau(2)
+     mat2(2,1) = -der3(3)*tau(1)-der3(4)*tau(2)
+     mat2(1,2) = der3(1)*tau(1)+der3(2)*tau(2)
+     mat2(2,2) = der3(2)*tau(1)+der3(3)*tau(2)
+
+     c1 = 1.0d0
+     c2 = -1.0d0
+     c3 = -1.0d0
+
+     mat(1,1) = mat(1,1) + cd*(c1*matl(1,1)+c2*mat1(1,1)+c3*mat2(1,1))
+     mat(1,2) = mat(1,2) + cd*(c1*matl(2,1)+c2*mat1(2,1)+c3*mat2(2,1))
+     mat(2,1) = mat(2,1) + cd*(c1*matl(1,2)+c2*mat1(1,2)+c3*mat2(1,2))
+     mat(2,2) = mat(2,2) + cd*(c1*matl(2,2)+c2*mat1(2,2)+c3*mat2(2,2))
+
+  endif
+
+  return
+end subroutine zhelmstokesallmat
+
 
 subroutine zhelmstokeslet_streammat(zk,src,targ, &
      zmat)
@@ -489,6 +620,83 @@ subroutine zhelmdouble_streammat(zk,src,targ,nu, &
   
   return
 end subroutine zhelmdouble_streammat
+
+subroutine zhelmstokesall_streammat(zk,src,targ,nu,cs,cd, &
+     zmat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  !
+  ! applied to a vector density mu, this gives the
+  ! stream function part of the double layer potential
+  ! (missing the potential part, i.e. the part due
+  ! to "pressure")
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2), cs, cd
+  real *8, intent(in) :: src(2), targ(2)
+  complex *16, intent(out) :: zmat(1,2)
+  ! local
+  integer :: ifpot, ifgrad, ifhess, ifder3, ifder4, ifder5
+  integer :: ifs, ifd
+  complex *16 :: pot, grad(2), hess(3), der3(4), der4(5), der5(6)
+  complex *16 :: zmat1(1,2), zmat2(1,2), tau(2)
+  real *8 :: c1,c2,small
+  data small /1d-16 /
+
+  ifs = 1
+  ifd = 1
+  if (abs(cs) .lt. small) ifs = 0
+  if (abs(cd) .lt. small) ifd = 0
+
+  tau(1) = -nu(2)
+  tau(2) = nu(1)
+  
+  ifpot = 0
+  ifgrad = ifs
+  ifhess = ifd
+  ifder3 = 0
+  ifder4 = 0
+  ifder5 = 0
+
+  ! grab some derivatives of G
+
+  call helmbhgreen_all(zk,targ,src,ifpot,pot,ifgrad,grad, &
+       ifhess,hess,ifder3,der3,ifder4,der4,ifder5,der5)
+
+  zmat(1,1) = 0.0d0
+  zmat(1,2) = 0.0d0
+
+  if (ifs .eq. 1) then
+     zmat(1,1) = -cs*grad(2)
+     zmat(1,2) = cs*grad(1)
+  endif
+
+  if (ifd .eq. 1) then
+
+     ! mat1
+     ! - gradperp dnu G
+     ! 
+     zmat1(1,1) = hess(2)*nu(1)+hess(3)*nu(2)
+     zmat1(1,2) = -hess(1)*nu(1)-hess(2)*nu(2)
+     
+     ! mat2
+     ! grad dtau G
+     ! 
+     zmat2(1,1) = hess(1)*tau(1)+hess(2)*tau(2)
+     zmat2(1,2) = hess(2)*tau(1)+hess(3)*tau(2)
+     
+     c1 = -1.0d0
+     c2 = -1.0d0
+     
+     zmat(1,1) = zmat(1,1) + cd*(c1*zmat1(1,1) + c2*zmat2(1,1))
+     zmat(1,2) = zmat(1,2) + cd*(c1*zmat1(1,2) + c2*zmat2(1,2))
+  endif
+  
+  return
+end subroutine zhelmstokesall_streammat
+
+
 
 subroutine normalonesmat(onesmat,whts,rnorms,k,nch)
   !
