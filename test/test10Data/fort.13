@@ -1,0 +1,604 @@
+ Enter n
+ rin=
+  0.12000E+01
+ rout=
+  0.17000E+01
+ adjs=
+      20       2       1       3       2       4       3       5       4       6
+       5       7       6       8       7       9       8      10       9      11
+      10      12      11      13      12      14      13      15      14      16
+      15      17      16      18      17      19      18      20      19       1
+      40      22      21      23      22      24      23      25      24      26
+      25      27      26      28      27      29      28      30      29      31
+      30      32      31      33      32      34      33      35      34      36
+      35      37      36      38      37      39      38      40      39      21
+ nch=
+      40
+ ncomp=
+       2
+ nch=
+      40
+ nchs=
+      20      20
+ lused=
+    4431
+ whts=
+  0.72507E-02  0.16624E-01  0.25411E-01  0.33280E-01  0.39947E-01  0.45171E-01
+  0.48762E-01  0.50590E-01  0.50590E-01  0.48762E-01  0.45171E-01  0.39947E-01
+  0.33280E-01  0.25411E-01  0.16624E-01  0.72507E-02  0.72507E-02  0.16624E-01
+  0.25411E-01  0.33280E-01  0.39947E-01  0.45171E-01  0.48762E-01  0.50590E-01
+ hs=
+  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00
+  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00
+  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00
+  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00  0.15708E+00
+ k=
+      16
+ ntot=
+    1282
+ n=
+     640
+ npts
+     640
+ ind 
+       1
+ ind 
+     321
+ ind 
+     641
+ solving neumann problem, comp 
+       1
+ in cgmres, niter=
+       1
+ in cgmres, niter=
+       2
+ in cgmres, niter=
+       3
+ in cgmres, niter=
+       4
+ in cgmres, niter=
+       5
+ in cgmres, niter=
+       6
+ in cgmres, niter=
+       7
+ in cgmres, niter=
+       8
+ in cgmres, niter=
+       9
+ in cgmres, niter=
+      10
+ in cgmres, niter=
+      11
+ in cgmres, niter=
+      12
+ in cgmres, niter=
+      13
+ in cgmres, niter=
+      14
+ in cgmres, niter=
+      15
+ in cgmres, niter=
+      16
+ errs 
+  0.12414E+02  0.10069E-05  0.17868E-13  0.17604E-13  0.17592E-13  0.17590E-13
+  0.17589E-13  0.17589E-13  0.17589E-13  0.17589E-13  0.17589E-13  0.17589E-13
+  0.17589E-13  0.17589E-13  0.17589E-13
+ solving neumann problem, comp 
+       2
+ in cgmres, niter=
+       1
+ in cgmres, niter=
+       2
+ in cgmres, niter=
+       3
+ in cgmres, niter=
+       4
+ in cgmres, niter=
+       5
+ in cgmres, niter=
+       6
+ in cgmres, niter=
+       7
+ in cgmres, niter=
+       8
+ in cgmres, niter=
+       9
+ in cgmres, niter=
+      10
+ in cgmres, niter=
+      11
+ in cgmres, niter=
+      12
+ in cgmres, niter=
+      13
+ in cgmres, niter=
+      14
+ in cgmres, niter=
+      15
+ in cgmres, niter=
+      16
+ in cgmres, niter=
+      17
+ in cgmres, niter=
+      18
+ in cgmres, niter=
+      19
+ errs 
+  0.62445E+01  0.50174E-06  0.30848E-13  0.22320E-13  0.21772E-13  0.21656E-13
+  0.21635E-13  0.21628E-13  0.21627E-13  0.21627E-13  0.21627E-13  0.21627E-13
+  0.21627E-13  0.21627E-13  0.21627E-13  0.21627E-13  0.21627E-13  0.21627E-13
+ forming stau ...
+ done
+ ind 
+       1
+ ind 
+     321
+ cms=
+  0.31000E+01  0.32000E+01  0.00000E+00  0.00000E+00
+ rhs=
+  0.57284E-01  -.23528E-01  0.19996E+01  -.16936E+01  0.41588E-01  -.23564E-01
+  0.19966E+01  -.17015E+01  0.14219E-01  -.23318E-01  0.19958E+01  -.17142E+01
+  -.22943E-01  -.22197E-01  0.20042E+01  -.17291E+01  -.66558E-01  -.19179E-01
+  0.20298E+01  -.17418E+01  -.11180E+00  -.12486E-01  0.20791E+01  -.17447E+01
+ rhs end = 
+  0.76638E+01  -.10434E+01  0.27097E+01  -.26437E+00
+ l2 norm of rhs=
+  0.13326E+02
+ in cgmres, niter=
+       1
+ in cgmres, niter=
+       2
+ in cgmres, niter=
+       3
+ in cgmres, niter=
+       4
+ in cgmres, niter=
+       5
+ in cgmres, niter=
+       6
+ in cgmres, niter=
+       7
+ in cgmres, niter=
+       8
+ in cgmres, niter=
+       9
+ in cgmres, niter=
+      10
+ in cgmres, niter=
+      11
+ in cgmres, niter=
+      12
+ in cgmres, niter=
+      13
+ in cgmres, niter=
+      14
+ in cgmres, niter=
+      15
+ in cgmres, niter=
+      16
+ in cgmres, niter=
+      17
+ in cgmres, niter=
+      18
+ in cgmres, niter=
+      19
+ in cgmres, niter=
+      20
+ in cgmres, niter=
+      21
+ in cgmres, niter=
+      22
+ in cgmres, niter=
+      23
+ in cgmres, niter=
+      24
+ in cgmres, niter=
+      25
+ in cgmres, niter=
+      26
+ in cgmres, niter=
+      27
+ in cgmres, niter=
+      28
+ in cgmres, niter=
+      29
+ in cgmres, niter=
+      30
+ in cgmres, niter=
+      31
+ in cgmres, niter=
+      32
+ in cgmres, niter=
+      33
+ in cgmres, niter=
+      34
+ in cgmres, niter=
+      35
+ in cgmres, niter=
+      36
+ in cgmres, niter=
+      37
+ in cgmres, niter=
+      38
+ in cgmres, niter=
+      39
+ in cgmres, niter=
+      40
+ in cgmres, niter=
+      41
+ in cgmres, niter=
+      42
+ in cgmres, niter=
+      43
+ in cgmres, niter=
+      44
+ in cgmres, niter=
+      45
+ in cgmres, niter=
+      46
+ in cgmres, niter=
+      47
+ in cgmres, niter=
+      48
+ in cgmres, niter=
+      49
+ in cgmres, niter=
+      50
+ in cgmres, niter=
+      51
+ in cgmres, niter=
+      52
+ in cgmres, niter=
+      53
+ in cgmres, niter=
+      54
+ in cgmres, niter=
+      55
+ in cgmres, niter=
+      56
+ in cgmres, niter=
+      57
+ in cgmres, niter=
+      58
+ in cgmres, niter=
+      59
+ in cgmres, niter=
+      60
+ in cgmres, niter=
+      61
+ in cgmres, niter=
+      62
+ in cgmres, niter=
+      63
+ in cgmres, niter=
+      64
+ in cgmres, niter=
+      65
+ in cgmres, niter=
+      66
+ in cgmres, niter=
+      67
+ in cgmres, niter=
+      68
+ in cgmres, niter=
+      69
+ in cgmres, niter=
+      70
+ in cgmres, niter=
+      71
+ in cgmres, niter=
+      72
+ in cgmres, niter=
+      73
+ in cgmres, niter=
+      74
+ in cgmres, niter=
+      75
+ in cgmres, niter=
+      76
+ in cgmres, niter=
+      77
+ in cgmres, niter=
+      78
+ in cgmres, niter=
+      79
+ in cgmres, niter=
+      80
+ in cgmres, niter=
+      81
+ in cgmres, niter=
+      82
+ in cgmres, niter=
+      83
+ in cgmres, niter=
+      84
+ in cgmres, niter=
+      85
+ in cgmres, niter=
+      86
+ in cgmres, niter=
+      87
+ in cgmres, niter=
+      88
+ in cgmres, niter=
+      89
+ in cgmres, niter=
+      90
+ in cgmres, niter=
+      91
+ in cgmres, niter=
+      92
+ in cgmres, niter=
+      93
+ in cgmres, niter=
+      94
+ in cgmres, niter=
+      95
+ in cgmres, niter=
+      96
+ in cgmres, niter=
+      97
+ in cgmres, niter=
+      98
+ in cgmres, niter=
+      99
+ in cgmres, niter=
+     100
+ in cgmres, niter=
+     101
+ in cgmres, niter=
+     102
+ in cgmres, niter=
+     103
+ in cgmres, niter=
+     104
+ in cgmres, niter=
+     105
+ in cgmres, niter=
+     106
+ in cgmres, niter=
+     107
+ in cgmres, niter=
+     108
+ in cgmres, niter=
+     109
+ in cgmres, niter=
+     110
+ in cgmres, niter=
+     111
+ in cgmres, niter=
+     112
+ in cgmres, niter=
+     113
+ in cgmres, niter=
+     114
+ in cgmres, niter=
+     115
+ in cgmres, niter=
+     116
+ in cgmres, niter=
+     117
+ in cgmres, niter=
+     118
+ in cgmres, niter=
+     119
+ in cgmres, niter=
+     120
+ in cgmres, niter=
+     121
+ in cgmres, niter=
+     122
+ in cgmres, niter=
+     123
+ in cgmres, niter=
+     124
+ in cgmres, niter=
+     125
+ in cgmres, niter=
+     126
+ in cgmres, niter=
+     127
+ in cgmres, niter=
+     128
+ in cgmres, niter=
+     129
+ in cgmres, niter=
+     130
+ in cgmres, niter=
+     131
+ in cgmres, niter=
+     132
+ in cgmres, niter=
+     133
+ in cgmres, niter=
+     134
+ in cgmres, niter=
+     135
+ in cgmres, niter=
+     136
+ in cgmres, niter=
+     137
+ in cgmres, niter=
+     138
+ in cgmres, niter=
+     139
+ in cgmres, niter=
+     140
+ in cgmres, niter=
+     141
+ in cgmres, niter=
+     142
+ in cgmres, niter=
+     143
+ in cgmres, niter=
+     144
+ in cgmres, niter=
+     145
+ in cgmres, niter=
+     146
+ in cgmres, niter=
+     147
+ in cgmres, niter=
+     148
+ in cgmres, niter=
+     149
+ in cgmres, niter=
+     150
+ in cgmres, niter=
+     151
+ in cgmres, niter=
+     152
+ in cgmres, niter=
+     153
+ in cgmres, niter=
+     154
+ in cgmres, niter=
+     155
+ in cgmres, niter=
+     156
+ in cgmres, niter=
+     157
+ in cgmres, niter=
+     158
+ in cgmres, niter=
+     159
+ in cgmres, niter=
+     160
+ in cgmres, niter=
+     161
+ in cgmres, niter=
+     162
+ in cgmres, niter=
+     163
+ in cgmres, niter=
+     164
+ in cgmres, niter=
+     165
+ in cgmres, niter=
+     166
+ in cgmres, niter=
+     167
+ in cgmres, niter=
+     168
+ in cgmres, niter=
+     169
+ in cgmres, niter=
+     170
+ in cgmres, niter=
+     171
+ in cgmres, niter=
+     172
+ in cgmres, niter=
+     173
+ in cgmres, niter=
+     174
+ errmax1=
+  0.72709E-06  0.93462E-06  0.17009E-05  0.25812E-05
+ errmax2=
+  0.41342E-06  0.59854E-06  0.25097E-05  0.21594E-05
+ ier=
+       8
+ niter=
+     173
+ errs=
+  0.95261E+02  0.26148E+02  0.53852E+01  0.48134E+01  0.46476E+01  0.46186E+01
+  0.45633E+01  0.45453E+01  0.45244E+01  0.43319E+01  0.38517E+01  0.36363E+01
+  0.35237E+01  0.34256E+01  0.34174E+01  0.32911E+01  0.31777E+01  0.31369E+01
+  0.30557E+01  0.28483E+01  0.21717E+01  0.19216E+01  0.18021E+01  0.17520E+01
+  0.14926E+01  0.13777E+01  0.13393E+01  0.11991E+01  0.97425E+00  0.75687E+00
+  0.68259E+00  0.60677E+00  0.55302E+00  0.54984E+00  0.50255E+00  0.46744E+00
+  0.46558E+00  0.44415E+00  0.40412E+00  0.37983E+00  0.32371E+00  0.29843E+00
+  0.27249E+00  0.21387E+00  0.19837E+00  0.17264E+00  0.14366E+00  0.10920E+00
+  0.10280E+00  0.98340E-01  0.94083E-01  0.80361E-01  0.74578E-01  0.68280E-01
+  0.64203E-01  0.58398E-01  0.53720E-01  0.50362E-01  0.49866E-01  0.49663E-01
+  0.45743E-01  0.41374E-01  0.34490E-01  0.26781E-01  0.19072E-01  0.15687E-01
+  0.15442E-01  0.13410E-01  0.10391E-01  0.83787E-02  0.67244E-02  0.54412E-02
+  0.47099E-02  0.42528E-02  0.34788E-02  0.25725E-02  0.19748E-02  0.12682E-02
+  0.99056E-03  0.76176E-03  0.68015E-03  0.64519E-03  0.56662E-03  0.47865E-03
+  0.46750E-03  0.46279E-03  0.45407E-03  0.42949E-03  0.40606E-03  0.39244E-03
+  0.35203E-03  0.29022E-03  0.25350E-03  0.21152E-03  0.15134E-03  0.10417E-03
+  0.96109E-04  0.93840E-04  0.89855E-04  0.69396E-04  0.47801E-04  0.28388E-04
+  0.19211E-04  0.14838E-04  0.12386E-04  0.10838E-04  0.10577E-04  0.69616E-05
+  0.49895E-05  0.37987E-05  0.25734E-05  0.15176E-05  0.72469E-06  0.43818E-06
+  0.29707E-06  0.19230E-06  0.12097E-06  0.64724E-07  0.41582E-07  0.30149E-07
+  0.21339E-07  0.15201E-07  0.10136E-07  0.51898E-08  0.32357E-08  0.23402E-08
+  0.15994E-08  0.13759E-08  0.98884E-09  0.91385E-09  0.64529E-09  0.50343E-09
+  0.32563E-09  0.21984E-09  0.13694E-09  0.78794E-10  0.51733E-10  0.47033E-10
+  0.46025E-10  0.40600E-10  0.34729E-10  0.27812E-10  0.18242E-10  0.12150E-10
+  0.89262E-11  0.47701E-11  0.25996E-11  0.14852E-11  0.84927E-12  0.34879E-12
+  0.12485E-12  0.57182E-13  0.34598E-13  0.30570E-13  0.30254E-13  0.30227E-13
+  0.30223E-13  0.30222E-13  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13
+  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13
+  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13  0.30221E-13
+ soln=
+  -.18548E-04  -.31582E-02  0.33110E-01  0.14940E+01  -.10245E-02  0.27854E-03
+  0.31579E-01  0.14939E+01  -.30758E-02  0.62564E-02  0.20671E-01  0.14930E+01
+  -.74083E-02  0.14164E-01  -.11890E-01  0.14898E+01  -.16927E-01  0.22379E-01
+  -.79944E-01  0.14801E+01  -.35697E-01  0.26973E-01  -.19452E+00  0.14544E+01
+ computed correction=
+  0.34684E+00  0.67145E-03
+ ii=
+   90001
+ nnn=
+     320
+ ncomp=
+       2
+ cms=
+  0.31000E+01  0.32000E+01  0.00000E+00  0.00000E+00
+ ntin=
+   29136
+ k 
+      16
+ nch 
+      40
+ ztemp
+  -.27317E-10  0.38169E-11
+ solving neumann problem 
+ in cgmres, niter=
+       1
+ in cgmres, niter=
+       2
+ in cgmres, niter=
+       3
+ in cgmres, niter=
+       4
+ in cgmres, niter=
+       5
+ in cgmres, niter=
+       6
+ in cgmres, niter=
+       7
+ in cgmres, niter=
+       8
+ in cgmres, niter=
+       9
+ in cgmres, niter=
+      10
+ in cgmres, niter=
+      11
+ in cgmres, niter=
+      12
+ in cgmres, niter=
+      13
+ in cgmres, niter=
+      14
+ in cgmres, niter=
+      15
+ in cgmres, niter=
+      16
+ in cgmres, niter=
+      17
+ in cgmres, niter=
+      18
+ in cgmres, niter=
+      19
+ in cgmres, niter=
+      20
+ errs 
+  0.25185E+01  0.38772E+00  0.16007E+00  0.82318E-01  0.30386E-01  0.28192E-01
+  0.12951E-01  0.28649E-02  0.10321E-02  0.14743E-03  0.38906E-04  0.42831E-05
+  0.80478E-06  0.66044E-07  0.93611E-08  0.58334E-09  0.58578E-10  0.28830E-11
+  0.19313E-12  0.70124E-14
+ ztemp
+  -.14451E-11  0.18414E-12
