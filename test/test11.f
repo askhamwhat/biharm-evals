@@ -78,7 +78,7 @@ cc      enddo
 
       iw2 = 24
 
-      rlams(1) = 12.8366281222226473321
+      rlams(1) = 12.8366281222226473321d0
 
       call testhbhdir2(iw2,rin,rout,nchci,nsrc,
      1   ncomp,cms,xy,ck,rlams(1),ntot,erra,rcond)
@@ -450,9 +450,8 @@ c     1     lw,ltot)
       call prinf('ncols=*',ncols,1)
 c      call prin2('sing=*',sing,2*ncols)
 
-      call prin2('sing(ntot)=*',sing(ntot)/sing(1),1)
-      call prin2('rlam=*',rlam,1)
-      stop
+cc      call prin2('sing(ntot)=*',sing(ntot)/sing(1),1)
+cc      call prin2('rlam=*',rlam,1)
 
 c
 cc       generate two random rhs
@@ -524,12 +523,12 @@ c
       do nbod = 1,ncomp
          tmp1 = hkrand(0)
          tmp2 = hkrand(0)
-         ztmp = cmplx(tmp1,tmp2)
+         ztmp = dcmplx(tmp1,tmp2)
          rvec1(2*k*nch+nbod) = ztmp
 
          tmp1 = hkrand(0)
          tmp2 = hkrand(0)
-         ztmp = cmplx(tmp1,tmp2)
+         ztmp = dcmplx(tmp1,tmp2)
          rvec2(2*k*nch+nbod) = ztmp
       enddo
 
@@ -1577,9 +1576,9 @@ c-----------------------------------------------------------------
       q2r = pars2(8)
       q2i = pars2(9)
 
-      zk = cmplx(zkr,zki)
-      q1 = cmplx(q1r,q1i)
-      q2 = cmplx(q2r,q2i)
+      zk = dcmplx(zkr,zki)
+      q1 = dcmplx(q1r,q1i)
+      q2 = dcmplx(q2r,q2i)
 
       call legeexev(t,src(1),pars(1),k-1)
       call legeexev(t,src(2),pars(k+1),k-1)
@@ -1594,9 +1593,9 @@ c-----------------------------------------------------------------
       call legeexev(t,soln3i,pars(10*k+1),k-1)
 
 
-      soln1 = cmplx(soln1r,soln1i)
-      soln2 = cmplx(soln2r,soln2i)
-      soln3 = cmplx(soln3r,soln3i)
+      soln1 = dcmplx(soln1r,soln1i)
+      soln2 = dcmplx(soln2r,soln2i)
+      soln3 = dcmplx(soln3r,soln3i)
 
       call zhelmstokes_stream_kern(zk,src,targ,rnorm,rnorm,q1,q2,
      1       fgreensdummy,p1,p2,zmatt)
@@ -1672,7 +1671,7 @@ c------------------------------------------
       ifexpon = 1 
       call hank103(z1,h0r1,h1r1,ifexpon)
 
-      z2 = cmplx(x*r1,0)
+      z2 = dcmplx(x*r1,0)
 
       h1 = 0
       call hank103(z2,h0r2,h1r2,ifexpon)
@@ -1726,7 +1725,7 @@ c-------------------------------------------------------------
       call prin2('y=*',y,1)
       call prin2('x=*',x,1)
 
-      z1 = cmplx(x,0)
+      z1 = dcmplx(x,0)
 
       h0 = 0
       h1 = 0
@@ -1736,7 +1735,7 @@ c-------------------------------------------------------------
       call prin2('h0r1=*',h0r1,2)
       call prin2('h1r1=*',h1r1,2)
 
-      z2 = cmplx(x*y,0)
+      z2 = dcmplx(x*y,0)
 
       h1 = 0
       call hank103(z2,h0r2,h1r2,ifexpon)
