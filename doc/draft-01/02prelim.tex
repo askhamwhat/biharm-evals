@@ -1,0 +1,310 @@
+\section{Mathematical Preliminaries}
+
+In this paper, vector-valued
+quantities are denoted by bold, lower-case letters
+(e.g. $\bh$), while tensor-valued quantities are bold
+and upper-case (e.g. $\mathbf{T}$). 
+Subscript indices of non-bold characters (e.g. $h_j$ or $T_{jkl}$)
+are used to denote the entries within a vector ($\bh$) or tensor ($\bT$).
+We use the standard Einstein summation convention; in other words, 
+there is an implied sum taken over the repeated indices of 
+any term (e.g. the symbol $a_{j} b_{j}$ is used to represent the sum
+$\sum_{j} a_{j} b_{j}$).
+If $\xx = (x_1,x_2)^\intercal$, then $\xx^\bot = (-x_2,x_1)^\intercal$.
+Similarly, $\nabla^\bot = (-\partial_{x_2},\partial_{x_1})^\intercal$.
+
+
+\subsection{Fundamental solution}
+
+The fundamental solution of the Helmholtz-Biharmonic equation is
+given by 
+\begin{equation}
+  G_{BH}(\xx,\yy) = -\frac{1}{k^2}
+  \left (\frac{1}{2\pi} \log |\xx-\yy| +
+  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
+\end{equation}
+where $k$ is the Helmholtz paramater in the Helmholtz-Biharmonic equation,
+and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero.
+
+
+
+\subsection{A Farkas-style integral representation}
+
+In \cite{Farkas89}, Farkas derived integral equation formulations
+for the solution of the Dirichlet problem for the biharmonic equation ($k=0$). 
+In this formulation, the solution 
+$w$ is represented as a sum of two layer potentials
+\begin{equation}
+  w(\xx) = \int_\Gamma K_1^F (\xx,\yy) \sigma_1(\yy) \, dS(\yy)
+  + \int_\Gamma K_2^F(\xx,\yy) \sigma_2(\yy) \, dS(\yy) \; ,
+  \label{eq:farkRep}
+\end{equation}
+where $\sigma_{1}$, and $\sigma_{2}$ are unknown densities, and the kernels
+$K_{1}^{F}$, and $K_{2}^{F}$ are linear combinations of derivatives of
+the biharmonic Green's function and appropriately chosen to get second kind integral equations
+for the unknown densities $\sigma_{1}$ and $\sigma_{2}$ on imposing the boundary conditions.
+
+In \cite{shidongmodbi}, Jiang extended the Farkas formulation for the solution of the modified
+biharmonic equation, albeit for different boundary conditions. With minor modifications, their formulation
+can also be adopted for the solution of the Dirichlet problem for the Helmholtz-biharmonic equation
+\begin{align}
+\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:helmbi} \\
+w &= f \quad \text{on} \quad \Gamma \\
+\dwdn &=g \quad \text{on} \quad \Gamma \,,
+\end{align}
+where $f,g$ are prescribed functions on the boundary. 
+
+For two points on the plane, $\xx$ and $\yy$, let $\br = \yy - \xx$. Let the kernels $K_{1}^{F}$, and 
+$K_{2}^{F}$ be defined by 
+\begin{align}
+  K_1^F(\xx,\yy) &= \partial_{n_{y}n_{y}n_{y}}\Gbh(\xx,\yy)
+  + 3 \partial_{n_{y}\tau_{y}\tau_{y}}\Gbh(\xx,\yy) + k^{2} \partial_{n_{y}}\Gbh(\xx,\yy)\; , \label{eq:kf1} \\
+  K_2^F(\xx,\yy) &= -\partial_{n_{y}n_{y}}\Gbh(\xx,\yy)
+  + \partial_{\tau_{y}\tau_{y}}\Gbh(\xx,\yy) \label{eq:kf2} \; .
+\end{align}
+More explicitly, we have
+\begin{align}
+  K_1^F(\xx,\yy) &=  -\dfrac{\br \cdot \bn(\yy)}{|\br|^2}  \cdot \left( \frac{3 i}{2} H_0^{(1)}(k|\br|) - \frac{5 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{6}{\pi k^2 |\br|^2} + \frac{1}{2\pi}  \right) +     \\
+  & \quad \dfrac{\left(\br \cdot \bn(\yy)\right)^3}{|\br|^4} \cdot \left( 2i H_0^{(1)}(k|\br|) - \frac{7 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{8}{\pi k^2 |\br|^2}  \right) \, , \nonumber \\
+  K_2^F(\xx,\yy) &=  -\left(\frac{1}{2}-\dfrac{\left(\br \cdot \bn(\yy)\right)^2}{|\br|^2} \right)  \cdot \left( \frac{i}{2} H_0^{(1)}(k|\br|) - \frac{i}{k|\br|} H_1^{(1)}(k|\br|) + \frac{2}{\pi k^2 |\br|^2}  \right)\; .
+\end{align}
+
+On enforcing the Dirichlet boundary conditions for
+$w$, we obtain the integral equation
+\begin{equation}
+  \begin{split}
+    \begin{pmatrix}
+      f(\xx) \\
+      g(\xx)
+    \end{pmatrix} &= 
+    \int_\Gamma
+    \begin{pmatrix}
+      K_{11}^F(\xx,\yy) & K_{12}^F(\xx,\yy) \\
+      K_{21}^F(\xx,\yy) & K_{22}^F(\xx,\yy)
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\yy)\\
+      \sigma_2(\yy)
+    \end{pmatrix}
+    \, dS(\yy) \\
+    &\quad + \begin{pmatrix}
+      1/2 & 0 \\
+      -\kappa(\xx) & 1/2
+    \end{pmatrix}
+    \begin{pmatrix}
+      \sigma_1(\xx)\\
+      \sigma_2(\xx)
+    \end{pmatrix} \; , \label{eq:farkIntEq} 
+  \end{split}
+\end{equation}
+where $\kappa$ is the signed curvature at $\xx \in \Gamma$.
+The kernels are given
+by $K_{11}^F = K_1^F$, $K_{12}^F = K_2^F$,
+\begin{align}
+  K_{21}^F(\xx,\yy) &= \left(K_1^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{21}^{F}(\xx,\yy) \; \label{eq:farkK21},\\
+  K_{22}^F(\xx,\yy) &= \left(K_2^F(\xx,\yy)\right )_{n_x} \nonumber \\
+  &= \bn(\xx) \cdot \nabla_{\xx} K_{22}^{F}(\xx,\yy) \label{eq:farkK22} \; .
+\end{align}
+
+The following lemma shows that the integral equation~\cref{eq:farkIntEq} is invertible for smooth domains
+whenever $k$ is not a buckling eigenfrequency. 
+
+\begin{lem}
+Suppose that $\Omega \subset \R^2$ is a simply connected region whose boundary $\Gamma$ is $\cC^{2}$. 
+Furthermore, suppose that $k$ is not a buckling eigenfrequency of $\Omega$, i.e., the only solution $w$ to~\cref{eq:buck1,eq:buck2,eq:buck3} is  $w \equiv 0$. Suppose further that $f,g \in \cC^{2}(\Gamma)$. 
+Then there exists a unique solution $\sigma_{1},\sigma_{2} \in \cC^{2}$ which satisfies~\cref{eq:farkIntEq}. 
+Furthermore, $w(\bx)$ defined via~\cref{eq:farkRep} satisfies the Helmholtz-Biharmonic equation~\cref{eq:helmbi}
+along with the boundary conditions $w(\bx)=f(\bx)$ and $\dwdn(\bx) = g(\bx)$ for $\bx \in\Gamma$. 
+\end{lem}
+
+\begin{proof}
+The proof is a minor modification of the one presented in~\ref{eq:shidongmodbi} and is contained in~\cref{sec:app}.
+\end{proof}
+
+The kernels $K^F_1$ and $K^F_2$ are
+constructed with the goal that the $K^F_{ij}$ are
+as smooth as possible. Suppose that the boundary
+$\Gamma$ is of class $C^k$. Then, the kernels,
+$K^F_{ij}(\xx,\yy)$, are $C^{k-2}$ functions on the boundary
+for each $\yy \in \Gamma$.
+Therefore, on a smooth
+boundary, these kernels are smooth. However, on a
+domain with a corner, we note 
+that the kernel $K_{21}^F$
+has a singularity with strength $r^{-2}$ (see~\cref{fig:ker21plot}). 
+This singularity, in addition to the term in \cref{eq:farkIntEq}
+which explicitly involves the
+curvature, makes the representation \cref{eq:farkRep}
+unstable for domains with high curvature (or
+corners).
+
+\subsection{Helmholtz-Stokes flow in a plane}
+
+In this section, we review the derivation of the
+modified Stokeslet, but for the imaginary parameter
+regime --- which we will call the Helmholtz Stokeslet ---
+which is the appropriate setting for the Stokes
+eigenvalue problem.
+The original modified Stokeslet is more well known,
+and is of particular interest for its application to
+numerical simulations of the unsteady Stokes equations
+\cite{pozrikidis1992boundary,biros2002embedded}.
+
+To begin, we restate the Stokes eigenvalue
+problem as
+\begin{align}
+  \nabla p - \Delta \uu - k^2 \uu &= 0 \; , \label{eq:helmstokes}\\
+  \nabla \cdot \uu &= 0 \; . \label{eq:helmstokescty}
+\end{align}
+Consider the solution of this problem where a
+$\delta$ centered at $\yy$ with strength $\ff$
+has been added to the right-hand side, i.e.
+
+\begin{align}
+  \nabla p - \Delta \uu - k^2 \uu &= \delta_\yy \ff \; ,
+  \label{eq:helmstokes_charge} \\
+  \nabla \cdot \uu &= 0 \; .
+\end{align}
+Note that
+
+\begin{equation}
+  \Delta G_L(\xx,\yy) = \delta_\yy(\xx) \; .
+\end{equation}
+If we substitute this expression into
+\eqref{eq:helmstokes_charge} and take the divergence,
+we obtain
+
+\begin{equation}
+  p = \nabla G_L(\xx,\yy) \cdot \ff \; .
+\end{equation}
+We then have, formally,
+
+\begin{align}
+  \uu &= - (\Delta + k^2)^{-1} ( \Delta G_L \ff
+  - \nabla (\nabla G_L \cdot \ff ) ) \\
+  &= \left ( -\Delta + \nabla \otimes \nabla \right )
+  G_{BH} \ff \; .
+\end{align}
+The tensor
+
+\begin{equation}
+  \GG = - \II \Delta G_{BH} + \nabla \otimes \nabla G_{BH}
+\end{equation}
+is then the equivalent of a Stokeslet
+\cite{pozrikidis1992boundary} for the problem
+\eqref{eq:helmstokes}.
+
+A related object is the stresslet, which is defined
+in terms of the stress tensor of a velocity, pressure
+pair induced by a Stokeslet. For these tensors, we find
+that it is more convenient to express them in index notation
+with the Einstein index summing convention.
+Recall that the stress tensor $\bsigma$ is defined as 
+
+\begin{equation}
+  \sigma_{ij} = -p \delta_{ij} + \left ( \partial_{x_j}u_i
+  +\partial_{x_i} u_j \right ) \; ,
+\end{equation}
+where $\delta_{ij}$ is the standard Kronecker delta notation.
+The stresslet $\TT$ is defined to be
+
+\begin{align}
+  T_{ijk} &= - \partial_{x_j} G_L \delta_{ik}
+  + \partial_{x_k} \left ( -\Delta G_{BH} \delta_{ij} +
+  \partial_{x_i} \left(\partial_{x_j} G_{BH} \right) \right)
+  \nonumber \\
+  & \qquad+ \partial_{x_i} \left ( -\Delta G_{BH} \delta_{kj} +
+  \partial_{x_k} \left(\partial_{x_j} G_{BH} \right) \right)
+  \; .
+\end{align}
+Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} G_L f_i$ be a
+solution of the Stokes equations induced by a Stokeslet.
+Then the corresponding stress tensor is given by
+$\sigma_{ik} = T_{ijk} f_j$.
+
+For the layer potentials of the next section, the following
+formulas are useful. Let $\bnu$ be a given vector. When
+summing over the third index, we obtain
+
+\begin{equation}
+  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla G_L
+  + \partial_\nu \left ( -\Delta G_{BH} \II
+  + \nabla \otimes \nabla G_{BH} \right)
+  + \nabla \otimes \left ( -\Delta G_{BH} \bnu
+  + \partial_{\nu} \nabla G_{BH} \right) \; .
+\end{equation}
+%\begin{align}
+% -\Delta G_{BH} \bnu
+% + \partial_{\nu} \nabla G_{BH} &=
+% ( (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_1 G_{BH} +
+% (\partial_{x_1x_1}\nu_1 + \partial_{x_2x_1} \nu_2 )G_{BH},
+% (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_2 G_{BH} +
+% (\partial_{x_1x_2}\nu_1 + \partial_{x_2x_2} \nu_2 )G_{BH}) \\
+% &= (-\partial_{x_2} \partial_\tau G_{BH},
+% \partial_{x_1} \partial_\tau G_{BH})
+%\end{align}
+%\begin{equation}
+%  \begin{pmatrix}
+%    -\partial_{x_2x_2} & \partial_{x_1x_2} \\
+%    \partial_{x_1x_2} & -\partial_{x_1x_1}
+%  \end{pmatrix} = -\nabla^\bot \otimes \nabla^\bot
+%\end{equation}
+Let $\btau = \bnu^\bot$. Then
+
+\begin{equation}
+  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla G_L
+  - \nabla^\bot \otimes \nabla^\bot \partial_\nu G_{BH}
+  +\nabla \otimes \nabla^\bot \partial_\tau G_{BH} \; .
+\end{equation}
+
+\subsection{Layer potentials}
+
+We now use the Stokeslet and stresslet definitions
+of the previous section to define the standard single
+and double layer potentials of the Stokes eigenvalue
+problem. The single layer potential is defined to
+be
+
+\begin{equation}
+  \SS \bmu (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+  \, dS(\yy) \; .
+\end{equation}
+The double layer potential is defined to be
+
+\begin{equation}
+  \DD \bmu (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
+  \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+\end{equation}
+where $\bnu$ denotes the outward unit normal to the boundary.
+If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
+where $\btau = \bmu^\bot$ is the positively oriented unit
+tangent to the curve, then we have
+
+\begin{align}
+  \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy) \right )^\intercal
+  \bmu(\yy) &= \left ( - \nabla G_L(\xx,\yy) + 2 \nabla^\bot
+  \partial_{\nu\tau} G_{BH}(\xx,\yy) \right ) \mu_\nu(\yy) \nonumber \\
+  & \qquad+
+  \nabla^\bot \left (\partial_{\tau\tau}-\partial_{\nu\nu} \right )
+  G_{BH}(\xx,\yy) \mu_\tau(\yy) \; .
+\end{align}
+
+
+\subsection{The Farkas integral representation} 
+
+As mentioned in the introduction, there are existing 
+integral representations for the solution of the Dirichlet problem for the Helmholtz-biharmonic equation
+\begin{align}
+ \Delta (\Delta + k^2) w &= 0 \mbox{ in } D \; , \label{eq:biharmD1}\\
+ w &= f \mbox{ on }
+ \Gamma \label{eq:biharmD2} \; , \\ 
+ \frac{\partial w}{\partial n} &= g \mbox{ on } 
+ \Gamma \, , \label{eq:biharmD3}
+\end{align}
+In \cite{Farkas89}, 
+the solution is given as the sum of two layer potentials, i.e.
+where $\sigma_1$ and $\sigma_2$ are unknown densities.
+
+The integral kernels, $K_1^F$ and $K_2^F$ are based on
+derivatives of the Green's function for the biharmonic equation.
