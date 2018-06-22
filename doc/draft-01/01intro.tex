@@ -1,42 +1,63 @@
 \section{Introduction}
 
-Results of some quick googling:
-
-Finite element methods.
-\begin{itemize}
-\item Stokes eigenvalue problem: nonconforming finite
-  element methods \cite{jia2009approximation}.
-\end{itemize}
-
-Integral equation methods.
-\begin{itemize}
-\item Book on elastodynamic eigenvalue problems
-  \cite{kitahara2014boundary}
-\end{itemize}
 
 Consider the pure bending of an isotropic and homogeneous thin clamped
 plate. 
-Let $\Omega$ denote the midline of the thin plate, $\Gamma$ denote the 
+Let $\Omega$ denote the midline of the plate, $\Gamma$ denote the 
 boundary of $\Omega$ and $w$ denote the vertical displacement.
 The buckling problem consists of finding 
 values $k^{2}$ such that the boundary value problem
 
 \begin{align}
-\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:buck1} \\
-w &= 0 \quad \text{on} \quad \Gamma \label{eq:buck2}\\
-\dwdn &=0 \quad \text{on} \quad \Gamma \label{eq:buck3} \,.
+\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:buck1} \; , \\
+w &= 0 \quad \text{on} \quad \Gamma \label{eq:buck2} \; ,\\
+\dwdn &=0 \quad \text{on} \quad \Gamma \label{eq:buck3} 
 \end{align}
 has a non-trivial solution. In a slight abuse of notation,
-these values $k^2$ and the corresponding
-solutions are often referred to as ``eigenvalues'' and ``eigenfunctions'',
-respectively.
-It is well-known from classical potential theory that, 
-for the buckling problem, there exists a countable collection of
-such values $0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$,
+these values and the corresponding solutions are often
+referred to as ``eigenvalues'' and ``eigenfunctions'',
+respectively. 
+It is well known that the buckling problem has a
+countable collection of such values
+$0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$,
 counting multiplicites.
+
+The eigenvalues (and eigenfunctions)
+of the boundary value problem \cref{eq:buck1,eq:buck2,eq:buck3}
+describe the critical buckling load (and deflection)
+of a thin plate under
+a compressive force applied along the edge. While the
+isotropy and homogeneity assumptions are restrictive,
+the equations are still of interest in materials design
+(CITATIONS). The analytical properties of the eigenvalues and
+eigenfunctions are also of interest from a mathematical
+perspective, often as they contrast with the eigenvalues
+and eigenmodes of an idealized drum (CITATIONS).
+
+Numerical simulations have long played an important
+in the analyses described above and there are a number
+of available methods (note that some of the references
+included here are written in terms of the related
+Stokes eigenvalue problem, which has equivalent
+eigenvalues on simply connected domains).
+The differential equation can
+be discretized directly, resulting in a discrete
+generalized eigenvalue problem for the buckling
+eigenvalues \cite{jia2009approximation}. Integral
+equation methods \cite{kitahara2014boundary} are
+a natural choice for this problem, because (a) the
+fourth order term induces strong
+ill-conditioning when the differential equation
+is discretized directly and (b) the problem is reduced
+to one defined on the domain alone, requiring fewer
+degrees of freedom to resolve the solution.
+
 \begin{remark}
-For notational convenience,  
-we will refer to the modified Biharmonic problem
-with imaginary parameter as the Helmholtz-Biharmonic problem.
+  When $k = i\alpha$, the differential equation
+  \cref{eq:buck1} is known as the modified biharmonic
+  equation. As there appears to be no preferred
+  name for the equation with real-valued $k$,
+  we will refer to \cref{eq:buck1} as the
+  Helmholtz-biharmonic equation.
 \end{remark}
 
