@@ -22,6 +22,15 @@ countable collection of such values
 $0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$,
 counting multiplicites.
 
+\begin{remark}
+  When $k = i\alpha$, the differential equation
+  \cref{eq:buck1} is known as the modified biharmonic
+  equation. As there appears to be no preferred
+  name for the equation with real-valued $k$,
+  we will refer to \cref{eq:buck1} as the
+  Helmholtz-biharmonic equation.
+\end{remark}
+
 The eigenvalues (and eigenfunctions)
 of the boundary value problem \cref{eq:buck1,eq:buck2,eq:buck3}
 describe the critical buckling load (and deflection)
@@ -42,7 +51,7 @@ eigenfunction of a convex domain with analytic boundary
 to take both positive and negative values \cite{antunes2011buckling}.
 
 Numerical simulations have long played an important
-in the analyses described above and there are a number
+role in the analyses described above and there are a number
 of available methods (note that some of the references
 included here are written in terms of the related
 Stokes eigenvalue problem, which has equivalent
@@ -50,7 +59,7 @@ eigenvalues on simply connected domains). We do not
 seek to review the literature here but will provide
 some context for the present work. Finite element methods
 are ubiquitous in mechanical engineering applications
-and are flexible both with respect to the governing
+and are flexible with respect to both the governing
 equations and the shape of the domain. Such a method
 would first obtain a ``weak'' form of the equations
 \cref{eq:buck1,eq:buck2,eq:buck3} and then 
@@ -64,7 +73,7 @@ model \cite{johnson1974beam,rannacher1979nonconforming,
 Because of the fourth order term in \cref{eq:buck1},
 the system matrices resulting from a finite element
 discretization can have large condition numbers (growing
-like $h^4$ where $h$ is the diameter of a typical element
+like $1/h^4$ where $h$ is the diameter of a typical element
 in the discretization) which can cause numerical instability.
 
 Integral equation methods \cite{kress1989linear,
@@ -80,7 +89,7 @@ the solution $w$ is represented in terms of a sum of
 two layer potentials (which a priori satisfy
 \cref{eq:buck1}) with unknown densities. Substituting this
 representation into the boundary conditions
-\cref{eq:buck2,buck3} results in an integral equation
+\cref{eq:buck2,eq:buck3} results in an integral equation
 for the unknown densities, which
 is in turn discretized using numerical quadrature.
 Unlike the original equation \cref{eq:buck1} and the weak
@@ -103,19 +112,26 @@ relation between the non-invertibility of the discrete system
 and the eigenvalues is obscured. Further, such representations
 create numerical challenges because common measures of the
 ``non-invertibility'' of a matrix, like the smallest singular
-value or the determinant, converge to zero for all values of
-$k^2$ as the boundary is refined.
+value or the determinant, converge rapidly to zero for all
+values of $k^2$ as the boundary is refined.
 
-Second kind integral equations, i.e. equations in which the
-operator is Fredholm ...
+Second kind integral equations, i.e. integral equations
+of the form $\mathcal{I} + \mathcal{K}$ where $\mathcal{K}$
+is compact, have a more satisfying theory
+\cite{reed1972methods}, which translates
+well to numerical implementation
+\cite{bornemann2010numerical,zhao2015robust}.
+In \cite{zhao2015robust}, Zhao and Barnett demonstrated
+that the eigenvalues of the drum problem can be
+computed with such a framework, resulting in
+spectrally accurate numerical methods.
+In this paper, we develop a second kind integral
+equation for the buckling problem, based on the
+approach in \cite{rachh2017integral}. This allows
+for a robust approach to computing the eigenvalues
+of the buckling problem, model after the approach for
+the drum problem in \cite{zhao2015robust}, which we
+demonstrate with a number of examples.
 
-
-\begin{remark}
-  When $k = i\alpha$, the differential equation
-  \cref{eq:buck1} is known as the modified biharmonic
-  equation. As there appears to be no preferred
-  name for the equation with real-valued $k$,
-  we will refer to \cref{eq:buck1} as the
-  Helmholtz-biharmonic equation.
-\end{remark}
+The rest of this paper is organized as follows ...
 
