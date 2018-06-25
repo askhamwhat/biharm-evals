@@ -113,25 +113,47 @@ and the eigenvalues is obscured. Further, such representations
 create numerical challenges because common measures of the
 ``non-invertibility'' of a matrix, like the smallest singular
 value or the determinant, converge rapidly to zero for all
-values of $k^2$ as the boundary is refined.
+values of $k^2$ as the boundary is refined. Therefore, the
+measure of whether $k^2$ is an approximate eigenvalue is
+{\em relative to the current grid} for first kind equations.
 
 Second kind integral equations, i.e. integral equations
 of the form $\mathcal{I} + \mathcal{K}$ where $\mathcal{K}$
 is compact, have a more satisfying theory
-\cite{reed1972methods}, which translates
-well to numerical implementation
-\cite{bornemann2010numerical,zhao2015robust}.
+\cite{reed1972methods,kress1989linear},
+which translates well to numerical implementation
+\cite{atkinson2009numerical,bornemann2010numerical,
+  hackbusch2012integral,zhao2015robust}. Two facts are
+of particular importance here: with an appropriately
+chosen representation, (a) the Fredholm determinant of the
+integral equation will be a well-defined analytic function
+of $k^2$ with zeros precisely at the eigenvalues and (b) the 
+determinant of the matrix resulting from
+a Nystr\"{o}m discretization of the integral equation
+will converge to the Fredholm determinant of the operator
+\cite{bornemann2010numerical}.
 In \cite{zhao2015robust}, Zhao and Barnett demonstrated
 that the eigenvalues of the drum problem can be
 computed with such a framework, resulting in
-spectrally accurate numerical methods.
+methods which are spectrally accurate with respect
+to both the sampling of the boundary and the sampling
+in $k^2$. There are natural extensions of existing second
+kind integral
+equations for the biharmonic \cite{farkas1989mathematical}
+and modified biharmonic \cite{jiang2013second} equations
+which would be appropriate for the buckling problem, but
+these representations suffer from instability for
+high curvature domains, limiting their applicability
+\cite{rachh2017integral}.
 In this paper, we develop a second kind integral
-equation for the buckling problem, based on the
-approach in \cite{rachh2017integral}. This allows
+equation for the buckling problem based on Stokeslet
+and stresslet inspired kernels, as was done for the
+$k=0$ case in \cite{rachh2017integral}. This allows
 for a robust approach to computing the eigenvalues
-of the buckling problem, model after the approach for
+of the buckling problem, modeled after the approach for
 the drum problem in \cite{zhao2015robust}, which we
-demonstrate with a number of examples.
+demonstrate with a number of examples from the
+literature.
 
 The rest of this paper is organized as follows ...
 
