@@ -1,2 +1,58 @@
 
 \section{Numerical methods}
+Recall that we compute the buckling eigenmodes via computing the zeros
+of the determinant of linear system corresponding to a Nystr\"{o}m 
+discretization of the integral operator $A(k)$ in~\cref{eq:inteqfinal}.
+As in section~\cref{sec:spec}, let $\tilde{A}_{k}$ denote the discretized
+linear system.
+Thus, the three main ingredients for the fast and accurate computation
+of buckling eigenvalues (and its corresponding eigenfunctions) are
+high order Nystr\"{o}m discretizations of the integral operator 
+$A(k)$; for a given parameter $k$, the rapid evaluation of the determinant 
+$\tilde{A}_{k}$; and finding the zeros of $\text{det}(\tilde{A}_{k})$ (which
+is non-linear in $k$) while minimizing the function evaluations.
+
+For discretizing the integral operator using the
+Nystr\"{o}m method, we divide the boundary $\Gamma$ into
+panels and represent the unknown density and the
+boundary data by their values at scaled Gauss-Legendre
+nodes on each panel. 
+Let $n_{p}$ denote the number of Gauss-Legendre panels.
+We discretize each panel using 16 scaled Gauss-Legendre nodes.
+Then $n_{d} = 16 n_{p}$ is the number of discretization points 
+on the boundary.
+Let $\bx_{j}$ denote the discretization nodes, $w_{j}$ denote the
+appropriately scaled Gauss-Legendre quadrature weights for smooth functions,
+and $\bmu_{j}$ denote the unknown density at $\bx_{j}$.
+When forming the linear system, we use scaled unknowns, 
+$\bmu_{j} \sqrt{w_{j}}$, so that the spectral properties of the 
+discrete system with respect to the $l_2$ norm
+are approximations of the spectral properties of the continuous
+system as on operator on $L_2$ (for more on this point of view, 
+see \cite{bremer2012}).
+The integral kernels $K_{ij}$ in~\cref{eq:inteqfinal} 
+are either smooth or have a weak (logarithmic) singularity. 
+For the smooth kernels, we use standard 
+Gauss-Legendre quadrature rule.
+For kernels with a logarithmic singularity, we use order $20$ 
+generalized Gaussian quadrature rule~\cite{bremer2010,bremer2010u}.
+Note that the resulting discretized linear system $\tilde{A}_{k}$ 
+is a dense matrix of size $M=2n_{d}+N+1$, 
+where $N$ is the number of connected components.
+
+For small problems ($M \leq 10^3$), we directly compute
+$\text{det}(\tilde{A}_{k})$ using standard linear algebra routines
+from LAPACK. 
+However, since the matrix $\tilde{A}_{k}$ is dense,
+the computational complexity of computing $\text{det}(\tilde{A}_{k})$ 
+using LAPACK routines is $O(M^3)$.
+Moreover, for evaluating the buckling eigenmodes, $\text{det}(\tilde{A}_{k})$
+must be evaluated for many different values of $k$.
+Thus, for larger problems, we use the HIFIE method for evaluating
+$\text{det}(\tilde{A}_{k})$. 
+This method exploits the rank structure of $\tilde{A}_{k}$ (large blocks
+of $\tilde{A}_{k}$ corresponding to interactions between well-separated
+clusters are low-rank) and evaluates the determinant in O($M \cdot \log{M})$ 
+CPU-time.
+
+
