@@ -1,0 +1,263 @@
+
+\appendix
+
+\section{Proof of the invertibility of the Farkas representation}
+In this appendix, we prove~\cref{lem:farkinv} which is restated here
+as~\cref{lem:farkinv_app}.
+
+In the following lemma, we present an integral indentity involving the
+Green's function of the Helmholtz-biharmonic equation.
+\begin{lem}
+Suppose that $\Gbh$ is the Green's function of the Helmholtz-biharmonic equation 
+with Helmholtz parameter $k$. Suppose that $v:\R^{2} \to \R$ is a compactly supported smooth
+function. Then
+\begin{equation}
+\int_{\R^{2}} \Gbh(\xx,\yy) \Delta (\Delta + k^2) v(\yy) d\yy = v(\xx)
+\end{equation}
+\end{lem}
+\begin{proof}
+Suppose that $r>0$. 
+Let $B_{r}(\xx)$ denote the ball of radius $r$ centered at the origin
+and let $\partial B_{r}(\xx)$ denote its boundary.
+Then applying Green's second identity twice, we get 
+\begin{align}
+\int_{\R^{2} \setminus B_{r}(\xx)} \Gbh(\xx,\yy) \Delta (\Delta +k^{2}) v(\yy)
+&=
+\int_{\R^{2} \setminus B_{r}(\xx)} \Delta \Gbh (\xx,\yy) (\Delta + k^2) 
+v(\yy) + \\
+& \hspace{5ex}\int_{\partial B_{r}(\xx)} \Gbh(\xx,\yy) (\Delta + k^{2})
+\frac{\partial}{\partial n}v(\yy) \, dS - \\
+& \hspace{5ex}\int_{\partial B_{r}(\xx)} \frac{\partial }{\partial n} \Gbh(\xx,\yy) 
+(\Delta + k^2) v \, dS \\
+&= \int_{\R^{2} \setminus B_{r}(\xx)} \Delta (\Delta + k^2)G(\xx,\yy) v(\yy)
+d\yy  - \nonumber \\
+& \hspace{5ex}\int_{\partial B_{r}(\xx)} (\Delta + k^2) 
+\frac{\partial }{\partial n} \Gbh(\xx,\yy) v \, dS + \nonumber\\
+& \hspace{5ex}\int_{\partial B_{r}(\xx)} (\Delta + k^2) 
+\Gbh(\xx,\yy) \frac{\partial}{\partial n}v \, dS - \nonumber \\
+& \hspace{5ex}\int_{\partial B_{r}(\xx)}  
+\frac{\partial }{\partial n} \Gbh(\xx,\yy) \Delta v\, dS + \\
+& \hspace{5ex}
+\int_{\partial B_{r}(\xx)} \Gbh(\xx,\yy) \Delta \frac{\partial v}{\partial n}
+\, dS \nonumber
+\end{align}
+For all $\yy \in \partial B_{r}(x)$, there exists a constant $C$ such that
+$\Gbh$ satisfies the following equations
+\begin{align}
+(\Delta + k^2) \frac{\partial }{\partial n} G(\xx,\yy) &= 
+-\frac{1}{2\pi r} \label{eq:estapp1}\\
+\left|(\Delta + k^2) G(\xx,\yy) \right| &\leq C \log{(r)} \label{eq:estapp2}\\
+\left|\frac{\partial }{\partial n} G(\xx,\yy) \right| &\leq C r\log{(r)} 
+\label{eq:estapp3}\\
+\left| G(\xx,\yy) \right| &\leq C r^{2} \log{(r)} \label{eq:estapp4}\, .
+\end{align}
+Furthermore, $\Gbh$ satisfies $\Delta (\Delta + k^2) \Gbh(\xx,\yy) = 0$
+for all $\yy \in \R^{2} \setminus B_{r}(\xx)$.
+Using the estimates in~\cref{eq:estapp1,eq:estapp2,eq:estapp3,eq:estapp4}, 
+and the smoothness of $v$, we get
+\begin{equation}
+\int_{\R^{2} \setminus B_{r}(\xx)} \Gbh(\xx,\yy) \Delta (\Delta + k^2) v(\yy) 
+d \yy = \frac{1}{2\pi r} \int_{\partial B_{r}(\xx)} v(\yy) dS + 
+O(r \log(r)) \, \label{eq:estapp5}.
+\end{equation}
+The result then follows by taking the limit $r\to 0$ in~\cref{eq:estapp5}. 
+\end{proof}
+\label{sec:farkproof}
+
+\section{Proof of invertibility of new representation}
+The proof proceeds as follows:
+\begin{itemize}
+\item Show uniqueness of solutions to the impedence, velocity, and surface
+traction boundary value problem in exterior domains for the Stokes-Helmholtz
+PDEs. In order to prove this, we need the following lemmas:
+\begin{itemize}
+\item Deriving Green's theorem for exterior domains
+\item Rellich's lemma
+\item Uniqueness proof
+\end{itemize}
+\item The proof for the clamped plate problem proceeds in the manner
+analogous to the Dirichlet biharmonic paper.
+\end{itemize}
+
+With this in mind, we first discuss the PDE theory for the impedence, 
+velocity and surface traction boundary value problems on unbounded
+domains for the Stokes-Helmholtz equation.
+We focus on the proof for the velocity boundary value problem. 
+The proofs for the surface traction and impedence problems is similar.
+
+Suppose that $\Omega$ is a bounded simply connected domain and that
+$E = \R^{2} \setminus \Omega$ is its exterior.
+Let $\Gamma = \partial \Omega$ denote the boundary of $E$.
+For a given function $\bh$ on the boundary, 
+the exterior velocity boundary value problem is given by:
+\begin{align}
+\Delta \bu + \omega^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+\nabla \cdot \bu &= 0 \quad \bx \in E \, ,\\
+\bu &= \bh \quad \bx \in \Gamma \, . \\
+\end{align}
+Let $\sigma$ denote the stress tensor associated with the velocity
+field $\bu$, i.e.
+\begin{equation}
+\sigma = -p I + e(\bu) \, ,
+\end{equation}
+where $e(\bu)$ is the strain tensor given by
+\begin{equation}
+e(\bu) = \frac{1}{2}\left(D\bu + D\bu^{T} \right) \, .
+\end{equation}
+Let $\bn$ denote the outward normal to the boundary $\Gamma$, then
+the surface traction $\ff$ on the boundary $\Gamma$ is given 
+by
+\begin{equation}
+\ff = \sigma \cdot \bn
+\end{equation}
+Analogous to the Helmholtz equation, we need to impose radiation conditions
+at $\infty$.
+We propose the following radiation conditions for the Stokes-Helmholtz 
+equation
+\begin{equation}
+\lim_{r\to \infty} \sqrt{r} \left| \ff - i \omega \bu \right| \to 0 \, ,
+\label{eq:radcond}
+\end{equation}
+uniformly in direction.
+
+\begin{lem}
+\label{lem:rep}
+Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in 
+an unbounded region $E$ along with the radiaition 
+condition~\cref{eq:radcond}. 
+Then 
+\begin{equation}
+\label{eq:repinfest}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\ff|^2 + |\omega|^2 |\bu|^2 \right) ds +
+2 \text{Im}(\omega) \int_{E \cap B_{r}(0)} \left(|\omega|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV = -2 \text{Im} \left( \omega \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right)
+\end{equation}
+\end{lem}
+
+\begin{proof}
+Since $\bu$ satisfies the radiation condition, we have that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} | \ff - i \omega \bu|^2 ds = 
+\lim_{r\to\infty} \int_{|\by| =r} \left( |\ff|^2 + |\omega|^2|\bu|^2 + 2 \text{Im} 
+\left( \omega \bu\cdot \ff \right) ds \label{eq:raddecayproof1}
+\right) = 0 \, . 
+\end{equation}
+Since $\bu$ satisfies the Stokes-Helmholtz equation $E \cap B_{r}(0)$,
+using a couple of applications of the divergence theorem, we have that
+\begin{align}
+\int_{E\cap B_{r}(0)} |e(\bu)|^2 dV &= \int_{E\cap B_{r}(0)} \left< e(\bu), \overline{e(\bu)} \right> dV  \\
+&= \frac{1}{2}\left(\int_{E\cap B_{r}(0)} \left< e(\bu),\overline{D\bu} \right> + \left< e(\bu),\overline{D\bu}^{T} \right> \right) dV \\
+&= \int_{E\cap B_{r}(0)} \left< e(\bu),\overline{D\bu} \right> dV \\
+&= \int_{\partial }
+-\int_{\Gamma} \bu \cdot \overline{\ff} ds
++ \int_{|\by|=r} \bu \cdot \overline{\ff} ds + \overline{\omega}^2 
+\int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
+\end{equation}
+Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |\omega|^2 |\bu|^2 \right) ds 
++ 2\text{Im}(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |\omega|^2 |\bu|^2 
+\right) dV = -2\text{Im} \int_{\Gamma} \omega \bu \cdot \overline{\ff} dS \, .
+\end{equation}
+\end{proof}
+
+In the next lemma, we prove the analogue of Rellich's lemma for the Stokes-
+Helmholtz equation. 
+\begin{lem}
+\label{lem:rellich}
+Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in an unbounded
+region $E$.  
+Suppose further that 
+\begin{equation}
+\lim_{r \to \infty} \int_{|\by|=r} |\bu|^2 dS = 0 
+\, . \label{eq:decayatinf}
+\end{equation}
+Then each component of $\bu$ is harmonic and has a convergent Laurent
+expansion in $E$.
+\end{lem}
+\begin{proof}
+We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
+Helmholtz-Biharmonic equation in $E$, i.e.
+\begin{equation}
+\Delta (\Delta + \omega^2) u_{j} = 0 \quad j=1,2 \,. 
+\end{equation}
+For $r$ sufficiently large, we can express $u_{j}$ in the Fourier basis as
+\begin{equation}
+u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} a_{j,n}(r) e^{i n \theta}  \quad 
+j=1,2 \, .
+\end{equation}
+Using Parseval's identity then
+\begin{equation}
+\int_{|\by|=r} |\bu|^2 ds = r\sum_{n=-\infty}^{\infty} |a_{1,n}(r)|^2  +
+|a_{2,n}(r)|^2 \, .
+\end{equation}
+Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
+\begin{equation}
+\lim_{r\to\infty} r|a_{j,n}(r)|^2 = 0 \quad j=1,2 \, , \label{eq:adecay}
+\end{equation}
+Since $u_{j}$, $j=1,2$ satisfies the Helmholtz-biharmonic equation,
+the functions $a_{j,n}$ are linear combinations of 
+\begin{equation}
+r^{|n|}, r^{-|n|}, H^{1}_{n}(\omega r), H^{2}_{n}(\omega r) \, , \quad
+n\neq 0 \, ,
+\end{equation}
+and
+\begin{equation}
+1, \log{(r)}, H^{1}_{0}(\omega r), H^{2}_{0}(\omega r) \quad n=0 \, , 
+\end{equation} 
+where $H_{n}^{1,2}(\cdot)$ are the Hankel functions of the first and
+second kind of order $n$.
+Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
+expansion of $H_{n}^{1,2}(r)$, we note that the projection of 
+$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(\omega r)$ must be zero. 
+Thus, 
+\begin{equation}
+u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
+\, .
+\end{equation}
+\end{proof}
+\begin{remark}
+Note that each component of $\bu$ is harmonic and thus $\bu$ then satisfies
+\begin{align}
+\omega^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
+\nabla \cdot \bu &= 0 \, .
+\end{align}
+Taking the inner product with $\nabla^{\perp}$ in~\cref{eq:massconsred}, 
+we note that $\bu$ satisfies both $\nabla^{\perp} \cdot \bu = 0$ 
+and $\nabla \cdot \bu = 0$.
+This remark will be useful for the impedence problem...
+\end{remark}
+\begin{remark}
+Note that in Rellich's lemma $\bu$ need not be a radiating solution. 
+All we know of $\bu$ is that it satifies the PDE in $E$.
+\end{remark}
+
+\begin{thm}
+(Uniqueness Dirichlet)
+Suppose that $\text{Im}(\omega)\geq 0$ and 
+that $\bu$ is a radiating solution to the Stokes-Helmholtz
+equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
+$u \equiv 0$ in $E$.
+\end{thm}
+
+\begin{proof}
+Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
+\begin{equation}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\ff|^2 + |\omega|^2 |\bu|^2 \right) ds +
+2 \text{Im}(\omega) \int_{E \cap B_{r}(0)} \left(|\omega|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV = 0
+\end{equation} 
+In particular, this implies that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 ds = 0 \, .
+\end{equation}
+Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, since $\bu=0$ on
+$\Gamma$, from uniqueness of solutions to the Dirichlet problem
+on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
+\end{proof}
+
+The proof for the Neumann problem proceeds in a similar manner. 
