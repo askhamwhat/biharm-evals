@@ -91,18 +91,18 @@ Let $\Gamma = \partial \Omega$ denote the boundary of $E$.
 For a given function $\bh$ on the boundary, 
 the exterior velocity boundary value problem is given by:
 \begin{align}
-\Delta \bu + \omega^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+\Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
 \nabla \cdot \bu &= 0 \quad \bx \in E \, ,\\
 \bu &= \bh \quad \bx \in \Gamma \, . \\
 \end{align}
-Let $\sigma$ denote the stress tensor associated with the velocity
+Let $\bsigma$ denote the stress tensor associated with the velocity
 field $\bu$, i.e.
 \begin{equation}
-\sigma = -p I + e(\bu) \, ,
+\bsigma = -p \II + \be(\bu) \, ,
 \end{equation}
-where $e(\bu)$ is the strain tensor given by
+where $\be(\bu)$ is the strain tensor given by
 \begin{equation}
-e(\bu) = D\bu + D\bu^{T} \, .
+e_{ij}(\bu) = \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right)
 \end{equation}
 Let $\bn$ denote the outward normal to the boundary $\Gamma$, then
 the surface traction $\ff$ on the boundary $\Gamma$ is given 
@@ -114,11 +114,88 @@ Analogous to the Helmholtz equation, we need to impose radiation conditions
 at $\infty$.
 We propose the following radiation conditions for the Stokes-Helmholtz 
 equation
+
+\begin{definition}
+Let $(\bu,p)$ satisfy the Stokes-Helmholtz equations in
+the exterior of a bounded domain. We say that
+the pair $(\bu,p)$ satisfies the radiation condition if
+$p$ is bounded, $p \to 0$ as $\xx \to \infty$, and 
 \begin{equation}
-\lim_{r\to \infty} \sqrt{r} \left| \ff - i \omega \bu \right| \to 0 \, ,
+\lim_{r\to \infty} \sqrt{r} \left| \ff - i k \bu \right| \to 0 \, ,
 \label{eq:radcond}
 \end{equation}
 uniformly in direction.
+\end{definition}
+
+\begin{proposition}
+Both the Helmholtz-Stokeslet \eqref{eq:stokeslet} and the
+kernel of the Helmholtz-Stokes double layer potential
+\eqref{eq:stokesdlkernel} satisfy the radiation condition
+\eqref{eq:radcond}.
+\end{proposition}
+
+\begin{proof}
+Without loss of generality, we assume that these
+kernels are centered at the origin. Let $r = |\xx|$.
+Consider the Stokeslet induced by an arbitrary charge
+$k^2 \bmu$. We have
+
+\begin{align}
+\bu (\xx) &= k^2 \GG(\xx,0) \bmu \\
+&= k^2 \left (-\II \Delta \Gbh(\xx,0)
++ \nabla \otimes \nabla \Gbh(\xx,0)\right ) \bmu \\
+&= -k^2 \left (\nabla^\perp \otimes \nabla^\perp \Gbh(\xx,0) \right) \bmu \\
+&= \left(\nabla^\perp \otimes \nabla^\perp \left ( \frac{1}{2\pi}
+\log r + \frac{i}{4} H_0^{(1)} (kr) \right ) \right)\bmu \; .
+\end{align}
+Note that derivatives of $\log r$ are $o(1/\sqrt{r})$
+and that the pressure associated with the Stokeslet is
+$p = \nabla \Glap(\xx) \cdot \bmu$. We then have
+
+\begin{align}
+\left | \sigma \cdot \bn - i k \bu \right | &=
+\left | p \bn + \partial_n \bu + \nabla (\bu \cdot \bn)
+- ik \bu \right | \\
+&\leq \left | \partial_n \bu - ik\bu \right | + \left | \nabla(\bu \cdot \bn) \right |
++ o(1/\sqrt{r}) \\
+&\leq \frac{1}{4} \left | \partial_n \left(\nabla^\perp \otimes
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bmu
+- i k \left(\nabla^\perp \otimes \nabla^\perp
+\left (H_0^{(1)} (kr) \right ) \right)\bmu \right | \\
+& \quad + \left | \nabla \left( \partial_\tau \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bmu  \right )
+\right) \right | + o(1/\sqrt{r}) \; .
+\end{align}
+Because $H_0^{(1)}(kr)$ has the asymptotic expansion 
+
+\begin{equation}
+H_0^{(1)}(kr) = \sqrt{\frac{2}{\pi k r}} e^{i(rk-\pi/4)} \left ( 1 + O\left (
+\frac{1}{r} \right ) \right ) \;
+\end{equation}
+as $r\to \infty$, we have
+
+\begin{equation}
+\left | \partial_n \left(\nabla^\perp \otimes
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bmu
+- ik \left(\nabla^\perp \otimes \nabla^\perp
+\left (H_0^{(1)} (kr) \right ) \right)\bmu \right | =
+o ( 1/\sqrt{r} ) \; .
+\end{equation}
+Finally, because $H_0^{(1)}(kr)$ is radially symmetric,
+we have
+
+\begin{equation}
+\left | \nabla \left( \partial_\tau \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bmu  \right )
+\right) \right | = 0 \; ,
+\end{equation}
+so that the Stokeslet satisfies the radiation condition.
+
+The proof for the kernel of the double layer potential
+is similar.
+\end{proof}
+
+
 
 \begin{lem}
 \label{lem:rep}
@@ -129,32 +206,32 @@ Then
 \begin{equation}
 \label{eq:repinfest}
 \lim_{r\to\infty}
-\int_{|\by|=r} \left( |\ff|^2 + |\omega|^2 |\bu|^2 \right) ds +
-2 \text{Im}(\omega) \int_{E \cap B_{r}(0)} \left(|\omega|^2 |\bu|^2 + |e(\bu)|^2 \right)
-dV = -2 \text{Im} \left( \omega \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right)
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV = -2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right)
 \end{equation}
 \end{lem}
 
 \begin{proof}
 Since $\bu$ satisfies the radiation condition, we have that
 \begin{equation}
-\lim_{r\to\infty} \int_{|\by|=r} | \ff - i \omega \bu|^2 ds = 
-\lim_{r\to\infty} \int_{|\by| =r} \left( |\ff|^2 + |\omega|^2|\bu|^2 + 2 \text{Im} 
-\left( \omega \bu\cdot \ff \right) ds \label{eq:raddecayproof1}
+\lim_{r\to\infty} \int_{|\by|=r} | \ff - i k \bu|^2 ds = 
+\lim_{r\to\infty} \int_{|\by| =r} \left( |\ff|^2 + |k|^2|\bu|^2 + 2 \text{Im} 
+\left( k \bu\cdot \ff \right) ds \label{eq:raddecayproof1}
 \right) = 0 \, . 
 \end{equation}
 Since $\bu$ satisfies the Stokes-Helmholtz equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{equation}
 \int_{E\cap B_{r}(0)} |e(\bu)|^2 dV = -\int_{\Gamma} \bu \cdot \overline{\ff} ds
-+ \int_{|\by|=r} \bu \cdot \overline{\ff} ds + \overline{\omega}^2 
++ \int_{|\by|=r} \bu \cdot \overline{\ff} ds + \overline{k}^2 
 \int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
 \end{equation}
 Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \begin{equation}
-\lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |\omega|^2 |\bu|^2 \right) ds 
-+ 2\text{Im}(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |\omega|^2 |\bu|^2 
-\right) dV = -2\text{Im} \int_{\Gamma} \omega \bu \cdot \overline{\ff} dS \, .
+\lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |k|^2 |\bu|^2 \right) ds 
++ 2\text{Im}(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |k|^2 |\bu|^2 
+\right) dV = -2\text{Im} \int_{\Gamma} k \bu \cdot \overline{\ff} dS \, .
 \end{equation}
 \end{proof}
 
@@ -176,7 +253,7 @@ expansion in $E$.
 We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
 Helmholtz-Biharmonic equation in $E$, i.e.
 \begin{equation}
-\Delta (\Delta + \omega^2) u_{j} = 0 \quad j=1,2 \,. 
+\Delta (\Delta + k^2) u_{j} = 0 \quad j=1,2 \,. 
 \end{equation}
 For $r$ sufficiently large, we can express $u_{j}$ in the Fourier basis as
 \begin{equation}
@@ -195,18 +272,18 @@ Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
 Since $u_{j}$, $j=1,2$ satisfies the Helmholtz-biharmonic equation,
 the functions $a_{j,n}$ are linear combinations of 
 \begin{equation}
-r^{|n|}, r^{-|n|}, H^{1}_{n}(\omega r), H^{2}_{n}(\omega r) \, , \quad
+r^{|n|}, r^{-|n|}, H^{1}_{n}(k r), H^{2}_{n}(k r) \, , \quad
 n\neq 0 \, ,
 \end{equation}
 and
 \begin{equation}
-1, \log{(r)}, H^{1}_{0}(\omega r), H^{2}_{0}(\omega r) \quad n=0 \, , 
+1, \log{(r)}, H^{1}_{0}(k r), H^{2}_{0}(k r) \quad n=0 \, , 
 \end{equation} 
 where $H_{n}^{1,2}(\cdot)$ are the Hankel functions of the first and
 second kind of order $n$.
 Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
 expansion of $H_{n}^{1,2}(r)$, we note that the projection of 
-$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(\omega r)$ must be zero. 
+$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(k r)$ must be zero. 
 Thus, 
 \begin{equation}
 u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
@@ -216,7 +293,7 @@ u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|
 \begin{remark}
 Note that each component of $\bu$ is harmonic and thus $\bu$ then satisfies
 \begin{align}
-\omega^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
+k^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
 \nabla \cdot \bu &= 0 \, .
 \end{align}
 Taking the inner product with $\nabla^{\perp}$ in~\cref{eq:massconsred}, 
@@ -231,7 +308,7 @@ All we know of $\bu$ is that it satifies the PDE in $E$.
 
 \begin{thm}
 (Uniqueness Dirichlet)
-Suppose that $\text{Im}(\omega)>0$ and 
+Suppose that $\text{Im}(k)>0$ and 
 that $\bu$ is a radiating solution to the Stokes-Helmholtz
 equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
 $u \equiv 0$ in $E$.
@@ -241,8 +318,8 @@ $u \equiv 0$ in $E$.
 Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \begin{equation}
 \lim_{r\to\infty}
-\int_{|\by|=r} \left( |\ff|^2 + |\omega|^2 |\bu|^2 \right) ds +
-2 \text{Im}(\omega) \int_{E \cap B_{r}(0)} \left(|\omega|^2 |\bu|^2 + |e(\bu)|^2 \right)
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
 dV = 0
 \end{equation} 
 In particular, this implies that
@@ -259,34 +336,34 @@ on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
 The proof for the Neumann problem proceeds in a similar manner. 
 
 \begin{lem}
-If $\bu = \nabla^{\perp} H_{0}(\omega r)$ and $p\to 0$ as $r\to \infty$, 
+If $\bu = \nabla^{\perp} H_{0}(k r)$ and $p\to 0$ as $r\to \infty$, 
 then
 \begin{equation}
-\lim_{r\to \inf} \sqrt(r) \left(\ff_{1} - i\omega \bu_{1} \right) = 0 \, .
+\lim_{r\to \inf} \sqrt(r) \left(\ff_{1} - ik \bu_{1} \right) = 0 \, .
 \end{equation}
 \end{lem}
 
 \begin{proof}
-If $\bu = \nabla^{\perp} H_{0}(\omega r) = (\partial_{y} H_{0}(\omega r), 
--\partial_{x} H_{0}(\omega r))$, then
+If $\bu = \nabla^{\perp} H_{0}(k r) = (\partial_{y} H_{0}(k r), 
+-\partial_{x} H_{0}(k r))$, then
 \begin{equation}
-\nabla  p = (\Delta + \omega^2) \bu = (\Delta + \omega^2) \nabla^{\perp} 
-H_{0} (\omega r) = 0 \, .
+\nabla  p = (\Delta + k^2) \bu = (\Delta + k^2) \nabla^{\perp} 
+H_{0} (k r) = 0 \, .
 \end{equation}
 Since $p\to 0$ as $r\to \infty$, we conclude that $p=0$.
 \begin{align}
 \ff_{1} &= 2\partial_{x} u_{1} \cos(\theta) + \left( \partial_{x} u_{2} + 
 \partial_{y} u_{1} \right) \sin(\theta) \\
-&= 2 \partial_{xy} H_{0}(\omega r) \cdot \frac{x}{r} +
-\left[-\partial_{xx} H_{0}(\omega r) + \partial_{yy} H_{0}(\omega r) \right]
+&= 2 \partial_{xy} H_{0}(k r) \cdot \frac{x}{r} +
+\left[-\partial_{xx} H_{0}(k r) + \partial_{yy} H_{0}(k r) \right]
 \cdot \frac{y}{r} \, .
 \end{align}
 Based on the mathematica script (radcond1.nb in our mathematica folder), we
 get
 \begin{equation}
-\ff_{1} - i \omega u_{1} = \frac{ky}{r^2} \left( -kr \left(H_{0}(\omega r) + 
-i H_{1}(\omega r)\right) +
-2 H_{1}(\omega r)\right) \, .
+\ff_{1} - i k u_{1} = \frac{ky}{r^2} \left( -kr \left(H_{0}(k r) + 
+i H_{1}(k r)\right) +
+2 H_{1}(k r)\right) \, .
 \end{equation}
 The result then follows from the asymptotic properties of Hankel functions since
 \begin{equation}
