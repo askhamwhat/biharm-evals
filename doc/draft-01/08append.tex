@@ -425,9 +425,57 @@ i H_{1}(k r)\right) +
 \end{equation}
 The result then follows from the asymptotic properties of Hankel functions since
 \begin{equation}
-H_{0}(z) = c \frac{e^{-iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \quad 
+H_{0}(z) = c \frac{e^{iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \quad 
 \text{and} \quad 
-H_{1}(z) = i \cdot c \frac{e^{-iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \,,
+H_{1}(z) = -i \cdot c \frac{e^{iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \,,
 \end{equation}
 where $c$ is the same constant in both of these expansions.
+\end{proof}
+
+The following lemma shows uniqueness for the impedance problem under
+the assumption that $\bu$ is complex analytic.
+
+\begin{lem}
+Suppose that $\bu$ satisfies the radiation
+condition~\cref{eq:radcond}. 
+Suppose further that the stress tensor $\ff$ and $\bu$ satisfy
+\begin{equation}
+\ff + i k \bu = 0 \quad \xx \in \Gamma \, .
+\end{equation}
+Then $\bu \equiv 0$ for $\xx \in E$.
+\end{lem}
+
+\begin{proof}
+Since $\bu$ satisfies the radiation condition at $\infty$ and $\ff = -ik u$
+on $\Gamma$, it follows from~\cref{eq:repinfest} that
+\begin{align}
+&
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV +2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right) \\
+&= 
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV +2 \left( |k|^{2} \int_{\Gamma} |\bu|^{2} \overline{\ff} ds  \right) = 0 
+\, .
+\end{align}
+Since all the quantities are positive, this implies two things:
+\begin{equation}
+\int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, .
+\end{equation}
+along with the estimate
+\begin{equation}
+\lim_{r\to\infty} \int_{|\yy|=r} |\bu|^{2} ds \to 0 \, .
+\end{equation}
+The last equation implies the conditions for~\cref{lem:rellich}
+are satisfied, from which we conclude that the components of $\bu$ 
+are harmonic in $E$. 
+Thus, the components of $\bu$ satisfy
+\begin{equation}
+\Delta u_{j}=  0 \quad \xx \in E \,, \quad \text{and} \quad
+u_{j} = 0 \quad \xx \in \Gamma \, ,
+\end{equation}
+for $j=1,2$.
+Then $\bu \equiv 0$ follows from the uniqueness of solutions to the 
+Dirichlet problem for Laplace's equation.
 \end{proof}
