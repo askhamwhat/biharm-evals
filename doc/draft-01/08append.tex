@@ -64,37 +64,36 @@ The result then follows by taking the limit $r\to 0$ in~\cref{eq:estapp5}.
 \end{proof}
 \label{sec:farkproof}
 
-\section{Proof of invertibility of new representation}
-The proof proceeds as follows:
-\begin{itemize}
-\item Show uniqueness of solutions to the impedence, velocity, and surface
-traction boundary value problem in exterior domains for the Stokes-Helmholtz
-PDEs. In order to prove this, we need the following lemmas:
-\begin{itemize}
-\item Deriving Green's theorem for exterior domains
-\item Rellich's lemma
-\item Uniqueness proof
-\end{itemize}
-\item The proof for the clamped plate problem proceeds in the manner
-analogous to the Dirichlet biharmonic paper.
-\end{itemize}
+\section{Existence and uniqueness results for the Stokes-Helmholtz PDE}
 
-With this in mind, we first discuss the PDE theory for the impedence, 
-velocity and surface traction boundary value problems on unbounded
-domains for the Stokes-Helmholtz equation.
-We focus on the proof for the velocity boundary value problem. 
-The proofs for the surface traction and impedence problems is similar.
-
-Suppose that $\Omega$ is a bounded simply connected domain and that
-$E = \R^{2} \setminus \Omega$ is its exterior.
-Let $\Gamma = \partial \Omega$ denote the boundary of $E$.
-For a given function $\bh$ on the boundary, 
-the exterior velocity boundary value problem is given by:
+In this section, we develop some existence and uniqueness
+results for the Stokes-Helmholtz PDE.
+%
+The structure of this section follows that used
+by Colton and Kress \cite[Ch. 3]{colton1983integral}
+for the scalar Helmholtz equation.
+%
+Let $\Omega$ be a bounded simply connected
+domain and $E = \R^{2} \setminus \bar{\Omega}$ denote its
+exterior.
+%
+Let $\Gamma = \partial \Omega$ denote the boundary of $E$ and
+$\bnu(\yy)$ denote the exterior normal to the point $\yy$ on
+$\Gamma$, i.e. the normal vector pointing out of $E$ into $\Omega$.
+%
+For a given function $\bh$ defined on $\Gamma$,
+the exterior Dirichlet boundary value problem is to
+find a pair $(\bu,p)$ which satisfies:
 \begin{align}
-\Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
-\nabla \cdot \bu &= 0 \quad \bx \in E \, ,\\
-\bu &= \bh \quad \bx \in \Gamma \, . \\
+\Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\label{eq:helmstokes_ext}\\
+\nabla \cdot \bu &= 0 \quad \bx \in E \, , \\
+\bu &= \bh \quad \bx \in \Gamma \, .
 \end{align}
+In addition to the boundary condition on
+$\Gamma$, we must impose radiation conditions
+at $\infty$, analogous to the Helmholtz equation.
+%
+
 Let $\bsigma$ denote the stress tensor associated with the velocity
 field $\bu$, i.e.
 \begin{equation}
@@ -102,69 +101,88 @@ field $\bu$, i.e.
 \end{equation}
 where $\be(\bu)$ is the strain tensor given by
 \begin{equation}
-e_{ij}(\bu) = \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right)
+e_{ij}(\bu) = \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right) \; .
 \end{equation}
-Let $\bn$ denote the outward normal to the boundary $\Gamma$, then
-the surface traction $\ff$ on the boundary $\Gamma$ is given 
-by
+%
+For a given curve $\gamma$, let $\bn$ denote its outward
+normal.
+%
+The normal component of the stress,
 \begin{equation}
-\ff = \sigma \cdot \bn
+\ff = \bsigma \cdot \bn \; ,
 \end{equation}
-Analogous to the Helmholtz equation, we need to impose radiation conditions
-at $\infty$.
-We propose the following radiation conditions for the Stokes-Helmholtz 
-equation
+gives the surface traction, which is the analog of
+the normal derivative for the scalar Helmholtz equation,
+i.e. specifying the surface traction on a boundary is
+the Neumann problem for the Stokes-Helmholtz PDE.
 
-\begin{definition}
+%
+Let $B_r(0)$ denote the disc of radius $r$ centered
+at the origin.
+%
+In general, we will use $\bnu$ and $\btau$ to refer
+to the outward normal and positively oriented
+tangent to the boundary curve $\Gamma$ and $\bn$ and
+$\bt$ to refer to the outward normal and positively
+oriented tangent of the circle $\partial B_r(0)$.
+%
+With this notation in hand, we now propose the following
+radiation condition.
+
+\begin{definition} \label{def:radcond}
 Let $(\bu,p)$ satisfy the Stokes-Helmholtz equations in
 the exterior of a bounded domain. We say that
 the pair $(\bu,p)$ satisfies the radiation condition if
-$p$ is bounded, $p \to 0$ as $\xx \to \infty$, and 
+$p$ is bounded, $p \to 0$ as $r = |\xx| \to \infty$, and 
 \begin{equation}
 \lim_{r\to \infty} \sqrt{r} \left| \ff - i k \bu \right| \to 0 \, ,
 \label{eq:radcond}
 \end{equation}
-uniformly in direction.
+uniformly in direction where $\ff = \bsigma \cdot \bn$
+with $\bn = \xx/|\xx|$, i.e. $\ff$ is the surface
+traction on $\partial B_r(0)$.     
 \end{definition}
 
 \begin{proposition}
-Both the Helmholtz-Stokeslet \eqref{eq:stokeslet} and the
-kernel of the Helmholtz-Stokes double layer potential
-\eqref{eq:stokesdlkernel} satisfy the radiation condition
-\eqref{eq:radcond}.
+The Helmholtz-Stokeslet, as in \eqref{eq:stokeslet}, satisfies
+the radiation condition in Definition \ref{def:radcond}.
+Assuming that a density $\bmu$ is integrable and satisfies
+$\int_\Gamma \bmu\cdot \bnu = 0$, where $\bnu$ denotes the
+outward normal to the curve $\Gamma$, the Helmholtz-Stokes
+double layer potential $\DD\bmu$, as in \eqref{eq:doublelayer},
+also satisfies the radiation condition.
 \end{proposition}
 
 \begin{proof}
-Without loss of generality, we assume that these
-kernels are centered at the origin. Let $r = |\xx|$.
 Consider the Stokeslet induced by an arbitrary charge
-$k^2 \bmu$. We have
+$k^2 \bpsi$ at the origin. Let $r = |\xx|$,
+$\bn = \xx/|\xx|$, and $\bt = \bn^\perp$. We have
 
 \begin{align}
-\bu (\xx) &= k^2 \GG(\xx,0) \bmu \\
+\bu (\xx) &= k^2 \GG(\xx,0) \bpsi \\
 &= k^2 \left (-\II \Delta \Gbh(\xx,0)
-+ \nabla \otimes \nabla \Gbh(\xx,0)\right ) \bmu \\
-&= -k^2 \left (\nabla^\perp \otimes \nabla^\perp \Gbh(\xx,0) \right) \bmu \\
++ \nabla \otimes \nabla \Gbh(\xx,0)\right ) \bpsi \\
+&= -k^2 \left (\nabla^\perp \otimes \nabla^\perp \Gbh(\xx,0) \right) \bpsi \\
 &= \left(\nabla^\perp \otimes \nabla^\perp \left ( \frac{1}{2\pi}
-\log r + \frac{i}{4} H_0^{(1)} (kr) \right ) \right)\bmu \; .
+\log r + \frac{i}{4} H_0^{(1)} (kr) \right ) \right)\bpsi \; .
 \end{align}
-Note that derivatives of $\log r$ are $o(1/\sqrt{r})$
+Note that derivatives of $\log r$ are $\littleo (1/\sqrt{r})$
 and that the pressure associated with the Stokeslet is
-$p = \nabla \Glap(\xx) \cdot \bmu$. We then have
+$p = \nabla \Glap(\xx) \cdot \bpsi$. We then have
 
 \begin{align}
 \left | \sigma \cdot \bn - i k \bu \right | &=
 \left | p \bn + \partial_n \bu + \nabla (\bu \cdot \bn)
 - ik \bu \right | \\
 &\leq \left | \partial_n \bu - ik\bu \right | + \left | \nabla(\bu \cdot \bn) \right |
-+ o(1/\sqrt{r}) \\
++ \littleo (1/\sqrt{r}) \\
 &\leq \frac{1}{4} \left | \partial_n \left(\nabla^\perp \otimes
-\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bmu
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
 - i k \left(\nabla^\perp \otimes \nabla^\perp
-\left (H_0^{(1)} (kr) \right ) \right)\bmu \right | \\
-& \quad + \left | \nabla \left( \partial_\tau \left ( 
-\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bmu  \right )
-\right) \right | + o(1/\sqrt{r}) \; .
+\left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | \\
+& \quad + \left | \nabla \left( \partial_t \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
+\right) \right | + \littleo (1/\sqrt{r}) \; .
 \end{align}
 Because $H_0^{(1)}(kr)$ has the asymptotic expansion 
 
@@ -176,62 +194,102 @@ as $r\to \infty$, we have
 
 \begin{equation}
 \left | \partial_n \left(\nabla^\perp \otimes
-\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bmu
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
 - ik \left(\nabla^\perp \otimes \nabla^\perp
-\left (H_0^{(1)} (kr) \right ) \right)\bmu \right | =
+\left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | =
 o ( 1/\sqrt{r} ) \; .
 \end{equation}
 Finally, because $H_0^{(1)}(kr)$ is radially symmetric,
 we have
 
 \begin{equation}
-\left | \nabla \left( \partial_\tau \left ( 
-\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bmu  \right )
+\left | \nabla \left( \partial_t \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
 \right) \right | = 0 \; ,
 \end{equation}
 so that the Stokeslet satisfies the radiation condition.
 
-The proof for the kernel of the double layer potential
-is similar.
-\end{proof}
+For the double layer potential, we only establish the
+decay of the pressure $p$; the rest of the terms
+in \eqref{eq:radcond} can be bounded using an argument
+like that for the Stokeslet above.
+Because $p$ is harmonic in the exterior of any disc
+containing $\Gamma$, it is sufficient to show that
+$|\nabla p| = \bigo (1/r^2)$. Let $\btau$ denote the
+positively oriented tangent to the curve $\Gamma$ and
+$\mu_\nu$ and $\mu_\tau$ denote $\bmu \cdot \bnu$ and
+$\bmu \cdot \btau$, respectively. Substituting $\DD \bmu$ into
+\eqref{eq:helmstokes_ext}, we obtain
 
+\begin{align}
+\nabla p^\DD(\xx) &= \Delta \DD \bmu(\xx) + k^2 \DD\bmu(\xx) \\
+&= \int_\Gamma \left (-k^2 \nabla \Glap (\xx,\yy) +
+2 \nabla^\perp \partial_{\nu\tau} \Glap (\xx,\yy) \right ) \mu_\nu(\yy)
+\, dS(\yy) \\
+& \qquad + \int_\Gamma \nabla^\perp (\partial_{\tau\tau}-\partial_{\nu\nu})\Glap \mu_\tau(\yy)
+\, dS(\yy) \; .
+\end{align}
+The other terms are higher-order derivatives
+of $\Glap$, so it is sufficient to show that the term
+
+\begin{align}
+|\nabla p_1(\xx)| &:= \left |-k^2 \nabla \int_\Gamma \Glap(\xx,\yy)
+\mu_\nu(\yy) \, dS(\yy) \right |
+\end{align}
+is $\bigo (1/r^2)$. In the following, let $z = x_1 + i x_2$ be the
+point corresponding to $\xx$ in the complex plane and let $R$
+be the radius of some disc containing $\Gamma$. If $|\xx| > 2R$,
+we can use a standard multipole expansion of $\log(z-(y_1+iy_2))$
+and the assumption that $\int_\Gamma \bmu \cdot \bnu = 0$
+to obtain
+\begin{align}
+|\nabla p_1(\xx)| &= \frac{k^2}{2\pi} \left |  \partial_z \int_\Gamma \log(z-(y_1+iy_2))
+\mu_\nu(\yy) dS(\yy) \right | \\
+&= \frac{k^2}{2\pi} \left |  \partial_z  \left ( \log(z) \int_\Gamma \mu_\nu(\yy) \, dS(\yy)
++ \sum_{l=1}^\infty \frac{1}{z^l} \int_\Gamma \left( y_1+iy_2 \right)^l \mu_\nu(\yy) \, dS(\yy)
+\right ) \right | \\
+&= \frac{k^2}{2\pi} \left | \sum_{l=1}^\infty \frac{-l}{z^{l+1}}
+\int_\Gamma \left( y_1+iy_2 \right)^l \mu_\nu(\yy) \, dS(\yy) \right | \\
+&= \bigo (1/r^2) \; .
+\end{align}
+\end{proof}
 
 
 \begin{lem}
 \label{lem:rep}
-Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in 
-an unbounded region $E$ along with the radiaition 
+Suppose that $(\bu,p)$ satisfies the Stokes-Helmholtz equation in 
+an unbounded region $E$ along with the radiation 
 condition~\cref{eq:radcond}. 
 Then 
 \begin{equation}
 \label{eq:repinfest}
 \lim_{r\to\infty}
-\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
-2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
-dV = -2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right)
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+dV = -2 \Im \left( k \int_{\Gamma} \bu \cdot \overline{\ff} dS  \right)
 \end{equation}
 \end{lem}
 
 \begin{proof}
-Since $\bu$ satisfies the radiation condition, we have that
+Since $(\bu,p)$ satisfies the radiation condition, we have that
 \begin{equation}
-\lim_{r\to\infty} \int_{|\by|=r} | \ff - i k \bu|^2 ds = 
-\lim_{r\to\infty} \int_{|\by| =r} \left( |\ff|^2 + |k|^2|\bu|^2 + 2 \text{Im} 
-\left( k \bu\cdot \ff \right) ds \label{eq:raddecayproof1}
+\lim_{r\to\infty} \int_{|\by|=r} | \ff - i k \bu|^2 dS = 
+\lim_{r\to\infty} \int_{|\by| =r} \left( |\ff|^2 + |k|^2|\bu|^2 + 2 \Im 
+\left( k \bu\cdot \overline{\ff} \right) dS \label{eq:raddecayproof1}
 \right) = 0 \, . 
 \end{equation}
 Since $\bu$ satisfies the Stokes-Helmholtz equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{equation}
-\int_{E\cap B_{r}(0)} |e(\bu)|^2 dV = -\int_{\Gamma} \bu \cdot \overline{\ff} ds
-+ \int_{|\by|=r} \bu \cdot \overline{\ff} ds + \overline{k}^2 
+\int_{E\cap B_{r}(0)} |e(\bu)|^2 dV = -\int_{\Gamma} \bu \cdot \overline{\ff} dS
++ \int_{|\by|=r} \bu \cdot \overline{\ff} dS + \overline{k}^2 
 \int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
 \end{equation}
 Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \begin{equation}
-\lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |k|^2 |\bu|^2 \right) ds 
-+ 2\text{Im}(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |k|^2 |\bu|^2 
-\right) dV = -2\text{Im} \int_{\Gamma} k \bu \cdot \overline{\ff} dS \, .
+\lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |k|^2 |\bu|^2 \right) dS 
++ 2\Im(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |k|^2 |\bu|^2 
+\right) dV = -2\Im \int_{\Gamma} k \bu \cdot \overline{\ff} dS \, .
 \end{equation}
 \end{proof}
 
@@ -262,7 +320,7 @@ j=1,2 \, .
 \end{equation}
 Using Parseval's identity then
 \begin{equation}
-\int_{|\by|=r} |\bu|^2 ds = r\sum_{n=-\infty}^{\infty} |a_{1,n}(r)|^2  +
+\int_{|\by|=r} |\bu|^2 dS = r\sum_{n=-\infty}^{\infty} |a_{1,n}(r)|^2  +
 |a_{2,n}(r)|^2 \, .
 \end{equation}
 Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
@@ -308,7 +366,7 @@ All we know of $\bu$ is that it satifies the PDE in $E$.
 
 \begin{thm}
 (Uniqueness Dirichlet)
-Suppose that $\text{Im}(k)>0$ and 
+Suppose that $\Im(k)>0$ and 
 that $\bu$ is a radiating solution to the Stokes-Helmholtz
 equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
 $u \equiv 0$ in $E$.
@@ -318,13 +376,13 @@ $u \equiv 0$ in $E$.
 Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \begin{equation}
 \lim_{r\to\infty}
-\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
-2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
 dV = 0
 \end{equation} 
 In particular, this implies that
 \begin{equation}
-\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 ds = 0 \, .
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, .
 \end{equation}
 Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
 are satisfied, and each component of $\bu$ is a harmonic function
