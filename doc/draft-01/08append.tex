@@ -64,10 +64,10 @@ The result then follows by taking the limit $r\to 0$ in~\cref{eq:estapp5}.
 \end{proof}
 \label{sec:farkproof}
 
-\section{Existence and uniqueness results for the Stokes-Helmholtz PDE}
+\section{Existence and uniqueness results for the Helmholtz-Stokes PDE}
 
 In this section, we develop some existence and uniqueness
-results for the Stokes-Helmholtz PDE.
+results for the Helmholtz-Stokes PDE.
 %
 The structure of this section follows that used
 by Colton and Kress \cite[Ch. 3]{colton1983integral}
@@ -77,7 +77,7 @@ Let $\Omega$ be a bounded simply connected
 domain and $E = \R^{2} \setminus \bar{\Omega}$ denote its
 exterior.
 %
-Let $\Gamma = \partial \Omega$ denote the boundary of $E$ and
+Let $\Gamma = \partial E$ denote the boundary of $E$ and
 $\bnu(\yy)$ denote the exterior normal to the point $\yy$ on
 $\Gamma$, i.e. the normal vector pointing out of $E$ into $\Omega$.
 %
@@ -97,49 +97,39 @@ at $\infty$, analogous to the Helmholtz equation.
 Let $\bsigma$ denote the stress tensor associated with the velocity
 field $\bu$, i.e.
 \begin{equation}
-\bsigma = -p \II + \be(\bu) \, ,
+\bsigma = -p \II + 2 \be(\bu) \, ,
 \end{equation}
 where $\be(\bu)$ is the strain tensor given by
 \begin{equation}
-e_{ij}(\bu) = \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right) \; .
+e_{ij}(\bu) = \frac{1}{2} \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right) \; .
 \end{equation}
-%
-For a given curve $\gamma$, let $\bn$ denote its outward
-normal.
 %
 The normal component of the stress,
 \begin{equation}
-\ff = \bsigma \cdot \bn \; ,
+\ff = \bsigma \cdot \bnu \; ,
 \end{equation}
-gives the surface traction, which is the analog of
+gives the surface traction, which is the analogue of
 the normal derivative for the scalar Helmholtz equation,
 i.e. specifying the surface traction on a boundary is
-the Neumann problem for the Stokes-Helmholtz PDE.
+the Neumann problem for the Helmholtz-Stokes PDE.
 
 %
 Let $B_r(0)$ denote the disc of radius $r$ centered
-at the origin.
+at the origin and $\partial B_r(0)$ its boundary.
 %
-In general, we will use $\bnu$ and $\btau$ to refer
-to the outward normal and positively oriented
-tangent to the boundary curve $\Gamma$ and $\bn$ and
-$\bt$ to refer to the outward normal and positively
-oriented tangent of the circle $\partial B_r(0)$.
-%
-With this notation in hand, we now propose the following
-radiation condition.
+We propose the following radiation condition.
 
 \begin{definition} \label{def:radcond}
-Let $(\bu,p)$ satisfy the Stokes-Helmholtz equations in
+Let $(\bu,p)$ satisfy the Helmholtz-Stokes equations in
 the exterior of a bounded domain. We say that
-the pair $(\bu,p)$ satisfies the radiation condition if
+the pair $(\bu,p)$ is {\em radiating} if
 $p$ is bounded, $p \to 0$ as $r = |\xx| \to \infty$, and 
 \begin{equation}
 \lim_{r\to \infty} \sqrt{r} \left| \ff - i k \bu \right| \to 0 \, ,
 \label{eq:radcond}
 \end{equation}
-uniformly in direction where $\ff = \bsigma \cdot \bn$
-with $\bn = \xx/|\xx|$, i.e. $\ff$ is the surface
+uniformly in direction where $\ff = \bsigma \cdot \bnu$
+with $\bnu = \xx/|\xx|$, i.e. $\ff$ is the surface
 traction on $\partial B_r(0)$.     
 \end{definition}
 
@@ -147,7 +137,7 @@ traction on $\partial B_r(0)$.
 The Helmholtz-Stokeslet, as in \eqref{eq:stokeslet}, satisfies
 the radiation condition in Definition \ref{def:radcond}.
 Assuming that a density $\bmu$ is integrable and satisfies
-$\int_\Gamma \bmu\cdot \bnu = 0$, where $\bnu$ denotes the
+$\int_\Gamma \bmu\cdot \bnu dS = 0$, where $\bnu$ denotes the
 outward normal to the curve $\Gamma$, the Helmholtz-Stokes
 double layer potential $\DD\bmu$, as in \eqref{eq:doublelayer},
 also satisfies the radiation condition.
@@ -156,7 +146,7 @@ also satisfies the radiation condition.
 \begin{proof}
 Consider the Stokeslet induced by an arbitrary charge
 $k^2 \bpsi$ at the origin. Let $r = |\xx|$,
-$\bn = \xx/|\xx|$, and $\bt = \bn^\perp$. We have
+$\bnu(\xx) = \xx/|\xx|$, and $\btau(\xx) = \bnu(\xx)^\perp$. We have
 
 \begin{align}
 \bu (\xx) &= k^2 \GG(\xx,0) \bpsi \\
@@ -171,16 +161,16 @@ and that the pressure associated with the Stokeslet is
 $p = \nabla \Glap(\xx) \cdot \bpsi$. We then have
 
 \begin{align}
-\left | \sigma \cdot \bn - i k \bu \right | &=
-\left | p \bn + \partial_n \bu + \nabla (\bu \cdot \bn)
+\left | \sigma \cdot \bnu(\xx) - i k \bu \right | &=
+\left | p \bnu(\xx) + \partial_{{\nu_x}} \bu + \nabla (\bu \cdot \bnu(\xx))
 - ik \bu \right | \\
-&\leq \left | \partial_n \bu - ik\bu \right | + \left | \nabla(\bu \cdot \bn) \right |
+&\leq \left | \partial_{{\nu_x}} \bu - ik\bu \right | + \left | \nabla(\bu \cdot \bnu(\xx)) \right |
 + \littleo (1/\sqrt{r}) \\
-&\leq \frac{1}{4} \left | \partial_n \left(\nabla^\perp \otimes
+&\leq \frac{1}{4} \left | \partial_{{\nu_x}} \left(\nabla^\perp \otimes
 \nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
 - i k \left(\nabla^\perp \otimes \nabla^\perp
 \left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | \\
-& \quad + \left | \nabla \left( \partial_t \left ( 
+& \quad + \left | \nabla \left( \partial_{\tau_x} \left ( 
 \nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
 \right) \right | + \littleo (1/\sqrt{r}) \; .
 \end{align}
@@ -193,7 +183,7 @@ H_0^{(1)}(kr) = \sqrt{\frac{2}{\pi k r}} e^{i(rk-\pi/4)} \left ( 1 + O\left (
 as $r\to \infty$, we have
 
 \begin{equation}
-\left | \partial_n \left(\nabla^\perp \otimes
+\left | \partial_{{\nu_x}} \left(\nabla^\perp \otimes
 \nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
 - ik \left(\nabla^\perp \otimes \nabla^\perp
 \left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | =
@@ -203,7 +193,7 @@ Finally, because $H_0^{(1)}(kr)$ is radially symmetric,
 we have
 
 \begin{equation}
-\left | \nabla \left( \partial_t \left ( 
+\left | \nabla \left( \partial_{\tau_x} \left ( 
 \nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
 \right) \right | = 0 \; ,
 \end{equation}
@@ -217,12 +207,12 @@ Because $p$ is harmonic in the exterior of any disc
 containing $\Gamma$, it is sufficient to show that
 $|\nabla p| = \bigo (1/r^2)$. Let $\btau$ denote the
 positively oriented tangent to the curve $\Gamma$ and
-$\mu_\nu$ and $\mu_\tau$ denote $\bmu \cdot \bnu$ and
-$\bmu \cdot \btau$, respectively. Substituting $\DD \bmu$ into
-\eqref{eq:helmstokes_ext}, we obtain
+$\mu_\nu(\yy)$ and $\mu_\tau(\yy)$ denote $\bmu(\yy) \cdot \bnu(\yy)$ and
+$\bmu(\yy) \cdot \btau(\yy)$, respectively. Substituting
+$\DD \bmu$ into \eqref{eq:helmstokes_ext}, we obtain
 
 \begin{align}
-\nabla p^\DD(\xx) &= \Delta \DD \bmu(\xx) + k^2 \DD\bmu(\xx) \\
+\nabla p^\DD(\xx) &= (\Delta + k^2) \DD \bmu(\xx) \\
 &= \int_\Gamma \left (-k^2 \nabla \Glap (\xx,\yy) +
 2 \nabla^\perp \partial_{\nu\tau} \Glap (\xx,\yy) \right ) \mu_\nu(\yy)
 \, dS(\yy) \\
@@ -254,10 +244,12 @@ to obtain
 \end{align}
 \end{proof}
 
+\subsection{Uniqueness results}
+
 
 \begin{lem}
 \label{lem:rep}
-Suppose that $(\bu,p)$ satisfies the Stokes-Helmholtz equation in 
+Suppose that $(\bu,p)$ satisfies the Helmholtz-Stokes equation in 
 an unbounded region $E$ along with the radiation 
 condition~\cref{eq:radcond}. 
 Then 
@@ -265,8 +257,8 @@ Then
 \label{eq:repinfest}
 \lim_{r\to\infty}
 \int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
-2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
-dV = -2 \Im \left( k \int_{\Gamma} \bu \cdot \overline{\ff} dS  \right)
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV = 2 \Im \left( k \int_{\Gamma} \bu \cdot \overline{\ff} dS  \right)
 \end{equation}
 \end{lem}
 
@@ -278,26 +270,27 @@ Since $(\bu,p)$ satisfies the radiation condition, we have that
 \left( k \bu\cdot \overline{\ff} \right) dS \label{eq:raddecayproof1}
 \right) = 0 \, . 
 \end{equation}
-Since $\bu$ satisfies the Stokes-Helmholtz equation $E \cap B_{r}(0)$,
+Since $\bu$ satisfies the Helmholtz-Stokes equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{equation}
-\int_{E\cap B_{r}(0)} |e(\bu)|^2 dV = -\int_{\Gamma} \bu \cdot \overline{\ff} dS
+\int_{E\cap B_{r}(0)} |2 \be(\bu)|^2 dV =
+\int_{\Gamma} \bu \cdot \overline{\ff} dS
 + \int_{|\by|=r} \bu \cdot \overline{\ff} dS + \overline{k}^2 
 \int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
 \end{equation}
 Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \begin{equation}
 \lim_{r\to\infty} \int_{|\by|=r}\left(|\ff|^2 + |k|^2 |\bu|^2 \right) dS 
-+ 2\Im(k)\int_{E \cap B_{r}(0)} \left(|e(\bu)|^2 + |k|^2 |\bu|^2 
-\right) dV = -2\Im \int_{\Gamma} k \bu \cdot \overline{\ff} dS \, .
++ 2 \Im(k)\int_{E \cap B_{r}(0)} \left(|2\be(\bu)|^2 + |k|^2 |\bu|^2 
+\right) dV = 2\Im \left ( k \int_{\Gamma} \bu \cdot \overline{\ff} dS \right) \, .
 \end{equation}
 \end{proof}
 
-In the next lemma, we prove the analogue of Rellich's lemma for the Stokes-
-Helmholtz equation. 
+In the next lemma, we prove the analogue of Rellich's lemma for the
+Helmholtz-Stokes equation. 
 \begin{lem}
 \label{lem:rellich}
-Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in an unbounded
+Suppose that $\bu$ satisfies the Helmholtz-Stokes equation in an unbounded
 region $E$.  
 Suppose further that 
 \begin{equation}
@@ -348,7 +341,7 @@ u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|
 \, .
 \end{equation}
 \end{proof}
-\begin{remark}
+\begin{remark} \label{rmk:harmu}
 Note that each component of $\bu$ is harmonic and thus $\bu$ then satisfies
 \begin{align}
 k^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
@@ -357,27 +350,25 @@ k^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
 Taking the inner product with $\nabla^{\perp}$ in~\cref{eq:massconsred}, 
 we note that $\bu$ satisfies both $\nabla^{\perp} \cdot \bu = 0$ 
 and $\nabla \cdot \bu = 0$.
-This remark will be useful for the impedence problem...
 \end{remark}
 \begin{remark}
 Note that in Rellich's lemma $\bu$ need not be a radiating solution. 
 All we know of $\bu$ is that it satifies the PDE in $E$.
 \end{remark}
 
-\begin{thm}
-(Uniqueness Dirichlet)
-Suppose that $\Im(k)>0$ and 
-that $\bu$ is a radiating solution to the Stokes-Helmholtz
+\begin{thrm}[Uniqueness of the Dirichlet Problem]
+Suppose that $\Im(k)\geq 0$ and 
+that $(\bu,p)$ is a radiating solution to the Helmholtz-Stokes
 equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
-$u \equiv 0$ in $E$.
-\end{thm}
+$\bu \equiv 0$ in $E$.
+\end{thrm}
 
 \begin{proof}
 Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \begin{equation}
 \lim_{r\to\infty}
 \int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
-2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
 dV = 0
 \end{equation} 
 In particular, this implies that
@@ -387,95 +378,93 @@ In particular, this implies that
 Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
 are satisfied, and each component of $\bu$ is a harmonic function
 with $\bu \to 0$ as $r \to \infty$. Furthermore, since $\bu=0$ on
-$\Gamma$, from uniqueness of solutions to the Dirichlet problem
+$\Gamma$, from uniqueness of solutions to the
+Dirichlet problem for Laplace's equation
 on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
 \end{proof}
 
-The proof for the Neumann problem proceeds in a similar manner. 
-
-\begin{lem}
-If $\bu = \nabla^{\perp} H_{0}(k r)$ and $p\to 0$ as $r\to \infty$, 
-then
-\begin{equation}
-\lim_{r\to \inf} \sqrt(r) \left(\ff_{1} - ik \bu_{1} \right) = 0 \, .
-\end{equation}
-\end{lem}
+\begin{thrm}[Uniqueness of the Neumann Problem]
+Suppose that $\Im(k)\geq 0$ and 
+that $(\bu,p)$ is a radiating solution to the Helmholtz-Stokes
+equation in $E$ with $\ff = 0$ on the boundary $\Gamma$, then
+$\bu \equiv 0$ in $E$.
+\end{thrm}
 
 \begin{proof}
-If $\bu = \nabla^{\perp} H_{0}(k r) = (\partial_{y} H_{0}(k r), 
--\partial_{x} H_{0}(k r))$, then
+Since $\ff = 0$ on $\Gamma$, it follows
+from~\cref{eq:repinfest} that
 \begin{equation}
-\nabla  p = (\Delta + k^2) \bu = (\Delta + k^2) \nabla^{\perp} 
-H_{0} (k r) = 0 \, .
-\end{equation}
-Since $p\to 0$ as $r\to \infty$, we conclude that $p=0$.
-\begin{align}
-\ff_{1} &= 2\partial_{x} u_{1} \cos(\theta) + \left( \partial_{x} u_{2} + 
-\partial_{y} u_{1} \right) \sin(\theta) \\
-&= 2 \partial_{xy} H_{0}(k r) \cdot \frac{x}{r} +
-\left[-\partial_{xx} H_{0}(k r) + \partial_{yy} H_{0}(k r) \right]
-\cdot \frac{y}{r} \, .
-\end{align}
-Based on the mathematica script (radcond1.nb in our mathematica folder), we
-get
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
+dV = 0
+\end{equation} 
+In particular, this implies that
 \begin{equation}
-\ff_{1} - i k u_{1} = \frac{ky}{r^2} \left( -kr \left(H_{0}(k r) + 
-i H_{1}(k r)\right) +
-2 H_{1}(k r)\right) \, .
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, .
 \end{equation}
-The result then follows from the asymptotic properties of Hankel functions since
-\begin{equation}
-H_{0}(z) = c \frac{e^{iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \quad 
-\text{and} \quad 
-H_{1}(z) = -i \cdot c \frac{e^{iz}}{\sqrt{z}} + O(\frac{1}{z^{3/2}}) \,,
-\end{equation}
-where $c$ is the same constant in both of these expansions.
+Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
+in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
+condition becomes $0 = \ff = -p \bnu + 2 \nabla \partial_\nu p/k^2$.
+Because $0 = \btau \cdot \ff = 2\partial_{\tau\nu} p/k^2$,
+$\partial_\nu p $ is a constant on $\Gamma$. Using the
+fact that $(\bu,p)$ is radiating and the fact that $p$ is harmonic,
+the divergence theorem implies that $\partial_\nu p=0$ on $\Gamma$.
+Thus, $\ff = -p\bnu$ so that $p = 0$ on $\Gamma$. By the uniqueness
+of solutions to the Dirichlet problem for Laplace's equation,
+we have that $p=0$ so that $\uu \equiv 0$.
+
 \end{proof}
 
-The following lemma shows uniqueness for the impedance problem under
-the assumption that $\bu$ is complex analytic.
-
-\begin{lem}
-Suppose that $\bu$ satisfies the radiation
-condition~\cref{eq:radcond}. 
-Suppose further that the stress tensor $\ff$ and $\bu$ satisfy
+\begin{thrm}[Uniqueness of the Impedance Problem]
+Suppose that $\Im(k) \geq 0$ and that
+$(\bu,p)$ is a radiating solution of the
+Helmholtz-Stokes equation in $E$ which satisfies
+the homogeneous impednace boundary condition
 \begin{equation}
-\ff + i k \bu = 0 \quad \xx \in \Gamma \, .
+\ff - i k \bu = 0 \quad \xx \in \Gamma \, .
 \end{equation}
 Then $\bu \equiv 0$ for $\xx \in E$.
-\end{lem}
+\end{thrm}
 
 \begin{proof}
-Since $\bu$ satisfies the radiation condition at $\infty$ and $\ff = -ik u$
+Since $\bu$ satisfies the radiation condition at $\infty$ and $\ff = ik \bu$
 on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \begin{align}
-&
-\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
-2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
-dV +2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\ff} ds  \right) \\
+0 &=
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV \nonumber \\
+& \qquad - 2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\ff} dS  \right) \\
 &= 
-\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) ds +
-2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |e(\bu)|^2 \right)
-dV +2 \left( |k|^{2} \int_{\Gamma} |\bu|^{2} \overline{\ff} ds  \right) = 0 
+\int_{|\by|=r} \left( |\ff|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV \nonumber \\
+& \qquad + 2 \left( |k|^{2} \int_{\Gamma} |\bu|^{2} dS  \right)
 \, .
 \end{align}
-Since all the quantities are positive, this implies two things:
+Because all of the quantities in the last expression above are
+nonnegative, we have that
 \begin{equation}
-\int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, .
+\int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, 
 \end{equation}
-along with the estimate
+and the estimate
 \begin{equation}
-\lim_{r\to\infty} \int_{|\yy|=r} |\bu|^{2} ds \to 0 \, .
+\lim_{r\to\infty} \int_{|\yy|=r} |\bu|^{2} dS \to 0 \, .
 \end{equation}
 The last equation implies the conditions for~\cref{lem:rellich}
-are satisfied, from which we conclude that the components of $\bu$ 
-are harmonic in $E$. 
+are satisfied, from which we conclude that the components
+of $\bu$ are harmonic in $E$. 
 Thus, the components of $\bu$ satisfy
 \begin{equation}
-\Delta u_{j}=  0 \quad \xx \in E \,, \quad \text{and} \quad
+\Delta u_{j}=  0 \quad \xx \in E \quad \text{and} \quad
 u_{j} = 0 \quad \xx \in \Gamma \, ,
 \end{equation}
 for $j=1,2$.
 Then $\bu \equiv 0$ follows from the uniqueness of solutions to the 
 Dirichlet problem for Laplace's equation.
 \end{proof}
+
+\subsection{Existence results}
