@@ -467,4 +467,234 @@ Then $\bu \equiv 0$ follows from the uniqueness of solutions to the
 Dirichlet problem for Laplace's equation.
 \end{proof}
 
+\begin{lem}
+Suppose that $\Omega$ is a multiply connected domain with outer boundary
+$\Gamma_{0}$ and $n-$ obstacle boundaries $\Gamma_{j}$, $j=1,2,\ldots n$. 
+Suppose that $k$ is a Stokes eigenvalue for the region $\Omega$ and 
+let $\bu$ be the corresponding eigenfunction. 
+Then, the stream function associated with the velocity $\bu$ defined by
+$w = \left(\nabla^{\perp} \right)^{-1} \bu$ exists and is single valued. 
+Furthermore, $k$ is also a buckling eigenvalue if and only if
+\begin{equation}
+\int_{\Gamma_{j}} w_{j} ds = 0 \quad \forall j=1,2,\ldots n \, .
+\end{equation}
+\end{lem}
+
+\begin{proof}
+Since $\bu$ is a Stokes eigenfunction, it satisfies
+\begin{equation}
+\int_{\Gamma_{j}} \bu \cdot \bn ds = 0 \quad j=1,2\ldots n \, .
+\end{equation}
+Thus, there exists a single valued stream function associated with the
+velocity field $\bu$ such that 
+\begin{equation}
+\nabla^{\perp} w = \bu \, .
+\end{equation}
+Furthermore, since $\bu$ satisfies the Helmholtz-Stokes equations, 
+$w$ satisfies
+\begin{align}
+\Delta (\Delta + k^{2} ) w &= 0 \, , \quad \bx \in \Omega \\
+\nabla^{\perp} w = \bu &=0 \, ,\quad \bx \in \Gamma \, ,
+\end{align}
+where $\Gamma = \cup_{j=0}^{n} \Gamma_{j}$ is the boundary of $\Omega$.
+In particular $w= c_{j}$ and $dw/dn = 0$ for $\bx \in \Gamma_{j}$ for
+some constant $c_{j}$.
+Thus $k$ is also a buckling eigenvalue if and only if 
+\begin{equation}
+c_{j} = \frac{1}{|\Gamma_{j}|}\int_{\Gamma_{j}} w ds =  0 \, .
+\end{equation}
+\end{proof}
+
+The above result can be restated as a 
+a uniqueness result for the 
+solutions to the Helmholtz-Stokes equations whenever $k$ is
+not a buckling value and the stream function associated with the
+velocity satisfies additional integral constraints.
+We state the result in the following lemma.
+\begin{lem}
+\label{lem:conshelmbieig}
+Suppose that $k$ is not a buckling eigenvalue. 
+Further suppose that $\bu$ satisfies
+\begin{align}
+\Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \\
+\nabla \cdot \bu &=0 \quad \bx \in \Omega \\
+\bu &=0 \quad \bx \in \Gamma \\
+\frac{1}{|\Gamma_{j}|}
+\int_{\Gamma_{j}} \left(\nabla^{\perp} \right)^{-1} \bu &= c \quad
+j=0,1,2,\ldots n\, ,
+\end{align}
+where $c$ is a constant independent of the boundary component $\Gamma_{j}$.
+Then $\bu \equiv 0$ for all $\bx \in \Omega$.
+\end{lem}
+
+\begin{lem}
+Suppose that $k$ is not a buckling eigenvalue. 
+Let $\mathbf{K}_{\Gamma}$, $\mathbf{B}$, $\mathbf{D}$, 
+and $\mathbf{F}$ denote the operators defined in~\cref{eq:eqns}.
+Then the block system
+\begin{equation}
+\begin{bmatrix}
+-\frac{1}{2}\mathbf{I}_{\mathcal{X}\times\mathcal{X}} + 
+\mathbf{K}_{\Gamma} & \mathbf{B} \\
+\mathbf{D} & \mathbf{F} 
+\end{bmatrix} \, ,
+\label{eq:IntEqBiharm1newapp}
+\end{equation}
+is an invertible Fredholm operator.
+\end{lem}
+\begin{proof}
+It is simple to
+show that the linear system \cref{eq:IntEqBiharm1newapp}
+is Fredholm. The block which contains
+$-1/2 \mathbf{I}_{\mathcal{X}\times\mathcal{X}}
++ \mathbf{K}_\Gamma$ is Fredholm due to 
+\cref{lem:stokehelmsrep}. 
+The off-diagonal blocks,
+denoted by $\mathbf{B}$ and $\mathbf{D}$, 
+are trivially compact because either the domain 
+or range of the operator is finite dimensional. 
+Finally, $\mathbf{F}$ is 
+Fredholm because it is a finite-dimensional linear
+operator. 
+Therefore, the full system is Fredholm.
+
+Due to the Fredholm alternative,
+it is suffices to establish the injectivity of
+the system \cref{eq:IntEqBiharm1new} to prove that 
+it is invertible.
+
+Suppose that $\bmu,\bc$ satisfy
+\begin{equation}
+\begin{bmatrix}
+-\frac{1}{2}\mathbf{I}_{\mathcal{X}\times\mathcal{X}} + 
+\mathbf{K}_{\Gamma} & \mathbf{B} \\
+\mathbf{D} & \mathbf{F} 
+\end{bmatrix}  
+\bbmat
+\bmu \\
+\bc
+\ebmat
+=
+\bbmat
+0 \\ 0
+\ebmat \, ,
+\label{eq:IntEqBiharm1newapp2}
+\end{equation}
+then $w$ defined by~\cref{eq:wrep}, satsifies the Helmholtz-Biharmonic
+equation~\cref{eq:helmbi,eq:helmbibc1,eq:helmbibc2} 
+with boundary conditions $f=g=0$.
+Since $k$ is not a buckling eigenfrequency, we conclude that $w\equiv 0$ 
+for $\bx \in \Omega$.
+
+
+Let $\bu = \nabla^{\perp} w$ and let 
+$\bu^{\mu} = ik \mathbf{S} [\bmu] + \mathbf{D}[\bmu] = u 
+-\mathbf{B} \bc - \mathbf{W}[\bmu]$.
+For each $\ell = 1,\ldots,N$, 
+let $\tilde{\Gamma}_{\ell} \subset \Omega$ be a curve which satisfies 
+$n\left(z_{j}, \tilde{\Gamma}_{\ell}\right) = \delta_{j\ell}$, 
+where $n\left(z,\gamma\right)$ represents the winding number 
+of the curve $\gamma$ about z. 
+Because $\mathbf{u} = \nabla^{\perp} w$ and $w\equiv 0$ in $D$,
+we have 
+\begin{equation}
+\int_{\tilde{\Gamma}_\ell} (\Delta + k^2) \bu \cdot \boldsymbol{\tau} \, dS = 0 .
+\end{equation}
+We observe that $\bu^\mu$ corresponds
+to a Helmholtz-Stokes velocity field in $D$. Let $p$ be 
+its associated pressure. Then
+\begin{equation}
+\int_{\tilde{\Gamma}_k} (\Delta+k^2) \bu^\mu 
+\cdot \boldsymbol{\tau}
+\, dS = \int_{\tilde{\Gamma}_k} \nabla p \cdot \boldsymbol{\tau} \, dS = 0 \, .
+\end{equation}
+Further, a simple calculation shows that 
+\begin{equation}
+\int_{\tilde{\Gamma}_\ell} (\Delta + k^{2}) \nabla^{\perp} c_j 
+\log (r_j) \cdot \boldsymbol{\tau} \, dS = 
+2 \pi k^2 c_{j} \delta_{j\ell} \, ,
+\end{equation}
+for $j = 1, \ldots, N$.
+Combining these equations, we conclude that
+\begin{equation}
+0 = \int_{\tilde{\Gamma}_j} (\Delta +k^2) \bu \cdot 
+\boldsymbol{\tau} \, dS =
+\int_{\tilde{\Gamma}_j} (\Delta +k^2)( \mathbf{u}^\mu + \mathbf{B}\mathbf{c} )
+\cdot \boldsymbol{\tau} \, dS =  
+2\pi k^2 c_j \, .
+\end{equation}
+Thus $c_j = 0$ for $j=1,2,\ldots N$.
+
+The system of equations~\cref{eq:IntEqBiharm1newapp2} then reads
+\begin{align}
+\left(-\frac{1}{2}\mathbf{I}_{\mathcal{X}\times\mathcal{X}} 
++ \mathbf{K}_\Gamma \right) 
+\boldsymbol{\mu} &= 0 \, . \label{eq:IntEq1} \\
+\mathbf{B} \bmu &= -c_{0} \left(|\Gamma_{0}|, |\Gamma_{2}| \ldots |\Gamma_{n}| 
+\,. 
+\right)
+\end{align}
+This implies that $\bu^{\mu}$ defined above satisfies the
+Helmholtz-Stokes equation with the integral constraints
+\begin{equation}
+\frac{1}{|\Gamma_{j}|} 
+\int_{\Gamma_{j}} \left(\nabla^{\perp}\right)^{-1} \bu ds = -c_{0} 
+\, .
+\end{equation}
+From~\cref{lem:conshelmbieig}, we conclude that $\bu^{\mu} \equiv 0$ 
+for $\bx \in \Omega$.
+Using properties of the layer potentials, $\bu^{\mu}$ satisfies that
+Helmholtz-Stokes equation in $\R^{2} \setminus \Omega$
+along with the radiation condition~\cref{def:radcond}.
+Let $\bu^{\mu,+}, \ff^{\mu,+}$ denote the exterior limits, i.e.
+\begin{align}
+\bu^{\mu,+}(\bx_{0}) &=
+\lim_{\substack{\bx \to \bx_{0}\\ \bx \in \R^{2} \setminus \Omega}}
+\bu(\bx)\ , , \\ 
+\ff^{\mu,+}(\bx_{0}) &=
+\lim_{\substack{\bx \to \bx_{0}\\ \bx \in \R^{2} \setminus \Omega}}
+\ff(\bx) \, , \\ 
+\end{align}
+where $\bx_{0} \in \Gamma$.
+Using the jump conditions for the layer potentials, we conclude that
+\begin{equation}
+\ff^{\mu,+}(\bx) = ik \bmu (\bx) \quad \text{and} \quad 
+\bu^{\mu,+}(\bx) = \bmu
+(\bx) \quad \bx \in \Gamma \,. 
+\label{eq:bcaux}
+\end{equation}
+Thus, in the exterior of the outer-boundary $\Gamma_{0}$, 
+$\bu^{\mu,+}$ satisfies the Helmholtz-Stokes equation with the impendance
+boundary condition
+\begin{equation}
+\ff^{\mu,+} -ik \bu^{\mu,+} = 0 \quad \bx \in \Gamma_{0} \, .
+\end{equation}
+From uniqueness of solutions to the exterior impedance problem, we
+conclude that $\bu^{\mu,+}\equiv 0$ for $\bx$ in the exterior of 
+$\Gamma_{0}$.
+Thus $\bmu(\bx) = 0$ for $\bx \in \Gamma_{0}$.
+Let $D_{j}$ denote the interior region of the obstacle boundary
+$\Gamma_{j}$, for $j=1,2,\ldots n$. 
+Recall that $\bu^{\mu}$ satisfies the Stokes-Helmholtz equation in $D_{j}$.
+Using Green's identities for the Stokes-Helmholtz equations, we get 
+\begin{equation}
+\int_{D_{j}} |e(\bu^{\mu,+})|^{2}  - \overline{k}^{2} |\bu^{\mu,+}|^2) dV = 
+\int_{\Gamma_{j}} \bu^{\mu,+} \cdot \overline{\ff}^{\mu,+} dS \, .
+\end{equation}
+Taking the imaginary part of the above equation and using~\cref{eq:bcaux}, 
+we get
+\begin{equation}
+2 \text{Re}(k) \text{Im}(k) \int_{D_{j}} |\bu^{\mu,+}|^2 dV 
++ \text{Re}(k) \int_{\Gamma_{j}} |\bmu|^2 ds = 0 \, .
+\end{equation}
+This implies that $\bmu =0$ for all $\bx \in \Gamma_{j}$, $j=1,2,\ldots n$.
+
+Finally, because $\bmu =0$ for all $\bx \in \Gamma$ and 
+$c_{j}= 0$, $j=1,2,\ldots n$, 
+we get that $w \equiv c_{0}$ for all $\bx \in \Omega$. 
+Since $w\equiv 0$, it then follows that $c_{0} = 0$ as well, proving the 
+injectivity of the system.
+
+\end{proof}
 \subsection{Existence results}
+
