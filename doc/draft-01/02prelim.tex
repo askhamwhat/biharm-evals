@@ -32,7 +32,7 @@ some natural growth or decay conditions as $|\xx-\yy| \to \infty$.
 The Green's function of the Helmholtz-biharmonic equation
 \cref{eq:buck1} is given by 
 \begin{equation}
-  \Gbh(\xx,\yy) = -\frac{1}{k^2}
+  \Gbh(\xx,\yy) = \frac{1}{k^2}
   \left (\frac{1}{2\pi} \log |\xx-\yy| +
   \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
 \end{equation}
@@ -42,12 +42,12 @@ Note that this is a scaled difference of the Green's function for
 Laplace, i.e.
 
 \begin{equation}
-  \Glap(\xx,\yy) = -\frac{1}{2\pi} \log |\xx-\yy| \; ,
+  \Glap(\xx,\yy) = \frac{1}{2\pi} \log |\xx-\yy| \; ,
 \end{equation}
 and the Green's function for the Helmholtz equation
 
 \begin{equation}
-  \Ghelm(\xx,\yy) = \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; .
+  \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; .
 \end{equation}
 
 \subsection{A Farkas-style integral representation}
@@ -211,7 +211,7 @@ has been added to the right-hand side of \cref{eq:helmstokes}, i.e.
 Recall that
 
 \begin{equation}
-  \Delta \Glap(\xx,\yy) = \delta_\yy(\xx) \; .
+ \Delta \Glap(\xx,\yy) = \delta_\yy(\xx) \; .
 \end{equation}
 If we substitute this expression into
 \eqref{eq:helmstokes_charge} and take the divergence,
