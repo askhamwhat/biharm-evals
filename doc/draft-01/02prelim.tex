@@ -29,14 +29,14 @@ for sufficiently smooth $f$
 We consider here
 ``free-space'' Green's functions, i.e. fundamental solutions which satisfy
 some natural growth or decay conditions as $|\xx-\yy| \to \infty$.
-The Green's function of the Helmholtz-biharmonic equation
+The Green's function of the oscillatory biharmonic equation
 \cref{eq:buck1} is given by 
 \begin{equation}
   \Gbh(\xx,\yy) = \frac{1}{k^2}
   \left (\frac{1}{2\pi} \log |\xx-\yy| +
   \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
 \end{equation}
-where $k$ is the Helmholtz paramater in the Helmholtz-Biharmonic equation,
+where $k$ is the Helmholtz paramater in the oscillatory biharmonic equation,
 and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero.
 Note that this is a scaled difference of the Green's function for
 Laplace, i.e.
@@ -68,7 +68,7 @@ for the unknown densities $\sigma_{1}$ and $\sigma_{2}$ on imposing the boundary
 
 In \cite{jiang2013second}, Jiang extended the Farkas formulation for the solution of the modified
 biharmonic equation, albeit for different boundary conditions. With minor modifications, their formulation
-can also be adopted for the solution of the Dirichlet problem for the Helmholtz-biharmonic equation
+can also be adopted for the solution of the Dirichlet problem for the oscillatory biharmonic equation
 \begin{align}
 \Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:helmbi} \\
 w &= f \quad \text{on} \quad \Gamma \label{eq:helmbibc1} \\
@@ -136,7 +136,7 @@ whenever $k$ is not a buckling eigenfrequency.
 Suppose that $\Omega \subset \R^2$ is a simply connected region whose boundary $\Gamma$ is $\cC^{2}$. 
 Furthermore, suppose that $k$ is not a buckling eigenfrequency of $\Omega$, i.e., the only solution $w$ to~\cref{eq:buck1,eq:buck2,eq:buck3} is  $w \equiv 0$. Suppose further that $f,g \in \cC^{2}(\Gamma)$. 
 Then there exists a unique solution $\sigma_{1},\sigma_{2} \in \cC^{2}$ which satisfies~\cref{eq:farkIntEq}. 
-Furthermore, $w(\bx)$ defined via~\cref{eq:farkRep} satisfies the Helmholtz-Biharmonic equation~\cref{eq:helmbi}
+Furthermore, $w(\bx)$ defined via~\cref{eq:farkRep} satisfies the oscillatory biharmonic equation~\cref{eq:helmbi}
 along with the boundary conditions $w(\bx)=f(\bx)$ and $\dwdn(\bx) = g(\bx)$ for $\bx \in\Gamma$.
 \label{lem:farkinv}
 \end{lem}
@@ -183,7 +183,7 @@ flow
 \cite{pozrikidis1992boundary,biros2002embedded,jiang2013second}.
 In the absence of a preferred name for the case of real-valued $k$,
 we will refer to \cref{eq:helmstokes,eq:helmstokescty} as the
-Helmholtz-Stokes equations.
+oscillatory Stokes equations.
 
 
 

@@ -6,9 +6,9 @@ In this appendix, we prove~\cref{lem:farkinv} which is restated here
 as~\cref{lem:farkinv_app}.
 
 In the following lemma, we present an integral indentity involving the
-Green's function of the Helmholtz-biharmonic equation.
+Green's function of the oscillatory biharmonic equation.
 \begin{lem}
-Suppose that $\Gbh$ is the Green's function of the Helmholtz-biharmonic equation 
+Suppose that $\Gbh$ is the Green's function of the oscillatory biharmonic equation 
 with Helmholtz parameter $k$. Suppose that $v:\R^{2} \to \R$ is a compactly supported smooth
 function. Then
 \begin{equation}
@@ -64,10 +64,10 @@ The result then follows by taking the limit $r\to 0$ in~\cref{eq:estapp5}.
 \end{proof}
 \label{sec:farkproof}
 
-\section{Existence and uniqueness results for the Helmholtz-Stokes PDE}
+\section{Existence and uniqueness results for the oscillatory Stokes PDE}
 
 In this section, we develop some existence and uniqueness
-results for the Helmholtz-Stokes PDE.
+results for the oscillatory Stokes PDE.
 %
 The structure of this section follows that used
 by Colton and Kress \cite[Ch. 3]{colton1983integral}
@@ -111,7 +111,7 @@ The normal component of the stress,
 gives the surface traction, which is the analogue of
 the normal derivative for the scalar Helmholtz equation,
 i.e. specifying the surface traction on a boundary is
-the Neumann problem for the Helmholtz-Stokes PDE.
+the Neumann problem for the oscillatory Stokes PDE.
 
 %
 Let $B_r(0)$ denote the disc of radius $r$ centered
@@ -120,7 +120,7 @@ at the origin and $\partial B_r(0)$ its boundary.
 We propose the following radiation condition.
 
 \begin{definition} \label{def:radcond}
-Let $(\bu,p)$ satisfy the Helmholtz-Stokes equations in
+Let $(\bu,p)$ satisfy the oscillatory Stokes equations in
 the exterior of a bounded domain. We say that
 the pair $(\bu,p)$ is {\em radiating} if
 $p$ is bounded, $p \to 0$ as $r = |\xx| \to \infty$, and 
@@ -134,11 +134,11 @@ traction on $\partial B_r(0)$.
 \end{definition}
 
 \begin{proposition}
-The Helmholtz-Stokeslet, as in \eqref{eq:stokeslet}, satisfies
+The oscillatory Stokeslet, as in \eqref{eq:stokeslet}, satisfies
 the radiation condition in Definition \ref{def:radcond}.
 Assuming that a density $\bmu$ is integrable and satisfies
 $\int_\Gamma \bmu\cdot \bnu dS = 0$, where $\bnu$ denotes the
-outward normal to the curve $\Gamma$, the Helmholtz-Stokes
+outward normal to the curve $\Gamma$, the oscillatory Stokes
 double layer potential $\DD\bmu$, as in \eqref{eq:doublelayer},
 also satisfies the radiation condition.
 \end{proposition}
@@ -249,7 +249,7 @@ to obtain
 
 \begin{lem}
 \label{lem:rep}
-Suppose that $(\bu,p)$ satisfies the Helmholtz-Stokes equation in 
+Suppose that $(\bu,p)$ satisfies the oscillatory Stokes equation in 
 an unbounded region $E$ along with the radiation 
 condition~\cref{eq:radcond}. 
 Then 
@@ -270,7 +270,7 @@ Since $(\bu,p)$ satisfies the radiation condition, we have that
 \left( k \bu\cdot \overline{\ff} \right) dS \label{eq:raddecayproof1}
 \right) = 0 \, . 
 \end{equation}
-Since $\bu$ satisfies the Helmholtz-Stokes equation $E \cap B_{r}(0)$,
+Since $\bu$ satisfies the oscillatory Stokes equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{equation}
 \int_{E\cap B_{r}(0)} |2 \be(\bu)|^2 dV =
@@ -287,10 +287,10 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \end{proof}
 
 In the next lemma, we prove the analogue of Rellich's lemma for the
-Helmholtz-Stokes equation. 
+oscillatory Stokes equation. 
 \begin{lem}
 \label{lem:rellich}
-Suppose that $\bu$ satisfies the Helmholtz-Stokes equation in an unbounded
+Suppose that $\bu$ satisfies the oscillatory Stokes equation in an unbounded
 region $E$.  
 Suppose further that 
 \begin{equation}
@@ -302,7 +302,7 @@ expansion in $E$.
 \end{lem}
 \begin{proof}
 We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
-Helmholtz-Biharmonic equation in $E$, i.e.
+oscillatory biharmonic equation in $E$, i.e.
 \begin{equation}
 \Delta (\Delta + k^2) u_{j} = 0 \quad j=1,2 \,. 
 \end{equation}
@@ -320,7 +320,7 @@ Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
 \begin{equation}
 \lim_{r\to\infty} r|a_{j,n}(r)|^2 = 0 \quad j=1,2 \, , \label{eq:adecay}
 \end{equation}
-Since $u_{j}$, $j=1,2$ satisfies the Helmholtz-biharmonic equation,
+Since $u_{j}$, $j=1,2$ satisfies the oscillatory biharmonic equation,
 the functions $a_{j,n}$ are linear combinations of 
 \begin{equation}
 r^{|n|}, r^{-|n|}, H^{1}_{n}(k r), H^{2}_{n}(k r) \, , \quad
@@ -358,7 +358,7 @@ All we know of $\bu$ is that it satifies the PDE in $E$.
 
 \begin{thrm}[Uniqueness of the Dirichlet Problem]
 Suppose that $\Im(k)\geq 0$ and 
-that $(\bu,p)$ is a radiating solution to the Helmholtz-Stokes
+that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
 equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
 $\bu \equiv 0$ in $E$.
 \end{thrm}
@@ -385,7 +385,7 @@ on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
 
 \begin{thrm}[Uniqueness of the Neumann Problem]
 Suppose that $\Im(k)\geq 0$ and 
-that $(\bu,p)$ is a radiating solution to the Helmholtz-Stokes
+that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
 equation in $E$ with $\ff = 0$ on the boundary $\Gamma$, then
 $\bu \equiv 0$ in $E$.
 \end{thrm}
@@ -421,7 +421,7 @@ we have that $p=0$ so that $\uu \equiv 0$.
 \begin{thrm}[Uniqueness of the Impedance Problem]
 Suppose that $\Im(k) \geq 0$ and that
 $(\bu,p)$ is a radiating solution of the
-Helmholtz-Stokes equation in $E$ which satisfies
+oscillatory Stokes equation in $E$ which satisfies
 the homogeneous impednace boundary condition
 \begin{equation}
 \ff - i k \bu = 0 \quad \xx \in \Gamma \, .
@@ -490,7 +490,7 @@ velocity field $\bu$ such that
 \begin{equation}
 \nabla^{\perp} w = \bu \, .
 \end{equation}
-Furthermore, since $\bu$ satisfies the Helmholtz-Stokes equations, 
+Furthermore, since $\bu$ satisfies the oscillatory Stokes equations, 
 $w$ satisfies
 \begin{align}
 \Delta (\Delta + k^{2} ) w &= 0 \, , \quad \bx \in \Omega \\
@@ -507,7 +507,7 @@ c_{j} = \frac{1}{|\Gamma_{j}|}\int_{\Gamma_{j}} w ds =  0 \, .
 
 The above result can be restated as a 
 a uniqueness result for the 
-solutions to the Helmholtz-Stokes equations whenever $k$ is
+solutions to the oscillatory Stokes equations whenever $k$ is
 not a buckling value and the stream function associated with the
 velocity satisfies additional integral constraints.
 We state the result in the following lemma.
@@ -580,7 +580,7 @@ Suppose that $\bmu,\bc$ satisfy
 \ebmat \, ,
 \label{eq:IntEqBiharm1newapp2}
 \end{equation}
-then $w$ defined by~\cref{eq:wrep}, satsifies the Helmholtz-Biharmonic
+then $w$ defined by~\cref{eq:wrep}, satsifies the oscillatory biharmonic
 equation~\cref{eq:helmbi,eq:helmbibc1,eq:helmbibc2} 
 with boundary conditions $f=g=0$.
 Since $k$ is not a buckling eigenfrequency, we conclude that $w\equiv 0$ 
@@ -601,7 +601,7 @@ we have
 \int_{\tilde{\Gamma}_\ell} (\Delta + k^2) \bu \cdot \boldsymbol{\tau} \, dS = 0 .
 \end{equation}
 We observe that $\bu^\mu$ corresponds
-to a Helmholtz-Stokes velocity field in $D$. Let $p$ be 
+to a oscillatory Stokes velocity field in $D$. Let $p$ be 
 its associated pressure. Then
 \begin{equation}
 \int_{\tilde{\Gamma}_k} (\Delta+k^2) \bu^\mu 
@@ -635,7 +635,7 @@ The system of equations~\cref{eq:IntEqBiharm1newapp2} then reads
 \right)
 \end{align}
 This implies that $\bu^{\mu}$ defined above satisfies the
-Helmholtz-Stokes equation with the integral constraints
+oscillatory Stokes equation with the integral constraints
 \begin{equation}
 \frac{1}{|\Gamma_{j}|} 
 \int_{\Gamma_{j}} \left(\nabla^{\perp}\right)^{-1} \bu ds = -c_{0} 
@@ -644,7 +644,7 @@ Helmholtz-Stokes equation with the integral constraints
 From~\cref{lem:conshelmbieig}, we conclude that $\bu^{\mu} \equiv 0$ 
 for $\bx \in \Omega$.
 Using properties of the layer potentials, $\bu^{\mu}$ satisfies that
-Helmholtz-Stokes equation in $\R^{2} \setminus \Omega$
+oscillatory Stokes equation in $\R^{2} \setminus \Omega$
 along with the radiation condition~\cref{def:radcond}.
 Let $\bu^{\mu,+}, \ff^{\mu,+}$ denote the exterior limits, i.e.
 \begin{align}
@@ -664,7 +664,7 @@ Using the jump conditions for the layer potentials, we conclude that
 \label{eq:bcaux}
 \end{equation}
 Thus, in the exterior of the outer-boundary $\Gamma_{0}$, 
-$\bu^{\mu,+}$ satisfies the Helmholtz-Stokes equation with the impendance
+$\bu^{\mu,+}$ satisfies the oscillatory Stokes equation with the impendance
 boundary condition
 \begin{equation}
 \ff^{\mu,+} -ik \bu^{\mu,+} = 0 \quad \bx \in \Gamma_{0} \, .
@@ -675,8 +675,8 @@ $\Gamma_{0}$.
 Thus $\bmu(\bx) = 0$ for $\bx \in \Gamma_{0}$.
 Let $D_{j}$ denote the interior region of the obstacle boundary
 $\Gamma_{j}$, for $j=1,2,\ldots n$. 
-Recall that $\bu^{\mu}$ satisfies the Stokes-Helmholtz equation in $D_{j}$.
-Using Green's identities for the Stokes-Helmholtz equations, we get 
+Recall that $\bu^{\mu}$ satisfies the oscillatory Stokes equation in $D_{j}$.
+Using Green's identities for the oscillatory Stokes equations, we get 
 \begin{equation}
 \int_{D_{j}} |e(\bu^{\mu,+})|^{2}  - \overline{k}^{2} |\bu^{\mu,+}|^2) dV = 
 \int_{\Gamma_{j}} \bu^{\mu,+} \cdot \overline{\ff}^{\mu,+} dS \, .

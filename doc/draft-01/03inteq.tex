@@ -8,7 +8,8 @@ for solutions of Stokes flow \cref{eq:biharmV1,eq:biharmV2,eq:biharmV3} to solve
 the clamped plate problem \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}.
 Let $f$ and $g$ be the boundary data as in \cref{eq:biharmD1,eq:biharmD2,eq:biharmD3}. 
 By computing tangential derivatives of $f$ on each
-boundary component, we get the following related Helmholtz-Stokes problem:
+boundary component, we get the following related oscillatory Stokes
+problem:
 \begin{align}
  \Delta (\Delta + \lambda^2) \tilde{w}  = 0 &\quad \bx \in D \, ,\nonumber\\
  \frac{\partial \tilde{w}}{\partial \tau} = 
@@ -22,7 +23,7 @@ boundary component, we get the following related Helmholtz-Stokes problem:
 There are two main issues to be addressed in using the completed
 double layer representation in this context. First,
 the representation is designed for 
-Helmholtz-Stokes flow, in which the quantities of interest are derivatives
+oscillatory Stokes flow, in which the quantities of interest are derivatives
 of the potential $\tilde{w}$ and not $\tilde{w}$ itself; the
 representation for $\tilde{w}$ may not be single-valued. 
 We will establish that, in the context of \cref{eq:biharm5},

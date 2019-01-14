@@ -6,9 +6,9 @@ In this appendix, we prove~\cref{lem:farkinv} which is restated here
 as~\cref{lem:farkinv_app}.
 
 In the following lemma, we present an integral indentity involving the
-Green's function of the Helmholtz-biharmonic equation.
+Green's function of the oscillatory biharmonic equation.
 \begin{lem}
-Suppose that $\Gbh$ is the Green's function of the Helmholtz-biharmonic equation 
+Suppose that $\Gbh$ is the Green's function of the oscillatory biharmonic equation 
 with Helmholtz parameter $k$. Suppose that $v:\R^{2} \to \R$ is a compactly supported smooth
 function. Then
 \begin{equation}
@@ -68,7 +68,7 @@ The result then follows by taking the limit $r\to 0$ in~\cref{eq:estapp5}.
 The proof proceeds as follows:
 \begin{itemize}
 \item Show uniqueness of solutions to the impedence, velocity, and surface
-traction boundary value problem in exterior domains for the Stokes-Helmholtz
+traction boundary value problem in exterior domains for the oscillatory Stokes
 PDEs. In order to prove this, we need the following lemmas:
 \begin{itemize}
 \item Deriving Green's theorem for exterior domains
@@ -81,7 +81,7 @@ analogous to the Dirichlet biharmonic paper.
 
 With this in mind, we first discuss the PDE theory for the impedence, 
 velocity and surface traction boundary value problems on unbounded
-domains for the Stokes-Helmholtz equation.
+domains for the oscillatory Stokes equation.
 We focus on the proof for the velocity boundary value problem. 
 The proofs for the surface traction and impedence problems is similar.
 
@@ -112,7 +112,7 @@ by
 \end{equation}
 Analogous to the Helmholtz equation, we need to impose radiation conditions
 at $\infty$.
-We propose the following radiation conditions for the Stokes-Helmholtz 
+We propose the following radiation conditions for the oscillatory Stokes 
 equation
 \begin{equation}
 \lim_{r\to \infty} \sqrt{r} \left| \ff - i \omega \bu \right| \to 0 \, ,
@@ -122,7 +122,7 @@ uniformly in direction.
 
 \begin{lem}
 \label{lem:rep}
-Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in 
+Suppose that $\bu$ satisfies the oscillatory Stokes equation in 
 an unbounded region $E$ along with the radiaition 
 condition~\cref{eq:radcond}. 
 Then 
@@ -143,7 +143,7 @@ Since $\bu$ satisfies the radiation condition, we have that
 \left( \omega \bu\cdot \ff \right) ds \label{eq:raddecayproof1}
 \right) = 0 \, . 
 \end{equation}
-Since $\bu$ satisfies the Stokes-Helmholtz equation $E \cap B_{r}(0)$,
+Since $\bu$ satisfies the oscillatory Stokes equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{align}
 \int_{E\cap B_{r}(0)} |e(\bu)|^2 dV &= \int_{E\cap B_{r}(0)} \left< e(\bu), \overline{e(\bu)} \right> dV  \\
@@ -162,11 +162,11 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \end{equation}
 \end{proof}
 
-In the next lemma, we prove the analogue of Rellich's lemma for the Stokes-
-Helmholtz equation. 
+In the next lemma, we prove the analogue of Rellich's lemma
+for the oscillatory Stokes equation. 
 \begin{lem}
 \label{lem:rellich}
-Suppose that $\bu$ satisfies the Stokes-Helmholtz equation in an unbounded
+Suppose that $\bu$ satisfies the oscillatory Stokes equation in an unbounded
 region $E$.  
 Suppose further that 
 \begin{equation}
@@ -178,7 +178,7 @@ expansion in $E$.
 \end{lem}
 \begin{proof}
 We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
-Helmholtz-Biharmonic equation in $E$, i.e.
+oscillatory biharmonic equation in $E$, i.e.
 \begin{equation}
 \Delta (\Delta + \omega^2) u_{j} = 0 \quad j=1,2 \,. 
 \end{equation}
@@ -196,7 +196,7 @@ Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
 \begin{equation}
 \lim_{r\to\infty} r|a_{j,n}(r)|^2 = 0 \quad j=1,2 \, , \label{eq:adecay}
 \end{equation}
-Since $u_{j}$, $j=1,2$ satisfies the Helmholtz-biharmonic equation,
+Since $u_{j}$, $j=1,2$ satisfies the oscillatory biharmonic equation,
 the functions $a_{j,n}$ are linear combinations of 
 \begin{equation}
 r^{|n|}, r^{-|n|}, H^{1}_{n}(\omega r), H^{2}_{n}(\omega r) \, , \quad
@@ -236,7 +236,7 @@ All we know of $\bu$ is that it satifies the PDE in $E$.
 \begin{thm}
 (Uniqueness Dirichlet)
 Suppose that $\text{Im}(\omega)\geq 0$ and 
-that $\bu$ is a radiating solution to the Stokes-Helmholtz
+that $\bu$ is a radiating solution to the oscillatory Stokes
 equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
 $u \equiv 0$ in $E$.
 \end{thm}
