@@ -529,6 +529,33 @@ subroutine zhelmstokesallmat(zk,src,targ,nu,cs,cd, &
   return
 end subroutine zhelmstokesallmat
 
+subroutine zhelmstokesallmatmany(zk,ns,src,nt,targ,nu,cs,cd, &
+     mat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  ! This function produces a matrix such that
+  ! mat*mu is a stresslet. trans='T' gives the
+  ! transpose of the matrix
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2), cs, cd
+  real *8, intent(in) :: src(2,ns), targ(2,nt)
+  integer, intent(in) :: ns, nt
+  complex *16, intent(out) :: mat(2,2,nt,ns)
+  ! local
+  integer :: i, j
+
+  do j = 1,ns
+     do i = 1,nt
+        call zhelmstokesallmat(zk,src(1,j),targ(1,i),nu,cs,cd, &
+             mat(1,1,i,j))
+     enddo
+  enddo
+
+  return
+end subroutine zhelmstokesallmatmany
+
 
 subroutine zhelmstokeslet_streammat(zk,src,targ, &
      zmat)
@@ -695,6 +722,35 @@ subroutine zhelmstokesall_streammat(zk,src,targ,nu,cs,cd, &
   
   return
 end subroutine zhelmstokesall_streammat
+
+subroutine zhelmstokesallstreammatmany(zk,ns,src,nt,targ,nu,cs,cd, &
+     zmat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  !
+  ! applied to a vector density mu, this gives the
+  ! stream function part of the double layer potential
+  ! (missing the potential part, i.e. the part due
+  ! to "pressure")
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2), cs, cd
+  real *8, intent(in) :: src(2,ns), targ(2,nt)
+  integer, intent(in) :: ns, nt
+  complex *16, intent(out) :: zmat(1,2,nt,ns)
+  ! local
+  integer :: i, j
+
+  do j = 1,ns
+     do i = 1,nt
+        call zhelmstokesall_streammat(zk,src(1,j),targ(1,i),nu,cs,cd, &
+             zmat(1,1,i,j))
+     enddo
+  enddo
+  
+  return
+end subroutine zhelmstokesallstreammatmany
 
 
 

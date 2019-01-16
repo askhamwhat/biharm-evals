@@ -1144,6 +1144,20 @@ c
         END
 c 
 c 
+      SUBROUTINE legeexevvec(NX,XS,VALS,PEXP,N)
+      IMPLICIT REAL *8 (A-H,O-Z)
+        
+      REAL *8 PEXP(1), XS(1), VALS(1)
+C 
+
+      do i = 1,nx
+         call legeexev(XS(i),VALS(i),PEXP,N)
+      enddo
+c 
+        RETURN
+        END
+c 
+c 
 c 
 c 
 c 

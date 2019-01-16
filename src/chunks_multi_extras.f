@@ -1,3 +1,73 @@
+
+      subroutine multichunkfuncrmodes(eps, ifclosed, chsmall, tas, tbs,
+     1     pars, iparsindeces, k, novers, wgeos, lwgeos,
+     2     ncomp, ncompmax, lused, ier)
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c
+c     this subroutine forms boundary components specified by funcurve
+c     and various parameters and stores their discretization in 
+c     the array wgeos as a multichunk.
+c
+c     INPUT
+c
+c     eps - real *8 array. eps(i) is the tolerance passed to chunkfunc
+c           for the ith boundary component
+c     ifclosed - integer array. ifclosed(i) = 1 if the ith component is
+c           to be treated as a closed curve by chunkfunc, 
+c           ifclosed(i) = 0 otherwise.
+c     chsmall - real *8 array. chsmall(i) is the size of the smallest
+c               chunk near the endpoints of the ith component, if the
+c               ith component is to be treated as a closed curve.
+c     tas, tbs - real *8 array. the start and end points of the 
+c                ith component in parameter space are tas(i), tbs(i)
+c
+c     TO DO: add docs for these pars and iparsindeces... designed to
+c     be called by funcurve_by_mode_cmextra(t,w,x,y,dxdt,dydt,dxdt2,dydt2)
+c
+c     pars - real *8 array of parameters.
+c     iparsindeces - integer array. iparsindeces(i) determines
+c                    where in the large pars array the parameters
+c                    for the ith component begin. That is, when
+c                    the ith chunk is discretized, the subroutine
+c                    funcurve is called with
+c
+c         funcurve(t,pars(iparsindeces(i)),x,y,dxdt,dydt,dxdt2,dydt2)
+c
+c     k - integer. the order of discretization to use on the chunks
+c     novers - integer array. novers(i) is the oversampling factor
+c              to be used on the ith chunk
+c     lwgeos - integer. the length of the wgeos array
+c     ncomp - the number of boundary components (the eps, chsmall,
+c             etc. arrays should be length ncomp)
+c     ncompmax - the maximum number of components to be stored in the
+c                multichunk (wgeos is initialized with this setting)
+c                note, it is necessary that ncompmax >= ncomp
+c
+c     OUTPUT
+c
+c     wgeos - the multichunk for these boundary components
+c     lused - the length of the wgeos array which was used.
+c     ier - integer, flag. error flag.
+c     
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      implicit none
+      real *8 eps(*), chsmall(*), tas(*), tbs(*), pars(*)
+      real *8 wgeos(*)
+      integer ncomp, ncompmax, iparsindeces(*), k, novers(*)
+      integer lused, ier, lwgeos, ifclosed(*)
+c     local variables
+      external funcurve_by_mode_cmextra
+      
+
+      call multichunkfunc(eps, ifclosed, chsmall, tas, tbs,
+     1     funcurve_by_mode_cmextra, pars, iparsindeces, k, novers,
+     2     wgeos, lwgeos, ncomp, ncompmax, lused, ier)
+      
+      return
+      end
+      
+
+
       subroutine funcurve_by_mode_cmextra(t,w,x,y,dxdt,dydt,dxdt2,dydt2)
       implicit real *8 (a-h,o-z)
       real *8 t, w(*), x, y, dxdt, dydt, dxdt2, dydt2

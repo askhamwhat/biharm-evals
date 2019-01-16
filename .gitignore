@@ -1,0 +1,4 @@
+*.o
+*~
+
+mathematica/*.txt

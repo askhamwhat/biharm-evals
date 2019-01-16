@@ -417,10 +417,10 @@
         !
         ! get the bremer near and self quadratures
         !
-        call get_quads_info(k, nquad1, nquad0)
+        call getquadsinfo(k, nquad1, nquad0)
         allocate(xs1(nquad1), whts1(nquad1))
         allocate(xs0(k,k), whts0(k,k))
-        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+        call getquads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
 
         !
         ! initialize the potential
@@ -512,10 +512,10 @@
         !
         ! get the bremer near and self quadratures
         !
-        call get_quads_info(k, nquad1, nquad0)
+        call getquadsinfo(k, nquad1, nquad0)
         allocate(xs1(nquad1), whts1(nquad1))
         allocate(xs0(k,k), whts0(k,k))
-        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+        call getquads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
 
         call zdiagonal_buildmat(ich, k, wgeo, fkernel, &
             q1, q2, fgreens, par0, pars1, pars2, xs0, &
@@ -554,10 +554,10 @@
         !
         ! get the bremer near and self quadratures
         !
-        call get_quads_info(k, nquad1, nquad0)
+        call getquadsinfo(k, nquad1, nquad0)
         allocate(xs1(nquad1), whts1(nquad1))
         allocate(xs0(k,k), whts0(k,k))
-        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+        call getquads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
 
         call znear_buildmat(ich, ich_src, k, wgeo, &
             fkernel, q1, q2, fgreens, par0, pars1, pars2, &
@@ -679,10 +679,10 @@
           enddo
         enddo
             
-        call get_quads_info(k, nquad1, nquad0)
+        call getquadsinfo(k, nquad1, nquad0)
         allocate(xs1(nquad1), whts1(nquad1))
         allocate(xs0(k,k), whts0(k,k))
-        call get_quads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
+        call getquads(k, nquad1, xs1, whts1, nquad0, xs0, whts0)
 
         !$omp parallel do default(shared) &
         !$omp     private(itarget, imat, ibefore, iafter) &

@@ -119,7 +119,7 @@ c     copy over new component
       return
       end
 
-      subroutine multichunk_getcomp(wgeos,wgeo,lwgeo,icomp,ier)
+      subroutine multichunkgetcomp(wgeos,wgeo,lwgeo,icomp,ier)
       implicit none
       real *8 wgeos(*), wgeo(*)
       integer lwgeo, icomp, ier
@@ -152,7 +152,7 @@ c     local variables
       return
       end
 
-      subroutine multichunk_mergepack(wgeos,wgeo,lwgeo,lused,ier)
+      subroutine multichunkmergepack(wgeos,wgeo,lwgeo,lused,ier)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     This routine takes the chunks from each of the components
@@ -258,7 +258,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     figure out order of chunks
@@ -351,7 +351,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     figure out order of chunks
@@ -410,7 +410,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     figure out order of chunks
@@ -437,7 +437,7 @@ c     figure out total number of chunks
       return
       end
 
-      subroutine multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      subroutine multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
@@ -473,7 +473,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       return
       end
 
-      subroutine multichunk_nchs(wgeos,nchs,ncomp)
+      subroutine multichunknchs(wgeos,nchs,ncomp)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     This subroutine returns the number of chunks for each component
@@ -498,7 +498,7 @@ c     local variables
       integer icomp, ier, index
       integer ktemp1,nch1,ichunks1,iadjs1,iders1,iders12,ihs1
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
       do icomp = 1,ncomp
@@ -648,7 +648,7 @@ c     local variables
          endif
       enddo
 
-      call multichunk_info(wgeos,ncomp1,ncompmax1,indeces1,
+      call multichunkinfo(wgeos,ncomp1,ncompmax1,indeces1,
      1     lwgeos1,lused)
       
       return
@@ -672,7 +672,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     go through components, reversing each
@@ -708,7 +708,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     reversing only this component
@@ -725,7 +725,7 @@ c     reversing only this component
       end
 
       
-      subroutine multichunk_sort(wgeos,ier)
+      subroutine multichunksort(wgeos,ier)
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c     this subroutine goes through and sorts the geometry for each 
@@ -742,7 +742,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     go through components, sorting each
@@ -773,7 +773,7 @@ c     local variables
 
       ier = 0
 
-      call multichunk_info(wgeos,ncomp,ncompmax,indeces,
+      call multichunkinfo(wgeos,ncomp,ncompmax,indeces,
      1     lwgeos,lused)
 
 c     sorting only this component

@@ -1,6 +1,6 @@
 
       
-subroutine zbuildmat_vec(ndim,norder, wgeo, fkernel, q1, q2, &
+subroutine zbuildmattdvec(ndim,norder, wgeo, fkernel, q1, q2, &
      fgreens, par0, pars1, pars2, ntot, cmat)
   implicit real *8 (a-h,o-z)
   integer, intent(in) :: ndim, norder
@@ -12,7 +12,8 @@ subroutine zbuildmat_vec(ndim,norder, wgeo, fkernel, q1, q2, &
   external fkernel, fgreens
 
   !
-  ! build **an arbitrary** layer potential matrix using bremer-style
+  ! build the tridiagonal part of **an arbitrary** layer
+  ! potential matrix using bremer-style
   ! chunk quadratures. this assumed that each chunk is *locally*
   ! oriented counter-clockwise. 
   !
@@ -121,7 +122,7 @@ subroutine zbuildmat_vec0(ndim,norder, k, nch, wgeo, &
   do itarget = 1,nch
      imat = 1 + (itarget-1)*ntmat
 
-     call chunk_neighbors(itarget, wgeo, ibefore, iafter)
+     call chunkneighbors(itarget, wgeo, ibefore, iafter)
 
      !
      ! for all target chunks, loop over source chunks

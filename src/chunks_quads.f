@@ -6,7 +6,7 @@ c       logarithmic singularities used by the discretization code.
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-      subroutine get_quads_info(norder, nquad1, nquad0)
+      subroutine getquadsinfo(norder, nquad1, nquad0)
         implicit real *8 (a-h,o-z)
         integer, intent(in) :: norder
         integer, intent(out) :: nquad1, nquad0
@@ -31,39 +31,39 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
         if (norder .eq. 16) then
           call qunear16_info(norder1, nquad1)
-          call qudiag16_info(nlege0, norder0, nqua0)
+          call qudiag16_info(nlege0, norder0, nquad0)
         endif
 
         if (norder .eq. 20) then
           call qunear20_info(norder1, nquad1)
-          call qudiag20_info(nlege0, norder0, nqua0)
+          call qudiag20_info(nlege0, norder0, nquad0)
         endif
 
         if (norder .eq. 24) then
           call qunear24_info(norder1, nquad1)
-          call qudiag24_info(nlege0, norder0, nqua0)
+          call qudiag24_info(nlege0, norder0, nquad0)
         endif
 
         if (norder .eq. 30) then
           call qunear30_info(norder1, nquad1)
-          call qudiag30_info(nlege0, norder0, nqua0)
+          call qudiag30_info(nlege0, norder0, nquad0)
         endif
 
         if (norder .eq. 40) then
           call qunear40_info(norder1, nquad1)
-          call qudiag40_info(nlege0, norder0, nqua0)
+          call qudiag40_info(nlege0, norder0, nquad0)
         endif
 
         if (norder .eq. 60) then
           call qunear60_info(norder1, nquad1)
-          call qudiag60_info(nlege0, norder0, nqua0)
+          call qudiag60_info(nlege0, norder0, nquad0)
         endif
 
         return
       end subroutine
 
 
-      subroutine get_quads(norder, nquad1, xs1, whts1,
+      subroutine getquads(norder, nquad1, xs1, whts1,
      1      nquad0, xs0, whts0)
         implicit real *8 (a-h,o-z)
         integer, intent(in) :: norder, nquad1, nquad0
@@ -74,7 +74,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
         !
         ! this routine is a canned procedure for pull near and far
         ! quadratures from bremer's routine. it should be preceeded
-        ! by a call to the routine get_quads_info, which returns all
+        ! by a call to the routine getquadsinfo, which returns all
         ! the necessary array dimensions
         !
 

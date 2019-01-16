@@ -1,0 +1,284 @@
+@function readme()
+%README
+%
+% The bhdeig routines are Copyright (c) 2018: Travis Askham
+% and Manas Rachh
+%
+% This software is being released under a modified FreeBSD
+% license
+%
+% A number of dependencies are also included and the Copyright
+% info is below
+%
+% The chunks library is Copyright (c) 2018: Michael O'Neil
+% The quads library is Copyright (c) 2018: James Bremer
+% FMMLIB2D is Copyright (C) 2009-2012: Leslie Greengard and
+% Zydrunas Gimbutas
+%
+% Contact: askham@uw.edu
+% 
+
+
+@function [wgeos,info] = multichunkfunc(geopars,varargin)
+%MULTICHUNKFUNC
+%
+% This routine constructs a multi-chunk object in
+% the array wgeos based on the description in geopars
+%
+
+eps = geopars.eps;
+ifclosed = geopars.ifclosed;
+chsmall = geopars.chsmall;
+tas = geopars.tas;
+tbs = geopars.tbs;
+pars = geopars.pars;
+ipars = geopars.ipars;
+k = geopars.k;
+novers = geopars.novers;
+type = geopars.type;
+ncomp = geopars.ncomp;
+
+% default values
+ntrymax = 100;
+ncompmax = ncomp;
+lwgeos = 100000;
+
+if (nargin > 1)
+   lwgeos = varargin{1};
+end
+
+if (nargin > 2)
+   ncompmax = varargin{2};
+end
+
+if (nargin > 3)
+   ntrymax = varargin{3};
+end	   
+
+lused = -1;
+ier = -1;
+
+for i = 1:ntrymax
+    wgeos = zeros(lwgeos,1);
+    if (strcmp(type,'rmodes'))
+       # FORTRAN multichunkfuncrmodes(double[] eps, int[] ifclosed, double[] chsmall, double[] tas, double[] tbs, double[] pars, int[] ipars, int[1] k, int[] novers, inout double[] wgeos, int[1] lwgeos, int[1] ncomp, int[1] ncompmax, inout int[1] lused, inout int[1] ier);
+    end
+    switch ier
+    	   case 1
+	   	ncompmax = ncomp;
+           case 4
+	   	lwgeos = 2*lwgeos;
+           otherwise
+		break;
+    end
+end
+
+% sort chunks
+# FORTRAN multichunksort(inout double[] wgeos, inout int[1] ier);
+
+info.ncomp = ncomp;
+info.ncompmax = ncompmax;
+info.lwgeos = lwgeos;
+info.k = k;
+info.lused = lused;
+info.ier = ier;
+
+end
+
+@function [wgeo,nchs] = multichunkmergepack(wgeos)
+
+ncomp = -1; ncompmax = -1;
+indices = -1; lwgeos = -1; lused = -1;
+ier = 0;
+% query
+# FORTRAN multichunkinfo(double[] wgeos, inout int[1] ncomp, inout int[1] ncompmax, inout int[1] indices, inout int[1] lwgeos, inout int[1] lused);
+lwgeo = lused;
+wgeo = zeros(lused,1);
+# FORTRAN multichunkmergepack(double[] wgeos, inout double[] wgeo, int[1] lwgeo, inout int[1] lused, inout int[1] ier);
+nchs = zeros(ncomp,1);
+# FORTRAN multichunknchs(double[] wgeos, inout int[] nchs, inout int[1] ncomp);
+
+end
+
+@function wgeo = multichunkgetcomp(wgeos,icomp)
+
+wgeo = 1.0;
+lwgeo = -1;
+lused = -1;
+ier = 0;
+% query
+# FORTRAN multichunkgetcomp(double[] wgeos, inout double[] wgeo, int[1] lwgeo, inout int[1] lused, int[1] icomp, inout int[1] ier);
+lwgeo = lused;
+wgeo = zeros(lused,1);
+# FORTRAN multichunkgetcomp(double[] wgeos, inout double[] wgeo, int[1] lwgeo, inout int[1] lused,int[1] icomp, inout int[1] ier);
+
+end
+
+@function chunker = chunkunpack(wgeo)
+
+k = -1; nch = -1; ichunks = -1; iadjs = -1;
+iders = -1; iders2 = -1; ihs = -1;
+
+# FORTRAN chunkunpack1(double[] wgeo, inout int[1] k, inout int[1] nch, inout int[1] ichunks, inout int[1] iadjs, inout int[1] iders, inout int[1] iders2, inout int[1] ihs);
+
+chunks = zeros(2,k,nch);
+adjs = zeros(2,nch);
+ders = zeros(2,k,nch);
+ders2 = zeros(2,k,nch);
+hs = zeros(nch);
+
+# FORTRAN chunkunpack(double[] wgeo, inout int[1] k, inout int[1] nch, inout double[] chunks, inout int[] adjs, inout double[] ders, inout double[] ders2, inout double[] hs);
+
+chunker.k = k; chunker.nch = nch;
+chunker.chunks = chunks;
+chunker.adjs = adjs;
+chunker.ders = ders;
+chunker.ders2 = ders2;
+chunker.hs = hs;
+
+end
+
+@function [sysmat] = zhbhstokesmatbuild(zk,wgeo,nchs,ccs,q1,q2)
+%ZHBH_STOKES_MATBUILD
+%
+% This routine builds the matrix for solving
+% a Dirichlet problem of the form
+%
+% \Delta (\Delta + zk^2) u = 0 in the domain
+%
+% with boundary conditions:
+%
+% u = f
+% d/dn u = g
+%
+% on a bounded, multiply connected domain.
+% The integral representation is based on the
+% Stokes-type layer potentials
+%
+% INPUT:
+%
+% zk - complex double, wavenumber of PDE
+% wgeo - real double array, packed chunks description
+%        of boundary
+% ncomp - integer, number of boundary components
+%         the first boundary component should be
+%         the OUTER boundary
+% nchs - integer array, nchs(i) is the number of
+%        chunks on the ith boundary component. the
+%        chunks in wgeo should be ordered such that
+%        the first nchs(1) chunks comprise the 1st
+%        boundary component, etc.
+% ccs - real double array, ccs(1:2,2:ncomp) describe
+%       point inside each of the connected
+%       boundary components
+% q1 - complex double, weight of single layer part
+%      of stokes rep
+% q2 - complex double, weight of double layer part
+%      of stokes rep
+%
+% RETURN
+%
+% sysmat - complex double matrix, if ier = 0, then this
+%          should contain the system matrix as
+%          described in detail below.
+%
+% SYSTEM DESCRIPTION:
+%
+% on simply connected q1 = 0, q2 = 1 are good
+% choices. on multiply connected q1 = q2 = 1
+% are good choices.
+%
+% sysmat = ( A B )
+%          ( C D )
+%
+% A = q1*S + q2*(D - 1/2), is the system matrix for
+% a stokes layer potential. It is 2*number of
+% boundary points-by-2*number of boundary points
+% in dimension. The x and y directions of the
+% vector field are interleaved, i.e. entries in
+% the 2*j+1 columns correspond to the x directoin
+% and entries in the 2*j columns correspond to the
+% y directions.
+%
+% B = a matrix corresponding to other parts of
+% the representation. The first column is zero
+% the remaining ncomp-1 columns correspond to
+% the gradient of log charges in the holes of
+% the domain.
+%
+% C = a matrix corresponding to the integral of
+% the stream function of the stokes field
+% on each boundary component. This matrix requies some
+% precomputation because of the potential field
+% in the Stokes double layer representation
+%
+% D = the integral of the constant added to
+% the representation and the log charges along
+% each boundary component.
+%
+% The right hand side for this system matrix
+% should be of the form
+%
+% (G; I)
+%
+% where G is the gradient of u and I is the
+% integral of u along each boundary component
+%
+
+ntot = -1;
+sysmat = 1 + 1i;
+ier = 0;
+ncomp = length(nchs);
+
+% query
+# FORTRAN zhbhstokesmatbuild(dcomplex[1] zk,double[] wgeo,int[1] ncomp,int[] nchs,double [] ccs,dcomplex[1] q1, dcomplex[1] q2,inout int[1] ntot, inout dcomplex[] sysmat, inout int[1] ier);
+
+if(ier ~= 1024)
+       warning('error encountered, doing nothing...');
+       return;
+end
+
+fprintf('ntot = %d\n',ntot);
+
+sysmat = zeros(ntot,ntot) + 1i*zeros(ntot,ntot);
+
+# FORTRAN zhbhstokesmatbuild(dcomplex[1] zk,double[] wgeo,int[1] ncomp,int[] nchs,double [] ccs,dcomplex[1] q1, dcomplex[1] q2,inout int[1] ntot, inout dcomplex[] sysmat,inout int[1] ier);
+
+if (ier ~= 0)
+   warning('something went wrong...');
+end
+
+end
+
+@function mat = helmstokessubmat(zk,src,targ,src_norm,cs,cd)
+
+[~,ns] = size(src);
+[~,nt] = size(targ);
+mat2 = zeros(2,2,nt,ns) + 1i*zeros(2,2,nt,ns);
+
+# FORTRAN zhelmstokesallmatmany(dcomplex[1] zk,int[1] ns, double[] src, int[1] nt, double[] targ, dcomplex [] src_norm, dcomplex[1] cs, dcomplex[1] cd, inout dcomplex[] mat2);
+
+mat2 = reshape(mat2,2,2,nt,ns);
+
+mat = zeros(2*nt,2*ns) + 1i*zeros(2*nt,2*ns);
+mat(:,1:2:2*ns) = reshape(mat2(:,1,:,:),2*nt,ns);
+mat(:,2:2:2*ns) = reshape(mat2(:,2,:,:),2*nt,ns);
+
+end
+
+@function mat = helmstokesstreamsubmat(zk,src,targ,src_norm,cs,cd)
+
+[~,ns] = size(src);
+[~,nt] = size(targ);
+mat2 = zeros(1,2,nt,ns);
+
+# FORTRAN zhelmstokesallstreammatmany(dcomplex[1] zk,int[1] ns, double[] src, int[1] nt, double[] targ, dcomplex [] src_norm, dcomplex[1] cs, dcomplex[1] cd, inout dcomplex[] mat2);
+
+mat2 = reshape(mat2,1,2,nt,ns);
+
+mat = zeros(1*nt,2*ns);
+mat(:,1:2:2*ns) = reshape(mat2(:,1,:,:),nt,ns);
+mat(:,2:2:2*ns) = reshape(mat2(:,2,:,:),nt,ns);
+
+end
+

@@ -183,7 +183,7 @@ c     Allocate potential, gradient and potn arrays
       do nbod = 1,ncomp
          nchs(nbod) = 0
       enddo
-      call multichunk_nchs(wgeos3,nchs,ncomp)
+      call multichunknchs(wgeos3,nchs,ncomp)
 
       imode = 1
 
