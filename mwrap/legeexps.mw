@@ -1,0 +1,17 @@
+
+@function vals = legeexevvec(x,coef)
+
+k = length(coef);
+km1 = k-1;
+
+sz = size(x);
+
+x = x(:);
+n = length(x);
+vals = zeros(n,1);
+
+# FORTRAN legeexevvec(int[1] n, double[] x, inout double[] vals, double[] coef, int[1] km1);
+
+vals = reshape(vals,sz);
+
+end

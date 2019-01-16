@@ -19,12 +19,12 @@ identity.
 
 \subsection{Green's functions}
 
-Let $L_x$ denote a linear differential operator. A fundamental
-solution $G(\xx,\yy)$ of $L_x$ satisfies the equation
-$L_x G(\xx,\yy) = \delta_y(\xx)$ in the distributional sense, i.e.
+Let $\mathcal{L}_x$ denote a linear differential operator. A fundamental
+solution $G(\xx,\yy)$ of $\mathcal{L}_x$ satisfies the equation
+$\mathcal{L}_x G(\xx,\yy) = \delta_y(\xx)$ in the distributional sense, i.e.
 for sufficiently smooth $f$
 \begin{equation}
-  L_x \int_{\R^2} G(\xx,\yy) f(\yy) \, dy = f(\xx) \; .
+  \mathcal{L}_x \int_{\R^2} G(\xx,\yy) f(\yy) \, dy = f(\xx) \; .
 \end{equation}
 We consider here
 ``free-space'' Green's functions, i.e. fundamental solutions which satisfy
@@ -49,119 +49,6 @@ and the Green's function for the Helmholtz equation
 \begin{equation}
   \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; .
 \end{equation}
-
-\subsection{A Farkas-style integral representation}
-
-In \cite{Farkas89}, Farkas derived integral equation formulations
-for the solution of the Dirichlet problem for the biharmonic equation ($k=0$). 
-In this formulation, the solution 
-$w$ is represented as a sum of two layer potentials
-\begin{equation}
-  w(\xx) = \int_\Gamma \Kfark_1 (\xx,\yy) \sigma_1(\yy) \, dS(\yy)
-  + \int_\Gamma \Kfark_2(\xx,\yy) \sigma_2(\yy) \, dS(\yy) \; ,
-  \label{eq:farkRep}
-\end{equation}
-where $\sigma_{1}$, and $\sigma_{2}$ are unknown densities, and the kernels
-$K_{1}^{F}$, and $K_{2}^{F}$ are linear combinations of derivatives of
-the biharmonic Green's function and appropriately chosen to get second kind integral equations
-for the unknown densities $\sigma_{1}$ and $\sigma_{2}$ on imposing the boundary conditions.
-
-In \cite{jiang2013second}, Jiang extended the Farkas formulation for the solution of the modified
-biharmonic equation, albeit for different boundary conditions. With minor modifications, their formulation
-can also be adopted for the solution of the Dirichlet problem for the oscillatory biharmonic equation
-\begin{align}
-\Delta (\Delta + k^2) w &= 0 \quad \text{in} \quad \Omega \label{eq:helmbi} \\
-w &= f \quad \text{on} \quad \Gamma \label{eq:helmbibc1} \\
-\dwdn &=g \quad \text{on} \quad \Gamma \label{eq:helmbibc2} \,,
-\end{align}
-where $f,g$ are prescribed functions on the boundary. 
-
-For two points on the plane, $\xx$ and $\yy$, let $\br = \yy - \xx$. Let the kernels $K_{1}^{F}$, and 
-$K_{2}^{F}$ be defined by 
-\begin{align}
-  \Kfark_1(\xx,\yy) &= \partial_{n_{y}n_{y}n_{y}}\Gbh(\xx,\yy)
-  + 3 \partial_{n_{y}\tau_{y}\tau_{y}}\Gbh(\xx,\yy) + k^{2} \partial_{n_{y}}\Gbh(\xx,\yy)\; , \label{eq:kf1} \\
-  \Kfark_2(\xx,\yy) &= -\partial_{n_{y}n_{y}}\Gbh(\xx,\yy)
-  + \partial_{\tau_{y}\tau_{y}}\Gbh(\xx,\yy) \label{eq:kf2} \; .
-\end{align}
-More explicitly, we have
-\begin{align}
-  \Kfark_1(\xx,\yy) &=  -\dfrac{\br \cdot \bn(\yy)}{|\br|^2}  \cdot \left( \frac{3 i}{2} H_0^{(1)}(k|\br|) - \frac{5 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{6}{\pi k^2 |\br|^2} + \frac{1}{2\pi}  \right) +     \\
-  & \quad \dfrac{\left(\br \cdot \bn(\yy)\right)^3}{|\br|^4} \cdot \left( 2i H_0^{(1)}(k|\br|) - \frac{7 i}{2 k|\br|} H_1^{(1)}(k|\br|) + \frac{8}{\pi k^2 |\br|^2}  \right) \, , \nonumber \\
-  \Kfark_2(\xx,\yy) &=  -\left(\frac{1}{2}-\dfrac{\left(\br \cdot \bn(\yy)\right)^2}{|\br|^2} \right)  \cdot \left( \frac{i}{2} H_0^{(1)}(k|\br|) - \frac{i}{k|\br|} H_1^{(1)}(k|\br|) + \frac{2}{\pi k^2 |\br|^2}  \right)\; .
-\end{align}
-
-On enforcing the Dirichlet boundary conditions for
-$w$, we obtain the integral equation
-\begin{equation}
-  \begin{split}
-    \begin{pmatrix}
-      f(\xx) \\
-      g(\xx)
-    \end{pmatrix} &= 
-    \int_\Gamma
-    \begin{pmatrix}
-      \Kfark_{11}(\xx,\yy) & \Kfark_{12}(\xx,\yy) \\
-      \Kfark_{21}(\xx,\yy) & \Kfark_{22}(\xx,\yy)
-    \end{pmatrix}
-    \begin{pmatrix}
-      \sigma_1(\yy)\\
-      \sigma_2(\yy)
-    \end{pmatrix}
-    \, dS(\yy) \\
-    &\quad + \begin{pmatrix}
-      1/2 & 0 \\
-      -\kappa(\xx) & 1/2
-    \end{pmatrix}
-    \begin{pmatrix}
-      \sigma_1(\xx)\\
-      \sigma_2(\xx)
-    \end{pmatrix} \; , \label{eq:farkIntEq} 
-  \end{split}
-\end{equation}
-where $\kappa$ is the signed curvature at $\xx \in \Gamma$.
-The kernels are given
-by $\Kfark_{11} = \Kfark_1$, $\Kfark_{12} = \Kfark_2$,
-\begin{align}
-  \Kfark_{21}(\xx,\yy) &= \left(\Kfark_1(\xx,\yy)\right )_{n_x} \nonumber \\
-  &= \bn(\xx) \cdot \nabla_{\xx} K_{21}^{F}(\xx,\yy) \; \label{eq:farkK21},\\
-  \Kfark_{22}(\xx,\yy) &= \left(\Kfark_2(\xx,\yy)\right )_{n_x} \nonumber \\
-  &= \bn(\xx) \cdot \nabla_{\xx} K_{22}^{F}(\xx,\yy) \label{eq:farkK22} \; .
-\end{align}
-
-The following lemma shows that the integral equation~\cref{eq:farkIntEq} is invertible for smooth domains
-whenever $k$ is not a buckling eigenfrequency. 
-
-\begin{lem}
-Suppose that $\Omega \subset \R^2$ is a simply connected region whose boundary $\Gamma$ is $\cC^{2}$. 
-Furthermore, suppose that $k$ is not a buckling eigenfrequency of $\Omega$, i.e., the only solution $w$ to~\cref{eq:buck1,eq:buck2,eq:buck3} is  $w \equiv 0$. Suppose further that $f,g \in \cC^{2}(\Gamma)$. 
-Then there exists a unique solution $\sigma_{1},\sigma_{2} \in \cC^{2}$ which satisfies~\cref{eq:farkIntEq}. 
-Furthermore, $w(\bx)$ defined via~\cref{eq:farkRep} satisfies the oscillatory biharmonic equation~\cref{eq:helmbi}
-along with the boundary conditions $w(\bx)=f(\bx)$ and $\dwdn(\bx) = g(\bx)$ for $\bx \in\Gamma$.
-\label{lem:farkinv}
-\end{lem}
-
-\begin{proof}
-  The proof is a minor modification of the one presented in~\ref{eq:shidongmodbi}
-  and is contained in~\cref{sec:farkproof}.
-\end{proof}
-
-The kernels $\Kfark_1$ and $\Kfark_2$ are
-constructed with the goal that the $\Kfark_{ij}$ are
-as smooth as possible. Suppose that the boundary
-$\Gamma$ is of class $C^k$. Then, the kernels,
-$\Kfark_{ij}(\xx,\yy)$, are $C^{k-2}$ functions on the boundary
-for each $\yy \in \Gamma$.
-Therefore, on a smooth
-boundary, these kernels are smooth. However, on a
-domain with a corner, we note 
-that the kernel $\Kfark_{21}$
-has a singularity with strength $r^{-2}$ (see~\cref{fig:ker21plot}). 
-This singularity, in addition to the term in \cref{eq:farkIntEq}
-which explicitly involves the
-curvature, makes the representation \cref{eq:farkRep}
-unstable for domains with high curvature (or
-corners).
 
 \subsection{An integral representation for the Stokes eigenvalue
   problem}

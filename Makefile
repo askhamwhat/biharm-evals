@@ -45,6 +45,7 @@ BIN_DIR = bin
 TEST_DIR = test
 TMP_DIR = tmp
 MDIR = matlab
+MWRAP_DIR = mwrap
 
 VPATH = $(SRC_DIR):$(BIN_DIR)
 
@@ -140,31 +141,31 @@ test%: setup_dir lib
 
 ## matlab
 
-$(GATEWAY).c: $(MDIR)/$(MWRAPFILE).mw Makefile
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY) -mb $(MWRAPFILE).mw
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY) -c $(GATEWAY).c $(MWRAPFILE).mw
+$(GATEWAY).c: $(MWRAP_DIR)/$(MWRAPFILE).mw Makefile
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY) -mb $(MWRAPFILE).mw
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY) -c $(GATEWAY).c $(MWRAPFILE).mw
 
 
 # easier just to link against object files than library,
 # if it's not being installed (I think)
 mexfile: $(GATEWAY).c $(OBJS) Makefile
-	cd $(MDIR); $(MEX) $(GATEWAY).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
+	cd $(MWRAP_DIR); $(MEX) $(GATEWAY).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
 
-$(GATEWAY2).c: $(MDIR)/$(MWRAPFILE2).mw Makefile
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY2) -mb $(MWRAPFILE2).mw
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY2) -c $(GATEWAY2).c $(MWRAPFILE2).mw
+$(GATEWAY2).c: $(MWRAP_DIR)/$(MWRAPFILE2).mw Makefile
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY2) -mb $(MWRAPFILE2).mw
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY2) -c $(GATEWAY2).c $(MWRAPFILE2).mw
 
 
 # easier just to link against object files than library,
 # if it's not being installed (I think)
 mexfile2: $(GATEWAY2).c $(OBJS) Makefile
-	cd $(MDIR); $(MEX) $(GATEWAY2).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
+	cd $(MWRAP_DIR); $(MEX) $(GATEWAY2).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
 
 
-$(GATEWAY3).c: $(MDIR)/$(MWRAPFILE3).mw Makefile
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY3) -mb $(MWRAPFILE3).mw
-	cd $(MDIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY3) -c $(GATEWAY3).c $(MWRAPFILE3).mw
+$(GATEWAY3).c: $(MWRAP_DIR)/$(MWRAPFILE3).mw Makefile
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY3) -mb $(MWRAPFILE3).mw
+	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY3) -c $(GATEWAY3).c $(MWRAPFILE3).mw
 
 
 mexfile3: $(GATEWAY3).c $(OBJS) Makefile
-	cd $(MDIR); $(MEX) $(GATEWAY3).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
+	cd $(MWRAP_DIR); $(MEX) $(GATEWAY3).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm

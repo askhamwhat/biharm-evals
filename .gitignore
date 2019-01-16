@@ -1,4 +1,16 @@
 *.o
+*.so
 *~
+*#
+*.save
 
 mathematica/*.txt
+test/test*Data*
+test/fort*
+test/plot*
+tmp/*
+lit/*
+
+mwrap/*.m
+mwrap/*.c
+mwrap/*mex*
