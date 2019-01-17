@@ -146,6 +146,10 @@ $(GATEWAY).c: $(MWRAP_DIR)/$(MWRAPFILE).mw Makefile
 	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY) -c $(GATEWAY).c $(MWRAPFILE).mw
 
 
+# all mex-ing
+
+mexfiles: mexfile mexfile2 mexfile3
+
 # easier just to link against object files than library,
 # if it's not being installed (I think)
 mexfile: $(GATEWAY).c $(OBJS) Makefile

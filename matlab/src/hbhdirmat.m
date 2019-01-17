@@ -8,8 +8,6 @@ function sysmat = hbhdirmat(chunker,nchs,ccs,zk,cs,cd,intparams)
 
 % geometry stuff
 
-disp('here 1')
-  
 k = chunker.k;
 nch = chunker.nch;
 
@@ -63,17 +61,12 @@ sysmat(1:ngeo,ngeo+1:end) = logperps;
 
 % form stokes densities to velocity field (standard stokes dirichlet mat)
 
-disp('here 3')
-
 fkern = @(s,t,sn,tn) helmstokessubmat(zk,s,t,sn,cs,cd);
 ndims(1) = 2; ndims(2) = 2;
 sysmat(1:ngeo,1:ngeo) = chunkskernelmat(chunker,fkern,ndims,intparams);
 normonesmat = chunknormonesmat(chunker);
 sysmat(1:ngeo,1:ngeo) = -0.5*cd*eye(ngeo,ngeo) ...
     + sysmat(1:ngeo,1:ngeo) + normonesmat;
-
-disp('here 4')
-
 
 % the tricky part: evaluate corresponding stream function on
 % boundary components and integrate

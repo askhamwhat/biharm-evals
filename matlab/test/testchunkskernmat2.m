@@ -39,17 +39,16 @@ cs = 0.0 + 1i*0.0;
 fkern = @(s,t,sn,tn) helmstokessubmat(zk,s,t,sn,cs,cd);
 ndims(1) = 2; ndims(2) = 2;
 intparams.intorder = chunker.k;
-tic; matul = chunkskernelmat(chunker,fkern,ndims,intparams); toc
+start = tic; matul = chunkskernelmat(chunker,fkern,ndims,intparams); toc(start)
 
 normonesmat = chunknormonesmat(chunker);
 matul = eye(size(matul)) + matul + normonesmat;
 
 %%
 
-wgeo = chunkpack(chunker);
+d1 = det(matul);
 
-nchs(1) = chunker.nch;
-ccs = zeros(2,1);
+start = tic; F = rskelf(matul,xhifie,80,1e-10); toc(start)
+start = tic; d2 = exp(rskelf_logdet(F)); toc(start)
 
-q1 = cs; q2 = cd;
-tic; sysmat = zhbhstokesmatbuild(zk,wgeo,nchs,ccs,q1,q2); toc
+d1-d2

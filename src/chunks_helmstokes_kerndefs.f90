@@ -539,7 +539,7 @@ subroutine zhelmstokesallmatmany(zk,ns,src,nt,targ,nu,cs,cd, &
   !cccccccccccccccccccccccccccccccccccccccccccccccccc
   implicit none
   ! global
-  complex *16, intent(in) :: zk, nu(2), cs, cd
+  complex *16, intent(in) :: zk, nu(2,ns), cs, cd
   real *8, intent(in) :: src(2,ns), targ(2,nt)
   integer, intent(in) :: ns, nt
   complex *16, intent(out) :: mat(2,2,nt,ns)
@@ -548,7 +548,7 @@ subroutine zhelmstokesallmatmany(zk,ns,src,nt,targ,nu,cs,cd, &
 
   do j = 1,ns
      do i = 1,nt
-        call zhelmstokesallmat(zk,src(1,j),targ(1,i),nu,cs,cd, &
+        call zhelmstokesallmat(zk,src(1,j),targ(1,i),nu(1,j),cs,cd, &
              mat(1,1,i,j))
      enddo
   enddo
@@ -735,7 +735,7 @@ subroutine zhelmstokesallstreammatmany(zk,ns,src,nt,targ,nu,cs,cd, &
   !cccccccccccccccccccccccccccccccccccccccccccccccccc
   implicit none
   ! global
-  complex *16, intent(in) :: zk, nu(2), cs, cd
+  complex *16, intent(in) :: zk, nu(2,ns), cs, cd
   real *8, intent(in) :: src(2,ns), targ(2,nt)
   integer, intent(in) :: ns, nt
   complex *16, intent(out) :: zmat(1,2,nt,ns)
@@ -744,7 +744,7 @@ subroutine zhelmstokesallstreammatmany(zk,ns,src,nt,targ,nu,cs,cd, &
 
   do j = 1,ns
      do i = 1,nt
-        call zhelmstokesall_streammat(zk,src(1,j),targ(1,i),nu,cs,cd, &
+        call zhelmstokesall_streammat(zk,src(1,j),targ(1,i),nu(1,j),cs,cd, &
              zmat(1,1,i,j))
      enddo
   enddo

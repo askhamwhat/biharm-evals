@@ -36,10 +36,9 @@ npts = length(xs);
 xhifie = chunker.chunks(1:2,:);
 
 %
-tic; F = hifie2(sysmat,xhifie,10,1e-10); toc
-tic; d2 = exp(hifie_logdet(F)); toc
+start = tic; F = rskelf(sysmat,xhifie,80,1e-10); toc(start)
+start = tic; d2 = exp(rskelf_logdet(F)); toc(start)
 
-d1
-d2
+d1-d2
 
 %scatter(real(e),imag(e))

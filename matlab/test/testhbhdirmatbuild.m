@@ -4,15 +4,15 @@
 % This file tests whether or not chunks 
 % lib is wrapped properly
 
+addpath('../src')
+addpath('../../mwrap')
+
 cparams.eps = 1.0e-6;
 cparams.nchmax = 100000;
 cparams.nover = 0;
 narms = 5;
 amp = 0.5;
 tic; chunker = chunkfunc(@(t) starfish(t,narms,amp),cparams); toc
-
-chunker.nch
-chunker.k*chunker.nch
 
 xs = chunker.chunks(1,:,:); xs = xs(:);
 ys = chunker.chunks(2,:,:); ys = ys(:);
@@ -24,16 +24,16 @@ rnorms = chunknormals(chunker);
 rnx = rnorms(1,:,:); rnx = rnx(:);
 rny = rnorms(2,:,:); rny = rny(:);
 
-figure(1)
-clf
-scatter(xs,ys)
-axis equal
-hold on
-quiver(xs,ys,rnx,rny)
+%figure(1)
+%clf
+%scatter(xs,ys)
+%axis equal
+%hold on
+%quiver(xs,ys,rnx,rny)
 
 %%
 
-zk = 10.0;
+zk = 1.0;
 cd = -2.0 + 1i*0.0;
 cs = 0.0 + 1i*0.0;
 nchs = ones(1,1);
@@ -50,5 +50,6 @@ wgeo = chunkpack(chunker);
 start = tic; sysmat2 = zhbhstokesmatbuild(zk,wgeo,nchs,ccs,cs,cd); toc(start)
 
 %%
-hold off
-spy(abs(sysmat1-sysmat2)>1.0e-12)   
+%hold off
+%spy(abs(sysmat1-sysmat2)>1.0e-12)   
+nnz(abs(sysmat1-sysmat2)>1.0e-12)   

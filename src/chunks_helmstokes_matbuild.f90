@@ -196,8 +196,10 @@ subroutine zhbhstokesmatbuild(zk,wgeo,ncomp,nchs,ccs, &
   incy = 1
   alpha = 1.0d0
 
-  call zgemm('T','N',ncomp,ncomp,npts,alpha,xx, &
-       npts,logval,npts,beta,brmat,ncomp)
+  !call zgemm('T','N',ncomp,ncomp,npts,alpha,xx, &
+  !     npts,logval,npts,beta,brmat,ncomp)
+
+  call chs_multgentransmat(xx,logval,brmat,npts,ncomp,ncomp)
 
   ! copy into system matrix
   ! (bottom right)
@@ -235,9 +237,11 @@ subroutine zhbhstokesmatbuild(zk,wgeo,ncomp,nchs,ccs, &
 
   ! apply transpose to weights vectors (1 per
   ! boundary component)
-  call zgemm('T','N',npts,ncomp,npts,alpha,temp1, &
-       npts,xx,npts,beta,yy,npts)
+  !call zgemm('T','N',npts,ncomp,npts,alpha,temp1, &
+  !     npts,xx,npts,beta,yy,npts)
 
+  call chs_multgentransmat(temp1,xx,yy,npts,npts,ncomp)
+  
   ! matrix for neumann problem in temp2
   call prinf('forming sprime ...*',i,0)
   call zbuildmat(k,wgeo,zkernel_sprime,q1,q2, &
@@ -288,8 +292,9 @@ subroutine zhbhstokesmatbuild(zk,wgeo,ncomp,nchs,ccs, &
   alpha = 1.0d0
 
   call prinf('applying stau ...*',i,0)
-  call zgemm('T','N',npts,ncomp,npts,alpha,temp2, &
-       npts,xx,npts,beta,yy,npts)
+  !call zgemm('T','N',npts,ncomp,npts,alpha,temp2, &
+  !     npts,xx,npts,beta,yy,npts)
+  call chs_multgentransmat(temp2,xx,yy,npts,npts,ncomp)
   call prinf('done.*',i,0)
 
   ! get whts^T*stream matrix
@@ -334,8 +339,10 @@ subroutine zhbhstokesmatbuild(zk,wgeo,ncomp,nchs,ccs, &
 
   ! integrate stream function matrix
   
-  call zgemm('T','N',ncomp,npts2,npts2,alpha,xxlong, &
-       npts2,stokesmat,npts2,beta,yylongtrans,ncomp)
+  !call zgemm('T','N',ncomp,npts2,npts2,alpha,xxlong, &
+  !     npts2,stokesmat,npts2,beta,yylongtrans,ncomp)
+
+  call chs_multgentransmat(xxlong,stokesmat,yylongtrans,npts2,ncomp,npts2)
   
   ! add these components together and store in
   ! system matrix (bottom left)
@@ -432,7 +439,36 @@ subroutine chs_multatrans(a,p1,p2,p3,p4,x,y,n)
   incy = 1
   alpha = 1.0d0
 
-  call zgemv ('T', n, n, alpha, a, n, x, incx, beta, y, incy)
+  !call zgemv ('T', n, n, alpha, a, n, x, incx, beta, y, incy)
+
+  do i = 1,n
+     y(i) = 0.0d0
+     do j = 1,n
+        y(i) = y(i) + a(j,i)*x(j)
+     enddo
+  enddo
 
   return
 end subroutine chs_multatrans
+
+subroutine chs_multgentransmat(a,x,y,m,n,l)
+  implicit real *8 (a-h,o-z)
+  !
+  !       computes the product a^T*x = y
+  !
+  complex *16 a(m,n),x(m,l),y(n,l)
+  integer :: n,m,k,i,j,l
+
+  do k = 1,l
+     do i = 1,n
+        y(i,k) = 0.0d0
+        do j = 1,m
+           y(i,k) = y(i,k) + a(j,i)*x(j,k)
+        enddo
+     enddo
+  enddo
+
+  return
+end subroutine chs_multgentransmat
+
+
