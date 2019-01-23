@@ -1,0 +1,86 @@
+\documentclass[preprint,12pt]{article} 
+\usepackage{b}
+\usepackage[a4paper]{geometry}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\usepackage[small,it]{caption}
+\usepackage{empheq}
+
+\usepackage{subcaption}
+
+\usepackage{cleveref}
+\crefname{equation}{}{}
+\Crefname{equation}{}{}
+\crefname{eqnarray}{}{}
+\Crefname{eqnarray}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\br{{\boldsymbol r}}
+\def\bc{{\boldsymbol c}}
+\def\bh{{\boldsymbol h}}
+\def\bn{{\boldsymbol n}}
+\def\bT{{\boldsymbol T}}
+\def\bt{{\boldsymbol t}}
+\def\xx{{\boldsymbol x}}
+\def\bx{{\boldsymbol x}}
+\def\yy{{\boldsymbol y}}
+\def\by{{\boldsymbol y}}
+\def\ss{{\boldsymbol s}}
+\def\tt{{\boldsymbol t}}
+\def\uu{{\boldsymbol u}}
+\def\bu{{\boldsymbol u}}
+\def\be{{\boldsymbol e}}
+\def\bl{{\boldsymbol \ell}}
+\def\ff{{\boldsymbol f}}
+\def\GG{{\bf G}}
+\def\Gbh{G^{\textrm{BH}}}
+\def\Glap{G^{\textrm{L}}}
+\def\Ghelm{G^{\textrm{H}}}
+\def\Kfark{K^{\textrm{F}}}
+\def\II{{\bf I}}
+\def\TT{{\bf T}}
+\def\SS{{\bf S}}
+\def\DD{{\bf D}}
+\def\bsigma{{\boldsymbol \sigma}}
+\def\bpsi{{\boldsymbol \psi}}
+\def\bmu{{\boldsymbol \mu}}
+\def\bnu{{\boldsymbol \nu}}
+\def\btau{{\boldsymbol \tau}}
+\def\bigo{\mathcal{O}}
+\def\littleo{o}
+
+\def\Im{{\textrm{\textup{Im}}}}
+
+\newcommand\dwdn{\frac{\partial w}{\partial n}}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\bbmat}{\begin{bmatrix}}
+\newcommand{\ebmat}{\end{bmatrix}}
+
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lem}{Lemma}
+\newtheorem{thrm}{Theorem}
+\newtheorem{definition}{Definition}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{A Fredholm operator approach to eigenvalue problems in elasticity and planar Stokes flow}
+\author{Travis Askham and Manas Rachh}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{01intro}
+\input{02prelim}
+\input{03inteq}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
