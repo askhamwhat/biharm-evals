@@ -87,39 +87,3 @@ ys = chunker.chunks(2,:,:); ys = ys(:);
 figure(1)
 clf
 scatter(xs,ys)
-
-%% system matrix stuff
-q1 = 0.0 + 1i*0.0; q2 = -2.0 + 1i*0.0;
-zk = 1.0i;
-tic; sysmat = zhbhstokesmatbuild(zk,wgeo,nchs,ccs,q1,q2); toc
-
-%% hifie
-[ntot,~] = size(sysmat);
-npts = length(xs);
-xhifie = zeros(2,ntot);
-xhifie(:,1:2:1+2*(npts-1)) = chunker.chunks(1:2,:);
-xhifie(:,2:2:2+2*(npts-1)) = chunker.chunks(1:2,:);
-xhifie(:,2*npts+1:ntot) = ccs;
-
-%%
-tic; F = hifie2(sysmat,xhifie,10,1e-10); toc
-
-%% 
-ntest=1000;
-tic;
-x = randn(ntot,ntest);
-y = sysmat*x;
-toc
-tic;
-x = randn(ntot,ntest);
-y = hifie_mv(F,x,'n');
-toc
-
-%%
-tic;
-det1 = det(sysmat);
-toc
-
-tic;
-det2 = exp(hifie_logdet(F));
-toc

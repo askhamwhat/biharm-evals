@@ -8,7 +8,7 @@ cparams.eps = 1.0e-6;
 cparams.nchmax = 100000;
 narms = 10;
 amp = 0.5;
-tic; chunker = chunkfunc(@(t) starfish(t,narms,amp),cparams); toc
+start = tic; chunker = chunkfunc(@(t) starfish(t,narms,amp),cparams); toc(start)
 
 chunker.nch
 

@@ -1,0 +1,417 @@
+\section{Fredholm analysis of the integral representations}
+
+In this section, we develop some existence and uniqueness
+results for the oscillatory Stokes PDE.
+%
+The structure of this section follows that used
+by Colton and Kress \cite[Ch. 3]{colton1983integral}
+for the scalar Helmholtz equation.
+%
+We first define a radiation condition for the oscillatory
+Stokes equations and prove that, under certain assumptions, the
+layer potentials satisfy the radiation condition.
+%
+The radiation condition is then key to proving uniqueness
+results for some common boundary value problems on exterior
+domains.
+%
+With the Fredholm alternative, these uniqueness results
+are sufficient to derive the invertibility of appropriate
+integral equations for a number of boundary value problems
+on simply and multiply connected domains.
+
+\subsection{A radiation condition for the oscillatory Stokes
+  equation}
+
+Let $\Omega$ be a bounded simply connected
+domain and $E = \R^{2} \setminus \bar{\Omega}$ denote its
+exterior.
+%
+Let $\Gamma = \partial E$ denote the boundary of $E$ and
+$\bnu(\yy)$ denote the exterior normal to the point $\yy$ on
+$\Gamma$, i.e. the normal vector pointing out of $E$ into $\Omega$.
+%
+For a given function $\bh$ defined on $\Gamma$,
+the exterior Dirichlet boundary value problem is to
+find a pair $(\bu,p)$ which satisfies:
+\begin{align*}
+\Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+\nabla \cdot \bu &= 0 \quad \bx \in E \, , \nonumber \\
+\bu &= \bh \quad \bx \in \Gamma \, .\nonumber
+\end{align*}
+In addition to the boundary condition on
+$\Gamma$, we must impose radiation conditions
+at $\infty$, analogous to the Helmholtz equation.
+%
+
+Let $\bsigma$ denote the stress tensor associated with the velocity
+field $\bu$. The normal component of the stress,
+\begin{equation}
+\bt = \bsigma \cdot \bnu \; , \nonumber
+\end{equation}
+gives the surface traction, which is the analogue of
+the normal derivative for the scalar Helmholtz equation,
+i.e. specifying the surface traction on a boundary is
+the Neumann problem for the oscillatory Stokes PDE.
+
+%
+Let $B_r(0)$ denote the disc of radius $r$ centered
+at the origin and $\partial B_r(0)$ its boundary.
+%
+We propose the following radiation condition.
+
+\begin{definition} \label{def:radcond}
+Let $(\bu,p)$ satisfy the oscillatory Stokes equations in
+the exterior of a bounded domain. We say that
+the pair $(\bu,p)$ is {\em radiating} if
+$p$ is bounded, $p \to 0$ as $r = |\xx| \to \infty$, and 
+\begin{equation}
+\lim_{r\to \infty} \sqrt{r} \left| \bt - i k \bu \right| \to 0 \, ,
+\label{eq:radcond}
+\end{equation}
+uniformly in direction where $\bt = \bsigma \cdot \bnu$
+with $\bnu = \xx/|\xx|$, i.e. $\bt$ is the surface
+traction on $\partial B_r(0)$.     
+\end{definition}
+
+\begin{proposition}
+The oscillatory Stokeslet, as in \eqref{eq:ostokeslet}, satisfies
+the radiation condition in Definition \ref{def:radcond}.
+Assuming that a density $\bmu$ is integrable and satisfies
+$\int_\Gamma \bmu\cdot \bnu dS = 0$, where $\bnu$ denotes the
+outward normal to the curve $\Gamma$, the oscillatory Stokes
+double layer potential $\bD\bmu$, as in \eqref{eq:doublelayer},
+also satisfies the radiation condition.
+\end{proposition}
+
+\begin{proof}
+Consider the Stokeslet induced by an arbitrary charge
+$k^2 \bpsi$ at the origin. Let $r = |\xx|$,
+$\bnu(\xx) = \xx/|\xx|$, and $\btau(\xx) = \bnu(\xx)^\perp$. We have
+
+\begin{align*}
+\bu (\xx) &= k^2 \GG(\xx,0) \bpsi \\
+&= k^2 \left (-\II \Delta \Gbh(\xx,0)
++ \nabla \otimes \nabla \Gbh(\xx,0)\right ) \bpsi \\
+&= -k^2 \left (\nabla^\perp \otimes \nabla^\perp \Gbh(\xx,0) \right) \bpsi \\
+&= \left(\nabla^\perp \otimes \nabla^\perp \left ( \frac{1}{2\pi}
+\log r + \frac{i}{4} H_0^{(1)} (kr) \right ) \right)\bpsi \; .
+\end{align*}
+Note that derivatives of $\log r$ are $\littleo (1/\sqrt{r})$
+and that the pressure associated with the Stokeslet is
+$p = \nabla \Glap(\xx) \cdot \bpsi$. We then have
+
+\begin{align*}
+\left | \sigma \cdot \bnu(\xx) - i k \bu \right | &=
+\left | p \bnu(\xx) + \partial_{{\nu_x}} \bu + \nabla (\bu \cdot \bnu(\xx))
+- ik \bu \right | \\
+&\leq \left | \partial_{{\nu_x}} \bu - ik\bu \right | + \left | \nabla(\bu \cdot \bnu(\xx)) \right |
++ \littleo (1/\sqrt{r}) \\
+&\leq \frac{1}{4} \left | \partial_{{\nu_x}} \left(\nabla^\perp \otimes
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
+- i k \left(\nabla^\perp \otimes \nabla^\perp
+\left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | \\
+& \quad + \left | \nabla \left( \partial_{\tau_x} \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
+\right) \right | + \littleo (1/\sqrt{r}) \; .
+\end{align*}
+Because $H_0^{(1)}(kr)$ has the asymptotic expansion 
+
+\begin{equation}
+H_0^{(1)}(kr) = \sqrt{\frac{2}{\pi k r}} e^{i(rk-\pi/4)} \left ( 1 + O\left (
+\frac{1}{r} \right ) \right ) \; \nonumber
+\end{equation}
+as $r\to \infty$, we have
+
+\begin{equation}
+\left | \partial_{{\nu_x}} \left(\nabla^\perp \otimes
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \right)\bpsi
+- ik \left(\nabla^\perp \otimes \nabla^\perp
+\left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | =
+o ( 1/\sqrt{r} ) \; . \nonumber
+\end{equation}
+Finally, because $H_0^{(1)}(kr)$ is radially symmetric,
+we have
+
+\begin{equation}
+\left | \nabla \left( \partial_{\tau_x} \left ( 
+\nabla^\perp \left (H_0^{(1)} (kr) \right ) \cdot \bpsi  \right )
+\right) \right | = 0 \; , \nonumber
+\end{equation}
+so that the Stokeslet satisfies the radiation condition.
+
+For the double layer potential, we only establish the
+decay of the pressure, which we will denote by $p^\bD$;
+the rest of the terms in \eqref{eq:radcond} can be bounded
+using an argument like that for the Stokeslet above.
+Because $p^\bD$ is harmonic in the exterior of any disc
+containing $\Gamma$, it is sufficient to show that
+$|\nabla p^\bD| = \bigo (1/r^2)$. Let $\btau$ denote the
+positively oriented tangent to the curve $\Gamma$ and
+$\mu_\nu(\yy)$ and $\mu_\tau(\yy)$ denote $\bmu(\yy) \cdot \bnu(\yy)$ and
+$\bmu(\yy) \cdot \btau(\yy)$, respectively. Substituting
+$\bD \bmu$ into \eqref{eq:ostokes}, we obtain
+
+\begin{align*}
+\nabla p^\bD(\xx) &= (\Delta + k^2) \bD \bmu(\xx) \\
+&= \int_\Gamma \left (-k^2 \nabla \Glap (\xx,\yy) +
+2 \nabla^\perp \partial_{\nu\tau} \Glap (\xx,\yy) \right ) \mu_\nu(\yy)
+\, dS(\yy) \\
+& \qquad + \int_\Gamma \nabla^\perp (\partial_{\tau\tau}-\partial_{\nu\nu})\Glap \mu_\tau(\yy)
+\, dS(\yy) \; .
+\end{align*}
+The other terms are higher-order derivatives
+of $\Glap$, so it is sufficient to show that the term
+
+\begin{align*}
+|\nabla p_1(\xx)| &:= \left |-k^2 \nabla \int_\Gamma \Glap(\xx,\yy)
+\mu_\nu(\yy) \, dS(\yy) \right |
+\end{align*}
+is $\bigo (1/r^2)$. In the following, let $z = x_1 + i x_2$ be the
+point corresponding to $\xx$ in the complex plane and let $R$
+be the radius of some disc containing $\Gamma$. If $|\xx| > 2R$,
+we can use the standard multipole expansion of $\log(z-(y_1+iy_2))$
+and the assumption that $\int_\Gamma \bmu \cdot \bnu = 0$
+to obtain
+\begin{align*}
+|\nabla p_1(\xx)| &= \frac{k^2}{2\pi} \left |  \partial_z \int_\Gamma \log(z-(y_1+iy_2))
+\mu_\nu(\yy) dS(\yy) \right | \\
+&= \frac{k^2}{2\pi} \left |  \partial_z  \left ( \log(z) \int_\Gamma \mu_\nu(\yy) \, dS(\yy)
++ \sum_{l=1}^\infty \frac{1}{z^l} \int_\Gamma \left( y_1+iy_2 \right)^l \mu_\nu(\yy) \, dS(\yy)
+\right ) \right | \\
+&= \frac{k^2}{2\pi} \left | \sum_{l=1}^\infty \frac{-l}{z^{l+1}}
+\int_\Gamma \left( y_1+iy_2 \right)^l \mu_\nu(\yy) \, dS(\yy) \right | \\
+&= \bigo (1/r^2) \; .
+\end{align*}
+\end{proof}
+
+\subsection{Uniqueness results}
+
+
+\begin{lem}
+\label{lem:rep}
+Suppose that $(\bu,p)$ satisfies the oscillatory Stokes equation in 
+an unbounded region $E$ along with the radiation 
+condition~\cref{eq:radcond}. 
+Then 
+\begin{multline}
+\label{eq:repinfest}  
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV \\
+= 2 \Im \left( k \int_{\Gamma} \bu \cdot
+\overline{\bt} dS  \right) 
+\end{multline}
+
+\end{lem}
+
+\begin{proof}
+Since $(\bu,p)$ satisfies the radiation condition, we have that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} | \bt - i k \bu|^2 dS = 
+\lim_{r\to\infty} \int_{|\by| =r} \left( |\bt|^2 + |k|^2|\bu|^2 + 2 \Im 
+\left( k \bu\cdot \overline{\bt} \right) dS \label{eq:raddecayproof1}
+\right) = 0 \, . 
+\end{equation}
+Since $\bu$ satisfies the oscillatory Stokes equation $E \cap B_{r}(0)$,
+using a couple of applications of the divergence theorem, we have that
+\begin{equation}
+\int_{E\cap B_{r}(0)} |2 \be(\bu)|^2 dV =
+\int_{\Gamma} \bu \cdot \overline{\bt} dS
++ \int_{|\by|=r} \bu \cdot \overline{\bt} dS + \overline{k}^2 
+\int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
+\end{equation}
+Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
+\begin{multline*}
+\lim_{r\to\infty} \int_{|\by|=r}\left(|\bt|^2 + |k|^2 |\bu|^2 \right) dS 
++ 2 \Im(k)\int_{E \cap B_{r}(0)} \left(|2\be(\bu)|^2 + |k|^2 |\bu|^2 
+\right) dV \\
+= 2\Im \left ( k \int_{\Gamma} \bu \cdot \overline{\bt} dS \right) \, .
+\end{multline*}
+\end{proof}
+
+In the next lemma, we prove the analogue of Rellich's lemma for the
+oscillatory Stokes equation. 
+\begin{lem}
+\label{lem:rellich}
+Suppose that $\bu$ satisfies the oscillatory Stokes equation in an unbounded
+region $E$.  
+Suppose further that 
+\begin{equation}
+\lim_{r \to \infty} \int_{|\by|=r} |\bu|^2 dS = 0 
+\, . \label{eq:decayatinf}
+\end{equation}
+Then each component of $\bu$ is harmonic and has a convergent Laurent
+expansion in $E$.
+\end{lem}
+\begin{proof}
+We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
+oscillatory biharmonic equation in $E$, i.e.
+\begin{equation}
+\Delta (\Delta + k^2) u_{j} = 0 \quad j=1,2 \,. \nonumber
+\end{equation}
+For $r$ sufficiently large, we can express $u_{j}$ in the Fourier basis as
+\begin{equation}
+u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} a_{j,n}(r) e^{i n \theta}  \quad 
+j=1,2 \, . \nonumber
+\end{equation}
+Using Parseval's identity then
+\begin{equation}
+\int_{|\by|=r} |\bu|^2 dS = r\sum_{n=-\infty}^{\infty} |a_{1,n}(r)|^2  +
+|a_{2,n}(r)|^2 \, . \nonumber
+\end{equation}
+Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
+\begin{equation}
+\lim_{r\to\infty} r|a_{j,n}(r)|^2 = 0 \quad j=1,2 \, , \label{eq:adecay}
+\end{equation}
+Since $u_{j}$, $j=1,2$ satisfies the oscillatory biharmonic equation,
+the functions $a_{j,n}$ are linear combinations of 
+\begin{equation}
+r^{|n|}, r^{-|n|}, H^{1}_{n}(k r), H^{2}_{n}(k r) \, , \quad
+n\neq 0 \, , \nonumber
+\end{equation}
+and
+\begin{equation}
+1, \log{(r)}, H^{1}_{0}(k r), H^{2}_{0}(k r) \quad n=0 \, ,  \nonumber
+\end{equation} 
+where $H_{n}^{1,2}(\cdot)$ are the Hankel functions of the first and
+second kind of order $n$.
+Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
+expansion of $H_{n}^{1,2}(r)$, we note that the projection of 
+$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(k r)$ must be zero. 
+Thus, 
+\begin{equation}
+u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
+\, . \nonumber
+\end{equation}
+\end{proof}
+\begin{remark} \label{rmk:harmu}
+  Note that if $\bu$ satisfies the assumptions
+  of~\cref{lem:rellich}, then each component is harmonic
+  and thus $\bu$ satisfies
+\begin{align}
+k^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
+\nabla \cdot \bu &= 0 \, . \nonumber
+\end{align}
+Taking the inner product of~\cref{eq:massconsred} with $\nabla^{\perp}$,
+we note that $\bu$ satisfies both $\nabla^{\perp} \cdot \bu = 0$ 
+and $\nabla \cdot \bu = 0$, i.e. $u_1 - i u_2$ is analytic.
+\end{remark}
+\begin{remark}
+Note that in Rellich's lemma $\bu$ need not be a radiating solution. 
+All that is assumed of $\bu$ is that it satifies the PDE in $E$.
+\end{remark}
+
+\begin{thrm}[Uniqueness of the Dirichlet Problem]
+Suppose that $\Im(k)\geq 0$ and 
+that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
+$\bu \equiv 0$ in $E$.
+\end{thrm}
+
+\begin{proof}
+Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
+\begin{equation}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
+dV = 0 \nonumber
+\end{equation} 
+In particular, this implies that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
+\end{equation}
+Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, since $\bu=0$ on
+$\Gamma$, by the uniqueness of solutions to the
+Dirichlet problem for Laplace's equation
+on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
+\end{proof}
+
+\begin{thrm}[Uniqueness of the Neumann Problem]
+Suppose that $\Im(k)\geq 0$ and 
+that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
+$\bu \equiv 0$ in $E$.
+\end{thrm}
+
+\begin{proof}
+Since $\bt = 0$ on $\Gamma$, it follows
+from~\cref{eq:repinfest} that
+\begin{equation}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
+dV = 0 \; . \nonumber
+\end{equation} 
+In particular, this implies that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
+\end{equation}
+Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
+in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
+condition becomes $0 = \bt = -p \bnu + 2 \nabla \partial_\nu p/k^2$.
+Because $0 = \btau \cdot \bt = 2\partial_{\tau\nu} p/k^2$,
+$\partial_\nu p $ is a constant on $\Gamma$. Using the
+fact that $(\bu,p)$ is radiating and the fact that $p$ is harmonic,
+the divergence theorem implies that $\partial_\nu p=0$ on $\Gamma$.
+Thus, $\bt = -p\bnu$ so that $p = 0$ on $\Gamma$. By the uniqueness
+of solutions to the Dirichlet problem for Laplace's equation,
+we have that $p=0$ so that $\uu \equiv 0$.
+\end{proof}
+
+\begin{thrm}[Uniqueness of the Impedance Problem]
+Suppose that $\Im(k) \geq 0$ and that
+$(\bu,p)$ is a radiating solution of the
+oscillatory Stokes equation in $E$ which satisfies
+the homogeneous impedance boundary condition
+\begin{equation}
+\bt - i k \bu = 0 \quad \xx \in \Gamma \, . \nonumber
+\end{equation}
+Then $\bu \equiv 0$ for $\xx \in E$.
+\end{thrm}
+
+\begin{proof}
+Since $\bu$ satisfies the radiation condition at $\infty$ and $\bt = ik \bu$
+on $\Gamma$, it follows from~\cref{eq:repinfest} that
+\begin{align*}
+0 &=
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV \nonumber \\
+& \qquad - 2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\bt} dS  \right) \\
+&= 
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
+dV \nonumber \\
+& \qquad + 2 \left( |k|^{2} \int_{\Gamma} |\bu|^{2} dS  \right)
+\, .
+\end{align*}
+Because all of the quantities in the last expression above are
+nonnegative, we have that
+\begin{equation}
+  \int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \,
+  \nonumber
+\end{equation}
+and the estimate
+\begin{equation}
+\lim_{r\to\infty} \int_{|\yy|=r} |\bu|^{2} dS \to 0 \, . \nonumber
+\end{equation}
+The last equation implies the conditions for~\cref{lem:rellich}
+are satisfied, from which we conclude that the components
+of $\bu$ are harmonic in $E$. 
+Thus, the components of $\bu$ satisfy
+\begin{equation}
+\Delta u_{j}=  0 \quad \xx \in E \quad \text{and} \quad
+u_{j} = 0 \quad \xx \in \Gamma \, , \nonumber
+\end{equation}
+for $j=1,2$.
+Then $\bu \equiv 0$ follows from the uniqueness of solutions to the 
+Dirichlet problem for Laplace's equation.
+\end{proof}
+
+\subsection{Existence results}

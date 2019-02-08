@@ -23,7 +23,7 @@ function [Kpxy,nbr] = pxyfun_sq(kern,proxy,pnorm,x,xnorm,slf,nbr,l,ctr)
 
   pxy = bsxfun(@plus,proxy*l,ctr(:));
   N = size(x,2);
-  Kpxy = kern(x,pxy,xnorm,pnorm,slf)*1.0/N;
+  Kpxy = kern(x,pxy,xnorm,pnorm,slf);
   dx = x(1,nbr) - ctr(1);
   dy = x(2,nbr) - ctr(2);
   dist = max(abs([dx; dy]),[],1);

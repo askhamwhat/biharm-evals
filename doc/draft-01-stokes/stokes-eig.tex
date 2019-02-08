@@ -6,6 +6,7 @@
 \usepackage{empheq}
 
 \usepackage{subcaption}
+\usepackage{amsmath}
 
 \usepackage{cleveref}
 \crefname{equation}{}{}
@@ -15,7 +16,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\def\bz{{\boldsymbol 0}}
 \def\br{{\boldsymbol r}}
 \def\bc{{\boldsymbol c}}
 \def\bh{{\boldsymbol h}}
@@ -33,6 +34,7 @@
 \def\be{{\boldsymbol e}}
 \def\bl{{\boldsymbol \ell}}
 \def\ff{{\boldsymbol f}}
+\def\bg{{\boldsymbol g}}
 \def\GG{{\bf G}}
 \def\Gbh{G^{\textrm{BH}}}
 \def\Glap{G^{\textrm{L}}}
@@ -40,8 +42,12 @@
 \def\Kfark{K^{\textrm{F}}}
 \def\II{{\bf I}}
 \def\TT{{\bf T}}
-\def\SS{{\bf S}}
-\def\DD{{\bf D}}
+\def\bS{{\bf S}}
+\def\bD{{\bf D}}
+\def\cN{{\mathcal N}}
+\def\cS{{\mathcal S}}
+\def\cD{{\mathcal D}}
+
 \def\bsigma{{\boldsymbol \sigma}}
 \def\bpsi{{\boldsymbol \psi}}
 \def\bmu{{\boldsymbol \mu}}
@@ -66,7 +72,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{A Fredholm operator approach to eigenvalue problems in elasticity and planar Stokes flow}
+\title{A Fredholm integral equation approach to
+  computing Stokes eigenvalues in the plane}
 \author{Travis Askham and Manas Rachh}
 \date{\today}
 
@@ -78,7 +85,7 @@
 
 \input{01intro}
 \input{02prelim}
-\input{03inteq}
+\input{03analysis}
 
 \bibliographystyle{plain}
 \bibliography{refs}

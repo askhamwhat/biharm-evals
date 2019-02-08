@@ -66,6 +66,8 @@ c     local variables
       complex *16 zkh, ztemp, zkr
       data eye /(0.0d0,1.0d0)/
       data eyeo4 /(0.0d0,0.25d0)/
+      real *8 tiny
+      data tiny / 1.0d-50 /
 
       dx = zx(1) - zy(1)
       dy = zx(2) - zy(2)
@@ -80,6 +82,42 @@ c     local variables
       dy5 = dy4*dy
 
       r2 = dx2 + dy2
+
+      if (r2 .lt. tiny) then
+         if (ifpot .eq. 1) pot = 0.0d0
+         if (ifgrad .eq. 1) then
+            grad(1) =0.0d0
+            grad(2) =0.0d0
+         endif
+         if (ifhess .eq. 1) then
+            hess(1) =0.0d0
+            hess(2) =0.0d0
+            hess(3) =0.0d0            
+         endif
+         if (ifder3 .eq. 1) then
+            der3(1) =0.0d0
+            der3(2) =0.0d0
+            der3(3) =0.0d0
+            der3(4) =0.0d0                        
+         endif
+         if (ifder4 .eq. 1) then
+            der4(1) =0.0d0
+            der4(2) =0.0d0
+            der4(3) =0.0d0
+            der4(4) =0.0d0
+            der4(5) =0.0d0                                    
+         endif
+         if (ifder5 .eq. 1) then
+            der5(1) =0.0d0
+            der5(2) =0.0d0
+            der5(3) =0.0d0
+            der5(4) =0.0d0
+            der5(5) =0.0d0
+            der5(6) =0.0d0                                                
+         endif
+         return
+      endif
+      
       r = dsqrt(r2)
       r3 = r2*r
       r4 = r3*r

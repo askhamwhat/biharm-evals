@@ -1,8 +1,8 @@
 %TESTSUBMATEVAL
 
 
-ns = 16;
-nt = 16;
+ns = 560;
+nt = 560;
 
 src = randn(2,ns);
 targ = randn(2,nt);

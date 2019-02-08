@@ -1,11 +1,37 @@
 
-function [stokestd,stokesinds,sysmatbl,sysmatbr,sysmattr] = hbhdirmat_pre(chunker,nchs,ccs,zk,cs,cd,intparams,varargin)
+function [stokestd,stokesinds,sysmatbl,sysmatbr,sysmattr] = ...
+    hbhdirmat_pre(chunker,nchs,ccs,zk,cs,cd,intparams,yy,opts)
 %HBHDIRMAT
 %
 % This function builds the system matrix for the Helmholtz biharmonic
-% Dirichlet problem on the given domain. This is the 'slow' version...
+% Dirichlet problem on the given domain.
 %
+% opts.fast = 1 use fast version, 0 use slow builders (1)
+% 
 
+if nargin < 8
+    yy = [];
+end
+
+if nargin < 9
+    opts = [];
+end
+
+if ~isfield(opts,'fast')
+    opts.fast = 1;
+end
+if ~isfield(opts,'fstream_tol')
+    opts.fstream_tol = 1.0e-14;
+end
+if ~isfield(opts,'fstream_np')
+    opts.fstream_np = 64;
+end
+if ~isfield(opts,'fstream_occ')
+    opts.fstream_occ = 200;
+end
+if ~isfield(opts,'verb')
+    opts.verb = 0;
+end
 
 
 % geometry stuff
@@ -28,9 +54,6 @@ end
 
 ngeo = 2*k*nch;
 nsys = 2*k*nch+ncomp;
-
-%sysmat = zeros(nsys,nsys) + 1i*zeros(nsys,nsys);
-
 
 %% effect of sources in holes
 
@@ -68,8 +91,9 @@ fkern = @(s,t,sn,tn) helmstokessubmat(zk,s,t,sn,cs,cd);
 ndims(1) = 2; ndims(2) = 2;
 [stokestd,stokesinds] = chunkskernelmattd(chunker,fkern,ndims,intparams);
 
-stokestd(:,1+ndims(2)*k:ndims(2)*2*k) = stokestd(:,1+ndims(2)*k:ndims(2)*2*k) ...
--0.5*cd*kron(ones(nch,1),eye(ndims(2)*k,ndims(2)*k));
+stokestd(:,1+ndims(2)*k:ndims(2)*2*k) = ...
+    stokestd(:,1+ndims(2)*k:ndims(2)*2*k) ...
+    - 0.5*cd*kron(ones(nch,1),eye(ndims(2)*k,ndims(2)*k));
 
 % the tricky part: evaluate corresponding stream function on
 % boundary components and integrate
@@ -80,27 +104,26 @@ stokestd(:,1+ndims(2)*k:ndims(2)*2*k) = stokestd(:,1+ndims(2)*k:ndims(2)*2*k) ..
 
 % this is now performed by the hbhdirmat_lap_pre routine...
 
-if nargin > 7
-    yy = varargin{1};
-    size(yy)
-else
-    yy = hbhdirmat_lap_pre(chunker,nchs,intparams);
+if isempty(yy)
+    start = tic; yy = hbhdirmat_lap_pre(chunker,nchs,intparams);
+    tt = toc(start);
+    if opts.verb; fprintf('%5.2e : time for laplace precomp',tt); end
 end
 
 % stream function part
 
-fkernstream = @(s,t,sn,tn) helmstokesstreamsubmat(zk,s,t,sn,cs,cd);
-ndims(1) = 1; ndims(2) = 2;
-streammat = chunkskernelmat(chunker,fkernstream,ndims,intparams);
-size(streammat)
-% integrate stream part
+start = tic;
+if opts.fast == 1
+    yy2 = integrate_stream(chunker,zk,cs,cd,intparams,whtsbycomp);
+else
+    fkernstream = @(s,t,sn,tn) helmstokesstreamsubmat(zk,s,t,sn,cs,cd);
+    ndims(1) = 1; ndims(2) = 2;
+    streammat = chunkskernelmat(chunker,fkernstream,ndims,intparams);
+    yy2 = whtsbycomp.'*streammat;
+end
+tt = toc(start);
+if opts.verb; fprintf('%5.2e : time for integrating stream mat',tt); end
 
-yy2 = whtsbycomp.'*streammat;
-size(repmat(rnorms(:).',ncomp))
-size(yy2)
-size(kron(yy.',ones(1,2)))
-size(-cd*kron(yy.',ones(1,2)).*(repmat(rnorms(:).',ncomp)) ...
-    +yy2);
 
 sysmatbl = -cd*kron(yy.',ones(1,2)).*(repmat(rnorms(:).',ncomp)) + yy2;
 

@@ -16,6 +16,18 @@ Upper-case script characters (e.g. $\mathcal{K}$) are reserved for
 operators on Banach spaces, with $\mathcal{I}$ denoting the
 identity.
 
+For a given velocity field $\bu$ and pressure $p$, let $\bsigma(\bu,p)$
+denote the Cauchy stress tensor, i.e.
+\begin{equation}
+\bsigma(\uu,p) = -p \II + 2 \be(\bu) \, ,
+\end{equation}
+where $\be(\bu)$ is the strain tensor given by
+\begin{equation}
+e_{ij}(\bu) = \frac{1}{2} \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right) \; .
+\end{equation}
+When it is clear from context, we will drop the dependence of
+$\bsigma$ on $\bu$ and $p$.
+
 
 \subsection{Green's functions}
 
@@ -25,16 +37,21 @@ $\mathcal{L}_x G(\xx,\yy) = \delta_y(\xx)$ in the distributional sense, i.e.
 for sufficiently smooth $f$
 \begin{equation}
   \mathcal{L}_x \int_{\R^2} G(\xx,\yy) f(\yy) \, dy = f(\xx) \; .
+  \nonumber
 \end{equation}
 We consider here
 ``free-space'' Green's functions, i.e. fundamental solutions which satisfy
 some natural growth or decay conditions as $|\xx-\yy| \to \infty$.
-The Green's function of the oscillatory biharmonic equation
-\cref{eq:buck1} is given by 
+The Green's function of the oscillatory biharmonic equation,
+\begin{equation}
+  \Delta ( \Delta + k^2 ) u = 0 \; , \label{eq:obiharm} \nonumber
+\end{equation}
+is given by 
 \begin{equation}
   \Gbh(\xx,\yy) = \frac{1}{k^2}
   \left (\frac{1}{2\pi} \log |\xx-\yy| +
-  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
+  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, ,
+  \label{eq:Gbh}
 \end{equation}
 where $k$ is the Helmholtz paramater in the oscillatory biharmonic equation,
 and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero.
@@ -42,39 +59,32 @@ Note that this is a scaled difference of the Green's function for
 Laplace, i.e.
 
 \begin{equation}
-  \Glap(\xx,\yy) = \frac{1}{2\pi} \log |\xx-\yy| \; ,
+  \Glap(\xx,\yy) = \frac{1}{2\pi} \log |\xx-\yy| \; , \nonumber
 \end{equation}
 and the Green's function for the Helmholtz equation
 
 \begin{equation}
-  \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; .
+  \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; . \nonumber
 \end{equation}
 
 \subsection{An integral representation for the Stokes eigenvalue
   problem}
 
-The Stokes eigenvalue problem (with ``no-slip'' boundary conditions)
-seeks values $k^2$ such that the equations
-\begin{align}
-  \nabla p - \Delta \uu - k^2 \uu &= 0 \quad \textrm{in} \quad \Omega
-  \; , \label{eq:helmstokes}\\
-  \nabla \cdot \uu &= 0 \quad \textrm{in} \quad \Omega
-  \; , \label{eq:helmstokescty} \\
-  \uu &= 0 \quad \textrm{on} \quad \Gamma \; \label{eq:helmstokesnoslip}
-\end{align}
-have a non-trivial solution. In the case that $k=i\alpha$ for
-some real-valued $\alpha$, the equations \cref{eq:helmstokes,eq:helmstokescty}
+In the case that $k=i\alpha$ for some real-valued $\alpha$,
+the equations \cref{eq:ostokes,eq:ostokescty}
 are known as the modified Stokes equations and are of particular
-interest for their application to numerical simulations of unsteady
-flow
-\cite{pozrikidis1992boundary,biros2002embedded,jiang2013second}.
-In the absence of a preferred name for the case of real-valued $k$,
-we will refer to \cref{eq:helmstokes,eq:helmstokescty} as the
-oscillatory Stokes equations.
+interest for their application to the analysis and numerical
+simulation of unsteady flow
+\cite{pozrikidis1992boundary,biros2002embedded,
+  jiang2013second,ladyzhenskaya1969mathematical}.
+The equations are well-studied in that setting and
+integral representations which lead to second kind
+integral equations have been developed. We review
+some of the relevant results here, translating to
+the present, oscillatory setting.
 
+\subsubsection{Oscillatory Stokeslets and stresslets}
 
-
-\subsubsection{Stokeslets and stresslets}
 
 In this section, we review the derivation of the
 modified Stokeslet, but for the imaginary parameter
@@ -86,46 +96,46 @@ numerical simulations of the unsteady Stokes equations
 \cite{pozrikidis1992boundary,biros2002embedded}.
 
  Consider the solution of
-\cref{eq:helmstokes,eq:helmstokescty} where a $\delta$-mass
+\cref{eq:ostokes,eq:ostokescty} where a $\delta$-mass
 centered at $\yy$ with strength $\ff$
-has been added to the right-hand side of \cref{eq:helmstokes}, i.e.
+has been added to the right-hand side of \cref{eq:ostokes}, i.e.
 
 \begin{align}
   \nabla p - \Delta \uu - k^2 \uu &= \delta_\yy \ff \; ,
-  \label{eq:helmstokes_charge} \\
-  \nabla \cdot \uu &= 0 \; .
+  \label{eq:ostokes_charge}  \\
+  \nabla \cdot \uu &= 0 \; . \nonumber
 \end{align}
 Recall that
 
 \begin{equation}
- \Delta \Glap(\xx,\yy) = \delta_\yy(\xx) \; .
+ \Delta \Glap(\xx,\yy) = \delta_\yy(\xx) \; . \label{eq:lapdelta}
 \end{equation}
-If we substitute this expression into
-\eqref{eq:helmstokes_charge} and take the divergence,
+If we substitute \eqref{eq:lapdelta} into
+\eqref{eq:ostokes_charge} and take the divergence,
 we obtain
 
 \begin{equation}
-  p = \nabla \Glap(\xx,\yy) \cdot \ff \; .
+  p = \nabla \Glap(\xx,\yy) \cdot \ff \; . \nonumber
 \end{equation}
 We then have, formally,
 
 \begin{align}
   \uu &= - (\Delta + k^2)^{-1} ( \Delta \Glap \ff
-  - \nabla (\nabla \Glap \cdot \ff ) ) \\
+  - \nabla (\nabla \Glap \cdot \ff ) ) \nonumber \\
   &= \left ( -\Delta + \nabla \otimes \nabla \right )
-  \Gbh \ff \; .
+  \Gbh \ff \; . \nonumber
 \end{align}
 The tensor
 
-\begin{equation} \label{eq:stokeslet}
+\begin{equation} \label{eq:ostokeslet}
   \GG = - \II \Delta \Gbh + \nabla \otimes \nabla \Gbh
 \end{equation}
 is then the equivalent of a Stokeslet
 \cite{pozrikidis1992boundary} for the problem
-\eqref{eq:helmstokes}.
+\eqref{eq:ostokes}.
 
 A related object is the stresslet, which is defined
-in terms of the stress tensor of a velocity, pressure
+in terms of the stress tensor of the velocity, pressure
 pair induced by a Stokeslet. For these tensors, we find
 that it is more convenient to express them in index notation
 with the Einstein index summing convention.
@@ -133,7 +143,7 @@ Recall that the stress tensor $\bsigma$ is defined as
 
 \begin{equation}
   \sigma_{ij} = -p \delta_{ij} + \left ( \partial_{x_j}u_i
-  +\partial_{x_i} u_j \right ) \; ,
+  +\partial_{x_i} u_j \right ) \; , \nonumber
 \end{equation}
 where $\delta_{ij}$ is the standard Kronecker delta notation.
 The stresslet $\TT$ is defined to be
@@ -145,7 +155,7 @@ The stresslet $\TT$ is defined to be
   \nonumber \\
   & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{kj} +
   \partial_{x_k} \left(\partial_{x_j} \Gbh \right) \right)
-  \; .
+  \; . \label{eq:ostress} \nonumber
 \end{align}
 Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} \Glap f_i$ be a
 solution of the Stokes equations induced by a Stokeslet.
@@ -161,57 +171,50 @@ summing over the third index, we obtain
   + \partial_\nu \left ( -\Delta \Gbh \II
   + \nabla \otimes \nabla \Gbh \right)
   + \nabla \otimes \left ( -\Delta \Gbh \bnu
-  + \partial_{\nu} \nabla \Gbh \right) \; .
+  + \partial_{\nu} \nabla \Gbh \right) \; . \nonumber
 \end{equation}
-%\begin{align}
-% -\Delta \Gbh \bnu
-% + \partial_{\nu} \nabla \Gbh &=
-% ( (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_1 \Gbh +
-% (\partial_{x_1x_1}\nu_1 + \partial_{x_2x_1} \nu_2 )\Gbh,
-% (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_2 \Gbh +
-% (\partial_{x_1x_2}\nu_1 + \partial_{x_2x_2} \nu_2 )\Gbh) \\
-% &= (-\partial_{x_2} \partial_\tau \Gbh,
-% \partial_{x_1} \partial_\tau \Gbh)
-%\end{align}
-%\begin{equation}
-%  \begin{pmatrix}
-%    -\partial_{x_2x_2} & \partial_{x_1x_2} \\
-%    \partial_{x_1x_2} & -\partial_{x_1x_1}
-%  \end{pmatrix} = -\nabla^\bot \otimes \nabla^\bot
-%\end{equation}
 Let $\btau = \bnu^\bot$. Then
 
 \begin{equation}
   \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
   - \nabla^\bot \otimes \nabla^\bot \partial_\nu \Gbh
   +\nabla \otimes \nabla^\bot \partial_\tau \Gbh \; .
+  \nonumber
 \end{equation}
 
-\subsubsection{Layer potentials and integral representation}
+\subsubsection{Layer potentials}
 
 We now use the Stokeslet and stresslet definitions
 of the previous section to define the standard single
 and double layer potentials of the Stokes eigenvalue
-problem. The single layer potential is defined to
-be
+problem. For $\xx \in \R^2$, the single layer potential
+is defined to be
 
-\begin{equation}
-  \SS \bmu (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+\begin{equation} \label{eq:singlelayer}
+  \bS [\bmu] (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
   \, dS(\yy) \; .
 \end{equation}
-The double layer potential is defined to be
+We use the notation $\bsigma_\bS[\bmu]$ to denote the
+stress tensor of the single layer at any given point
+$\xx \in \R^2 \setminus \Gamma$.
+
+For $\xx \in \R^2 \setminus \Gamma$, the double layer
+potential is defined to be
 
 \begin{equation} \label{eq:doublelayer}
-  \DD \bmu (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
-  \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+  \bD [\bmu] (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}(\xx,\yy)
+  \nu_k(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where $\bnu$ denotes the outward unit normal to the boundary.
+Note that when $\xx \in \Gamma$ we obtain the same formula
+for the double layer potential except that the integral should be
+interpreted in the principal value sense. 
 If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
 where $\btau = \bmu^\bot$ is the positively oriented unit
 tangent to the curve, then we have
 
 \begin{align} \label{eq:stokesdlkernel}
-  \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy) \right )^\intercal
+  \left ( \TT_{\cdot,\cdot,k}(\xx,\yy)\nu_k(\yy) \right )^\intercal
   \bmu(\yy) &= \left ( - \nabla \Glap(\xx,\yy) + 2 \nabla^\bot
   \partial_{\nu\tau} \Gbh(\xx,\yy) \right ) \mu_\nu(\yy) \nonumber \\
   & \qquad+
@@ -219,3 +222,67 @@ tangent to the curve, then we have
   \Gbh(\xx,\yy) \mu_\tau(\yy) \; .
 \end{align}
 
+When we view the layer potentials as
+operators which map densities on the boundary to functions
+on the boundary, we use special notation. Let
+
+\begin{equation}
+  \cS [\bmu] (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+  \, dS(\yy)
+\end{equation}
+and
+\begin{equation}
+  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
+  \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+\end{equation}
+where the $\oint$ symbol means that the integral is to be
+evaluated in the principal value sense. For two vector valued
+functions $\ff$ and $\bg$ defined on $\Gamma$, consider the bilinear
+form
+
+\begin{equation}
+  \langle \ff , \bg \rangle = \int_\Gamma \ff \cdot \bg dS \; .
+\end{equation}
+The adjoint of $\cD$ with respect to this bilinear form
+is of particular interest; we have $\cD^\intercal = \cN$, where
+
+\begin{equation}
+  \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\xx)
+  \right ) \bmu(\yy) \, dS(\yy) \; .
+\end{equation}
+
+\subsubsection{Jump conditions for the layer potentials}
+
+In formulating an integral equation, it is important
+to understand the behavior of the layer potentials
+defined in the previous section for points near and on the
+boundary. The so-called jump conditions for the layer
+potentials are summarized in the following theorem.
+
+
+\begin{lemma}[Jump conditions]
+  \label{lemma:jump-conds}
+  Let $\bS$, $\bsigma_\bS$, $\bD$, $\cD$, and $\cN$ be
+  the layer potentials and operators defined above and
+  let $\Gamma$ be a sufficiently smooth domain boundary
+  with outward pointing normal $\bnu$. Then, for
+  a given density $\bmu$ defined on $\Gamma$,
+  we have that $\bS \bmu$
+  is continuous across $\Gamma$, the exterior and interior
+  limits of the surface traction of $\bD \bmu$ are equal,
+  and for each $\xx_0 \in \Gamma$,
+
+  \begin{align}
+    \lim_{h \downarrow 0} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
+    &= \mp \frac{1}{2} \bmu(\xx_0) + \cN[\bmu](\xx_0) \\
+    \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
+    &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
+  \end{align}
+\end{lemma}
+
+The above expressions are derived by noting that the
+leading order singularity of these integral kernels
+is the same as for the original Stokes case, so that
+the standard jump conditions for Stokes
+\cite{KimSangtae1991M:pa,Pozrikidis1992}
+apply. 
