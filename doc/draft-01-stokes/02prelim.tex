@@ -28,6 +28,18 @@ e_{ij}(\bu) = \frac{1}{2} \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right)
 When it is clear from context, we will drop the dependence of
 $\bsigma$ on $\bu$ and $p$.
 
+We seek solutions of \cref{eq:ostokes} in the space
+
+\begin{equation}
+  A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
+  \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
+  \left ( C(\bar{\Omega}) \times C(\bar{\Omega}) \right ) \, , \,
+  p \in C^1(\Omega) \times C(\bar{\Omega})\} \; ,
+\end{equation}
+where $\Omega$ is an open domain and $\bar{\Omega}$ denotes
+its closure.
+
+
 
 \subsection{Green's functions}
 
@@ -71,7 +83,7 @@ and the Green's function for the Helmholtz equation
   problem}
 
 In the case that $k=i\alpha$ for some real-valued $\alpha$,
-the equations \cref{eq:ostokes,eq:ostokescty}
+the oscillatory Stokes equations \cref{eq:ostokes}
 are known as the modified Stokes equations and are of particular
 interest for their application to the analysis and numerical
 simulation of unsteady flow
@@ -96,7 +108,7 @@ numerical simulations of the unsteady Stokes equations
 \cite{pozrikidis1992boundary,biros2002embedded}.
 
  Consider the solution of
-\cref{eq:ostokes,eq:ostokescty} where a $\delta$-mass
+\cref{eq:ostokes} where a $\delta$-mass
 centered at $\yy$ with strength $\ff$
 has been added to the right-hand side of \cref{eq:ostokes}, i.e.
 
@@ -252,6 +264,55 @@ $\cD^\intercal = \cN$, where
   \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
+
+\subsubsection{Representation Theorem}
+
+Here we sketch the proof of the equivalent of the
+Green's identity for oscillatory Stokes, which is well-known
+in the Stokes and modified Stokes settings
+\cite{Pozrikidis1992,biros2002embedded,ladyzhenskaya1969mathematical}.
+
+\begin{thrm} \label{thrm:rep-theorem}
+  Let $\Omega$ be a bounded domain with $C^2$ boundary and let
+  the pair $(\bu,p)$ satisfy the oscillatory stokes equations
+  \cref{eq:ostokes} in $\Omega$. Then
+
+  \begin{equation} \label{eq:rep-theorem}
+    \bu(\xx) = \bS [\bsigma(\bu,p)](\xx) - \bD[\bu](\xx) \; .
+  \end{equation}
+\end{thrm}
+
+\begin{proof}
+  By the definitions of $\GG$ and $\Glap$, we have
+  \begin{equation*}
+    \bu(\xx) = \int_\Omega -(\Delta_x + k^2) \GG(\xx,\yy) \bu(\yy)
+    + \nabla \otimes \nabla \Glap(\xx,\yy) \bu(\yy) \, dV(\yy) \; .
+  \end{equation*}
+  Applying Green's identity and the divergence theorem, we
+  obtain
+  \begin{equation}
+    \bu(\xx) = \int_\Gamma \GG(\xx,\yy) \partial_\nu \bu
+    - \partial_\nu \GG(\xx,\yy) \bu
+    - \nabla \Glap(\xx,\yy) (\bnu \cdot \bu) \, dS 
+    - \int_\Omega \GG(\xx,\yy) (\Delta + k^2) u \, dV \; .
+    \nonumber
+  \end{equation}
+  Substituting the definition of the PDE and applying the divergence
+  theorem again, we obtain
+  \begin{equation}
+    \bu(\xx) = \int_\Gamma \GG \partial_\nu \bu - p \GG \bnu - \partial_\nu \GG \bu
+    - \nabla \Glap (\bnu \cdot \bu) \, dS  \; . \label{eq:rep_proof_1}
+  \end{equation}
+  From the divergence theorem and the divergence-free properties of
+  $\uu$ and $\GG$, we can obtain
+
+  \begin{equation}
+    \int_\Gamma \GG \nabla (\bu \cdot \bnu)
+    - (\nabla \GG \bnu)^\intercal \bu \, dS = 0 \; .  \label{eq:rep_proof_2}
+  \end{equation}
+  Adding \cref{eq:rep_proof_1,eq:rep_proof_2}, we get the desired
+  result.
+\end{proof}
 
 \subsubsection{Jump conditions for the layer potentials}
 
