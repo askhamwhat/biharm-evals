@@ -367,8 +367,7 @@ oscillatory Stokes equation.
 \lim_{r \to \infty} \int_{|\by|=r} |\bu|^2 dS = 0 
 \, . \label{eq:decayatinf}
 \end{equation}
-Then each component of $\bu$ is harmonic and has a convergent Laurent
-expansion in $E$.
+Then each component of $\bu$ is harmonic in $E$.
 \end{lem}
 \begin{proof}
 We first note that each component of $\bu= (u_{1},u_{2})$ satisfies the 
@@ -408,8 +407,12 @@ $a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(k r)$ must be zero.
 Thus, 
 \begin{equation}
 u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
-\, . \nonumber
+\, , \nonumber
 \end{equation}
+for sufficiently large $r$.
+Finally, by \cref{cor:analytic}, $\bu$ is
+analytic in $E$. Therefore, each $u_j$ is harmonic
+throughout $E$.
 \end{proof}
 \begin{remark} \label{rmk:harmu}
   Note that if $\bu$ satisfies the assumptions
