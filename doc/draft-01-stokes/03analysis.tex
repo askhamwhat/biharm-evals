@@ -3,28 +3,97 @@
 In this section, we develop some existence and uniqueness
 results for the oscillatory Stokes PDE.
 %
+We seek solutions in the space
+
+\begin{equation}
+  A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
+  \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
+  \left ( C(\bar{\Omega}) \times C(\bar{\Omega}) \right ) \, , \,
+  p \in C^1(\Omega) \times C(\bar{\Omega})\} \; ,
+\end{equation}
+where $\Omega$ is an open domain and $\bar{\Omega}$ denotes
+its closure.
+%
+As above, we will assume that all domains have $C^2$ boundaries.
+%
+Most of the results will apply to multiply connected domains
+but we will identify the results which do not.
+%
+
 The structure of this section follows that used
 by Colton and Kress \cite[Ch. 3]{colton1983integral}
 for the scalar Helmholtz equation.
 %
-We first define a radiation condition for the oscillatory
-Stokes equations and prove that, under certain assumptions, the
-layer potentials satisfy the radiation condition.
+First, we define the interior boundary value problems
+of interest, which is straightforward.
 %
-The radiation condition is then key to proving uniqueness
-results for some common boundary value problems on exterior
-domains.
+For the exterior problems, we introduce a radiation condition
+for the equations and establish that, under certain assumptions,
+the standard layer potentials satisfy the radiation condition.
 %
-With the Fredholm alternative, these uniqueness results
-are sufficient to derive the invertibility of appropriate
+We then define well-posed versions of the
+exterior boundary value problems which incorporate the
+radiation condition.
+%
+Then we derive a number of uniqueness
+results for the boundary value problems.
+%
+Finally, along with the Fredholm alternative, these uniqueness
+results are sufficient to derive the invertibility of appropriate
 integral equations for a number of boundary value problems
 on simply and multiply connected domains.
+
+\subsection{Boundary value problems --- interior}
+
+Let $\Omega$ be a bounded domain with $C^2$ boundary
+denoted by $\Gamma$.
+The standard Dirichlet boundary problem specifies the
+velocity of the fluid on the boundary, i.e.
+
+\begin{definition}[Interior Dirichlet problem]
+  Let $\ff \in C(\Omega)$ be given. Find $(\bu,p) \in A(\Omega)$
+  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:dir_interior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in \Omega \, ,  \\
+    \bu &= \bh \quad \bx \in \Gamma \, .
+  \end{aligned}
+  \end{equation}
+\end{definition}
+Note that the divergence-free constraint for the oscillatory
+Stokes equations implies a compatibility condition on the
+Dirichlet data $\ff$, namely that
+\begin{equation} \label{eq:dir_compat}
+  \int_\Gamma \ff \cdot \nu \, dS = 0 \; .
+\end{equation}
+
+
+Let $\bsigma$ denote the stress tensor associated with
+field $(\bu,p)$. 
+Specifying the surface traction, $\bt = \bsigma \cdot \bnu$,
+on the boundary gives the standard Neumann boundary value
+problem, i.e.
+
+\begin{definition}[Interior Neumann problem]
+  Let $\bg \in C(\Omega)$ be given. Find $(\bu,p) \in A(\Omega)$
+  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:neu_interior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in \Omega \, ,  \\
+    \bt &= \bg \quad \bx \in \Gamma \, .
+  \end{aligned}
+  \end{equation}
+\end{definition}
 
 \subsection{A radiation condition for the oscillatory Stokes
   equation}
 
-Let $\Omega$ be a bounded simply connected
-domain and $E = \R^{2} \setminus \bar{\Omega}$ denote its
+Let $\Omega$ be the union of a finite collection of
+simply connected domains, i.e. $\Omega = \bigcup_{i=1}^m \Omega_i$
+for some $m \in \N$,
+and let $E = \R^{2} \setminus \bar{\Omega}$ denote its
 exterior.
 %
 Let $\Gamma = \partial E$ denote the boundary of $E$ and
@@ -34,27 +103,18 @@ $\Gamma$, i.e. the normal vector pointing out of $E$ into $\Omega$.
 For a given function $\bh$ defined on $\Gamma$,
 the exterior Dirichlet boundary value problem is to
 find a pair $(\bu,p)$ which satisfies:
-\begin{align*}
+\begin{equation}
+\begin{aligned}
 \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
-\nabla \cdot \bu &= 0 \quad \bx \in E \, , \nonumber \\
-\bu &= \bh \quad \bx \in \Gamma \, .\nonumber
-\end{align*}
+\nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
+\bu &= \bh \quad \bx \in \Gamma \, . \nonumber
+\end{aligned}
+\end{equation}
 In addition to the boundary condition on
 $\Gamma$, we must impose radiation conditions
 at $\infty$, analogous to the Helmholtz equation.
 %
 
-Let $\bsigma$ denote the stress tensor associated with the velocity
-field $\bu$. The normal component of the stress,
-\begin{equation}
-\bt = \bsigma \cdot \bnu \; , \nonumber
-\end{equation}
-gives the surface traction, which is the analogue of
-the normal derivative for the scalar Helmholtz equation,
-i.e. specifying the surface traction on a boundary is
-the Neumann problem for the oscillatory Stokes PDE.
-
-%
 Let $B_r(0)$ denote the disc of radius $r$ centered
 at the origin and $\partial B_r(0)$ its boundary.
 %
@@ -185,14 +245,78 @@ to obtain
 \end{align*}
 \end{proof}
 
+\subsection{Boundary value problems --- exterior}
+
+Let $E$ and $\Gamma$ be as in the previous subsection.
+The radiation condition allows for a well-posed formulation
+of the exterior boundary value problems, i.e.
+\cref{def:dir_exterior,def:neu_exterior} below.
+
+\begin{definition}[Exterior Dirichlet problem]
+  \label{def:dir_exterior}
+  Let $\ff \in C(\Gamma)$ be given. Find $(\bu,p) \in A(E)$
+  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:dir_exterior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
+    \bu &= \bh \quad \bx \in \Gamma \, 
+  \end{aligned}
+  \end{equation}
+  and $(\bu,p)$ satisfies the radiation condition in
+  \cref{def:radcond}.
+\end{definition}
+\begin{definition}[Exterior Neumann problem]
+  \label{def:neu_exterior}  
+  Let $\bg \in C(\Gamma)$ be given. Find $(\bu,p) \in A(E)$
+  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:neu_exterior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
+    \bt &= \bg \quad \bx \in \Gamma \,
+  \end{aligned}
+  \end{equation}
+  and $(\bu,p)$ satisfies the radiation condition in
+  \cref{def:radcond}.
+\end{definition}
+
+
+
 \subsection{Uniqueness results}
 
+Before moving on to the exterior uniqueness theorems,
+we establish the well-known result that
+the interior eigenvalues are real-valued.
+
+\begin{thrm}
+  Let $\Omega$ be a bounded domain and suppose that
+  $\Im (k) > 0$. Then both the interior
+  Dirichlet and Neumann boundary value problems have
+  unique solutions.
+\end{thrm}
+\begin{proof}
+  A couple applications of the divergence theorem establish
+  that
+  \begin{equation} \label{eq:greenlike}
+    \int_\Omega |2\be(\bu)|^2 - \overline{k}^2 \, dV
+    = \int_\Gamma \bu \cdot \overline{\bt} \, dS \; . 
+  \end{equation}
+  Suppose that either $\bu = 0$ or $\bt = 0$ on $\Gamma$.
+  Then, the right hand side of \cref{eq:greenlike} is
+  zero. Taking the real and imaginary parts of \cref{eq:greenlike},
+  it is clear that $\bu \equiv 0$.
+\end{proof}
+
+The following lemmas are useful in establishing the uniqueness
+of oscillatory Stokes boundary value problems.
 
 \begin{lem}
-\label{lem:rep}
-Suppose that $(\bu,p)$ satisfies the oscillatory Stokes equation in 
-an unbounded region $E$ along with the radiation 
-condition~\cref{eq:radcond}. 
+  \label{lem:rep}
+  Let the unbounded region $E$ be given as the exterior
+  of a finite collection of bounded domains.
+  Suppose that $(\bu,p)$ satisfies the oscillatory Stokes equation in 
+  $E$ as well as the radiation condition~\cref{eq:radcond}. 
 Then 
 \begin{multline}
 \label{eq:repinfest}  
@@ -234,10 +358,11 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 In the next lemma, we prove the analogue of Rellich's lemma for the
 oscillatory Stokes equation. 
 \begin{lem}
-\label{lem:rellich}
-Suppose that $\bu$ satisfies the oscillatory Stokes equation in an unbounded
-region $E$.  
-Suppose further that 
+  \label{lem:rellich}
+    Let the unbounded region $E$ be given as the exterior
+  of a finite collection of bounded domains.
+  Suppose that $\bu$ satisfies the oscillatory Stokes equation in
+  $E$ and that 
 \begin{equation}
 \lim_{r \to \infty} \int_{|\by|=r} |\bu|^2 dS = 0 
 \, . \label{eq:decayatinf}
@@ -303,11 +428,13 @@ Note that in Rellich's lemma $\bu$ need not be a radiating solution.
 All that is assumed of $\bu$ is that it satifies the PDE in $E$.
 \end{remark}
 
-\begin{thrm}[Uniqueness of the Dirichlet Problem]
-Suppose that $\Im(k)\geq 0$ and 
-that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
-equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
-$\bu \equiv 0$ in $E$.
+\begin{thrm}[Uniqueness of the Exterior Dirichlet Problem]
+  Let the unbounded region $E$ be given as the exterior
+  of a finite collection of bounded domains.
+  Suppose that $\Im(k)\geq 0$ and 
+  that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+  equation in $E$ with $\bu =0$ on the boundary $\Gamma$, then
+  $\bu \equiv 0$ in $E$.
 \end{thrm}
 
 \begin{proof}
@@ -330,11 +457,13 @@ Dirichlet problem for Laplace's equation
 on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
 \end{proof}
 
-\begin{thrm}[Uniqueness of the Neumann Problem]
-Suppose that $\Im(k)\geq 0$ and 
-that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
-equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
-$\bu \equiv 0$ in $E$.
+\begin{thrm}[Uniqueness of the Exterior Neumann Problem]
+  Let the unbounded region $E$ be given as the exterior
+  of one simply connected domain.
+  Suppose that $\Im(k)\geq 0$ and 
+  that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+  equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
+  $\bu \equiv 0$ in $E$.
 \end{thrm}
 
 \begin{proof}
@@ -364,12 +493,14 @@ of solutions to the Dirichlet problem for Laplace's equation,
 we have that $p=0$ so that $\uu \equiv 0$.
 \end{proof}
 
-\begin{thrm}[Uniqueness of the Impedance Problem]
-Suppose that $\Im(k) \geq 0$ and that
-$(\bu,p)$ is a radiating solution of the
-oscillatory Stokes equation in $E$ which satisfies
-the homogeneous impedance boundary condition
-\begin{equation}
+\begin{thrm}[Uniqueness of the Exterior Impedance Problem]
+  Let the unbounded region $E$ be given as the exterior
+  of a finite collection of bounded domains.
+  Suppose that $\Im(k) \geq 0$ and that
+  $(\bu,p)$ is a radiating solution of the
+  oscillatory Stokes equation in $E$ which satisfies
+  the homogeneous impedance boundary condition
+  \begin{equation}
 \bt - i k \bu = 0 \quad \xx \in \Gamma \, . \nonumber
 \end{equation}
 Then $\bu \equiv 0$ for $\xx \in E$.
@@ -415,3 +546,6 @@ Dirichlet problem for Laplace's equation.
 \end{proof}
 
 \subsection{Existence results}
+
+
+

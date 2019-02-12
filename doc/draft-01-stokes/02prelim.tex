@@ -240,11 +240,13 @@ evaluated in the principal value sense. For two vector valued
 functions $\ff$ and $\bg$ defined on $\Gamma$, consider the bilinear
 form
 
-\begin{equation}
+\begin{equation} \label{eq:bi_form}
   \langle \ff , \bg \rangle = \int_\Gamma \ff \cdot \bg dS \; .
 \end{equation}
-The adjoint of $\cD$ with respect to this bilinear form
-is of particular interest; we have $\cD^\intercal = \cN$, where
+The definition of the adjoint used throughout the paper will be
+the one induced by this form.
+The adjoint of $\cD$ is of particular interest; we have
+$\cD^\intercal = \cN$, where
 
 \begin{equation}
   \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\xx)
@@ -260,8 +262,7 @@ boundary. The so-called jump conditions for the layer
 potentials are summarized in the following theorem.
 
 
-\begin{lemma}[Jump conditions]
-  \label{lemma:jump-conds}
+\begin{lem}[Jump conditions] \label{lem:jump-conds}
   Let $\bS$, $\bsigma_\bS$, $\bD$, $\cD$, and $\cN$ be
   the layer potentials and operators defined above and
   let $\Gamma$ be a sufficiently smooth domain boundary
@@ -278,7 +279,7 @@ potentials are summarized in the following theorem.
     \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
     &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
   \end{align}
-\end{lemma}
+\end{lem}
 
 The above expressions are derived by noting that the
 leading order singularity of these integral kernels
@@ -286,3 +287,40 @@ is the same as for the original Stokes case, so that
 the standard jump conditions for Stokes
 \cite{KimSangtae1991M:pa,Pozrikidis1992}
 apply. 
+
+
+\subsubsection{Null-space correction}
+
+Without modification, the standard layer potentials
+can result in rank-deficient representations for
+the boundary value problems. The nature of this deficiency
+is treated below but for now we introduce a standard
+operator used to correct this. For any integrable density
+$\bmu$, let $\cW[\bmu]$ be defined by
+
+\begin{equation} \label{eq:ones_operator}
+  \cW[\bmu](\xx) = \int_\Gamma \bnu(\xx)
+  \left ( \bnu(\yy) \cdot \bmu(\yy) \right )
+  \, dS(\yy) \; ,
+\end{equation}
+for any $\xx \in \Gamma$. We have
+
+\begin{lem}
+  Let $\Omega$ be a domain with $C^2$ boundary and $\bmu$ be
+  an integrable function defined on $\Gamma$. Then
+  \begin{itemize}
+  \item $\cW[\cW[\bmu]] = \cW[\bmu]$,
+  \item $\cW^\intercal = \cW$,
+  \item $\cW[\bmu \pm 2 \cD[\bmu]] = 0$,
+  \item $\cW[\cS[\bmu]] = 0$,
+  \end{itemize}
+  where the transpose is induced by the bilinear
+  form \cref{eq:bi_form}.
+\end{lem}
+
+\begin{proof}
+  The first two results follow from the definitions of $\cW$ and
+  the normal vector. The other two follow from the fact that
+  $\bS[\bmu]$ and $\bD[\bmu]$ are divergence-free and
+  an application of \cref{lem:jump-conds}.
+\end{proof}
