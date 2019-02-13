@@ -79,8 +79,8 @@ and the Green's function for the Helmholtz equation
   \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; . \nonumber
 \end{equation}
 
-\subsection{An integral representation for the Stokes eigenvalue
-  problem}
+\subsection{Properties of the oscillatory Stokes layer
+  potentials}
 
 In the case that $k=i\alpha$ for some real-valued $\alpha$,
 the oscillatory Stokes equations \cref{eq:ostokes}
@@ -314,8 +314,8 @@ in the Stokes and modified Stokes settings
   result.
 \end{proof}
 
-By the analyticity of $\Gbh$, a consequence of \cref{thrm:rep-theorem}
-is
+A consequence of \cref{thrm:rep-theorem} and the analyticity
+of $\Gbh$ is 
 \begin{cor}
 \label{cor:analytic}  
   Let $(\uu,p) \in A(\Omega)$ be a solution of \cref{eq:ostokes}.
@@ -330,9 +330,9 @@ that for the Helmholtz case; see \cite[Theorem 3.5]{colton1983integral}.
 
 In formulating an integral equation, it is important
 to understand the behavior of the layer potentials
-defined in the previous section for points near and on the
-boundary. The so-called jump conditions for the layer
-potentials are summarized in the following theorem.
+for points near and on the boundary. The so-called jump
+conditions for the layer potentials are summarized in the
+following theorem.
 
 
 \begin{lem}[Jump conditions] \label{lem:jump-conds}
@@ -372,7 +372,7 @@ operator used to correct this. For any integrable density
 $\bmu$, let $\cW[\bmu]$ be defined by
 
 \begin{equation} \label{eq:ones_operator}
-  \cW[\bmu](\xx) = \int_\Gamma \bnu(\xx)
+  \cW[\bmu](\xx) = \frac{1}{|\Gamma|} \int_\Gamma \bnu(\xx)
   \left ( \bnu(\yy) \cdot \bmu(\yy) \right )
   \, dS(\yy) \; ,
 \end{equation}

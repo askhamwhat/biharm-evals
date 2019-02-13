@@ -1,7 +1,9 @@
 \section{Fredholm analysis of the integral representations}
 
-In this section, we develop some existence and uniqueness
-results for the oscillatory Stokes PDE.
+In this section, we develop some uniqueness
+results for the oscillatory Stokes PDE and describe
+the use of the layer potentials in discovering Stokes
+eigenvalues.
 %
 We seek solutions in the space
 
@@ -38,10 +40,15 @@ radiation condition.
 Then we derive a number of uniqueness
 results for the boundary value problems.
 %
-Finally, along with the Fredholm alternative, these uniqueness
+Along with the Fredholm alternative, these uniqueness
 results are sufficient to derive the invertibility of appropriate
 integral equations for a number of boundary value problems
 on simply and multiply connected domains.
+%
+Finally, we briefly describe how the approach of Zhao
+and Barnett translates to the present setting, giving
+a robust numerical method for computing Stokes
+eigenvalues.
 
 \subsection{Boundary value problems --- interior}
 
@@ -57,7 +64,7 @@ velocity of the fluid on the boundary, i.e.
   \begin{aligned} \label{eq:dir_interior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in \Omega \, ,  \\
-    \bu &= \bh \quad \bx \in \Gamma \, .
+    \bu &= \ff \quad \bx \in \Gamma \, .
   \end{aligned}
   \end{equation}
 \end{definition}
@@ -65,7 +72,7 @@ Note that the divergence-free constraint for the oscillatory
 Stokes equations implies a compatibility condition on the
 Dirichlet data $\ff$, namely that
 \begin{equation} \label{eq:dir_compat}
-  \int_\Gamma \ff \cdot \nu \, dS = 0 \; .
+  \int_\Gamma \ff \cdot \bnu \, dS = 0 \; .
 \end{equation}
 
 
@@ -100,14 +107,14 @@ Let $\Gamma = \partial E$ denote the boundary of $E$ and
 $\bnu(\yy)$ denote the exterior normal to the point $\yy$ on
 $\Gamma$, i.e. the normal vector pointing out of $E$ into $\Omega$.
 %
-For a given function $\bh$ defined on $\Gamma$,
+For a given function $\ff$ defined on $\Gamma$,
 the exterior Dirichlet boundary value problem is to
 find a pair $(\bu,p)$ which satisfies:
 \begin{equation}
 \begin{aligned}
 \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
 \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
-\bu &= \bh \quad \bx \in \Gamma \, . \nonumber
+\bu &= \ff \quad \bx \in \Gamma \, . \nonumber
 \end{aligned}
 \end{equation}
 In addition to the boundary condition on
@@ -260,7 +267,7 @@ of the exterior boundary value problems, i.e.
   \begin{aligned} \label{eq:dir_exterior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
-    \bu &= \bh \quad \bx \in \Gamma \, 
+    \bu &= \ff \quad \bx \in \Gamma \, 
   \end{aligned}
   \end{equation}
   and $(\bu,p)$ satisfies the radiation condition in
@@ -548,7 +555,59 @@ Then $\bu \equiv 0$ follows from the uniqueness of solutions to the
 Dirichlet problem for Laplace's equation.
 \end{proof}
 
-\subsection{Existence results}
+\subsection{The integral equations and their nullspaces}
+
+In this section, we establish the correspondence between the
+integral equations arising from layer potential representations
+of solutions to the oscillatory Stokes equation and
+Stokes eigenvalues.
+
+Let $\Omega$ be a bounded domain given as
+the intersection of a simply connected domain $\Omega_0$ and
+the exteriors of a finite collection of bounded,
+simply connected domains $\{ \Omega_i \}_{i=1}^m$
+whose closures are contained in $\Omega_0$. Note that the
+exterior of $\Omega$, which we denote by $E$, is the
+disjoint union of the exterior of $\Omega_0$, which we
+denote $E_0$, with the sets $\{ \Omega_i \}_{i=1}^m$.
+Let $\Gamma$ denote the boundary of $\Omega$ with the normal
+$\bnu$ pointing out of $\Omega$.
+
+We represent
+the solution to the Dirichlet problem using
+a double layer potential defined on $\Gamma$, i.e.
+setting $\bu = \bD \bmu$ for
+an unknown density $\bmu$. Substituting this representation
+into the Dirichlet boundary condition and applying
+\cref{lem:jump-conds}, we obtain
+
+\begin{equation}
+  (\cI - 2\cD) \bmu = 2\ff \; , \label{eq:inteq_dir_int}
+\end{equation}
+for the interior problem, and
+
+\begin{equation}
+  (\cI + 2\cD) \bmu = 2\ff \; , \label{eq:inteq_dir_ext}
+\end{equation}
+for the exterior problem.
+
+Similarly, we represent
+the solution to the Neumann problems using
+a single layer potential defined on $\Gamma$, i.e.
+setting $\bu = \bS \brho$ for
+an unknown density $\brho$. Substituting this representation
+into the Neumann boundary condition and applying
+\cref{lem:jump-conds}, we obtain
+
+\begin{equation}
+  (\cI + 2\cN) \brho = 2\bg \; , \label{eq:inteq_neu_int}
+\end{equation}
+for the interior problem, and
+
+\begin{equation}
+  (\cI - 2\cN) \brho = 2\bg \; , \label{eq:inteq_neu_ext}
+\end{equation}
+for the exterior problem.
 
 
-
+\subsection{Computational Fredholm determinants}
