@@ -161,12 +161,12 @@ where $\delta_{ij}$ is the standard Kronecker delta notation.
 The stresslet $\TT$ is defined to be
 
 \begin{align}
-  T_{ijk} &= - \partial_{x_j} \Glap \delta_{ik}
-  + \partial_{x_k} \left ( -\Delta \Gbh \delta_{ij} +
+  T_{ij\ell} &= - \partial_{x_j} \Glap \delta_{i\ell}
+  + \partial_{x_\ell} \left ( -\Delta \Gbh \delta_{ij} +
   \partial_{x_i} \left(\partial_{x_j} \Gbh \right) \right)
   \nonumber \\
-  & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{kj} +
-  \partial_{x_k} \left(\partial_{x_j} \Gbh \right) \right)
+  & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{\ell j} +
+  \partial_{x_\ell} \left(\partial_{x_j} \Gbh \right) \right)
   \; . \label{eq:ostress} \nonumber
 \end{align}
 Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} \Glap f_i$ be a
@@ -179,7 +179,7 @@ formulas are useful. Let $\bnu$ be a given vector. When
 summing over the third index, we obtain
 
 \begin{equation}
-  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
+  \TT_{\cdot,\cdot,\ell} \nu_\ell = -\bnu \otimes \nabla \Glap
   + \partial_\nu \left ( -\Delta \Gbh \II
   + \nabla \otimes \nabla \Gbh \right)
   + \nabla \otimes \left ( -\Delta \Gbh \bnu
@@ -214,8 +214,8 @@ For $\xx \in \R^2 \setminus \Gamma$, the double layer
 potential is defined to be
 
 \begin{equation} \label{eq:doublelayer}
-  \bD [\bmu] (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}(\xx,\yy)
-  \nu_k(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+  \bD [\bmu] (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\xx,\yy)
+  \nu_ell(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where $\bnu$ denotes the outward unit normal to the boundary.
 Note that when $\xx \in \Gamma$ we obtain the same formula
@@ -226,7 +226,7 @@ where $\btau = \bmu^\bot$ is the positively oriented unit
 tangent to the curve, then we have
 
 \begin{align} \label{eq:stokesdlkernel}
-  \left ( \TT_{\cdot,\cdot,k}(\xx,\yy)\nu_k(\yy) \right )^\intercal
+  \left ( \TT_{\cdot,\cdot,\ell}(\xx,\yy)\nu_\ell(\yy) \right )^\intercal
   \bmu(\yy) &= \left ( - \nabla \Glap(\xx,\yy) + 2 \nabla^\bot
   \partial_{\nu\tau} \Gbh(\xx,\yy) \right ) \mu_\nu(\yy) \nonumber \\
   & \qquad+
@@ -244,7 +244,7 @@ on the boundary, we use special notation. Let
 \end{equation}
 and
 \begin{equation}
-  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
+  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\yy)
   \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where the $\oint$ symbol means that the integral is to be
@@ -261,9 +261,17 @@ The adjoint of $\cD$ is of particular interest; we have
 $\cD^\intercal = \cN$, where
 
 \begin{equation}
-  \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\xx)
+  \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
+
+\begin{remark}
+The operators $\cD$ and $\cN$
+depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
+In places where it is essential to highlight this dependence, in a slight
+abuse of notation, we will use the symbols $\cD(k)$ and $\cN(k)$ to 
+denote this dependence. 
+\end{remark}
 
 \subsubsection{Representation Theorem}
 
@@ -278,7 +286,10 @@ in the Stokes and modified Stokes settings
   \cref{eq:ostokes} in $\Omega$. Then
 
   \begin{equation} \label{eq:rep-theorem}
-    \bu(\xx) = \bS [\bsigma(\bu,p)](\xx) - \bD[\bu](\xx) \; .
+    \bS [\bsigma(\bu,p)](\xx) - \bD[\bu](\xx) = \begin{cases} 
+    \bu(\xx) &\quad \xx \in \Omega \, , \\
+    0 &\quad \xx \in \Omega^{C} \; .
+    \end{cases}
   \end{equation}
 \end{thrm}
 
@@ -362,7 +373,7 @@ the standard jump conditions for Stokes
 apply. 
 
 
-\subsubsection{Null-space correction}
+\subsubsection{Null-space correction \label{subsubsec:nullspacecorr}}
 
 Without modification, the standard layer potentials
 can result in rank-deficient representations for
@@ -379,12 +390,16 @@ $\bmu$, let $\cW[\bmu]$ be defined by
 for any $\xx \in \Gamma$. We have
 
 \begin{lem}
+  \label{lem:propnullspacecorr}
+
   Let $\Omega$ be a domain with $C^2$ boundary and $\bmu$ be
   an integrable function defined on $\Gamma$. Then
   \begin{itemize}
   \item $\cW[\cW[\bmu]] = \cW[\bmu]$,
   \item $\cW^\intercal = \cW$,
   \item $\cW[\bmu \pm 2 \cD[\bmu]] = 0$,
+  \item If $\int_{\Gamma} p = 0 dS$, then
+  $\cW[\bmu \pm 2 \cD^{T}[\bmu]] = 0$,
   \item $\cW[\cS[\bmu]] = 0$,
   \end{itemize}
   where the transpose is induced by the bilinear
@@ -396,4 +411,12 @@ for any $\xx \in \Gamma$. We have
   the normal vector. The other two follow from the fact that
   $\bS[\bmu]$ and $\bD[\bmu]$ are divergence-free and
   an application of \cref{lem:jump-conds}.
+
 \end{proof}
+
+\begin{remark}
+Since the pressure for the oscillatory Stokes equation is only 
+well-defined up to a constant in either region, we always choose
+a normalization for the pressure which satisfies the conditon
+$\int_{\Gamma} p dS = 0$.
+\end{remark}
