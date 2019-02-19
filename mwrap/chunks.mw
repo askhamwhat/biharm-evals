@@ -940,4 +940,34 @@ end
 
  end
    
-   
+
+@function [xc,yc,xpc,ypc] = chunkerexps(chunker)
+%CHUNKEREXPS utility function, compute legendre expansions
+% of coordinates and derivatives of coordinates for each
+% chunk
+
+   k = chunker.k;
+
+   xcoefs_src = zeros(k,1);
+   ycoefs_src = zeros(k,1);
+   xpcoefs_src = zeros(k,1);
+   ypcoefs_src = zeros(k,1);
+
+   nch = chunker.nch;
+
+   xc = zeros(k,nch);
+   yc = zeros(k,nch);
+   xpc = zeros(k,nch);
+   ypc = zeros(k,nch);   
+
+   for i = 1:nch
+   # FORTRAN chunksexps(int[1] k,double[] chunks_src,inout double[] xcoefs_src,inout double[] ycoefs_src);
+   # FORTRAN chunksexps(int[1] k,double[] ders_src,inout double[] xpcoefs_src,inout double[] ypcoefs_src);
+   xc(:,i) = xcoefs_src;
+   yc(:,i) = ycoefs_src;
+   xpc(:,i) = xpcoefs_src;
+   ypc(:,i) = ypcoefs_src;
+
+   end
+
+end	

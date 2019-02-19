@@ -1,4 +1,35 @@
 
+@function [x,w,u,v] = legeexps(k)
+
+itype = 0;
+if nargout > 1; itype = 1; end
+if nargout > 2; itype = 2; end
+
+if itype == 0
+   x = zeros(k,1);
+   w = zeros(1,1);
+   u = zeros(1,1);
+   v = zeros(1,1);
+end 
+
+if itype == 1
+   x = zeros(k,1);
+   w = zeros(k,1);
+   u = zeros(1,1);
+   v = zeros(1,1);
+end 
+
+if itype == 2
+   x = zeros(k,1);
+   w = zeros(k,1);
+   u = zeros(k,k);
+   v = zeros(k,k);
+end 
+
+# FORTRAN legeexps(int[1] itype, int[1] k, inout double[] x, inout double[] u, inout double[] v, inout double[] w);
+
+end
+
 @function vals = legeexevvec(x,coef)
 
 k = length(coef);

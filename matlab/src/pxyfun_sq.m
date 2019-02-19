@@ -1,5 +1,6 @@
 
-function [Kpxy,nbr] = pxyfun_sq(kern,proxy,pnorm,x,xnorm,slf,nbr,l,ctr)
+function [Kpxy,nbr] = pxyfun_sq(kern,proxy,pnorm,pwhts,x,xnorm,whts, ...
+    slf,nbr,l,ctr)
 %PXYFUN_SQ proxy surface utility for square proxy surface
 %
 % kern should be a kernel function of the form 
@@ -23,7 +24,8 @@ function [Kpxy,nbr] = pxyfun_sq(kern,proxy,pnorm,x,xnorm,slf,nbr,l,ctr)
 
   pxy = bsxfun(@plus,proxy*l,ctr(:));
   N = size(x,2);
-  Kpxy = kern(x,pxy,xnorm,pnorm,slf);
+  pw = l*pwhts;
+  Kpxy = kern(x,pxy,xnorm,pnorm,whts,pw,slf);
   dx = x(1,nbr) - ctr(1);
   dy = x(2,nbr) - ctr(2);
   dist = max(abs([dx; dy]),[],1);
