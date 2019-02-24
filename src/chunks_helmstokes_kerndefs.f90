@@ -529,6 +529,35 @@ subroutine zhelmstokesallmat(zk,src,targ,nu,cs,cd, &
   return
 end subroutine zhelmstokesallmat
 
+subroutine zhelmstokesstressmatmany(zk,ns,src,nt,targ,nu, &
+     mat)
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  ! Wrapper for evaluating the interaction between
+  ! multiple sources and targets for a stresslet
+  !
+  !cccccccccccccccccccccccccccccccccccccccccccccccccc
+  implicit none
+  ! global
+  complex *16, intent(in) :: zk, nu(2,nt)
+  real *8, intent(in) :: src(2,ns), targ(2,nt)
+  integer, intent(in) :: ns, nt
+  complex *16, intent(out) :: mat(2,2,nt,ns)
+  ! local
+  integer :: i, j
+  character :: trans
+
+  trans='N'
+  
+  do j = 1,ns
+     do i = 1,nt
+        call zhelmstressletmat(zk,src(1,j),targ(1,i),nu(1,i), &
+             mat(1,1,i,j),trans)
+     enddo
+  enddo
+
+  return
+end subroutine zhelmstokesstressmatmany
+
 subroutine zhelmstokesallmatmany(zk,ns,src,nt,targ,nu,cs,cd, &
      mat)
   !cccccccccccccccccccccccccccccccccccccccccccccccccc

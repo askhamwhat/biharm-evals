@@ -279,7 +279,7 @@ end
    cparams.ta = 0.0; cparams.tb = 2*pi; cparams.ifclosed=1;
    cparams.chsmall = 1.0; cparams.nover = 0; cparams.k = 16;
    cparams.nchmax = 10000; cparams.eps = 1.0e-6;
-   cparams.levrestr = 1;
+   cparams.levrestr = 1; cparams.maxchunklen = Inf;
 
    if (nargin > 1)
      cpin = varargin{1};
@@ -309,6 +309,9 @@ end
      end	 
      if isfield(cpin,'levrestr')
        cparams.levrestr = cpin.levrestr;
+     end
+     if isfield(cpin,'maxchunklen')
+       cparams.maxchunklen = cpin.maxchunklen;
      end
    end
 
@@ -369,9 +372,14 @@ end
 
 	 rmsemax = max(sqrt(errs./errs0/k));
 
+	 a=ab(1,ich);
+         b=ab(2,ich);
+         rlself = chunklength(fcurve,a,b,xs,ws);
+
+
 	 %       . . . mark as processed and resolved if less than eps
 
-	 if (rmsemax > eps)
+	 if (rmsemax > eps || rlself > cparams.maxchunklen)
 		      %       . . . if here, not resolved
 		      %       divide - first update the adjacency list
 	   if (nch +1 > nchmax)
@@ -961,6 +969,8 @@ end
    ypc = zeros(k,nch);   
 
    for i = 1:nch
+   chunks_src = chunker.chunks(:,:,i);
+   ders_src = chunker.ders(:,:,i);
    # FORTRAN chunksexps(int[1] k,double[] chunks_src,inout double[] xcoefs_src,inout double[] ycoefs_src);
    # FORTRAN chunksexps(int[1] k,double[] ders_src,inout double[] xpcoefs_src,inout double[] ypcoefs_src);
    xc(:,i) = xcoefs_src;

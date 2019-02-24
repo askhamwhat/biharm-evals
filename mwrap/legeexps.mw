@@ -41,7 +41,21 @@ x = x(:);
 n = length(x);
 vals = zeros(n,1);
 
-# FORTRAN legeexevvec(int[1] n, double[] x, inout double[] vals, double[] coef, int[1] km1);
+if isreal(coef)
+
+   # FORTRAN legeexevvec(int[1] n, double[] x, inout double[] vals, double[] coef, int[1] km1);
+
+else
+
+   vals2 = zeros(n,1);
+   rcoef = real(coef); icoef = imag(coef);
+   # FORTRAN legeexevvec(int[1] n, double[] x, inout double[] vals, double[] rcoef, int[1] km1);
+   
+   # FORTRAN legeexevvec(int[1] n, double[] x, inout double[] vals2, double[] icoef, int[1] km1);
+
+   vals = vals+1i*vals2;
+
+end
 
 vals = reshape(vals,sz);
 

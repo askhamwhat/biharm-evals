@@ -9,6 +9,8 @@ fileout = 'example_antunes_001.mat';
 
 a = 0.1; b = 10.0; chebab = [a b];
 
+max_rzk = b; lam = 2*pi/max_rzk;
+
 seed = 8675309;
 rng(seed);
 addpath('../src')
@@ -17,10 +19,13 @@ addpath('../../mwrap')
 
 cparams.eps = 1.0e-6;
 cparams.nchmax = 100000;
+cparams.maxchunklen = lam;
 cparams.nover = 2;
 narms = 5;
 amp = 0.5;
 chunker = chunkfunc(@(t) antunes(t),cparams);
+
+%%
 
 xs = chunker.chunks(1,:,:); xs = xs(:);
 ys = chunker.chunks(2,:,:); ys = ys(:);

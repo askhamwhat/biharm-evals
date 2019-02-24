@@ -266,6 +266,25 @@ mat(:,2:2:2*ns) = reshape(mat2(:,2,:,:),2*nt,ns);
 
 end
 
+
+@function mat = ostokesstresssubmat(zk,src,targ,targ_norm)
+
+[~,ns] = size(src);
+[~,nt] = size(targ);
+mat2 = zeros(2,2,nt,ns) + 1i*zeros(2,2,nt,ns);
+
+# FORTRAN zhelmstokesstressmatmany(dcomplex[1] zk,int[1] ns, double[] src, int[1] nt, double[] targ, dcomplex [] targ_norm, inout dcomplex[] mat2);
+
+mat2 = reshape(mat2,2,2,nt,ns);
+
+mat = zeros(2*nt,2*ns) + 1i*zeros(2*nt,2*ns);
+mat(:,1:2:2*ns) = reshape(mat2(:,1,:,:),2*nt,ns);
+mat(:,2:2:2*ns) = reshape(mat2(:,2,:,:),2*nt,ns);
+
+end
+
+
+
 @function mat = helmstokesstreamsubmat(zk,src,targ,src_norm,cs,cd)
 
 [~,ns] = size(src);

@@ -22,6 +22,8 @@ xx = linspace(dom(1),dom(2),nplot);
 yyr = rdetcheb(xx);
 yyi = idetcheb(xx);
 
+%%
+
 fileout = 'ex_antunes_001_plotreal.tex';
 fid = fopen(fileout,'w'); fprintf(fid,'%7.4e %7.4e\n',[xx;yyr]); 
 fclose(fid);
