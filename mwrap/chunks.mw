@@ -117,7 +117,7 @@ chunks = zeros(2,k,nch);
 adjs = zeros(2,nch);
 ders = zeros(2,k,nch);
 ders2 = zeros(2,k,nch);
-hs = zeros(nch);
+hs = zeros(nch,1);
 
 # FORTRAN chunkunpack(double[] wgeo, inout int[1] k, inout int[1] nch, inout double[] chunks, inout int[] adjs, inout double[] ders, inout double[] ders2, inout double[] hs);
 
@@ -589,7 +589,7 @@ end
    chunks = zeros(2,k,nch);
    ders = zeros(2,k,nch);
    ders2 = zeros(2,k,nch);
-   hs = zeros(nch);
+   hs = zeros(nch,1);
 
    for i = 1:nch
      a=ab(1,i);
@@ -607,10 +607,10 @@ end
    end
 
    chunker.k = k; chunker.nch = nch;
-   chunker.chunks = chunks;
+   chunker.chunks = reshape(chunks,2,k,nch);
    chunker.adjs = adjs(:,1:nch);
-   chunker.ders = ders;
-   chunker.ders2 = ders2;
+   chunker.ders = reshape(ders,2,k,nch);
+   chunker.ders2 = reshape(ders2,2,k,nch);
    chunker.hs = hs;
 
  end
@@ -980,4 +980,46 @@ end
 
    end
 
-end	
+end
+
+@function chunker = chunkreverse(chunker)
+
+
+k = chunker.k; nch = chunker.nch;
+chunks = chunker.chunks;
+adjs = chunker.adjs;
+ders = chunker.ders;
+ders2 = chunker.ders2;
+hs = chunker.hs;
+
+#FORTRAN chunkreverse(int[1] k, int[1] nch, inout double[] chunks, inout int[] adjs, inout double[] ders, inout double[] ders2, inout double[] hs);
+
+chunker.k = k; chunker.nch = nch;
+chunker.chunks = chunks;
+chunker.adjs = adjs;
+chunker.ders = ders;
+chunker.ders2 = ders2;
+chunker.hs = hs;  
+
+end
+
+@function chunker = chunksort(chunker)
+
+
+k = chunker.k; nch = chunker.nch;
+chunks = chunker.chunks;
+adjs = chunker.adjs;
+ders = chunker.ders;
+ders2 = chunker.ders2;
+hs = chunker.hs;
+
+#FORTRAN chunksort(int[1] k, int[1] nch, inout double[] chunks, inout int[] adjs, inout double[] ders, inout double[] ders2, inout double[] hs);
+
+chunker.k = k; chunker.nch = nch;
+chunker.chunks = chunks;
+chunker.adjs = adjs;
+chunker.ders = ders;
+chunker.ders2 = ders2;
+chunker.hs = hs;  
+
+end

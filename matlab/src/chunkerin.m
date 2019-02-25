@@ -17,6 +17,9 @@ end
 if ~isfield(opts,'verb')
     opts.verb = false;
 end
+if ~isfield(opts,'justsmoothworks')
+    opts.justsmoothworks = false;
+end
     
 
 kernd = @(s,t,sn,tn) glapkern(s,t,sn,tn,'d');
@@ -29,6 +32,11 @@ d1 = chunkerintkern(chunker,kernd,ndims,dens1,pts,opts);
 
 eps = opts.gausseps;
 smoothworks = or(abs(d1) < eps,abs(d1+1) < eps);
+
+if opts.justsmoothworks
+    in = smoothworks;
+    return
+end
 
 ptsfail = pts(:,~smoothworks);
 if opts.verb; fprintf('npts adaptive %d\n',nnz(~smoothworks)); end
