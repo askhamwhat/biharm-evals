@@ -1,0 +1,167 @@
+\documentclass[preprint,12pt]{article} 
+\usepackage{b}
+\usepackage[a4paper]{geometry}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\usepackage[small,it]{caption}
+\usepackage{empheq}
+
+\usepackage{subcaption}
+\usepackage{amsmath}
+
+\usepackage{cleveref}
+\crefname{equation}{}{}
+\Crefname{equation}{}{}
+\crefname{eqnarray}{}{}
+\Crefname{eqnarray}{}{}
+\crefname{lemma}{lemma}{lemma}
+\crefname{cor}{corollary}{corollary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bz{{\boldsymbol 0}}
+\def\br{{\boldsymbol r}}
+\def\bc{{\boldsymbol c}}
+\def\bh{{\boldsymbol h}}
+\def\bn{{\boldsymbol n}}
+\def\bT{{\boldsymbol T}}
+\def\bt{{\boldsymbol t}}
+\def\xx{{\boldsymbol x}}
+\def\bx{{\boldsymbol x}}
+\def\yy{{\boldsymbol y}}
+\def\by{{\boldsymbol y}}
+\def\ss{{\boldsymbol s}}
+\def\tt{{\boldsymbol t}}
+\def\uu{{\boldsymbol u}}
+\def\bu{{\boldsymbol u}}
+\def\be{{\boldsymbol e}}
+\def\bl{{\boldsymbol \ell}}
+\def\ff{{\boldsymbol f}}
+\def\bg{{\boldsymbol g}}
+\def\GG{{\bf G}}
+\def\Gbh{G^{\textrm{BH}}}
+\def\Glap{G^{\textrm{L}}}
+\def\Ghelm{G^{\textrm{H}}}
+\def\Kfark{K^{\textrm{F}}}
+\def\II{{\bf I}}
+\def\TT{{\bf T}}
+\def\bS{{\bf S}}
+\def\bD{{\bf D}}
+\def\cN{{\mathcal N}}
+\def\cS{{\mathcal S}}
+\def\cD{{\mathcal D}}
+\def\cW{{\mathcal W}}
+
+\def\bsigma{{\boldsymbol \sigma}}
+\def\bpsi{{\boldsymbol \psi}}
+\def\bmu{{\boldsymbol \mu}}
+\def\bnu{{\boldsymbol \nu}}
+\def\brho{{\boldsymbol \rho}}
+\def\btau{{\boldsymbol \tau}}
+\def\bigo{\mathcal{O}}
+\def\littleo{o}
+
+\def\Im{{\textrm{\textup{Im}}}}
+
+\newcommand\dwdn{\frac{\partial w}{\partial n}}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\bbmat}{\begin{bmatrix}}
+\newcommand{\ebmat}{\end{bmatrix}}
+
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\newtheorem{thrm}{Theorem}
+\newtheorem{definition}{Definition}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{A note on representation for Helmholtz equations 
+on multiply connected domains}
+\author{Travis Askham and Manas Rachh}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Suppose that $\Omega$ is a multiply connected domain.
+The theorem extends for general regions, but for convenience let us assume
+that the domain has one hole. Let $\Gamma_{0}$ denote the outer boundary
+and let $\Gamma_{1}$ denote the obstacle boundary. 
+Let $E$ denote the exterior of $\Gamma_{0}$ and let $D_{1}$ denote the 
+interior of $\Gamma_{1}$ (see~\cref{fig:1}). 
+Suppose that $x_{1}$ is in the interior of $D_{1}$.
+
+Suppose that we are solving 
+\begin{align} 
+(\Delta + k^2) u &= 0\quad x \in \Omega \, ,\label{eq:pde} \\
+u &= g \quad x \in \Gamma \, , \label{eq:bc}
+\end{align}
+using the following representation
+\begin{equation}
+u(x) = \int_{\Gamma} \frac{\partial G_{k}}{\partial n}(x,y) \sigma(y) dS_{y} + \left(\int_{\Gamma_{1}} \sigma(y) dS_{y}\right)
+H_{0} (k |x-x_{1}|) \, .
+= D_{k}[\sigma](x) + L[\sigma](x) \, .
+\end{equation}
+
+On imposing the boundary conditions, we obtain the following integral equation for $\sigma$
+\begin{equation}
+-\frac{1}{2}\sigma + D_{k} [\sigma] + L [\sigma] = A[\sigma] =  g \, ,
+\end{equation}
+where
+\begin{equation}
+A = -\frac{1}{2}I + D_{k} + L
+\end{equation}
+
+\begin{thrm}
+Suppose that $k$ is not a Dirichlet eigenvalue of $\Omega$ but is a Neumann eigenvalue of $\Omega_{1}$, 
+and suppose that $x_{1}$ is not on the nodal set for the correspdonding eigenfunction.
+Then $\cN(A) \subset \cN(-\frac{1}{2}I + D_{k})$.
+\end{thrm}
+
+\begin{proof}
+Suppose that $\sigma \in \cN(A)$. Then setting $u = D_{k} \sigma + L[\sigma]$ and imposing the boundary conditions, 
+we note that $u$ satisfies the homogeneous Dirichlet boundary value problem for Helmholtz's equations. 
+Since have assumed that $k$ is not a Dirichlet eigenvalue of $\Omega_{1}$, we conclude that
+$u\equiv = 0$ on $\Omega$. 
+Thus $\frac{\partial u}{\partial n} = 0$ when approached from the interior of $\Omega$. 
+Standard arguments show that $\sigma =0$ on $\Gamma_{0}$ which follows from the uniqueness of solutions
+to the exterior Neumann problem for Helmholtz equation with radiating boundary conditions.
+
+Since the normal derivative of the double layer is continuous across the boundary and since L[$\sigma$] 
+is smooth across the boundary as well, we conclude that $\frac{\partial u}{\partial n} = 0$ 
+when viewed as the interior limit from $D_{1}$. 
+
+
+Suppose that $v$ is the interior Neumann eigenfunction associated with eigenvalue $k$. 
+Then applying Green's identity on $D_{1}$, we get
+\begin{equation}
+\int_{D_{1}} v (\Delta + k^2) u - u (\Delta+k^2) v =
+\int_{\Gamma_{1}} v \frac{\partial u}{\partial n} - u \frac{\partial v}{\partial n} dS \, .
+\end{equation}
+$(\Delta + k^2)v = 0$ for $x\in D_{1}$ since $v$ is an interior Neumann eigenfunction.
+$\frac{\partial v}{\partial n} = 0$ for $x\in \Gamma_{1}$ since $v$ is an interior Neumann eigenfunction.
+$\frac{\partial u}{\partial n} = 0$ from above. 
+$(\Delta+k^2)u =\int_{\Gamma_{1}} \sigma \delta_{x_{1}}$ due to the $H_{0}$ term, the double layer satisfies Helmholtz equation
+in the interior as well, combining all of this, we get
+\begin{equation}
+\int_{\Gamma_{1}} \sigma v(x_{1}) = 0 \, ,
+\end{equation}
+since we have assumed that $x_{1}$ is not on the nodal set of an interior Neumann eigenfunction, we conclude that
+$\int_{\Gamma_{1}} \sigma = 0$ which implies that $L\sigma = 0$.
+This further implies that $\sigma \in \cN( -\frac{1}{2} I + D_{k})$ and proves the result. 
+\end{proof}
+
+This result means that if we can find a null vector of $-\frac{1}{2} I + D_{k}$ which satisfies
+$\int_{\Gamma_{1}} \sigma = 0$, then that by tautology must've been a null-vector for our operator $A$.
+Thus, if the dimension of the null-space is more than one-dimensional, then all hope is lost, as we can
+always find a null-vector which integrates to $0$. So there is no hope on domains like squares or rectangles.
+But if the null-space is one-dimensional, then there might be some hope by showing that 
+the integral of the null vector must not equal to $0$. All in all it seems pretty grim that this theorem might
+be true in general. 
+\end{document} 
