@@ -1,29 +1,41 @@
 \section{Fredholm analysis of the integral representations}
 
-In this section, we develop some uniqueness
-results for the oscillatory Stokes PDE and describe
-the use of the layer potentials in discovering Stokes
-eigenvalues.
+In this section, we discuss how integral equations.
+can be used to compute to the Stokes eigenvalues.
 %
-We seek solutions in the space
+We closely follow the approach developed by Zhao and Barnett
+for computing the Laplace eigenvalues.
+%
+Their work computes the Laplace eigenvalues using the following
+steps: 1) represent the solution 
+as a layer potential with 
+an unknown density, and choose the representation such that
+you get a second kind integral equation for the unknown density;
+2) establish that the intergral equation is not invertible 
+exactly for the Dirichlet eigenvalues for Laplace's equation;
+3) prove that the zeros of the Fredholm determinant 
+(when the compact operator is in trace class) 
+line up with the Dirichlet eigenvalues; 
+4) and finally, show that when the integral equation
+is discretized using a Nystr\"{o}m method, the zeros of 
+the determinant 
+of the discrete linear system 
+converge exponentially
+to the zeros of the Fredholm determinant. 
 
-\begin{equation}
-  A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
-  \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
-  \left ( C(\bar{\Omega}) \times C(\bar{\Omega}) \right ) \, , \,
-  p \in C^1(\Omega) \times C(\bar{\Omega})\} \; ,
-\end{equation}
-where $\Omega$ is an open domain and $\bar{\Omega}$ denotes
-its closure.
-%
-As above, we will assume that all domains have $C^2$ boundaries.
-%
-Most of the results will apply to multiply connected domains
-but we will identify the results which do not.
-%
 
-The structure of this section follows that used
-by Colton and Kress \cite[Ch. 3]{colton1983integral}
+In this section, we adapt their approach for computing the 
+Dirichlet eigenvalues for Stokes equation. 
+%
+We first develop some uniqueness
+results for the osciallatory Stokes PDE which are essential
+for establishing step 2 of the Zhao-Barnett approach.
+To the best of our knowledge, the uniqueness results, particularly
+for exterior domains are new results. 
+
+
+In order to prove the uniqueness results, we follow the 
+structure presented in Colton and Kress~\cite[Ch. 3]{colton1983integral}
 for the scalar Helmholtz equation.
 %
 First, we define the interior boundary value problems
@@ -44,11 +56,18 @@ Along with the Fredholm alternative, these uniqueness
 results are sufficient to derive the invertibility of appropriate
 integral equations for a number of boundary value problems
 on simply and multiply connected domains.
-%
-Finally, we briefly describe how the approach of Zhao
-and Barnett translates to the present setting, giving
-a robust numerical method for computing Stokes
-eigenvalues.
+
+
+Once the equivalence between the non-invertibility
+of the second kind integral equation and Dirichlet eigenvalues
+for Stokes equations is established,
+the details of how the Fredholm determinant can be used as a
+numerical tool for computing the Stokes eigenvalues
+follows in a straightforward manner from the results 
+in Zhao and Barnett~\cite{zhao2015robust}. 
+We reproduce the relevant results from their work applied 
+in this context for completeness.
+
 
 \subsection{Boundary value problems --- interior}
 
@@ -306,7 +325,7 @@ the interior eigenvalues are real-valued.
   A couple applications of the divergence theorem establish
   that
   \begin{equation} \label{eq:greenlike}
-    \int_\Omega |2\be(\bu)|^2 - \overline{k}^2 \, dV
+    \int_\Omega |2\be(\bu)|^2 - \overline{k}^2 |\bu|^2 \, dV
     = \int_\Gamma \bu \cdot \overline{\bt} \, dS \; . 
   \end{equation}
   Suppose that either $\bu = 0$ or $\bt = 0$ on $\Gamma$.
@@ -410,7 +429,7 @@ where $H_{n}^{1,2}(\cdot)$ are the Hankel functions of the first and
 second kind of order $n$.
 Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
 expansion of $H_{n}^{1,2}(r)$, we note that the projection of 
-$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{j}(k r)$ must be zero. 
+$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{1,2}(k r)$ must be zero. 
 Thus, 
 \begin{equation}
 u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
@@ -489,7 +508,7 @@ In particular, this implies that
 \begin{equation}
 \lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
 \end{equation}
-Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+Thus, the conditions for $\bu$ in Rellich's lemma (\cref{lem:rellich})
 are satisfied, and each component of $\bu$ is a harmonic function
 with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
 in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
@@ -503,21 +522,31 @@ of solutions to the Dirichlet problem for Laplace's equation,
 we have that $p=0$ so that $\uu \equiv 0$.
 \end{proof}
 
+\begin{remark}
+For proving the equivalence between Stokes eigenvalues
+of bounded regions $\Omega$ and the non-invertibility
+of corresponding second kind integral equations, we only
+need the uniqueness result for the Neumann problem in the 
+exterior of a simply connected domain. 
+The proof of the exterior Neumann problem in the exterior of several
+obstacles is more involved and presented in the appendix~\cite{app:neuuniqueness}
+\end{remark}
+
 \begin{thrm}[Uniqueness of the Exterior Impedance Problem]
   Let the unbounded region $E$ be given as the exterior
   of a finite collection of bounded domains.
-  Suppose that $\Im(k) \geq 0$ and that
+  Suppose that $\Re(\eta),\Im(\eta),\Re(k),\Im(k) \geq 0$, and that
   $(\bu,p)$ is a radiating solution of the
   oscillatory Stokes equation in $E$ which satisfies
   the homogeneous impedance boundary condition
   \begin{equation}
-\bt - i k \bu = 0 \quad \xx \in \Gamma \, . \nonumber
+\bt - i \eta \bu = 0 \quad \xx \in \Gamma \, . \nonumber
 \end{equation}
 Then $\bu \equiv 0$ for $\xx \in E$.
 \end{thrm}
 
 \begin{proof}
-Since $\bu$ satisfies the radiation condition at $\infty$ and $\bt = ik \bu$
+Since $\bu$ satisfies the radiation condition at $\infty$ and $\bt = i\eta \bu$
 on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \begin{align*}
 0 &=
@@ -529,13 +558,13 @@ dV \nonumber \\
 \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
 2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
 dV \nonumber \\
-& \qquad + 2 \left( |k|^{2} \int_{\Gamma} |\bu|^{2} dS  \right)
+& \qquad + 2 \left( (k_{1}\eta_{1} + k_{2}\eta_{2}) \int_{\Gamma} |\bu|^{2} dS  \right)
 \, .
 \end{align*}
 Because all of the quantities in the last expression above are
 nonnegative, we have that
 \begin{equation}
-  \int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \,
+  \int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, ,
   \nonumber
 \end{equation}
 and the estimate
@@ -577,9 +606,9 @@ We analyze two different representations for the Dirichlet problem---
 when the velocity is represented using a double layer potential,
 i.e. setting $u=\bD \bmu$, and when the velocity
 is represented using a mixed layer potential,
-i.e. setting $u=(\bS + \bD)\bmu$, where in both cases $\bmu$ 
+i.e. setting $u=(i\eta \bS + \bD)\bmu$, where in both cases $\bmu$ 
 is the unknown density to be solved for. 
-Eventhough both reprensentations result in a second kind
+Even though both reprensentations result in a second kind
 Fredholm integral equation for the Dirichlet problem,
 the spectral properties of these representations are very
 different based on the genus of the domain.
@@ -592,16 +621,17 @@ The analysis of integral equations for the oscillatory Stokes
 equation and the correspondance betweeen its null spaces and the eigenvalues
 of Stokes equation is analogous to a similar analysis carried out
 for integral equations for Helmholtz equation and the eigenvalues
-for the Laplace equation in~\cref{linzhao}.
+for the Laplace equation in~\cite{zhao2015robust}.
 $\bu$ plays the role of the Dirichlet data, and $\bt$ plays the role
 of the Neumann data. 
 Once the Green's representation and uniqueness results for the 
 the oscillatory Stokes equation have been established,
 the remainder of the analysis of the integral equations
-is in spirit identical to the analysis presented in~\cref{linzhao}.
+is in spirit identical to the analysis presented in~\cite{zhao2015robust}.
 \end{remark}
 
 \subsubsection{Double layer reprensentation}
+\label{subsec:dlanalysis}
 Suppose that the solution to the Dirichlet problem using
 a double layer potential defined on $\Gamma$, i.e.
 setting $\bu = \bD \bmu$ for
@@ -611,7 +641,7 @@ into the Dirichlet boundary condition and applying
 \cref{lem:jump-conds}, we obtain
 
 \begin{equation}
-  (\cI - 2\cD(k)) \bmu = -2\ff \; , \label{eq:inteq_dir_int}
+  (\cI - 2\cD_{k}) \bmu = -2\ff \; , \label{eq:inteq_dir_int}
 \end{equation}
 for the interior problem.
 As noted in~\cref{subsubsec:nullspacecorr}, the standard layer potentials
@@ -620,18 +650,18 @@ It is well-known that~\cref{eq:inteq_dir_int} has a two dimensional
 null-space due to this issue. Thus, proceeding as discussed earlier,
 we instead analyze the equation
 \begin{equation}
-(\cI - 2\cD(k) + -2\cW) \bmu = 2\ff \; \, . \label{eq:inteq_dir_int_mod}
+(\cI - 2\cD_{k}  -2\cW) \bmu = -2\ff \; \, . \label{eq:inteq_dir_int_mod}
 \end{equation}
 
 On simply connected domains, there is a one-to-one correspondance between
 the eigenvalues of the Dirichlet problem for Stokes equation
-and the values of $k$ for which the operator $(\cI - 2\cD(k) - 2\cW)$
+and the values of $k$ for which the operator $(\cI - 2\cD_{k} - 2\cW)$
 is not invertible. 
 The following theorem proves this result.
 
 \begin{thm}
 Suppose that $\Omega$ is a simply connected domain, then the operator
-$(\cI - 2\cD(k) - 2 \cW)$ is not invertible if and only if $k$ is 
+$(\cI - 2\cD_{k} - 2 \cW)$ is not invertible if and only if $k$ is 
 Dirichlet eigenvalue for Stokes equation on $\Omega$.
 \end{thm}
 \begin{proof}
@@ -639,23 +669,23 @@ Suppose that $k$ is not a Dirichlet eigenvalue for Stokes equation on
 $\Omega$. 
 Suppose further that $\bmu$ satisfies
 \begin{equation}
-(\cI - 2\cD(k) - 2\cW) \bmu = 0 \, , \label{eq:dlproofrep}
+(\cI - 2\cD_{k} - 2\cW) \bmu = 0 \, , \label{eq:dlproofrep}
 \end{equation}
 i.e. $\bmu$ is in the null-space
 of $(\cI - 2 \cD_{k} - 2 \cW)$. 
 Applying the operator $\cW$ to~\cref{eq:dlproofrep} and 
 using~\cref{lem:propnullspacecorr}, we get
 \begin{equation}
-0 = \cW [(\cI - 2\cD_{k} - 2\cW)[\bmu]] = \cW [\bmu] \, .
+0 = \cW [(\cI - 2\cD_{k} - 2\cW)\bmu] = \cW [\bmu] \, .
 \end{equation}
 Thus~\cref{eq:dlproofrep} reduces to
 \begin{equation}
 (\cI - 2 \cD_{k})\bmu = 0\, .
 \end{equation}
-Suppose now $\bu = -2\cD[\bmu]$ in $\Omega$.
+Suppose now $\bu = -2\bD_{k}[\bmu]$ in $\Omega$.
 Then $\bu$ is a solution to the oscillatory Stokes equation in $\Omega$,
 and applying~\cref{lem:jump-conds}, we get that the interior
-limit of the velocity $\bu^{-} = (\cI - 2\cD) \bmu = 0$ on $\Gamma$. 
+limit of the velocity $\bu^{-} = (\cI - 2\cD_{k}) \bmu = 0$ on $\Gamma$. 
 Since $k$ is not a Dirichlet eigenvalue for the Stokes equation on 
 $\Omega$, we conclude that $\bu \equiv 0$ in $\Omega$. 
 This in particular implies that the interior limit of the surface traction
@@ -669,54 +699,93 @@ From uniqueness of the Neumann problem in the exterior $E$, we conclude
 that $\bu \equiv 0$ in $E$ as well, which in particular implies that
 the exterior limit of the velocity $\bu^{+}=0$ on $\Gamma$.   
 Using the jump conditions in~\cref{lem:jump-conds} again, we
-get that $\bmu = \frac{1}{2}(\bu^{+} - \bu^{-}) = 0$ \, .
-Thus $(\cI - 2\cD(k) - 2\cW)$ is invertible is $k$ is not a Dirichlet
+get that $\bmu = \frac{1}{2}(\bu^{+} - \bu^{-}) = 0$.
+Thus $(\cI - 2\cD_{k} - 2\cW)$ is invertible if $k$ is not a Dirichlet
 eigenvalue for the Stokes equation on $\Omega$.
 
 From Green's representation for the oscillatory Stokes qeuation, 
 we know that 
   \begin{equation} \label{eq:rep-theorem}
-    \bS [\bt](\xx) - \bD[\bu](\xx) = \begin{cases} 
+    \bS_{k} [\bt](\xx) - \bD_{k}[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
     0 &\quad \xx \in \Omega^{C} \; .
     \end{cases}
   \end{equation}
 Suppose thatw $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
-and let $\bu$ denote the corresponding eigenfunction and let $\bt$ denote
-the surface traction associated with the eigenfunction. 
+and let $\bu$ denote the corresponding eigenfunction, and let $\bt^{-}$ denote
+the surface traction associated with the eigenfunction on the boundary $\Gamma$.
+Since $\bu$ is a Dirichlet eigenfunction, the velocity restricted to the boundary
+$\bu^{-} = 0$. 
 Applying the Green's theorem to the pair $\bt^{-}, \bu^{-}$ and taking 
 its derivative on $\Gamma$ using~\cref{lem:jump-conds}, we get
 \begin{equation}
-\bt^{-} = (\cD^{T} + \frac{1}{2} \cI) \bt^{-} \, . 
+\bt^{-} = (\cDt_{k} + \frac{1}{2} \cI) \bt^{-} \, ,\implies \left(\cI - 2\cDt_{k} \right) 
+\bt^{-} = 0 \, .
 \end{equation}
-Applying $\cW$ to the above equation and using~\cref{lem:propnullspacecorr},
-we get that $\cW[\bt^{-}] = 0$. 
-Thus,
-\begin{equation}
-(\cI - 2\cD^{T} - 2\cW)\bt^{-} = 0 \, .
-\end{equation}
-Since $\bt^{-}$ is non-trivial, and $\cW$ is self-adjoint, 
+From the Fredholm alternative, it then follows that $(\cI - 2\cD)$ has a non-trivial 
+null-space.
+However, we need to prove that $(\cI -2\cD - 2\cW)$ has a non-trivial null-space
+for which we need the following two lemmas.
+
+
+\begin{lemma}
+$\bnu \in \cN(\cI - 2\cDt_{k})$
+\end{lemma}
+\begin{proof}
+From~\cref{lem:propnullspacecorr}, we note that
+$W[(\cI - 2\cD_{k})\bmu] =0$ implies that $\left<(\cI -2\cD_{k})\bmu ,\bnu \right>$ for
+all $\bmu$, i.e. $\bnu \in R(\cI - 2\cD_{k})^{\perp}$, where
+$R(A)$ denotes the range of the operator $A$. 
+By the Fredholm alternative, the result then follows.
+\end{proof}
+
+\begin{lemma}
+If $\bt^{-}$ is the surface traction associated with an interior Dirichlet
+Stokes eigenfunction $\bu$, then $\bt^{-}$ and $\bnu$ are linearly independent.
+\end{lemma}
+\begin{proof}
+We first note that $\bS_{k}[\bnu](\bx) = 0$ for all $\bx \in \Omega$.
+This follows from the application of the divergence theorem and the fact that
+oscillatory Stokeslet is divergence free in $\Omega$. 
+If $\bt^{-}$ is a surface traction associated with a Stokes eigenvalue, then
+using Green's theorem, it follows that
+$\bS_{k}[\bt^{-}](\bx) = u(\bx) \neq 0$ for $\bx \in \Omega$ and
+thus $\bt^{-}$ and $\bnu$ are linearly independent.
+\end{proof}
+
+
+We now turn to the proof of the main result of the section.
+We know that $\bt^{-}, \bnu \in \cN(\cI - 2\cDt)$ are two linearly independent
+vectors in the null space.
+Let $c = \left< \bt^{-},\bnu \right>$. Then, it follows that 
+$\left<\bt^{-} -c \bnu, \bnu \right> = 0$ and thus
+$\cW[\bt^{-} - c\bnu] = 0$. 
+Since $\bt^{-}$ and $\bnu$ are linearly independent, we note that
+$\bt^{-} -c\bnu \neq 0$.
+Combining these results, we get that
+$(\cI - 2\cDt_{k} - 2\cW) (\bt^{-} - c\bnu) = 0$. 
+Since $\bt^{-}-c\bnu$ is non-trivial, and $\cW$ is self-adjoint, 
 it follows from the Fredholm alternative
-that the operator $\cI - 2\cD(k) - 2\cW$ is also not invertible.
+that the operator $\cI - 2\cD_{k} - 2\cW$ is also not invertible.
 \end{proof}
 
 On simply connected domains, thus there is a one-to-one correspondance
-between the invertibility of the operator $\cI - 2\cD(k) - 2\cW$ 
+between the invertibility of the operator $\cI - 2\cD_{k} - 2\cW$ 
 and the eigenvalues of the Dircihlet problem for Stokes equations. 
 However, on multiply connected domains, this is not the case.
-Whilst, it is true that the operator $\cI -2\cD(k) -2\cW$ 
+Whilst, it is true that the operator $\cI -2\cD_{k} -2\cW$ 
 is not invertible when $k$ is the Dircihlet eigenvalue, it turns
 out that the operator is also not invertible when $k$ is 
 an interior Neumann eigenvalue corresponding to one of the obstacle
 regions $\Omega_{i}$, $i\neq 0$.
 The following lemma proves this result for a region with one obstacle
-boundary, the extension to the general case is a straightforward.
+boundary (the extension to the general case is a straightforward).
 
 \begin{lemma}
 Suppose that $\Omega$ is a multiply connected domain given by the 
 intersection of $\Omega_{0}$ and the exterior of $\Omega_{1}$
 (see~\cref{fig:1ply}). 
-Then the operator $\cI - 2\cD(k) - 2\cW$ has a non-trivial
+Then the operator $\cI - 2\cD_{k} - 2\cW$ has a non-trivial
 null space if $k$ is a Neumann eigenvalue of $\Omega_{1}$.
 \end{lemma}
 
@@ -729,26 +798,26 @@ Since $\tilde{\bu}$ is an interior Neumann eigenfunction, we note that
 the surface traction corresponding to the solution $\bt^{-} = 0$
 on the boundary.
 Applying Green's identity~\cref{thrm:rep-theorem}, to the solution 
-$\tilde{bu}$ in the interior and taking the interior limit we get
+$\tilde{\bu}$ in the interior and taking the interior limit we get
 \begin{equation}
-\tilde{\bu} = \frac{1}{2}\tilde{\bu} + \bD_{\Gamma_{1}}[\tilde{\bu}] +
-\bS [\bt^{-}] \implies \frac{1}{2} \tilde{\bu} - \bD_{\Gamma_{1}}[\tilde{\bu}]
+\tilde{\bu} = \frac{1}{2}\tilde{\bu} + \cD^{\Gamma_{1}}_{k}[\tilde{\bu}] +
+\cS^{\Gamma_{1}} [\bt^{-}] \implies \frac{1}{2} \tilde{\bu} - \cD^{\Gamma_{1}}_{k}[\tilde{\bu}]
 = 0\, .
 \end{equation}
-Note that the sign of the $\bD$ in the representation theorem is fixed
+Note that the sign of the $\bD$ in the representation theorem is switched
 since the normal is pointing inwards for the boundary $\Omega_{1}$.
 Thus, $\tilde{\bu}$ is a non-trivial null vector of the operator 
-$\frac{1}{2}\cI - \bD_{\Gamma_{1}}$. 
+$\frac{1}{2}\cI - \cD^{\Gamma_{1}}_{k}$. 
 Furthermore since $\tilde{\bu}$ is the boundary data of 
 the solution of the oscillatory Stokes equation in $\Omega_{1}$, we
-get that $\cW_{\Gamma_{1}}[\tilde{\bu}] = 0$.
+get that $\cW^{\Gamma_{1}}[\tilde{\bu}] = 0$.
 Setting $\bmu = \tilde{\bu}$ on $\Gamma_{1}$, and $\bmu = 0$ on $\Gamma_{0}$,
-we obtain a non-trivial null vector for the operator $\cI - 2\cD(k) -2\cW$
-on the boundary $\Gamma_{0} \cup \Gamma_{1}$.
+we obtain a non-trivial null vector for the operator $\cI - 2\cD^{\Gamma}_{k} -2\cW^{\Gamma}$
+on the boundary $\Gamma = \Gamma_{0} \cup \Gamma_{1}$.
 \end{proof}
 
-As noted in~\cref{linzhao}, this lack of one-to-one correspondance between
-the invertibility of the integral operator $\cI - 2\cD(k) - 2\cW$
+As noted in~\cite{zhao2015robust}, this lack of one-to-one correspondance between
+the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
 and the Dirichlet eigenvalues of the Stokes operator on multiply
 connected domains causes non-robustness and introduces near 
 resonanaces for simply connected domains
@@ -757,6 +826,7 @@ This issues is discussed in detail
 in example~\cref{sec:numanalysis-nearly-mult-con}.
 
 \subsubsection{Mixed layer potential representation}
+\label{subsec:mixedanalysis}
 The non-robustness of the double layer potential representation
 for computing the Dirichlet eigenvalues of Stokes equation can be remdied
 by the standard approach of using the mixed layer potential representation,

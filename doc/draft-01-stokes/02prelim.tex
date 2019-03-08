@@ -27,9 +27,14 @@ e_{ij}(\bu) = \frac{1}{2} \left( \partial_{x_j} u_i + \partial_{x_i} u_j \right)
 \end{equation}
 When it is clear from context, we will drop the dependence of
 $\bsigma$ on $\bu$ and $p$.
+If $\Gamma$ is the boundary of a region $\Omega$ and $\bnu$ is the outward
+normal to $\Gamma$, the surface traction $\bt$ on $\Gamma$ 
+is the Neumann data, i.e. 
+\begin{equation}
+\bt = \bsigma \cdot \bnu \, .
+\end{equation}
 
 We seek solutions of \cref{eq:ostokes} in the space
-
 \begin{equation}
   A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
   \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
@@ -215,14 +220,14 @@ potential is defined to be
 
 \begin{equation} \label{eq:doublelayer}
   \bD [\bmu] (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\xx,\yy)
-  \nu_ell(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
+  \nu_\ell(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where $\bnu$ denotes the outward unit normal to the boundary.
 Note that when $\xx \in \Gamma$ we obtain the same formula
 for the double layer potential except that the integral should be
 interpreted in the principal value sense. 
 If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
-where $\btau = \bmu^\bot$ is the positively oriented unit
+where $\btau = \bnu^\bot$ is the positively oriented unit
 tangent to the curve, then we have
 
 \begin{align} \label{eq:stokesdlkernel}
@@ -258,18 +263,16 @@ form
 The definition of the adjoint used throughout the paper will be
 the one induced by this form.
 The adjoint of $\cD$ is of particular interest; we have
-$\cD^\intercal = \cN$, where
-
 \begin{equation}
-  \cN [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\xx)
+  \cD^{\intercal} [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
 
 \begin{remark}
-The operators $\cD$ and $\cN$
+The operators $\cD$ and $\cD^{\intercal}$
 depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
 In places where it is essential to highlight this dependence, in a slight
-abuse of notation, we will use the symbols $\cD(k)$ and $\cN(k)$ to 
+abuse of notation, we will use the symbols $\cD_{k}$ and $\cDt_{k}$ to 
 denote this dependence. 
 \end{remark}
 
@@ -283,10 +286,11 @@ in the Stokes and modified Stokes settings
 \begin{thrm} \label{thrm:rep-theorem}
   Let $\Omega$ be a bounded domain with $C^2$ boundary and let
   the pair $(\bu,p)$ satisfy the oscillatory stokes equations
-  \cref{eq:ostokes} in $\Omega$. Then
+  \cref{eq:ostokes} in $\Omega$. Let $\bt$ denote the surface
+  traction associated with the velocity $\bu$. Then
 
   \begin{equation} \label{eq:rep-theorem}
-    \bS [\bsigma(\bu,p)](\xx) - \bD[\bu](\xx) = \begin{cases} 
+    \bS [\bt](\xx) - \bD[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
     0 &\quad \xx \in \Omega^{C} \; .
     \end{cases}
@@ -347,7 +351,7 @@ following theorem.
 
 
 \begin{lem}[Jump conditions] \label{lem:jump-conds}
-  Let $\bS$, $\bsigma_\bS$, $\bD$, $\cD$, and $\cN$ be
+  Let $\bS$, $\bsigma_\bS$, $\bD$, $\cD$, and $\cDt$ be
   the layer potentials and operators defined above and
   let $\Gamma$ be a sufficiently smooth domain boundary
   with outward pointing normal $\bnu$. Then, for
@@ -359,7 +363,7 @@ following theorem.
 
   \begin{align}
     \lim_{h \downarrow 0} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
-    &= \mp \frac{1}{2} \bmu(\xx_0) + \cN[\bmu](\xx_0) \\
+    &= \mp \frac{1}{2} \bmu(\xx_0) + \cDt[\bmu](\xx_0) \\
     \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
     &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
   \end{align}
@@ -397,9 +401,7 @@ for any $\xx \in \Gamma$. We have
   \begin{itemize}
   \item $\cW[\cW[\bmu]] = \cW[\bmu]$,
   \item $\cW^\intercal = \cW$,
-  \item $\cW[\bmu \pm 2 \cD[\bmu]] = 0$,
-  \item If $\int_{\Gamma} p = 0 dS$, then
-  $\cW[\bmu \pm 2 \cD^{T}[\bmu]] = 0$,
+  \item $\cW[\bmu - 2 \cD[\bmu]] = 0$,
   \item $\cW[\cS[\bmu]] = 0$,
   \end{itemize}
   where the transpose is induced by the bilinear
@@ -414,9 +416,3 @@ for any $\xx \in \Gamma$. We have
 
 \end{proof}
 
-\begin{remark}
-Since the pressure for the oscillatory Stokes equation is only 
-well-defined up to a constant in either region, we always choose
-a normalization for the pressure which satisfies the conditon
-$\int_{\Gamma} p dS = 0$.
-\end{remark}
