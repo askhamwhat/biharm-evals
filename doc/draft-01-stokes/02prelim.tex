@@ -92,7 +92,7 @@ the oscillatory Stokes equations \cref{eq:ostokes}
 are known as the modified Stokes equations and are of particular
 interest for their application to the analysis and numerical
 simulation of unsteady flow
-\cite{pozrikidis1992boundary,biros2002embedded,
+\cite{Pozrikidis1992,biros2002embedded,
   jiang2013second,ladyzhenskaya1969mathematical}.
 The equations are well-studied in that setting and
 integral representations which lead to second kind
@@ -268,13 +268,6 @@ The adjoint of $\cD$ is of particular interest; we have
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
 
-\begin{remark}
-The operators $\cD$ and $\cD^{\intercal}$
-depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
-In places where it is essential to highlight this dependence, in a slight
-abuse of notation, we will use the symbols $\cD_{k}$ and $\cDt_{k}$ to 
-denote this dependence. 
-\end{remark}
 
 \subsubsection{Representation Theorem}
 
@@ -413,6 +406,16 @@ for any $\xx \in \Gamma$. We have
   the normal vector. The other two follow from the fact that
   $\bS[\bmu]$ and $\bD[\bmu]$ are divergence-free and
   an application of \cref{lem:jump-conds}.
-
 \end{proof}
+
+\begin{remark}
+The operators $\bS,\bD,\cD$ and $\cD^{\intercal}$
+depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
+In places where it is essential to highlight this dependence, in a slight
+abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_{k}$ to 
+denote this dependence.
+Similarly, all the above operators and $\cW$ also depend on the boundary of the
+region $\Gamma$. In place where it is necessary to highlight this dependence
+we will use $A^{\Gamma}$ instead of the operator $A$.
+\end{remark}
 

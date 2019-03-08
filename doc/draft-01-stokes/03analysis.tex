@@ -660,6 +660,7 @@ is not invertible.
 The following theorem proves this result.
 
 \begin{thm}
+\label{thm:dlmain}
 Suppose that $\Omega$ is a simply connected domain, then the operator
 $(\cI - 2\cD_{k} - 2 \cW)$ is not invertible if and only if $k$ is 
 Dirichlet eigenvalue for Stokes equation on $\Omega$.
@@ -676,7 +677,7 @@ of $(\cI - 2 \cD_{k} - 2 \cW)$.
 Applying the operator $\cW$ to~\cref{eq:dlproofrep} and 
 using~\cref{lem:propnullspacecorr}, we get
 \begin{equation}
-0 = \cW [(\cI - 2\cD_{k} - 2\cW)\bmu] = \cW [\bmu] \, .
+0 = \cW [(\cI - 2\cD_{k} - 2\cW)\bmu] = -2\cW [\bmu] \, .
 \end{equation}
 Thus~\cref{eq:dlproofrep} reduces to
 \begin{equation}
@@ -831,25 +832,25 @@ The non-robustness of the double layer potential representation
 for computing the Dirichlet eigenvalues of Stokes equation can be remdied
 by the standard approach of using the mixed layer potential representation,
 i.e. setting
-$\bu = (\bD + ik \bS)
+$\bu = (\bD + i\eta \bS)
 \bmu$, 
-where $\bmu$ is the unknown density to be solved for. 
+where $\bmu$ is the unknown density to be solved for, and $\eta \in \mathbb{R}^{+}$ 
 On imposing the boundary conditions and using~\cref{lem:jump-conds}, 
 we obtain the following integral equation on the boundary 
 \begin{equation}
-(\cI - 2\cD(k) - 2ik \cS(k)) \bmu = -2 \bf \, . 
+(\cI - 2\cD_{k} - 2i\eta \cS_{k}) \bmu = -2 \ff \, . 
 \end{equation}
 As noted in~\cref{subsubsec:nullspacecorr}, this integral equation 
 is also rank-deficient, and we instead use the following 
 equivalent integral equation for $\bmu$,
 \begin{equation}
-(\cI - 2\cD(k) -2ik \cS(k)  -2\cW)\bmu = -2 \bf \, .
+(\cI - 2\cD_{k} -2i\eta \cS_{k}  -2\cW)\bmu = -2 \ff \, .
 \end{equation}
 
 We now prove that for any bounded region $\Omega$ (simply or multiply
 connected) with $C^{2}$ boundaries, there exists a one-to-one correspondance
 between the invertibility of the operator
-$\cI - 2\cD(k) - 2ik \cS(k) - 2\cW)$ and the Dirichlet eigenvalues
+$\cI - 2\cD_{k} - 2i\eta \cS_{k} - 2\cW$ and the Dirichlet eigenvalues
 of the Stokes operator on $Omega$. 
 The following theorem proves this result.
 
@@ -859,7 +860,7 @@ simply connected domain $\Omega_{0}$ and the exteriors of a finite collection
 of bounded simply connected domains $\{ \Omega_{i} \}_{i=1}^{m}$.
 As before let $\Gamma_{i}$ denote the boundary of $\Omega_{i}$ and let
 $\Gamma = \cup_{i=0}^{m} \Gamma_{i}$ denote the boundary of $\Omega$.
-Then the operator $\cI - 2\cD(k) - 2ik \cS(k) - 2\cW$.
+Then the operator $\cI - 2\cD_{k} - 2i\eta \cS_{k} - 2\cW$
 is invertible if and only if $k$ is not a Dirichlet eigenvalue
 for the Stokes operator on $\Omega$.
 \end{thm}
@@ -869,20 +870,20 @@ Suppose that $k$ is not a Dirichlet eigenvalue for Stokes equation on
 $\Omega$. 
 Suppose further that $\bmu$ satisfies
 \begin{equation}
-(\cI - 2\cD(k) -2ik\cS(k) - 2\cW) \bmu = 0 \, , \label{eq:mlproofrep}
+(\cI - 2\cD_{k} -2i\eta\cS_{k} - 2\cW) \bmu = 0 \, , \label{eq:mlproofrep}
 \end{equation}
 i.e. $\bmu$ is in the null-space
-of $(\cI - 2 \cD_{k} - 2ik \cS(k) - 2 \cW)$. 
+of $(\cI - 2 \cD_{k} - 2i\eta \cS_{k} - 2 \cW)$. 
 Applying the operator $\cW$ to~\cref{eq:mlproofrep} and 
 using~\cref{lem:propnullspacecorr}, we get
 \begin{equation}
-0 = \cW [(\cI - 2\cD(k) - 2ik\cS(k) - 2\cW)[\bmu]] = \cW [\bmu] \, .
+0 = \cW [(\cI - 2\cD_{k} - 2i\eta\cS_{k} - 2\cW)\bmu] = -2\cW [\bmu] \, .
 \end{equation}
 Thus~\cref{eq:mlproofrep} reduces to
 \begin{equation}
-(\cI - 2 \cD(k) - 2ik \cS(k))\bmu = 0\, .
+(\cI - 2 \cD_{k} - 2i\eta \cS_{k})\bmu = 0\, .
 \end{equation}
-Suppose now $\bu = -2\cD[\bmu] -2ik\cS[\bmu]$ in $\Omega$.
+Suppose now $\bu = -2\bD[\bmu] -2i\eta\bS[\bmu]$ in $\Omega$.
 Then $\bu$ is a solution to the oscillatory Stokes equation in $\Omega$,
 and applying~\cref{lem:jump-conds}, we get that the interior
 limit of the velocity $\bu^{-} = (\cI - 2\cD -2ik\cS) \bmu = 0$ on $\Gamma$. 
@@ -892,7 +893,7 @@ This in particular implies that the interior limit of the surface traction
 denoted by $\bt^{-} = 0$ on $\Gamma$.
 Using~\cref{lem:jump-conds}  
 we observe that the exterior limit 
-of the surface traction is $\bt^{+} = ik \bmu(\xx)$
+of the surface traction is $\bt^{+} = i\eta \bmu(\xx)$
 and the exterior limit of the velocity is 
 $\bu^{+} = \bmu(\xx)$ on $\Gamma$.
 \begin{remark}
@@ -916,19 +917,19 @@ in each of the obstacles $\Omega_{j}$ as well.
 Applying Green's identity and using the fact that 
 the interior limits with respect to $\Omega_{j}$ (see remark)
 of the surface traction and the velocity
-are $ik \bmu$ and $\bmu$ respectively, we get
+are $i\eta \bmu$ and $\bmu$ respectively, we get
 \begin{equation}
 \int_{\Omega_{j}} (|e(\bu)|^{2} - \overline{k}^{2} |\bu|^2) dV 
 = \int_{\Gamma_{j}} \bu \cdot \overline{\bt} dS = 
-i\overline{k}\int_{\Gamma_{j}} |\bmu|^2 dS \, .
+i\overline{\eta}\int_{\Gamma_{j}} |\bmu|^2 dS \, .
 \end{equation}
 Taking the imaginary part of the above equation, we get
 \begin{equation}
-2 \text{Re}(k) \text{Im}(k) \int_{\Omega_{j}} |\bu|^2 + \text{Re}(k)
+2 \text{Re}(k) \text{Im}(k) \int_{\Omega_{j}} |\bu|^2 + \text{Re}(\eta)
 \int_{\Gamma_{j}} |\bmu|^2 dS = 0 \, .
 \end{equation}
 This implies that $\bmu=0$ for $\xx \in \Gamma_{j}$, $j=1,2,\ldots m$. 
-Thus $\cI - 2\cD(k) -2\cS(k) -2\cW$ is invertible when $k$ 
+Thus $\cI - 2\cD_{k} -2i\eta\cS_{k} -2\cW$ is invertible when $k$ 
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
 
@@ -944,20 +945,26 @@ Suppose thatw $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
 and let $\bu$ denote the corresponding eigenfunction and let $\bt$ denote
 the surface traction associated with the eigenfunction.
 Note that the Green's representation theorem implies that 
-$\bS[\bt^{-}] = 0$, since $\bu^{-}=0$ on $\Gamma$. 
+$\cS_{k}[\bt^{-}] = 0$, since $\bu^{-}=0$ on $\Gamma$. 
 Applying the Green's theorem to the pair $\bt^{-}, \bu^{-}$ and taking 
 its derivative on $\Gamma$ using~\cref{lem:jump-conds}, we get
 \begin{equation}
-\bt^{-} = (\cD^{T} + \frac{1}{2} \cI) \bt^{-} \, . 
+\bt^{-} = (\cDt_{k} + \frac{1}{2} \cI) \bt^{-} \, . 
 \end{equation}
-Applying $\cW$ to the above equation and using~\cref{lem:propnullspacecorr},
-we get that $\cW[\bt^{-}] = 0$. 
-Thus, combining all three identities
+Combining these two identities, we get
+that
 \begin{equation}
-(\cI - 2\cD^{T} -2ik \cS - 2\cW)\bt^{-} = 0 \, .
+(-\cI - 2\cD_{k} -2i\eta \cS_{k}) \bt^{-} = 0 \, .
 \end{equation}
-Since $\bt^{-}$ is non-trivial, and $ik \cS, \cW$ are self-adjoint, 
-it follows from the Fredholm alternative
+As in the proof of~\cref{thm:dlmain}, letting $c = \left< \bt^{-} ,\bnu \right>$, 
+it follows that
+\begin{equation}
+(-\cI - 2\cD_{k} - 2i \eta \cS_{k} - 2\cW) (\bt^{-} - c\bnu) = 0 \, ,
+\end{equation}
+where $\bt^{-} - c\bnu \neq 0$.
+Since $\bt^{-} - c\bnu$ is non-trivial, and $i\eta \cS_{k}, \cW$ are self-adjoint ($i\eta \cS_{k}$ 
+is self-adjoint since we consider inner products without conjugation), 
+it follows from the Fredholm alternative 
 that the operator $\cI - 2\cD(k) -2ik \cS - 2\cW$ is also not invertible.
 \end{proof}
 
