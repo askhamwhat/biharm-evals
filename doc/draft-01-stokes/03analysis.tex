@@ -659,12 +659,12 @@ and the values of $k$ for which the operator $(\cI - 2\cD_{k} - 2\cW)$
 is not invertible. 
 The following theorem proves this result.
 
-\begin{thm}
+\begin{thrm}
 \label{thm:dlmain}
 Suppose that $\Omega$ is a simply connected domain, then the operator
 $(\cI - 2\cD_{k} - 2 \cW)$ is not invertible if and only if $k$ is 
 Dirichlet eigenvalue for Stokes equation on $\Omega$.
-\end{thm}
+\end{thrm}
 \begin{proof}
 Suppose that $k$ is not a Dirichlet eigenvalue for Stokes equation on
 $\Omega$. 
@@ -965,7 +965,161 @@ where $\bt^{-} - c\bnu \neq 0$.
 Since $\bt^{-} - c\bnu$ is non-trivial, and $i\eta \cS_{k}, \cW$ are self-adjoint ($i\eta \cS_{k}$ 
 is self-adjoint since we consider inner products without conjugation), 
 it follows from the Fredholm alternative 
-that the operator $\cI - 2\cD(k) -2ik \cS - 2\cW$ is also not invertible.
+that the operator $\cI - 2\cD(k) -2i\eta \cS - 2\cW$ is also not invertible.
 \end{proof}
 
 \subsection{Computational Fredholm determinants}
+Having established the equivalence between the Dirichlet eigenvalues
+for Stokes equation and the invertibility of
+the operator $\cI - 2\cD_{k} - 2\cW$ on simply connected domains, we show how 
+the Fredholm determinant can be as a computational tool for detecting
+the non-invertibility of $\cI - 2\cD_{k} - 2\cW$.
+
+First, we briefly review Nystr\"{o}m discretizations for integral operators
+with weakly singular kernels.
+Suppose that $\gamma(t):[0,L] \to \Gamma$ is an arc-length
+paramterization of $\Gamma$, where $L$ is the length of the
+curve $\Gamma$.
+Using this parametrization, the integral equation
+$(\cI - 2\cD_{k} - 2\cW)\bmu = \ff$, 
+can be reformulated as a system of integral equations on 
+$\bL^{2}[0,L]$ of the form 
+\begin{equation}
+\bmu(x) + \int_{0}^{L} \bK(x,y) \bmu(y) dy = \ff(x) \, , 
+\end{equation}
+where $\bK(x,y)$ is $O(|x-y|^2 \log{|x-y|})$ as $x\to y$, and
+is analytic away from $x\neq y$.
+
+Let $K$ denote the integral operator with kernel $\bK$, i.e.
+\begin{equation}
+K[\mu](\bx) = \int_{0}^{L} \bK(x,y) \bmu(y) dy \, .
+\end{equation}
+
+
+Suppose that $[0,L]$ is discretized using $N$ discretization
+nodes $x_{j}$, $j=1,2,\ldots N$, along with an
+the quadrature rule, $Q_{N}(x,x_{j,N})$, $j=1,2,\ldots N$.
+
+Let $K_{N}$ be the finite dimensional Nystr\"{o}m approximation of
+the integral operator whose kernel is $\bK(x,y)$ defined for all
+continuous functions $\phi$ via the formula:
+\begin{equation}
+K^{N}[\phi](\bx) = \sum_{j=1}^{N} Q^{N}(x,x^{N}_{j})  
+\bK(x,x_{j}^{N}) \phi(x,x_{j}^{N}) \, .
+\end{equation}
+
+The linear system corresponding to the Nystr\"{o}m discretization
+of $\bK$ denoted by $\tilde{K}^{N}$ is then given by
+\begin{equation}
+\tilde{K}^{N}_{i,j} = Q^{N}(x_{i}^{N}, x_{j}^{N}) \bK(x_{i}^{N}, x_{j}^{N})
+\quad i,j=1,2\ldots N \, .
+\end{equation}
+
+\begin{definition}
+The quadrature rule $Q_{N}$ is considered
+to be $p$th order accurate if there exists a $C$ independent of $N$
+such that for all $\bmu \in C^{p}$, 
+\begin{equation}
+\lim_{N\to \infty} |(K_{N} - K)\bmu|_{\bL^{2}([0,L])} \leq C_{\bmu} N^{-p} \, .
+\end{equation}
+\end{definition}
+
+\begin{remark}
+There are many sufficient conditions on
+the choice of $x_{j,N}, $Q_{N}(x,x_{j,N})$ $j=1,2\ldots,N$, $N \in mathbb{N}$
+for which the corresponding Nystr\"{o}m 
+\end{remark}
+
+
+given byi
+be the finite rank operator 
+The Nystr\"{o}m discretized linear system corresponding to the operator
+$\bK$ is the matrix whose entries are given by
+\begin{equation}
+K_{N} = Q_{N}(x_{i,N},x_{j,N}) \bK(x_{i,N},x_{j,N}) \, .
+\end{equation}
+
+The standard Nystr\"{o}m procedure is to solve the integral equation
+\begin{equation}
+\bmu_{i,N} + \sum_{j=1}^{N} Q_N(x_{i,N},x_{j,N} \bK(x_{i,N},x_{j,N})
+\bmu_{j,N} = \ff(\bx_{i,N}) \, ,
+\end{equation}
+for the unknowns $\bmu_{i,N}$, along with the natural interpolant
+\begin{equation}
+\bmu(\bx) = \ff(\bx) - \sum_{j=1}^{N} Q_N(x,x_{j,N}) \mu_{j,N} \, .
+\end{equation}
+
+\begin{equation}
+\end{equation}
+%Suppose that the quadrature rule $Q_{N}$ satisfies
+%the following two additional constraints:
+%a) 
+%\begin{equation}
+%\sum_{j=1}^{N} |Q_{N}(x,x_{j,N})| \leq C \, ,
+%\end{equation}
+%where $C$ is a constant independent of $x$ and $N$, and b) that
+%\begin{equation}
+%\lim_{x\to y} \sup_{n \in \mathbb{N}} \sum_{j=1}^{N} 
+%|Q_{N}(x,x_{j,N}) - Q_{N}(y,x_{j,N})| \to 0 \, .
+%\end{equation}
+
+
+Suppose that the domain $[0,L]$, is partitioned into $N$ 
+panels of equal length, where each panel is discretized 
+using order $p$ discretization nodes (e.g.
+
+
+Let $\cL = -2\cD_{k} - 2\cW$, and let $\cJ_{1}(X)$ denote the 
+space of trace class operators on the Hilbert Space $X$.
+Suppose the boundary $\Gamma$ is parametrized into $N$ panels
+of equal length. 
+
+\begin{definition}
+\end{definition}
+
+The following theorem describes how 
+the determinant of a Nystr\"{o}m
+discretized second kind Fredholm equation where the integral
+kernel is weakly-singular converges to $0$ if and only if
+the operator is not invertible. 
+
+\begin{thrm}
+\label{thm:mainconvfreddet}
+Suppose that $A:X \to X$ is a compact operator, and that $X$ is a
+Hilbert space
+\end{thrm}
+
+\begin{proof}
+See~\cite{zhao2015robust}, theorem 4.3 for a detailed discussion. 
+\end{proof}
+
+\begin{remark}
+The same analysis does not carry through for the operator
+$\cI - 2 \cD_{k} - 2i\eta \cS_{k} - 2\cW$, 
+since it is not a trace class operator.
+For brevity, let $\cM_{k} = -2\cD_{k} - 2i\eta \cS_{k} - 2\cW$.
+The operator $\cM$ is in $\cJ_{2}(\bL^{2}(\Gamma))$ where
+$\cJ_{2}(\bL^{2}(\Gamma))$ is the space of Hilbert-Schmidt operators
+on $\bL^{2}(\Gamma)$ (the singular values of the operator are square
+summable, as opposed to being summable).
+Thus the Fredholm determinant of $\cI + \cM$
+is not necessarily convergent. 
+However, as noted in~\cite{zhao2015robust}, the convergence i
+result~\cref{thm:mainconvfreddet}
+should be true up to a logarithmic factor in the rate
+of convergence, since the singular values of the operator
+$\cM_{k}$ decay like $\frac{1}{n}$, and the
+Fredholm determinant divergers logarithmically. 
+Let $M_{N,k}$ denote the Nystr\"{o}m discretized operator 
+corresponding to $M$, where $N$ is the number of discretization points
+on the boundary $\Gamma$.
+One way of proving such a result would be to construct a definition 
+of a determinant for Hilbert-Schmidt operators based on the 
+Diximer trace of operators as opposed to the Fredholm determinant
+and prove analogous results for this case.
+Instead, in~\cref{subsec:convannulus}, we demonstrate that
+that $\text{det} (I - M^{N,k}) \to 0$ as $N \to \infty$ if and only 
+if $k$ is a Dirichlet eigenvalue for the Stokes operator, and that
+the convergence to $0$ is exponential at the eigenvalues even in 
+this case.
+\end{remark}
