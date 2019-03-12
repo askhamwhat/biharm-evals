@@ -968,11 +968,11 @@ it follows from the Fredholm alternative
 that the operator $\cI - 2\cD(k) -2i\eta \cS - 2\cW$ is also not invertible.
 \end{proof}
 
-\subsection{Computational Fredholm determinants}
+\subsection{Fredholm determinants}
 Having established the equivalence between the Dirichlet eigenvalues
 for Stokes equation and the invertibility of
-the operator $\cI - 2\cD_{k} - 2\cW$ on simply connected domains, we show how 
-the Fredholm determinant can be as a computational tool for detecting
+the operator $\cI - 2\cD_{k} - 2\cW$ on simply connected domains, in this section
+we show how the Fredholm determinant can be as a computational tool for detecting
 the non-invertibility of $\cI - 2\cD_{k} - 2\cW$.
 
 Let $\cJ_{1}(X)$ denote the space of trace class operators 
@@ -997,9 +997,33 @@ $-2\cD_{k} - 2\cW$ is a trace class operator.
 \begin{lemma} 
 $-2\cD_{k} - 2\cW$ is a trace class operator for all $k$ 
 \end{lemma}
+\begom{proof}
+Using Bessel function asymptotics, we note that the
+kernel of $\cD_{k}$ given by
+$\TT_{\cdot,\cdot,\ell}\nu_{\ell}(\bx,\by)$
+has a leading order singularity of $|\bx-\by|^2 \log{|\bx-\by|^2}$ as $\bx\to \by$.
+It follows from~\cite{bornemann2010} numerical that $\cD_{k}$
+is a trace-class operator for all $k$.
+Since $\cW$ is a rank-one perturbation independent of $k$, and trace-class
+operators are a vector space, we conclude that
+$-2\cD_{k} - 2\cW$ is also a trace-class operator for all $k$.
+\end{proof}
+
+Let $f(k) = \text{det}(\cI - 2\cD_{k} - 2\cW)$.
+We first note that $f(k)$ is an analytic function of $k$
+for $k \in \mathbb{C} \setminus 0$
+since the kernel of $\cD_{k}$ is an 
+analytic function of $k$ on that domain, 
+and the Fredholm determinant is an analytic operator.
+
 The Fredholm determinant of a second-kind Fredholm operator
 is another way of detecting when the operator is not invertible. 
 The following result summarizes the result. 
 \begin{lemma}
-If $A$ is a trace-class operator, then
+$f(k) = 0$ if and only if $\cI - 2\cD_{k} -2\cW$ 
+is not invertible.
 \end{lemma}
+When $\Omega$ is simply connected, the above lemma combined 
+with~\cref{thm:dlmain} implies $f(k) = 0$ if and only if $k$ 
+is a Dirichlet eigenvalue for Stokes equation.
+
