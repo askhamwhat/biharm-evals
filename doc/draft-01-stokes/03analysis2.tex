@@ -823,7 +823,7 @@ and the Dirichlet eigenvalues of the Stokes operator on multiply
 connected domains causes non-robustness and introduces near 
 resonanaces for simply connected domains
 which are almost multiply connected. 
-This issues is discussed in detail
+This issue is discussed in detail
 in example~\cref{sec:numanalysis-nearly-mult-con}.
 
 \subsubsection{Mixed layer potential representation}
@@ -997,7 +997,7 @@ $-2\cD_{k} - 2\cW$ is a trace class operator.
 \begin{lemma} 
 $-2\cD_{k} - 2\cW$ is a trace class operator for all $k$ 
 \end{lemma}
-\begom{proof}
+\begin{proof}
 Using Bessel function asymptotics, we note that the
 kernel of $\cD_{k}$ given by
 $\TT_{\cdot,\cdot,\ell}\nu_{\ell}(\bx,\by)$
@@ -1037,12 +1037,40 @@ where here $\text{det}$ is the standard matrix determinant.
 Note that the discretized matrix also depends on the choice
 of quadrature rule used in the Nystr\"{o}m discretization
 of the operator.
+
+
 In~\cite{zhao2015robust}, the authors prove that
 for computing the Laplace eigenvalues on regions with 
 analytic boundaries, when the integral
 operators are discretized using Kress-quadratures,
 the determinant of the Nystr\"{o}m discretized operators
 at the true eigenvalues converge to $0$ exponentially in $N$.
-This combined with the analyticity of $f^{N}(k)$ as a function
-of $k$ for fixed $N$ proves that 
+Thus, is the eigenvalues have multiplicity $1$, i.e. the
+derivative of the determinant is non-zero at the true-eigenvalues,
+then the analyticity of the discretized determinant implies
+that the zeros of the determinant of the Nystr\"{o}m 
+discretization of the linear operator converges
+exponentially to the true Dirichlet eigenvalues for Laplace's equation.
+
+The proof presented in~\cite{zhao2015robust} carries forward
+for computing the Dirichlet eigenvalues of Stokes equation as well.
+We summarize the result in the following theorem.
+\begin{thrm}
+Suppose that $\Omega$ is a simply connected domain with an analytic boundary.
+Let $k_{j}$, $j=1,2,\ldots M$ denote all the Dirichlet eigenvalues of Stokes
+equation on $\Omega$ contained in the interval $[a,b]$. 
+Suppose further that all the eigenvalues have multiplicity $1$.
+Let $f^{N}(k) = \text{det}(I+M^{N}_{k})$, where $M^{N}_{k}$ 
+is the Nystr\"{o}m discretzation of $-2\cD_{k} - 2\cW$ with Kress
+quadratures.
+Then $f^{N}(k)$ has exactly $M$ zeros on the interval $[a,b]$. 
+Let $\omega_{j}$, $j=1,2\ldots M$ denote the zeros of $f^{N}$.
+Furthermore, there exist constants $a>0$ and $C$, 
+such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
+\end{thrm}
+
+\begin{proof}
+The proof follows from small modificiations of the proofs contained in~\cite{zhao2015robust}. 
+\end{proof}
+
 
