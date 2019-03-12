@@ -1027,3 +1027,22 @@ When $\Omega$ is simply connected, the above lemma combined
 with~\cref{thm:dlmain} implies $f(k) = 0$ if and only if $k$ 
 is a Dirichlet eigenvalue for Stokes equation.
 
+We now show how this fact can be used numerically
+to estimate the Dirichlet eigenvalues.
+Suppose that $M_{k}^{N}$ is a Nystr\"{o}m discretization 
+of the operator $-2\cD_{k} - 2\cW$ when the boundary 
+$\Gamma$ is discretized with $N$ points. 
+Let $f^{N}(k) = \text{det}(I + M_{k}^{N})$
+where here $\text{det}$ is the standard matrix determinant.
+Note that the discretized matrix also depends on the choice
+of quadrature rule used in the Nystr\"{o}m discretization
+of the operator.
+In~\cite{zhao2015robust}, the authors prove that
+for computing the Laplace eigenvalues on regions with 
+analytic boundaries, when the integral
+operators are discretized using Kress-quadratures,
+the determinant of the Nystr\"{o}m discretized operators
+at the true eigenvalues converge to $0$ exponentially in $N$.
+This combined with the analyticity of $f^{N}(k)$ as a function
+of $k$ for fixed $N$ proves that 
+
