@@ -1042,7 +1042,7 @@ of the operator.
 In~\cite{zhao2015robust}, the authors prove that
 for computing the Laplace eigenvalues on regions with 
 analytic boundaries, when the integral
-operators are discretized using Kress-quadratures,
+operators are discretized using Kress-quadratures~\cite{kress1991boundary},
 the determinant of the Nystr\"{o}m discretized operators
 at the true eigenvalues converge to $0$ exponentially in $N$.
 Thus, is the eigenvalues have multiplicity $1$, i.e. the
@@ -1056,6 +1056,7 @@ The proof presented in~\cite{zhao2015robust} carries forward
 for computing the Dirichlet eigenvalues of Stokes equation as well.
 We summarize the result in the following theorem.
 \begin{thrm}
+\label{thm:mainconvfreddet}
 Suppose that $\Omega$ is a simply connected domain with an analytic boundary.
 Let $k_{j}$, $j=1,2,\ldots M$ denote all the Dirichlet eigenvalues of Stokes
 equation on $\Omega$ contained in the interval $[a,b]$. 
@@ -1089,3 +1090,25 @@ for the Stokes PDE--- the error is observed to be proportional to the quadrature
 for the eigenfunction $\bt^{-}$ associated with the eigenvalue.
 We leave a proof of this to future work.
 
+
+\begin{remark}
+The same analysis does not carry through for the operator
+$\cI - 2 \cD_{k} - 2i\eta \cS_{k} - 2\cW$, 
+since $\cS_{k}$ is not a trace class operator.
+For brevity, let $\cM_{k} = -2\cD_{k} - 2i\eta \cS_{k} - 2\cW$.
+The operator $\cM_{k}$ is 
+in $\cJ_{2}(\bL^{2}(\Gamma))$ where
+$\cJ_{2}(\bL^{2}(\Gamma))$ is the space of Hilbert-Schmidt operators
+on $\bL^{2}(\Gamma)$ (the singular values of the operator are square
+summable, as opposed to being summable).
+Thus the Fredholm determinant of $\cI + \cM_{k}$
+is not necessarily convergent. 
+However, as noted in~\cite{zhao2015robust}, the convergence
+result~\cref{thm:mainconvfreddet}
+should be true up to a logarithmic factor in the rate
+of convergence, since the singular values of the operator
+$\cM_{k}$ decay like $\frac{1}{n}$, and the
+Fredholm determinant divergers logarithmically. 
+Instead, in~\cref{subsec:convannulus}, we demonstrate that this fact
+numerically on the annulus, where the eigenvalues are analytically known. 
+\end{remark}
