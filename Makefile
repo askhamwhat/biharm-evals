@@ -6,7 +6,7 @@ endif
 
 ifeq ($(SYSTEM),linux)
 DBG=
-OPENMP=
+OPENMP= --openmp
 FFLAGS=$(DBG) -O3 $(OPENMP) -fPIC
 BLAS = -lblas
 LAPACK = -llapack

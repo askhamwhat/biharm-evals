@@ -7,16 +7,20 @@
 
 fileout = 'example_antunes_001.mat';
 
-a = 0.1; b = 10.0; chebab = [a b];
+chebabs = cell(12,1);
+for j = 1:length(chebabs)
+    chebabs{j} = [1.0*j 1.0*(j+1)];
+end
 
-max_rzk = b; lam = 2*pi/max_rzk;
+max_rzk = chebabs{end}(end); lam = 2*pi/max_rzk;
 
 seed = 8675309;
 rng(seed);
 addpath('../src')
 addpath('../example')
 addpath('../../mwrap')
-
+addpath('~/Dropbox/MATLAB/chebfun')
+addpath(genpath('~/Dropbox/MATLAB/FLAM'))
 cparams.eps = 1.0e-6;
 cparams.nchmax = 100000;
 cparams.maxchunklen = lam;
@@ -29,6 +33,10 @@ chunker = chunkfunc(@(t) antunes(t),cparams);
 
 xs = chunker.chunks(1,:,:); xs = xs(:);
 ys = chunker.chunks(2,:,:); ys = ys(:);
+
+scatter(xs,ys)
+
+%%
 
 rnorms = chunknormals(chunker);
 
@@ -45,11 +53,23 @@ ncomp = length(nchs);
 %
 
 opts = []; opts.FLAM = 1; opts.verb = true;
-detfun = @(zk) ostokes_determinant(zk,chunker,nchs,cs,cd,opts);
+detfun = @(zk) ostokes_determinant(zk,chunker,nchs,cs, ...
+    cd,opts);   
 
-p = chebfunpref; p.chebfuneps = 1.0e-12; p.domain = chebab; 
-p.splitting=0;
-start = tic; detcheb = chebfun(detfun,p); t1 = toc(start);
-fprintf('%5.2e time for chebfun build\n',t1)
+p = chebfunpref; p.chebfuneps = 1.0e-13;
+p.splitting=0; p.maxLength = 257;
 
-save(fileout,'detcheb','chunker','nchs','cs','cd','opts','p','t1');
+t1s = cell(size(chebabs));
+detchebs = cell(size(chebabs));
+    
+parfor j = 1:length(chebabs)
+    fprintf('running on interval [ %5.2e %5.2e ]\n',chebabs{j}(1), ...
+        chebabs{j}(2))
+    start = tic; detchebs{j} = ...
+        chebfun(detfun,chebabs{j},p); 
+    t1s{j} = toc(start);
+    fprintf('%5.2e time for chebfun build\n',t1s{j})
+end
+
+save(fileout,'detchebs','chunker','nchs','cs','cd','opts','p','t1s',...
+    'chebabs');
