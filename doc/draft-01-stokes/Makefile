@@ -8,7 +8,7 @@ FIG_GEN_DIR=../../fig
 
 pdf $(FNAME).bbl: $(FNAME).tex refs.bib
 	pdflatex $(FNAME)
-	bibtex8 $(FNAME) || :
+	bibtex $(FNAME) || :
 	pdflatex $(FNAME)
 	pdflatex $(FNAME)
 
