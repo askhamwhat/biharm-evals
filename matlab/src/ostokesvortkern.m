@@ -14,8 +14,8 @@ srcnymat = repmat(srcn(2,:),nt,1);
 srctxmat = repmat(srct(1,:),nt,1);
 srctymat = repmat(srct(2,:),nt,1);
 
-g2 = g(:,:,2); g2 = g2(:); g1 = g(:,:,1); g1 = g1(:);
-spart = [g2.'; -g1.'];
+g2 = g(:,:,2); g1 = g(:,:,1);
+spart = [g2; -g1];
 
 spart = reshape(spart,nt,2*ns);
 

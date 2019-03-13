@@ -5,6 +5,7 @@
 
 
 zk = randn() + 1i*randn();
+zk = real(zk)
 start_eps = 1.0;
 src = randn(2,1); trg = randn(2,1); mu = randn(2,1); 
 srcn = randn(2,1); srcn = srcn/(norm(srcn));

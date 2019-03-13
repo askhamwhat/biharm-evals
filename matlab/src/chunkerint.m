@@ -28,6 +28,7 @@ if ~isfield(opts,'quadgkparams'); opts.quadgkparams = {}; end
 
 k = chunker.k;
 nch = chunker.nch;
+hs =chunker.hs;
 
 iffun = false;
 if isa(f,'function_handle')

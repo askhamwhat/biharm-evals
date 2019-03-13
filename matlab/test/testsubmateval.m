@@ -1,8 +1,9 @@
 %TESTSUBMATEVAL
 
+addpath('../../mwrap')
 
-ns = 560;
-nt = 560;
+ns = 5600;
+nt = 5600;
 
 src = randn(2,ns);
 targ = randn(2,nt);

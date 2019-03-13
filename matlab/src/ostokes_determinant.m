@@ -129,6 +129,8 @@ if opts.FLAM == 1
     cfprintf('time %5.2e\n',t5)
 
     cfprintf('total time %6.3e\n',t3+t4+t5)
+    
+    varargout{1} = F_wpre;
 
 
 else
@@ -145,6 +147,7 @@ else
 
     cfprintf('total time %6.3e\n',t1+t2)
     
+    varargout{1} = sysmat2;
 end
 
 

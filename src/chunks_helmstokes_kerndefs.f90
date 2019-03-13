@@ -575,12 +575,14 @@ subroutine zhelmstokesallmatmany(zk,ns,src,nt,targ,nu,cs,cd, &
   ! local
   integer :: i, j
 
+  !$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i,j)
   do j = 1,ns
      do i = 1,nt
         call zhelmstokesallmat(zk,src(1,j),targ(1,i),nu(1,j),cs,cd, &
              mat(1,1,i,j))
      enddo
   enddo
+  !$OMP END PARALLEL DO
 
   return
 end subroutine zhelmstokesallmatmany
