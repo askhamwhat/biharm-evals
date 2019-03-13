@@ -1073,4 +1073,19 @@ such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
 The proof follows from small modificiations of the proofs contained in~\cite{zhao2015robust}. 
 \end{proof}
 
+In practice, using the Kress-quadrature for large problems is problematic owing to the global
+nature of the quadrature rule. 
+The coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$ 
+determinant evaluation since evaluating each matrix entry costs $O(N)$, where 
+$N$ is the number of discretization points on the boundary.
+Over the last two decades, many high-order quadrature methods which are compatible with
+fast algorithms like the fast multipole method (and fast direct solvers as well, 
+since each matrix entry requires O(1) work) have been developed for solving
+integral equations.
+Extensive numerical evidence suggests that the zeros of the 
+determinants of linear systems discretized using 
+these quadrature methods are also high order approximations of Dirichlet eigenvalues
+for the Stokes PDE--- the error is observed to be proportional to the quadrature error
+for the eigenfunction $\bt^{-}$ associated with the eigenvalue.
+We leave a proof of this to future work.
 
