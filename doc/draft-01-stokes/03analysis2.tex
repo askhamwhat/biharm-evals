@@ -1,18 +1,18 @@
 \section{Fredholm analysis of the integral representations}
 
-In this section, we discuss how integral equations.
+In this section, we discuss how integral equations
 can be used to compute to the Stokes eigenvalues.
 %
 We closely follow the approach developed by Zhao and Barnett
-for computing the Laplace eigenvalues.
+for computing the Laplace eigenvalues~\cite{zhao2015robust}.
 %
-Their work computes the Laplace eigenvalues using the following
+They compute the Laplace eigenvalues using the following
 steps: 1) represent the solution 
 as a layer potential with 
 an unknown density, and choose the representation such that
 you get a second kind integral equation for the unknown density;
 2) establish that the intergral equation is not invertible 
-exactly for the Dirichlet eigenvalues for Laplace's equation;
+only at the Dirichlet eigenvalues for Laplace's equation;
 3) prove that the zeros of the Fredholm determinant 
 (when the compact operator is in trace class) 
 line up with the Dirichlet eigenvalues; 
@@ -24,12 +24,18 @@ converge exponentially
 to the zeros of the Fredholm determinant. 
 
 
-In this section, we adapt their approach for computing the 
+We adapt their approach for computing the 
 Dirichlet eigenvalues for Stokes equation. 
-%
-We first develop some uniqueness
-results for the osciallatory Stokes PDE which are essential
-for establishing step 2 of the Zhao-Barnett approach.
+In the context of oscialltory Stokes equation,
+while integral representations for the modified
+Stokes equation are directly applicable, 
+proving invertibility of the associated operators
+away from the eigenvalues is a more involved task.
+This in turn requires proving uniqueness results
+for various interior and exterior boundary value problems
+for the oscillatory Stokes equations.
+These results play a crucial role in estabilishing step
+2 of the Zhao-Barnett approach listed above.
 To the best of our knowledge, the uniqueness results, particularly
 for exterior domains are new results. 
 
@@ -44,13 +50,12 @@ of interest, which is straightforward.
 For the exterior problems, we introduce a radiation condition
 for the equations and establish that, under certain assumptions,
 the standard layer potentials satisfy the radiation condition.
-%
-We then define well-posed versions of the
+and define well-posed versions of the
 exterior boundary value problems which incorporate the
 radiation condition.
 %
 Then we derive a number of uniqueness
-results for the boundary value problems.
+results for many standard boundary value problems.
 %
 Along with the Fredholm alternative, these uniqueness
 results are sufficient to derive the invertibility of appropriate
@@ -64,7 +69,7 @@ for Stokes equations is established,
 the details of how the Fredholm determinant can be used as a
 numerical tool for computing the Stokes eigenvalues
 follows in a straightforward manner from the results 
-in Zhao and Barnett~\cite{zhao2015robust}. 
+in~\cite{zhao2015robust}. 
 We reproduce the relevant results from their work applied 
 in this context for completeness.
 
@@ -73,7 +78,7 @@ in this context for completeness.
 
 Let $\Omega$ be a bounded domain with $C^2$ boundary
 denoted by $\Gamma$.
-The standard Dirichlet boundary problem specifies the
+The Dirichlet boundary problem specifies the
 velocity of the fluid on the boundary, i.e.
 
 \begin{definition}[Interior Dirichlet problem]
@@ -98,7 +103,7 @@ Dirichlet data $\ff$, namely that
 Let $\bsigma$ denote the stress tensor associated with
 field $(\bu,p)$. 
 Specifying the surface traction, $\bt = \bsigma \cdot \bnu$,
-on the boundary gives the standard Neumann boundary value
+on the boundary gives the Neumann boundary value
 problem, i.e.
 
 \begin{definition}[Interior Neumann problem]
@@ -160,19 +165,23 @@ with $\bnu = \xx/|\xx|$, i.e. $\bt$ is the surface
 traction on $\partial B_r(0)$.     
 \end{definition}
 
-\begin{proposition}
-The oscillatory Stokeslet, as in \eqref{eq:ostokeslet}, satisfies
-the radiation condition in Definition \ref{def:radcond}.
-Assuming that a density $\bmu$ is integrable and satisfies
-$\int_\Gamma \bmu\cdot \bnu dS = 0$, where $\bnu$ denotes the
-outward normal to the curve $\Gamma$, the oscillatory Stokes
-double layer potential $\bD\bmu$, as in \eqref{eq:doublelayer},
+\begin{thrm}
+The oscillatory Stokeslet, as defined in \eqref{eq:ostokeslet}, 
+satisfies the radiation condition in Definition \ref{def:radcond}.
+Suppose that $\Gamma$ is the boundary of a region $\Omega$
+and is $C^{2}$. 
+Suppose that $\bmu \in C(\Gamma)$ and satsifies
+$\int_{\Gamma} \bmu \cdot \bnu dS = 0$, where
+$\bnu$ dentoes the outward normal to the curve $\Gamma$.
+Then, the oscillatory Stokes 
+double layer potential $\bD[\bmu]$, as defined in \eqref{eq:doublelayer},
 also satisfies the radiation condition.
-\end{proposition}
+\end{thrm}
 
 \begin{proof}
 Consider the Stokeslet induced by an arbitrary charge
-$k^2 \bpsi$ at the origin. Let $r = |\xx|$,
+$k^2 \bpsi$ at the origin where $\psi \in \mathbb{C}^2$ 
+is a constant. Let $r = |\xx|$,
 $\bnu(\xx) = \xx/|\xx|$, and $\btau(\xx) = \bnu(\xx)^\perp$. We have
 
 \begin{align*}
@@ -286,7 +295,7 @@ of the exterior boundary value problems, i.e.
   \begin{aligned} \label{eq:dir_exterior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
-    \bu &= \ff \quad \bx \in \Gamma \, 
+    \bu &= \ff \quad \bx \in \Gamma \, , 
   \end{aligned}
   \end{equation}
   and $(\bu,p)$ satisfies the radiation condition in
@@ -300,7 +309,7 @@ of the exterior boundary value problems, i.e.
   \begin{aligned} \label{eq:neu_exterior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
-    \bt &= \bg \quad \bx \in \Gamma \,
+    \bt &= \bg \quad \bx \in \Gamma \, ,
   \end{aligned}
   \end{equation}
   and $(\bu,p)$ satisfies the radiation condition in
@@ -317,7 +326,7 @@ the interior eigenvalues are real-valued.
 
 \begin{thrm}
   Let $\Omega$ be a bounded domain and suppose that
-  $\Im (k) > 0$. Then both the interior
+  $\Im (k) \neq 0$. Then both the interior
   Dirichlet and Neumann boundary value problems have
   unique solutions.
 \end{thrm}
@@ -330,8 +339,9 @@ the interior eigenvalues are real-valued.
   \end{equation}
   Suppose that either $\bu = 0$ or $\bt = 0$ on $\Gamma$.
   Then, the right hand side of \cref{eq:greenlike} is
-  zero. Taking the real and imaginary parts of \cref{eq:greenlike},
-  it is clear that $\bu \equiv 0$.
+  zero. 
+  Taking the real and imaginary parts of \cref{eq:greenlike},
+  it is clear that $\bu \equiv 0$, if $\text{Im}(k) \neq 0$.
 \end{proof}
 
 The following lemmas are useful in establishing the uniqueness
@@ -453,7 +463,7 @@ we note that $\bu$ satisfies both $\nabla^{\perp} \cdot \bu = 0$
 and $\nabla \cdot \bu = 0$, i.e. $u_1 - i u_2$ is analytic.
 \end{remark}
 \begin{remark}
-Note that in Rellich's lemma $\bu$ need not be a radiating solution. 
+Note that in~\cref{lem:rellich}, $\bu$ need not be a radiating solution. 
 All that is assumed of $\bu$ is that it satifies the PDE in $E$.
 \end{remark}
 
@@ -478,7 +488,7 @@ In particular, this implies that
 \begin{equation}
 \lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
 \end{equation}
-Thus, the conditions for $\bu$ in Rellich's lemma (~\cref{lem:rellich})
+Thus, the conditions for $\bu$ in~\cref{lem:rellich}
 are satisfied, and each component of $\bu$ is a harmonic function
 with $\bu \to 0$ as $r \to \infty$. Furthermore, since $\bu=0$ on
 $\Gamma$, by the uniqueness of solutions to the
@@ -529,7 +539,8 @@ of corresponding second kind integral equations, we only
 need the uniqueness result for the Neumann problem in the 
 exterior of a simply connected domain. 
 The proof of the exterior Neumann problem in the exterior of several
-obstacles is more involved and presented in the appendix~\cite{app:neuuniqueness}
+obstacles is more involved and presented in the 
+appendix~\cite{app:neuuniqueness}
 \end{remark}
 
 \begin{thrm}[Uniqueness of the Exterior Impedance Problem]
@@ -564,24 +575,11 @@ dV \nonumber \\
 Because all of the quantities in the last expression above are
 nonnegative, we have that
 \begin{equation}
-  \int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, ,
+  \int_{\Gamma} |\bu|^{2} = 0 \implies \bu = 0  \quad \xx \in \Gamma \, .
   \nonumber
 \end{equation}
-and the estimate
-\begin{equation}
-\lim_{r\to\infty} \int_{|\yy|=r} |\bu|^{2} dS \to 0 \, . \nonumber
-\end{equation}
-The last equation implies the conditions for~\cref{lem:rellich}
-are satisfied, from which we conclude that the components
-of $\bu$ are harmonic in $E$. 
-Thus, the components of $\bu$ satisfy
-\begin{equation}
-\Delta u_{j}=  0 \quad \xx \in E \quad \text{and} \quad
-u_{j} = 0 \quad \xx \in \Gamma \, , \nonumber
-\end{equation}
-for $j=1,2$.
-Then $\bu \equiv 0$ follows from the uniqueness of solutions to the 
-Dirichlet problem for Laplace's equation.
+The result then follows from the uniqueness of solutions to the exterior
+Dirichlet problem.
 \end{proof}
 
 \subsection{The integral equations and its null-spaces}
@@ -604,9 +602,9 @@ $\bnu$ pointing out of $\Omega$.
 
 We analyze two different representations for the Dirichlet problem---
 when the velocity is represented using a double layer potential,
-i.e. setting $u=\bD \bmu$, and when the velocity
+i.e. setting $\bu=\bD_{k} \bmu$, and when the velocity
 is represented using a mixed layer potential,
-i.e. setting $u=(i\eta \bS + \bD)\bmu$, where in both cases $\bmu$ 
+i.e. setting $\bu=(i\eta \bS_{k} + \bD_{k})\bmu$, where in both cases $\bmu$ 
 is the unknown density to be solved for. 
 Even though both reprensentations result in a second kind
 Fredholm integral equation for the Dirichlet problem,
@@ -619,7 +617,7 @@ and the mixed layer potential representation in~\cref{subsec:mixedanalysis}.
 \begin{remark}
 The analysis of integral equations for the oscillatory Stokes
 equation and the correspondance betweeen its null spaces and the eigenvalues
-of Stokes equation is analogous to a similar analysis carried out
+of Stokes equation is analogous to the analysis carried out
 for integral equations for Helmholtz equation and the eigenvalues
 for the Laplace equation in~\cite{zhao2015robust}.
 $\bu$ plays the role of the Dirichlet data, and $\bt$ plays the role
@@ -634,7 +632,7 @@ is in spirit identical to the analysis presented in~\cite{zhao2015robust}.
 \label{subsec:dlanalysis}
 Suppose that the solution to the Dirichlet problem using
 a double layer potential defined on $\Gamma$, i.e.
-setting $\bu = \bD \bmu$ for
+setting $\bu = \bD_{k} \bmu$ for
 an unknown density $\bmu$. 
 Substituting this representation
 into the Dirichlet boundary condition and applying
@@ -646,7 +644,7 @@ into the Dirichlet boundary condition and applying
 for the interior problem.
 As noted in~\cref{subsubsec:nullspacecorr}, the standard layer potentials
 result in rank-deficient representations for the boundary value problem.
-It is well-known that~\cref{eq:inteq_dir_int} has a two dimensional
+It is well-known that~\cref{eq:inteq_dir_int} has a one dimensional
 null-space due to this issue. Thus, proceeding as discussed earlier,
 we instead analyze the equation
 \begin{equation}
@@ -695,7 +693,8 @@ Using~\cref{lem:jump-conds} again for the jump in surface traction
 for the double layer potential, we conclude that the exterior limit
 of the surface traction $\bt^{+} = 0$ on $\Gamma$. 
 Note that $\bu$ is a radiating solution of the oscillatory
-Sotkes equation in the exterior $E$.
+Sotkes equation in the exterior $E$, since
+$\cW[\mu] = 0$ implies $\int_{\Gamma} \mu \cdot \bnu = 0$.
 From uniqueness of the Neumann problem in the exterior $E$, we conclude
 that $\bu \equiv 0$ in $E$ as well, which in particular implies that
 the exterior limit of the velocity $\bu^{+}=0$ on $\Gamma$.   
@@ -712,7 +711,7 @@ we know that
     0 &\quad \xx \in \Omega^{C} \; .
     \end{cases}
   \end{equation}
-Suppose thatw $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
+Suppose that $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
 and let $\bu$ denote the corresponding eigenfunction, and let $\bt^{-}$ denote
 the surface traction associated with the eigenfunction on the boundary $\Gamma$.
 Since $\bu$ is a Dirichlet eigenfunction, the velocity restricted to the boundary
@@ -723,9 +722,9 @@ its derivative on $\Gamma$ using~\cref{lem:jump-conds}, we get
 \bt^{-} = (\cDt_{k} + \frac{1}{2} \cI) \bt^{-} \, ,\implies \left(\cI - 2\cDt_{k} \right) 
 \bt^{-} = 0 \, .
 \end{equation}
-From the Fredholm alternative, it then follows that $(\cI - 2\cD)$ has a non-trivial 
+From the Fredholm alternative, it then follows that $(\cI - 2\cD_{k})$ has a non-trivial 
 null-space.
-However, we need to prove that $(\cI -2\cD - 2\cW)$ has a non-trivial null-space
+However, we need to prove that $(\cI -2\cD_{k} - 2\cW)$ has a non-trivial null-space
 for which we need the following two lemmas.
 
 
@@ -750,13 +749,13 @@ This follows from the application of the divergence theorem and the fact that
 oscillatory Stokeslet is divergence free in $\Omega$. 
 If $\bt^{-}$ is a surface traction associated with a Stokes eigenvalue, then
 using Green's theorem, it follows that
-$\bS_{k}[\bt^{-}](\bx) = u(\bx) \neq 0$ for $\bx \in \Omega$ and
+$\bS_{k}[\bt^{-}](\bx) = \bu(\bx) \neq 0$ for $\bx \in \Omega$ and
 thus $\bt^{-}$ and $\bnu$ are linearly independent.
 \end{proof}
 
 
-We now turn to the proof of the main result of the section.
-We know that $\bt^{-}, \bnu \in \cN(\cI - 2\cDt)$ are two linearly independent
+We now return to the proof of~\cref{thm:dlmain}. 
+We know that $\bt^{-}, \bnu \in \cN(\cI - 2\cDt_{k})$ are two linearly independent
 vectors in the null space.
 Let $c = \left< \bt^{-},\bnu \right>$. Then, it follows that 
 $\left<\bt^{-} -c \bnu, \bnu \right> = 0$ and thus
@@ -822,9 +821,8 @@ the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
 and the Dirichlet eigenvalues of the Stokes operator on multiply
 connected domains causes non-robustness and introduces near 
 resonanaces for simply connected domains
-which are almost multiply connected. 
-This issue is discussed in detail
-in example~\cref{sec:numanalysis-nearly-mult-con}.
+which are almost multiply connected.
+We demonstrate this issue numerically in~\cref{sec:numanalysis-nearly-mult-con}.
 
 \subsubsection{Mixed layer potential representation}
 \label{subsec:mixedanalysis}
@@ -832,7 +830,7 @@ The non-robustness of the double layer potential representation
 for computing the Dirichlet eigenvalues of Stokes equation can be remdied
 by the standard approach of using the mixed layer potential representation,
 i.e. setting
-$\bu = (\bD + i\eta \bS)
+$\bu = (\bD_{k} + i\eta \bS_{k})
 \bmu$, 
 where $\bmu$ is the unknown density to be solved for, and $\eta \in \mathbb{R}^{+}$ 
 On imposing the boundary conditions and using~\cref{lem:jump-conds}, 
@@ -851,10 +849,9 @@ We now prove that for any bounded region $\Omega$ (simply or multiply
 connected) with $C^{2}$ boundaries, there exists a one-to-one correspondance
 between the invertibility of the operator
 $\cI - 2\cD_{k} - 2i\eta \cS_{k} - 2\cW$ and the Dirichlet eigenvalues
-of the Stokes operator on $Omega$. 
-The following theorem proves this result.
+of the Stokes operator on $\Omega$. 
 
-\begin{thm}
+\begin{thrm}
 Suppose $\Omega$ is a bounded region defined by the intersection of a 
 simply connected domain $\Omega_{0}$ and the exteriors of a finite collection
 of bounded simply connected domains $\{ \Omega_{i} \}_{i=1}^{m}$.
@@ -863,7 +860,7 @@ $\Gamma = \cup_{i=0}^{m} \Gamma_{i}$ denote the boundary of $\Omega$.
 Then the operator $\cI - 2\cD_{k} - 2i\eta \cS_{k} - 2\cW$
 is invertible if and only if $k$ is not a Dirichlet eigenvalue
 for the Stokes operator on $\Omega$.
-\end{thm}
+\end{thrm}
 
 \begin{proof}
 Suppose that $k$ is not a Dirichlet eigenvalue for Stokes equation on
@@ -883,10 +880,10 @@ Thus~\cref{eq:mlproofrep} reduces to
 \begin{equation}
 (\cI - 2 \cD_{k} - 2i\eta \cS_{k})\bmu = 0\, .
 \end{equation}
-Suppose now $\bu = -2\bD[\bmu] -2i\eta\bS[\bmu]$ in $\Omega$.
+Suppose now $\bu = -2\bD_{k}[\bmu] -2i\eta\bS_{k}[\bmu]$ in $\Omega$.
 Then $\bu$ is a solution to the oscillatory Stokes equation in $\Omega$,
 and applying~\cref{lem:jump-conds}, we get that the interior
-limit of the velocity $\bu^{-} = (\cI - 2\cD -2ik\cS) \bmu = 0$ on $\Gamma$. 
+limit of the velocity $\bu^{-} = (\cI - 2\cD_{k} -2i\eta\cS_{k}) \bmu = 0$ on $\Gamma$. 
 Since $k$ is not a Dirichlet eigenvalue for the Stokes equation on 
 $\Omega$, we conclude that $\bu \equiv 0$ in $\Omega$. 
 This in particular implies that the interior limit of the surface traction
@@ -904,7 +901,8 @@ limit with respect to the obstacle region $\Omega_{j}$.
 \end{remark}
 We first show that $\bmu=0$ on $\Gamma_{0}$. 
 To this end, note that $\bu$ is a radiating solution of the oscillatory
-Sotkes equation in the exterior $E$.
+Stokes equation in the exterior $E$,
+since $\cW[\bmu] = 0$ implies that $\int_{\Gamma} \bmu \cdot \bnu = 0$. 
 From uniqueness of the impedance problem in the exterior $E$, we conclude
 that $\bu \equiv 0$ in $E$ as well, which in particular implies that
 the exterior limit of the velocity $\bu^{+}=0$ on $\Gamma_{0}$.   
@@ -928,7 +926,7 @@ Taking the imaginary part of the above equation, we get
 2 \text{Re}(k) \text{Im}(k) \int_{\Omega_{j}} |\bu|^2 + \text{Re}(\eta)
 \int_{\Gamma_{j}} |\bmu|^2 dS = 0 \, .
 \end{equation}
-This implies that $\bmu=0$ for $\xx \in \Gamma_{j}$, $j=1,2,\ldots m$. 
+Since $\text{Re}(\eta)>0$, this implies that $\bmu=0$ for $\xx \in \Gamma_{j}$, $j=1,2,\ldots m$. 
 Thus $\cI - 2\cD_{k} -2i\eta\cS_{k} -2\cW$ is invertible when $k$ 
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
@@ -941,7 +939,7 @@ we know that
     0 &\quad \xx \in \Omega^{C} \; .
     \end{cases}
   \end{equation}
-Suppose thatw $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
+Suppose that $k$ is Dirichlet eigenvalue for the Stokes equation on $\Omega$
 and let $\bu$ denote the corresponding eigenfunction and let $\bt$ denote
 the surface traction associated with the eigenfunction.
 Note that the Green's representation theorem implies that 
@@ -979,16 +977,16 @@ Let $\cJ_{1}(X)$ denote the space of trace class operators
 on $X$, where $X$ is a Hilbert space.
 $\cJ_{1}$ is a subspace of compact operators on $X$.
 Suppose that $A$ is a compact operator, with eigenvalues
-$\lambda_{i}, i=1,2,\ldots$.
+$\lambda_{i}, i\in \mathbb{N}$.
 Then the operator $A \in \cJ_{1}(X)$ if
 $\sum_{i} |\lambda_{i}| < \infty$.
-If $A$, is a trace class operator, then we can define 
-the Fredholm determinant of the operator $\cI + A$ as
+If $A$, is a trace class operator, then  
+the Fredholm determinant of the operator $\cI + A$ is defined as
 \begin{equation}
 \text{det}(\cI +A) = \prod_{i=1}^{\infty} (1+\lambda_{i}) \, .
 \end{equation}
 It follows from standard results in complex analysis, 
-that the Fredholm determinant is well-defined if 
+that the Fredholm determinant is finite and well-defined if 
 $\text{det}(\cI+A) < \infty$ if $\sum_{i} |\lambda_{i}| < \infty$,
 i.e. if $A$ is in trace class.
 
@@ -1002,7 +1000,7 @@ Using Bessel function asymptotics, we note that the
 kernel of $\cD_{k}$ given by
 $\TT_{\cdot,\cdot,\ell}\nu_{\ell}(\bx,\by)$
 has a leading order singularity of $|\bx-\by|^2 \log{|\bx-\by|^2}$ as $\bx\to \by$.
-It follows from~\cite{bornemann2010} numerical that $\cD_{k}$
+It follows from~\cite{bornemann2010numerical} numerical that $\cD_{k}$
 is a trace-class operator for all $k$.
 Since $\cW$ is a rank-one perturbation independent of $k$, and trace-class
 operators are a vector space, we conclude that
@@ -1023,6 +1021,10 @@ The following result summarizes the result.
 $f(k) = 0$ if and only if $\cI - 2\cD_{k} -2\cW$ 
 is not invertible.
 \end{lemma}
+\begin{proof}
+The proof is standard and see for example~\cite{simon2005trace}, page 34.
+\end{proof}
+
 When $\Omega$ is simply connected, the above lemma combined 
 with~\cref{thm:dlmain} implies $f(k) = 0$ if and only if $k$ 
 is a Dirichlet eigenvalue for Stokes equation.
@@ -1042,14 +1044,14 @@ of the operator.
 In~\cite{zhao2015robust}, the authors prove that
 for computing the Laplace eigenvalues on regions with 
 analytic boundaries, when the integral
-operators are discretized using Kress-quadratures~\cite{kress1991boundary},
+operators are discretized using Kress-quadrature~\cite{kress1991boundary},
 the determinant of the Nystr\"{o}m discretized operators
 at the true eigenvalues converge to $0$ exponentially in $N$.
-Thus, is the eigenvalues have multiplicity $1$, i.e. the
+Thus, if the eigenvalues have multiplicity $1$, i.e. the
 derivative of the determinant is non-zero at the true-eigenvalues,
 then the analyticity of the discretized determinant implies
 that the zeros of the determinant of the Nystr\"{o}m 
-discretization of the linear operator converges
+discretization of the linear operator converge
 exponentially to the true Dirichlet eigenvalues for Laplace's equation.
 
 The proof presented in~\cite{zhao2015robust} carries forward
@@ -1063,7 +1065,7 @@ equation on $\Omega$ contained in the interval $[a,b]$.
 Suppose further that all the eigenvalues have multiplicity $1$.
 Let $f^{N}(k) = \text{det}(I+M^{N}_{k})$, where $M^{N}_{k}$ 
 is the Nystr\"{o}m discretzation of $-2\cD_{k} - 2\cW$ with Kress
-quadratures.
+quadrature.
 Then $f^{N}(k)$ has exactly $M$ zeros on the interval $[a,b]$. 
 Let $\omega_{j}$, $j=1,2\ldots M$ denote the zeros of $f^{N}$.
 Furthermore, there exist constants $a>0$ and $C$, 
@@ -1074,7 +1076,7 @@ such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
 The proof follows from small modificiations of the proofs contained in~\cite{zhao2015robust}. 
 \end{proof}
 
-In practice, using the Kress-quadrature for large problems is problematic owing to the global
+In practice, using Kress-quadrature for large problems is problematic owing to the global
 nature of the quadrature rule. 
 The coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$ 
 determinant evaluation since evaluating each matrix entry costs $O(N)$, where 
@@ -1102,13 +1104,13 @@ $\cJ_{2}(\bL^{2}(\Gamma))$ is the space of Hilbert-Schmidt operators
 on $\bL^{2}(\Gamma)$ (the singular values of the operator are square
 summable, as opposed to being summable).
 Thus the Fredholm determinant of $\cI + \cM_{k}$
-is not necessarily convergent. 
+is not necessarily finite. 
 However, as noted in~\cite{zhao2015robust}, the convergence
 result~\cref{thm:mainconvfreddet}
 should be true up to a logarithmic factor in the rate
 of convergence, since the singular values of the operator
 $\cM_{k}$ decay like $\frac{1}{n}$, and the
 Fredholm determinant divergers logarithmically. 
-Instead, in~\cref{subsec:convannulus}, we demonstrate that this fact
+In~\cref{subsec:convannulus}, we demonstrate that this fact
 numerically on the annulus, where the eigenvalues are analytically known. 
 \end{remark}
