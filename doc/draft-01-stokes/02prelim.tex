@@ -58,7 +58,7 @@ for sufficiently smooth $f$
 \end{equation}
 We consider here
 ``free-space'' Green's functions, i.e. fundamental solutions which satisfy
-some natural growth or decay conditions as $|\xx-\yy| \to \infty$.
+radiation conditions as $|\xx-\yy| \to \infty$.
 The Green's function of the oscillatory biharmonic equation,
 \begin{equation}
   \Delta ( \Delta + k^2 ) u = 0 \; , \label{eq:obiharm} \nonumber
@@ -87,7 +87,7 @@ and the Green's function for the Helmholtz equation
 \subsection{Properties of the oscillatory Stokes layer
   potentials}
 
-In the case that $k=i\alpha$ for some real-valued $\alpha$,
+Recall that, in the case that $k=i\alpha$ for some real-valued $\alpha$,
 the oscillatory Stokes equations \cref{eq:ostokes}
 are known as the modified Stokes equations and are of particular
 interest for their application to the analysis and numerical
@@ -104,14 +104,8 @@ the present, oscillatory setting.
 
 
 In this section, we review the derivation of the
-modified Stokeslet, but for the imaginary parameter
-regime, which is the appropriate setting for the Stokes
+oscillatory Stokeslet, which is the appropriate setting for the Stokes
 eigenvalue problem.
-The original modified Stokeslet is more well known,
-and is of particular interest for its application to
-numerical simulations of the unsteady Stokes equations
-\cite{pozrikidis1992boundary,biros2002embedded}.
-
  Consider the solution of
 \cref{eq:ostokes} where a $\delta$-mass
 centered at $\yy$ with strength $\ff$
@@ -147,8 +141,8 @@ The tensor
 \begin{equation} \label{eq:ostokeslet}
   \GG = - \II \Delta \Gbh + \nabla \otimes \nabla \Gbh
 \end{equation}
-is then the equivalent of a Stokeslet
-\cite{pozrikidis1992boundary} for the problem
+is then the analog of a Stokeslet
+\cite{Pozrikidis1992} for the problem
 \eqref{eq:ostokes}.
 
 A related object is the stresslet, which is defined
@@ -177,34 +171,34 @@ The stresslet $\TT$ is defined to be
 Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} \Glap f_i$ be a
 solution of the Stokes equations induced by a Stokeslet.
 Then the corresponding stress tensor is given by
-$\sigma_{ik} = T_{ijk} f_j$.
+$\sigma_{i\ell} = T_{ij\ell} f_j$.
 
-For the layer potentials of the next section, the following
-formulas are useful. Let $\bnu$ be a given vector. When
-summing over the third index, we obtain
-
-\begin{equation}
-  \TT_{\cdot,\cdot,\ell} \nu_\ell = -\bnu \otimes \nabla \Glap
-  + \partial_\nu \left ( -\Delta \Gbh \II
-  + \nabla \otimes \nabla \Gbh \right)
-  + \nabla \otimes \left ( -\Delta \Gbh \bnu
-  + \partial_{\nu} \nabla \Gbh \right) \; . \nonumber
-\end{equation}
-Let $\btau = \bnu^\bot$. Then
-
-\begin{equation}
-  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
-  - \nabla^\bot \otimes \nabla^\bot \partial_\nu \Gbh
-  +\nabla \otimes \nabla^\bot \partial_\tau \Gbh \; .
-  \nonumber
-\end{equation}
+%For the layer potentials of the next section, the following
+%formulas are useful. Let $\bnu$ be a given vector. When
+%summing over the third index, we obtain
+%
+%\begin{equation}
+%  \TT_{\cdot,\cdot,\ell} \nu_\ell = -\bnu \otimes \nabla \Glap
+%  + \partial_\nu \left ( -\Delta \Gbh \II
+%  + \nabla \otimes \nabla \Gbh \right)
+%  + \nabla \otimes \left ( -\Delta \Gbh \bnu
+%  + \partial_{\nu} \nabla \Gbh \right) \; . \nonumber
+%\end{equation}
+%Let $\btau = \bnu^\bot$. Then
+%
+%\begin{equation}
+%  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
+%  - \nabla^\bot \otimes \nabla^\bot \partial_\nu \Gbh
+%  +\nabla \otimes \nabla^\bot \partial_\tau \Gbh \; .
+%  \nonumber
+%\end{equation}
 
 \subsubsection{Layer potentials}
 
-We now use the Stokeslet and stresslet definitions
-of the previous section to define the standard single
-and double layer potentials of the Stokes eigenvalue
-problem. For $\xx \in \R^2$, the single layer potential
+We now use the Stokeslet and stresslet 
+to define the single
+and double layer potentials for the oscillatory Stokes problem.
+For $\xx \in \R^2$, the single layer potential with density $\bmu$
 is defined to be
 
 \begin{equation} \label{eq:singlelayer}
@@ -216,16 +210,13 @@ stress tensor of the single layer at any given point
 $\xx \in \R^2 \setminus \Gamma$.
 
 For $\xx \in \R^2 \setminus \Gamma$, the double layer
-potential is defined to be
+potential with density $\bmu$ is defined to be
 
 \begin{equation} \label{eq:doublelayer}
   \bD [\bmu] (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\xx,\yy)
   \nu_\ell(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where $\bnu$ denotes the outward unit normal to the boundary.
-Note that when $\xx \in \Gamma$ we obtain the same formula
-for the double layer potential except that the integral should be
-interpreted in the principal value sense. 
 If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
 where $\btau = \bnu^\bot$ is the positively oriented unit
 tangent to the curve, then we have
@@ -239,9 +230,11 @@ tangent to the curve, then we have
   \Gbh(\xx,\yy) \mu_\tau(\yy) \; .
 \end{align}
 
-When we view the layer potentials as
-operators which map densities on the boundary to functions
-on the boundary, we use special notation. Let
+Let $\cS[\bmu]: C(\Gamma) \to C(\Gamma)$, and
+$\cD[\bmu]: C(\Gamma) \to C(\Gamma)$ 
+denote the restrictions of the layer potentials 
+$\bS[\bmu]$ and $\bD[\bmu]$ on the boundary $\Gamma$, i.e.
+for $\bx \in \Gamma$, 
 
 \begin{equation}
   \cS [\bmu] (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
@@ -250,11 +243,13 @@ on the boundary, we use special notation. Let
 and
 \begin{equation}
 \label{eq:dlformula}
-  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\yy)
+  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)
+  \nu_\ell(\yy)
   \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
 where the $\oint$ symbol means that the integral is to be
-evaluated in the principal value sense. For two vector valued
+evaluated in the principal value sense. 
+For two vector valued
 functions $\ff$ and $\bg$ defined on $\Gamma$, consider the bilinear
 form
 
@@ -265,14 +260,52 @@ The definition of the adjoint used throughout the paper will be
 the one induced by this form.
 The adjoint of $\cD$ is of particular interest; we have
 \begin{equation}
-  \cD^{\intercal} [\bmu] = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}\nu_\ell(\xx)
+  \cD^{\intercal} [\bmu](\bx) = 
+  \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)\nu_\ell(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
 
 
+\begin{remark}
+The operators $\bS,\bD,\cD$ and $\cD^{\intercal}$
+depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
+In places where it is essential to highlight this dependence, in a slight
+abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_{k}$ to 
+denote this dependence.
+\end{remark}
+
+In the following lemma, we review the limiting values of layer 
+potentials $\bS$ and $\bD$ on the boundary $\Gamma$.
+
+\begin{lem}[Jump conditions] \label{lem:jump-conds}
+  Suppose that $\Omega$ is a bounded region with a $C^{2}$ boundary
+  $\Gamma$.
+  Let $\bnu(\bx)$ denote the outward pointing normal at $\bx \in \Gamma$.
+  Suppose that $\bmu \in C(\Gamma)$.
+  Then $\bS[\bmu]$
+  is continuous across $\Gamma$, and the exterior and interior
+  limits of the surface traction of $\bD[\bmu]$ are equal.
+  Furthermore, for $\bx_{0} \in \Gamma$,
+
+  \begin{align}
+    \lim_{h \downarrow 0} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
+    &= \mp \frac{1}{2} \bmu(\xx_0) + \cDt[\bmu](\xx_0) \\
+    \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
+    &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
+  \end{align}
+\end{lem}
+
+The above expressions are derived by noting that the
+leading order singularity of these integral kernels
+is the same as for the original Stokes case, so that
+the standard jump conditions for Stokes
+\cite{KimSangtae1991,Pozrikidis1992}
+apply. 
+
+
 \subsubsection{Representation Theorem}
 
-Here we sketch the proof of the equivalent of the
+In the following theorem, we sketch the proof of the equivalent of the
 Green's identity for oscillatory Stokes, which is well-known
 in the Stokes and modified Stokes settings
 \cite{Pozrikidis1992,biros2002embedded,ladyzhenskaya1969mathematical}.
@@ -313,7 +346,7 @@ in the Stokes and modified Stokes settings
     - \nabla \Glap (\bnu \cdot \bu) \, dS  \; . \label{eq:rep_proof_1}
   \end{equation}
   From the divergence theorem and the divergence-free properties of
-  $\uu$ and $\GG$, we can obtain
+  $\uu$ and $\GG$, we then get
 
   \begin{equation}
     \int_\Gamma \GG \nabla (\bu \cdot \bnu)
@@ -334,41 +367,6 @@ of $\Gbh$ is
 
 The proof of \cref{cor:analytic} follows the same reasoning as
 that for the Helmholtz case; see \cite[Theorem 3.5]{colton1983integral}.
-
-\subsubsection{Jump conditions for the layer potentials}
-
-In formulating an integral equation, it is important
-to understand the behavior of the layer potentials
-for points near and on the boundary. The so-called jump
-conditions for the layer potentials are summarized in the
-following theorem.
-
-
-\begin{lem}[Jump conditions] \label{lem:jump-conds}
-  Let $\bS$, $\bsigma_\bS$, $\bD$, $\cD$, and $\cDt$ be
-  the layer potentials and operators defined above and
-  let $\Gamma$ be a sufficiently smooth domain boundary
-  with outward pointing normal $\bnu$. Then, for
-  a given density $\bmu$ defined on $\Gamma$,
-  we have that $\bS \bmu$
-  is continuous across $\Gamma$, the exterior and interior
-  limits of the surface traction of $\bD \bmu$ are equal,
-  and for each $\xx_0 \in \Gamma$,
-
-  \begin{align}
-    \lim_{h \downarrow 0} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
-    &= \mp \frac{1}{2} \bmu(\xx_0) + \cDt[\bmu](\xx_0) \\
-    \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
-    &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
-  \end{align}
-\end{lem}
-
-The above expressions are derived by noting that the
-leading order singularity of these integral kernels
-is the same as for the original Stokes case, so that
-the standard jump conditions for Stokes
-\cite{KimSangtae1991M:pa,Pozrikidis1992}
-apply. 
 
 
 \subsubsection{Null-space correction \label{subsubsec:nullspacecorr}}
@@ -410,13 +408,7 @@ for any $\xx \in \Gamma$. We have
 \end{proof}
 
 \begin{remark}
-The operators $\bS,\bD,\cD$ and $\cD^{\intercal}$
-depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
-In places where it is essential to highlight this dependence, in a slight
-abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_{k}$ to 
-denote this dependence.
-Similarly, all the above operators and $\cW$ also depend on the boundary of the
-region $\Gamma$. In place where it is necessary to highlight this dependence
+The operators $\bS,\bD, \cS, \cD$, and $\cW$  depend on the boundary 
+of the region $\Gamma$. In places where it is necessary to highlight this dependence
 we will use $A^{\Gamma}$ instead of the operator $A$.
 \end{remark}
-
