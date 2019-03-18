@@ -149,8 +149,7 @@ We propose the following radiation condition.
 \begin{definition} \label{def:radcond}
 Let $(\bu,p)$ satisfy the oscillatory Stokes equations in
 the exterior of a bounded domain. We say that
-the pair $(\bu,p)$ is {\em radiating} if
-$p$ is bounded, $p \to 0$ as $r = |\xx| \to \infty$, and 
+the pair $(\bu,p)$ is {\em radiating} if 
 \begin{equation}
 \lim_{r\to \infty} \sqrt{r} \left| \bt - i k \bu \right| \to 0 \, ,
 \label{eq:radcond}
@@ -380,6 +379,12 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 = 2\Im \left ( k \int_{\Gamma} \bu \cdot \overline{\bt} dS \right) \, .
 \end{multline*}
 \end{proof}
+
+\begin{cor}
+  If $(\bu,p)$ is a radiating solution of
+  the oscillatory Stokes equations, then
+  $p$ is bounded and $p\to 0$ as $r\to\infty$.
+\end{cor}
 
 In the next lemma, we prove the analogue of Rellich's lemma for the
 oscillatory Stokes equation. 
