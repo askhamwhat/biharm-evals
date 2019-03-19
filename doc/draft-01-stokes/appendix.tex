@@ -80,8 +80,8 @@ Now we finally get to the expressions for $t_{r},t_{\theta}$
 \begin{aligned}
 t_{r} &= \cost \left( \beta k^2 r^{n} -2\beta n(n-1)r^{n-2} - 2\gamma n \ddr \frac{\jnkr}{r}  \right) \, + \\
 & \hspace*{15ex} \sint \left(-\alpha k^2 r^{n} + 2 \alpha n(n-1)r^{n-2} + 2 \delta n \ddr \frac{\jnkr}{r} \right) \, , \\
-t_{\theta} &= \cost \left( \alpha r^{n-2} (n^2 + n(n-1)) + \delta \left( \frac{n^2}{r^2} + k^2 \jnppkr \right)  \right) + \\
-& \hspace*{15ex} \sint \left( \beta r^{n-2} (n^2 + n(n-1)) + \gamma \left( \frac{n^2}{r^2} + k^2 \jnppkr \right) \right) \, .
+t_{\theta} &= \cost \left( \alpha r^{n-2} (n^2 + n(n-1)) + \delta \left( \frac{n^2}{r^2} \jnkr + k^2 \jnppkr \right)  \right) + \\
+& \hspace*{15ex} \sint \left( \beta r^{n-2} (n^2 + n(n-1)) + \gamma \left( \frac{n^2}{r^2} \jnkr + k^2 \jnppkr \right) \right) \, .
 \end{aligned}
 \end{equation}
 Let $h_{k} = \ddr (\jnkr/r)|_{r=1}$.
@@ -90,9 +90,9 @@ to the following system of equations
 \begin{equation}
 \begin{bmatrix}
 0 & 0 & k^2 - 2n(n-1) & -2nh_{k} \\
-0 & 0 & 2n^2 -n & n^2 + k^2 \jnppk \\
+0 & 0 & 2n^2 -n & n^2 \jnk + k^2 \jnppk \\
 -k^2 + 2n(n-1) & 2nh_{k} & 0 & 0 \\
-2n^2 -n & n^2 + k^2 \jnppk & 0 & 0
+2n^2 -n & n^2 \jnk + k^2 \jnppk & 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
 \alpha \\ \delta \\ \beta \\ \gamma
@@ -108,7 +108,7 @@ are the Neumann eigenvalues of the unit disk.
 A collorary of the above statement and the structure of the matrix is that
 the interior Neumann eigenvalues of the unit disk satisfy
 \begin{equation}
-2n^2(2n-1)h_{k} - (n^2 + k^2 \jnppk)(-k^2 + 2n(n-1)) = 0 \, .
+2n^2(2n-1)h_{k} - (n^2 \jnk + k^2 \jnppk)(-k^2 + 2n(n-1)) = 0 \, .
 \end{equation}
 A simple calculation shows that the zeros correpsonding to
 $n=0$ are the zeros of $\jnppk$, the first few of which are
