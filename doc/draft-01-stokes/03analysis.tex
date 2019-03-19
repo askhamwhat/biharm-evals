@@ -1,46 +1,28 @@
 \section{Fredholm analysis of the integral representations}
 
-In this section, we discuss how integral equations
-can be used to compute to the Stokes eigenvalues.
+In this section, we establish how layer potential
+representations of oscillatory Stokes velocity fields
+can be used to compute Stokes eigenvalues.
 %
-We closely follow the approach developed by Zhao and Barnett
-for computing the Laplace eigenvalues~\cite{zhao2015robust}.
+The main results show that for certain representations
+the resulting integral equation is not invertible precisely
+when $k^2$ is an eigenvalue.
 %
-They compute the Laplace eigenvalues using the following
-steps: 1) represent the solution 
-as a layer potential with 
-an unknown density, and choose the representation such that
-you get a second kind integral equation for the unknown density;
-2) establish that the intergral equation is not invertible 
-only at the Dirichlet eigenvalues for Laplace's equation;
-3) prove that the zeros of the Fredholm determinant 
-(when the compact operator is in trace class) 
-line up with the Dirichlet eigenvalues; 
-4) and finally, show that when the integral equation
-is discretized using a Nystr\"{o}m method, the zeros of 
-the determinant 
-of the discrete linear system 
-converge exponentially
-to the zeros of the Fredholm determinant. 
+For the interior Neumann eigenvalue problem, this is proved
+for a single layer representation in \cref{thm:slmain}.
+%
+For the interior Dirichlet eigenvalue problem, this is
+proved separately for a double layer representation on
+simply connected domains in \cref{thm:dlmain} and
+for a combined-field representation on multiply connected
+domains in \cref{thm:cfmain}.
+%
 
-
-We adapt their approach for computing the 
-Dirichlet eigenvalues for Stokes equation. 
-In the context of oscialltory Stokes equation,
-while integral representations for the modified
-Stokes equation are directly applicable, 
-proving invertibility of the associated operators
-away from the eigenvalues is a more involved task.
-This in turn requires proving uniqueness results
-for various interior and exterior boundary value problems
-for the oscillatory Stokes equations.
-These results play a crucial role in estabilishing step
-2 of the Zhao-Barnett approach listed above.
-To the best of our knowledge, the uniqueness results, particularly
-for exterior domains are new results. 
-
-
-In order to prove the uniqueness results, we follow the 
+Before proving the main theorems, we require a number
+of uniqueness results for oscillatory Stokes boundary
+value problems.
+%
+To prove the uniqueness results, we follow the 
 structure presented in Colton and Kress~\cite[Ch. 3]{colton1983integral}
 for the scalar Helmholtz equation.
 %
@@ -50,29 +32,28 @@ of interest, which is straightforward.
 For the exterior problems, we introduce a radiation condition
 for the equations and establish that, under certain assumptions,
 the standard layer potentials satisfy the radiation condition.
-and define well-posed versions of the
-exterior boundary value problems which incorporate the
-radiation condition.
+%
+By including the radiation condition, it is then
+possible to define well-posed versions of the
+exterior boundary value problems.
 %
 Then we derive a number of uniqueness
-results for many standard boundary value problems.
-%
+results for some standard boundary value problems
+on exterior domains.
+
+
 Along with the Fredholm alternative, these uniqueness
-results are sufficient to derive the invertibility of appropriate
-integral equations for a number of boundary value problems
-on simply and multiply connected domains.
-
-
-Once the equivalence between the non-invertibility
-of the second kind integral equation and Dirichlet eigenvalues
-for Stokes equations is established,
-the details of how the Fredholm determinant can be used as a
-numerical tool for computing the Stokes eigenvalues
-follows in a straightforward manner from the results 
-in~\cite{zhao2015robust}. 
-We reproduce the relevant results from their work applied 
-in this context for completeness.
-
+results are sufficient to prove
+\cref{thm:slmain,thm:dlmain,thm:cfmain}.
+%
+Once the main theorems are established,
+the details of how to use the Fredholm determinant
+as a numerical tool for computing the Stokes eigenvalues
+follows in a straightforward from the results
+in~\cite{zhao2015robust}.
+%
+We reproduce these results in the present
+context for completeness.
 
 \subsection{Boundary value problems --- interior}
 
@@ -390,20 +371,14 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \end{multline*}
 \end{proof}
 
-\begin{cor}
-  If $(\bu,p)$ is a radiating solution of
-  the oscillatory Stokes equations, then
-  $p$ is bounded and $p\to 0$ as $r\to\infty$.
-\end{cor}
-
 In the next lemma, we prove the analogue of Rellich's lemma for the
 oscillatory Stokes equation. 
 \begin{lem}
   \label{lem:rellich}
-    Let the unbounded region $E$ be given as the exterior
+  Let the unbounded region $E$ be given as the exterior
   of a finite collection of bounded domains.
-  Suppose that $\bu$ satisfies the oscillatory Stokes equation in
-  $E$ and that 
+  Suppose $k$ is real, $\bu$ satisfies the oscillatory
+  Stokes equation in $E$, and that 
 \begin{equation}
 \lim_{r \to \infty} \int_{|\by|=r} |\bu|^2 dS = 0 
 \, . \label{eq:decayatinf}
@@ -433,19 +408,19 @@ Since $\bu$ satisfies~\cref{eq:decayatinf}, we conclude that
 Since $u_{j}$, $j=1,2$ satisfies the oscillatory biharmonic equation,
 the functions $a_{j,n}$ are linear combinations of 
 \begin{equation}
-r^{|n|}, r^{-|n|}, H^{1}_{n}(k r), H^{2}_{n}(k r) \, , \quad
+r^{|n|}, r^{-|n|}, H^{(1)}_{n}(k r), H^{(2)}_{n}(k r) \, , \quad
 n\neq 0 \, , \nonumber
 \end{equation}
 and
 \begin{equation}
-1, \log{(r)}, H^{1}_{0}(k r), H^{2}_{0}(k r) \quad n=0 \, ,  \nonumber
+1, \log{(r)}, H^{(1)}_{0}(k r), H^{(2)}_{0}(k r) \quad n=0 \, ,  \nonumber
 \end{equation} 
-where $H_{n}^{1,2}(\cdot)$ are the Hankel functions of the first and
+where $H_{n}^{(1),(2)}(\cdot)$ are the Hankel functions of the first and
 second kind of order $n$.
 Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
-expansion of $H_{n}^{1,2}(r)$, we note that the projection of 
-$a_{j,n}$ on $r^{|n|}$, and $H_{n}^{1,2}(k r)$ must be zero. 
-Thus, 
+expansion of $H_{n}^{(1),(2)}(kr)$ when $k$ and $r$ are real-valued, we note
+that the projection of $a_{j,n}$ on $r^{|n|}$, and $H_{n}^{1,2}(k r)$
+must be zero. Thus, 
 \begin{equation}
 u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
 \, , \nonumber
@@ -455,22 +430,31 @@ Finally, by \cref{cor:analytic}, $\bu$ is
 analytic in $E$. Therefore, each $u_j$ is harmonic
 throughout $E$.
 \end{proof}
+
 \begin{remark} \label{rmk:harmu}
   Note that if $\bu$ satisfies the assumptions
   of~\cref{lem:rellich}, then each component is harmonic
   and thus $\bu$ satisfies
 \begin{align}
-k^2 \bu &= \nabla p  \quad \label{eq:massconsred} \\
-\nabla \cdot \bu &= 0 \, . \nonumber
+k^2 \bu &= \nabla p \label{eq:massconsred} \; .
 \end{align}
-Taking the inner product of~\cref{eq:massconsred} with $\nabla^{\perp}$,
-we note that $\bu$ satisfies both $\nabla^{\perp} \cdot \bu = 0$ 
-and $\nabla \cdot \bu = 0$, i.e. $u_1 - i u_2$ is analytic.
 \end{remark}
+
+\note{PROVE COROLLARY}
+\begin{cor}
+  If $(\bu,p)$ is a radiating solution of
+  the oscillatory Stokes equations, then
+  $p$ is bounded and $p\to 0$ as $r\to\infty$.
+\end{cor}
+
 \begin{remark}
-Note that in~\cref{lem:rellich}, $\bu$ need not be a radiating solution. 
-All that is assumed of $\bu$ is that it satifies the PDE in $E$.
+  It should be noted that in~\cref{lem:rellich}, $\bu$ need
+  not be a radiating solution. All that is assumed of $\bu$
+  is that it satifies the PDE in $E$.
 \end{remark}
+
+We now have the results needed to establish the
+uniqueness of exterior boundary value problems.
 
 \begin{thrm}[Uniqueness of the Exterior Dirichlet Problem]
   Let the unbounded region $E$ be given as the exterior
@@ -482,23 +466,28 @@ All that is assumed of $\bu$ is that it satifies the PDE in $E$.
 \end{thrm}
 
 \begin{proof}
-Since $\bu = 0$ on $\Gamma$, it follows from~\cref{eq:repinfest} that
+Since $\bu = 0$ on $\Gamma$, it follows from~\cref{lem:rep} that
 \begin{equation}
 \lim_{r\to\infty}
 \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
 2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
 dV = 0 \nonumber
-\end{equation} 
-In particular, this implies that
+\end{equation}
+
+Suppose that $\Im(k) > 0$. Then, it is immediate that
+$\bu \equiv 0$ in $E$.
+
+Suppose that $k$ is real valued. It is clear that
 \begin{equation}
 \lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
 \end{equation}
-Thus, the conditions for $\bu$ in~\cref{lem:rellich}
+Thus, the conditions on $\bu$ and $k$ in~\cref{lem:rellich}
 are satisfied, and each component of $\bu$ is a harmonic function
 with $\bu \to 0$ as $r \to \infty$. Furthermore, since $\bu=0$ on
 $\Gamma$, by the uniqueness of solutions to the
 Dirichlet problem for Laplace's equation
-on exterior domains, we conclude that $\bu \equiv 0$ in $E$.
+on exterior domains, we conclude that $\bu \equiv 0$
+in $E$.
 \end{proof}
 
 \begin{thrm}[Uniqueness of the Exterior Neumann Problem]
@@ -865,6 +854,7 @@ $\cI - 2\cD_{k} - 2i\eta \cS_{k} - 2\cW$ and the Dirichlet eigenvalues
 of the Stokes operator on $\Omega$. 
 
 \begin{thrm}
+  \label{thm:cfmain}
 Suppose $\Omega$ is a bounded region defined by the intersection of a 
 simply connected domain $\Omega_{0}$ and the exteriors of a finite collection
 of bounded simply connected domains $\{ \Omega_{i} \}_{i=1}^{m}$.

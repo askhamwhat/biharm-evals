@@ -35,6 +35,7 @@ is the Neumann data, i.e.
 \end{equation}
 
 We seek solutions of \cref{eq:ostokes} in the space
+\note{make sure this is the correct space}
 \begin{equation}
   A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
   \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
@@ -142,8 +143,7 @@ The tensor
   \GG = - \II \Delta \Gbh + \nabla \otimes \nabla \Gbh
 \end{equation}
 is then the analog of a Stokeslet
-\cite{Pozrikidis1992} for the problem
-\eqref{eq:ostokes}.
+\cite{Pozrikidis1992} for \eqref{eq:ostokes}.
 
 A related object is the stresslet, which is defined
 in terms of the stress tensor of the velocity, pressure
@@ -243,11 +243,11 @@ for $\bx \in \Gamma$,
 and
 \begin{equation}
 \label{eq:dlformula}
-  \cD [\bmu] (\xx) = \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)
+  \cD [\bmu] (\xx) = \pv \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)
   \nu_\ell(\yy)
   \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
 \end{equation}
-where the $\oint$ symbol means that the integral is to be
+where the \pv indicates that the integral is to be
 evaluated in the principal value sense. 
 For two vector valued
 functions $\ff$ and $\bg$ defined on $\Gamma$, consider the bilinear
@@ -261,7 +261,7 @@ the one induced by this form.
 The adjoint of $\cD$ is of particular interest; we have
 \begin{equation}
   \cD^{\intercal} [\bmu](\bx) = 
-  \oint_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)\nu_\ell(\xx)
+  \pv \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)\nu_\ell(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
 
@@ -274,8 +274,8 @@ abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_
 denote this dependence.
 \end{remark}
 
-In the following lemma, we review the limiting values of layer 
-potentials $\bS$ and $\bD$ on the boundary $\Gamma$.
+In the following lemma, we review the limiting values of
+the layer potentials $\bS$ and $\bD$ on the boundary $\Gamma$.
 
 \begin{lem}[Jump conditions] \label{lem:jump-conds}
   Suppose that $\Omega$ is a bounded region with a $C^{2}$ boundary
@@ -312,19 +312,22 @@ in the Stokes and modified Stokes settings
 
 \begin{thrm} \label{thrm:rep-theorem}
   Let $\Omega$ be a bounded domain with $C^2$ boundary and let
-  the pair $(\bu,p)$ satisfy the oscillatory stokes equations
+  the pair $(\bu,p)$ satisfy the oscillatory Stokes equations
   \cref{eq:ostokes} in $\Omega$. Let $\bt$ denote the surface
-  traction associated with the velocity $\bu$. Then
+  traction associated with $(\bu,p)$. Then
 
   \begin{equation} \label{eq:rep-theorem}
     \bS [\bt](\xx) - \bD[\bu](\xx) = \begin{cases} 
-    \bu(\xx) &\quad \xx \in \Omega \, , \\
-    0 &\quad \xx \in \Omega^{C} \; .
-    \end{cases}
+    \bu(\xx) &\quad \xx \in \Omega \,  \\
+    0 &\quad \xx \in E 
+    \end{cases} \; ,
   \end{equation}
+  where $E=\R^2\setminus\bar\Omega$ is the
+  exterior of the domain.
 \end{thrm}
 
 \begin{proof}
+  Suppose that $\xx \in \Omega$.
   By the definitions of $\GG$ and $\Glap$, we have
   \begin{equation*}
     \bu(\xx) = \int_\Omega -(\Delta_x + k^2) \GG(\xx,\yy) \bu(\yy)
@@ -353,7 +356,7 @@ in the Stokes and modified Stokes settings
     - (\nabla \GG \bnu)^\intercal \bu \, dS = 0 \; .  \label{eq:rep_proof_2}
   \end{equation}
   Adding \cref{eq:rep_proof_1,eq:rep_proof_2}, we get the desired
-  result.
+  result. The argument for the case $\xx \in E$ is similar.
 \end{proof}
 
 A consequence of \cref{thrm:rep-theorem} and the analyticity
@@ -362,7 +365,7 @@ of $\Gbh$ is
 \label{cor:analytic}  
   Let $(\uu,p) \in A(\Omega)$ be a solution of \cref{eq:ostokes}.
   Then each component of $\uu(\xx)$ is an analytic function
-  of the coordinates $\xx$.
+  of the coordinates $\xx$ in $\Omega$.
 \end{cor}
 
 The proof of \cref{cor:analytic} follows the same reasoning as
