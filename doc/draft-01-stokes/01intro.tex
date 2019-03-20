@@ -1,8 +1,12 @@
 \section{Introduction}
 
 The planar incompressible Stokes equations describe
-creeping flows in two dimensions. Let $\Omega \subset \R^2$
-be a bounded domain with $C^2$ boundary. The eigenvalue problem seeks
+creeping flows in two dimensions.
+%
+Let $\Omega \subset \R^2$
+be a bounded domain with $C^2$ boundary.
+%
+The Stokes eigenvalue problem seeks
 values $k^2$ such that 
 
 \begin{equation}
@@ -13,12 +17,14 @@ values $k^2$ such that
 \end{aligned}
 \end{equation}
 subject to boundary conditions, has a non-trivial solution $(\uu,p)$.
+%
 In this work, we consider the eigenvalue problem subject to 
 the Dirichlet boundary condition,
 \begin{equation}
   \uu = \bz \quad \textrm{on} \quad \Gamma \label{eq:ostokes_dir} \; .
 \end{equation}
-It is well known that there is a countable collection of such
+It is well known that the values $k^2$ are necessarily
+real and positive and that there is a countable collection of such
 values $0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$,
 counting multiplicites.
 
@@ -31,40 +37,200 @@ counting multiplicites.
   oscillatory Stokes equation.
 \end{remark}
 
-We closely follow the approach of Zhao and Barnett
-for computing the Laplace eigenvalues~\cite{zhao2015robust}.
+The eigenvalues (and eigenfunctions)
+of the Stokes operator have applications in the
+stability analysis of stationary solutions of the
+Navier--Stokes equations \cite{osborn1976approximation}
+and in the study of decaying two dimensional turbulence
+\cite{schneider2008final}.
 %
-The fact that layer potentials can be used to compute
-eigenvalues is based on the following sequence of
-facts: 1) represent the solution 
-as a layer potential with 
-an unknown density, and choose the representation such that
-you get a second kind integral equation for the unknown density;
-2) establish that the intergral equation is not invertible 
-only at the Dirichlet eigenvalues for Laplace's equation;
-3) prove that the zeros of the Fredholm determinant 
-(when the compact operator is in trace class) 
-line up with the Dirichlet eigenvalues; 
-4) and finally, show that when the integral equation
-is discretized using a Nystr\"{o}m method, the zeros of 
-the determinant 
-of the discrete linear system 
-converge exponentially
-to the zeros of the Fredholm determinant. 
+The eigenvalues and eigenfunctions of the Stokes
+operator are the subject of intense analytical
+investigation
+\cite{taylor1933buckling,szego1950membranes,
+  polya1951isoperimetric,bramble1963pointwise,
+  ashbaugh1996fundamental,leriche2004stokes,
+  kelliher2009eigenvalues,antunes2011buckling},
+particularly as they relate to the eigenvalues and
+eigenfunctions of the drum.
 
+Historically, the Stokes eigenvalue problem serves as a
+common model problem for numerical eigenvalue analysis
+with a fourth order operator (here, the bi-Laplacian).
 %
-While the integral representations for the modified
-Stokes equation are directly applicable to the oscillatory
-Stokes equations, 
-proving invertibility of the associated operators
+Further, numerical simulation has long played an
+important role in the analyses described above --- both for
+estimating the eigenvalues on domains of practical
+interest and for exploring open conjectures
+and generating new conjectures.
+
+Borrowing the language of~\cite{zhao2015robust},
+which concerns the Laplace or ``drum'' eigenvalue
+problem,
+the numerical treatment of the Stokes eigenvalue
+problem can be divided into two basic approaches.
+%
+Type A
+methods perform a direct discretization of the
+Stokes operator, typically with a
+finite element basis, and the eigenvalues are found
+as the eigenvalues of the discrete system.
+%
+Type B
+methods utilize a boundary integral equation
+(BIE) re-formulation of the oscillatory Stokes
+equation which is then discretized, so that
+the eigenvalues are found by a nonlinear search
+for the values of $k$ where the BIE is not invertible.
+%
+
+There is a large body of research on type A methods
+for the Stokes eigenvalue problem.
+%
+We do not seek to review this literature here,
+but point to \cite{johnson1974beam,
+  rannacher1979nonconforming,
+  mercier1981eigenvalue,bjorstad1999high,
+  jia2009approximation,chen2006approximation,
+  lovadina2009posteriori,huang2011numerical,
+  carstensen2014guaranteed}
+for some representative examples.
+
+
+As noted in~\cite{zhao2015robust}, the type B
+methods provide some advantages.
+%
+Because the BIE is defined on the
+boundary alone, there is a reduction in the
+dimension of the domain to be discretized.
+%
+This reduces the number of unknowns over finite
+element discretizations, particularly given
+that finite element methods suffer from
+high-frequency ``pollution'' when $k$ is large
+\cite{babuska1997pollution}.
+
+Further, Zhao and Barnett~\cite{zhao2015robust}
+show how to alleviate some of the costliness of the
+nonlinear optimization introduced by a type B method.
+%
+The standard approach searches for ``V''-shaped minima
+of the singular values of the BIE; see, for
+instance, \cite{trefethen2006computed}.
+%
+Instead, Zhao and Barnett utilize the Fredholm
+determinant (see \cref{sec:dets}) which, for certain
+BIEs, is an analytic function of $k$ with roots
+precisely when $k^2$ is an eigenvalue.
+%
+The Fredholm determinant can be estimated using
+a Nystr\"{o}m discretization of the BIE
+\cite{bornemann2010numerical,zhao2015robust}.
+%
+Then, the eigenvalues can be estimated efficiently
+by using high order root finding methods applied
+to the discretized determinant.
+
+With the efficiency of the approach of
+\cite{zhao2015robust} for the drum problem in mind,
+we develop a type B method for the Stokes eigenvalue
+problem.
+%
+This requires that a layer
+potential representation of the solution
+of \cref{eq:ostokes} be given and that the resulting BIE
+is not invertible precisely when $k^2$ is an eigenvalue.
+%
+The first requirement is straightforward to
+satisfy because the
+well-known layer potential representations for the
+modified Stokes equation~\cite{Pozrikidis1992,biros2002embedded,
+  jiang2013second,ladyzhenskaya1969mathematical}
+are directly applicable.
+%
+Proving the invertibility of the associated operators
 away from the eigenvalues is a more involved task
-and forms the bulk of this section.
+and forms the bulk of the theoretical component
+of this paper.
+
+\subsection{Relation to other work}
+
+While type B methods for the
+related ``buckling'' eigenvalue problem
+have been considered previously,
+these typically relied on first-kind integral
+equation formulations of the underlying PDE,
+i.e. formulations in which the BIE operator is
+compact \cite{kitahara2014boundary,antunes2011buckling}.
 %
-This in turn requires proving uniqueness results
-for various interior and exterior boundary value problems
+This is unsatisfying from a theoretical
+perspective, because such operators are never invertible
+(though, they are injective precisely when $k^2$ is an
+eigenvalue \cite{kitahara2014boundary,antunes2011buckling})
+so that the relation between the non-invertibility of the
+discrete system and the eigenvalues is obscured.
+%
+Further,
+such representations create numerical challenges because
+common measures of the ``non-invertibility'' of a matrix,
+like the smallest singular value or the determinant, converge
+rapidly to zero for all values of $k^2$ as the boundary is
+refined. Therefore, the measure of whether $k^2$ is an
+approximate eigenvalue is {\em relative to the current grid}
+for first kind equations.
+
+The classical single and double layer representations
+for oscillatory Stokes considered in this paper
+result in second kind equations, i.e. integral equations
+of the form $\mathcal{I} - \mathcal{K}_k$ where
+$\mathcal{K}_k$ is compact.
+%
+Such equations have a more satisfying theory
+\cite{reed1972methods,colton1983integral,kress1989linear},
+which translates well to numerical implementation
+\cite{atkinson2009numerical,bornemann2010numerical,
+  hackbusch2012integral,zhao2015robust}.
+%
+The use of a second kind representation is standard
+for the drum problem \cite{backer2003numerical,zhao2015robust}
+and was used recently to compute the vibrating
+modes of thin, clamped plates~\cite{lindsay2018boundary}.
+
+\subsection{Paper outline and contributions}
+
+The rest of this paper proceeds as follows.
+%
+In \cref{sec:prelim}, we set the notation, provide some
+mathematical preliminaries, and review the
+properties of single and double layer potentials
 for the oscillatory Stokes equations.
 %
-To the best of our knowledge, the uniqueness results,
-particularly
-for exterior domains are new to the literature.
-
+Then, in \cref{sec:analysis}, we develop the necessary
+theory for proving \cref{thm:dlmain,thm:cfmain},
+which show that the BIEs resulting from these
+layer potential representations are not invertible
+precisely when $k^2$ is an eigenvalue.
+%
+These theoretical developments include a detailed
+discussion of the uniqueness of oscillatory Stokes
+boundary value problems in exterior domains.
+%
+To the best of our knowledge, the invertibility
+and uniqueness results are new to the literature.
+%
+\Cref{sec:dets} then outlines how the Fredholm determinant
+can be used in the oscillatory Stokes context.
+%
+In \cref{sec:numerical}, we describe the numerical
+methods we use to discretize the BIEs and to perform
+fast determinant calculations.
+%
+That section also includes numerical experiments
+which demonstrate some of the paper's analytical
+claims as well as the effectiveness of the overall
+framework.
+%
+Finally, we provide some concluding thoughts,
+describe plans for future research,
+and outline some open questions in
+\cref{sec:conclusion}.
