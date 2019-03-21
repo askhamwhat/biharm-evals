@@ -92,9 +92,42 @@ Fredholm integral equations. Interested readers may
 consult \cite{reed1972methods,colton1983integral,kress1989linear},
 among others, for the relevant background.
 
-Let $X$ be a Banach space equipped with a bilinear form ...
+We first recall some definitions.
+Let $X$ and $Y$ be Banach spaces with a non-degenerate
+bilinear form $\langle \cdot ,\cdot \rangle: X\times Y \to \C$.
+\begin{itemize}
+\item Two operators $\cA:X\to X$ and $\cB:Y\to Y$ are
+adjoint operators if
+$\langle A \phi,\psi \rangle = \langle \phi, B\psi \rangle$
+for every $\phi \in X$ and $\psi \in Y$.
+\item For an operator $\cM:X\to X$, we can define the range
+  $R(\cM)$ as the set $\{\phi \in X: \exists \phi_0 \textrm{ with }
+  \cM\phi_0 = \phi\}$ and the null space $N(\cM)$ as the
+  set $\{\phi \in X: \cM \phi = 0 \}$.
+\item An operator $\cA$ is said to be compact if
+  $\overbar{\cA V}$ is a compact set for any
+  
+\item Given a subspace $V\subset X$,
+  we can define the subspace $V^\perp\subset Y$ as the
+  set $V^\perp = \{ \psi \in Y: \langle \phi,\psi \rangle = 0
+  \textrm{ for each } \phi \in V \}$, with the analogous
+  definition for subspaces of $Y$.
+\end{itemize}
 
-\note{Travis: put Fredholm alternative here}
+Operators of the form $\cI-\cA$
+have existence and uniqueness properties analogous to
+matrices. This is known as the Fredholm Alternative;
+we present the version provided in \cite{colton1983integral}.
+
+\begin{thrm}[Fredholm Alternative \cite{colton1983integral}]
+  Let $X$ and $Y$ be Banach spaces and
+  $\langle \cdot,\cdot \rangle: X\times Y \to \C$ be
+  a bilinear form. Suppose that $\cA: X\to X$ and
+  $\cB:Y \to Y$ are compact adjoint operators. Then
+  $\dim N(\cI-\cA) = \dim N(\cI-\cB) \in \N$,
+  $R(\cI-\cA) = N(\cI-\cB)^{\perp}$, and
+  $R(\cI-\cB) = N(\cI-\cA)^\perp$.
+\end{thrm}
 
 \subsection{Properties of the oscillatory Stokes layer
   potentials}
@@ -313,6 +346,16 @@ the standard jump conditions for Stokes
 \cite{KimSangtae1991,Pozrikidis1992}
 apply. 
 
+\begin{lem} \label{lem:compact-sd}
+  Suppose that $\Omega$ is a bounded region with a $C^{2}$ boundary
+  $\Gamma$. Then the operators $\cS$ and $\cD$ defined
+  above are compact.
+\end{lem}
+
+Compactness is proved by considering the
+asymptotic expansion of each kernel about
+$\xx=\yy$ and noting that each is at most
+weakly singular.
 
 \subsubsection{Representation Theorem}
 
