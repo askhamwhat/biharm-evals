@@ -1,0 +1,21 @@
+\documentclass[10pt]{standalone}
+\usepackage{pgf,tikz,pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\pagestyle{empty}
+\begin{document}
+\definecolor{ududff}{rgb}{0.30196078431372547,0.30196078431372547,1}
+\begin{tikzpicture}[line cap=round,line join=round,scale=0.6]
+  \clip (-8,-6.5) rectangle (4.5,6);  
+  \draw [rotate around={-73.03385189146427:(-3.54,0.66)}] (-3.54,0.66) ellipse (1.4284478710327806 and 1.2883956380933945);
+  \draw [rotate around={34.094977954765554:(-0.71,-1.69)}] (-0.71,-1.69) ellipse (0.9988617611224779 and 0.6177578958076527);
+  \draw [rotate around={-20.43282867939868:(-0.7654545454545458,0.38636363636363574)}] (-0.7654545454545458,0.38636363636363574) ellipse (0.7672486426812459 and 0.5864103437580738);  
+  \draw [rotate around={-59.15341258785143:(1.09,1.61)}] (1.09,1.61) ellipse (1.1376839136777344 and 0.7687813001374882);
+  \node at (-3.54,0.66) {$\Omega_1$};
+  \node at (-0.71,-1.69) {$\Omega_2$};
+  \node at (-0.76,0.38) {$\Omega_3$};
+  \node at (1.09,1.61) {$\Omega_4$};
+  \node at (-5,-4) {$E$};  
+\end{tikzpicture}
+\end{document}
