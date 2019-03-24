@@ -56,7 +56,7 @@ context for completeness.
 
 Let $\Omega$ be a bounded domain with $C^2$ boundary
 denoted by $\Gamma$.
-The Dirichlet boundary problem specifies the
+The Dirichlet problem specifies the
 velocity of the fluid on the boundary, i.e.
 
 \begin{definition}[Interior Dirichlet problem]
@@ -142,19 +142,12 @@ with $\bnu = \xx/|\xx|$, i.e. $\bt$ is the surface
 traction on $\partial B_r(0)$.     
 \end{definition}
 
-\begin{thrm}
+In the following lemma, we show that the oscillatory
+Stokeslet satisfies the radiation condition. 
+\begin{lem}
 The oscillatory Stokeslet, as defined in \eqref{eq:ostokeslet}, 
 satisfies the radiation condition in Definition \ref{def:radcond}.
-Suppose that $\Gamma$ is the boundary of a region $\Omega$
-and is $C^{2}$. 
-Suppose that $\bmu \in C(\Gamma)$ and satsifies
-$\int_{\Gamma} \bmu \cdot \bnu dS = 0$, where
-$\bnu$ dentoes the outward normal to the curve $\Gamma$.
-Then, the oscillatory Stokes 
-double layer potential $\bD[\bmu]$, as defined in \eqref{eq:doublelayer},
-also satisfies the radiation condition.
-\end{thrm}
-
+\end{lem}
 \begin{proof}
 Consider the Stokeslet induced by an arbitrary charge
 $k^2 \bpsi$ at the origin where $\psi \in \mathbb{C}^2$ 
@@ -211,8 +204,39 @@ we have
 \right) \right | = 0 \; , \nonumber
 \end{equation}
 so that the Stokeslet satisfies the radiation condition.
+\end{proof}
+A consquence of the above lemma is that the oscillatory Stokes
+single layer potential satisfies the radiation condition.
+\begin{cor}
+Suppose that $\Gamma$ is the boundary of a region $\Omega$
+and is $C^{2}$. 
+Suppose that $\bmu \in C(\Gamma)\times C(\Gamma)$, then
+the oscillatory Stokes single layer potential $\bS[\bmu]$,
+as defined in~\cref{eq:singlelayer}, satisfies the radition condition.
+\end{cor}
+Unfortunately, the stresslet, as defined in~\cref{eq:ostress}, 
+does not necessarily satisfy the radiation condition.
+The reason for failure is the logarithmic growth of 
+the pressure at $\infty$.
+However, this turns out to be a rank-one issue and 
+the oscillatory Stokes double layer potential
+does satisfy the radiation condition 
+if the density satisfies an integral constraint.
+The following lemma proves this result.
 
-For the double layer potential, we only establish the
+\begin{lem}
+Suppose that $\Gamma$ is the boundary of a region $\Omega$
+and is $C^{2}$. 
+Suppose that $\bmu \in C(\Gamma) \times C(\Gamma)$ and satsifies
+$\int_{\Gamma} \bmu \cdot \bnu dS = 0$, where
+$\bnu$ dentoes the outward normal to the curve $\Gamma$.
+Then, the oscillatory Stokes 
+double layer potential $\bD[\bmu]$, as defined in \eqref{eq:doublelayer},
+also satisfies the radiation condition.
+\end{lem}
+
+\begin{proof}
+We only establish the
 decay of the pressure, which we will denote by $p^\bD$;
 the rest of the terms in \eqref{eq:radcond} can be bounded
 using an argument like that for the Stokeslet above.
@@ -492,8 +516,6 @@ in $E$.
   $\bu \equiv 0$ in $E$.
 \end{thrm}
 
-\note{Manas: check out new argument below.}
-
 \begin{proof}
 Since $\bt = 0$ on $\Gamma$, it follows
 from~\cref{eq:repinfest} that
@@ -570,7 +592,7 @@ dV \nonumber \\
 \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
 2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
 dV \nonumber \\
-& \qquad + 2 \left( \left (\Re(k)\Re(\eta) + \Re(k)\Re(\eta)
+& \qquad + 2 \left( \left (\Re(k)\Re(\eta) + \Im(k)\Im(\eta)
 \right ) \int_{\Gamma} |\bu|^{2} dS  \right)
 \, .
 \end{align*}
@@ -632,8 +654,8 @@ explained below.
 Suppose that the solution to the oscillatory
 Stokes Dirichlet problem, \cref{eq:dir_interior},
 is represented using a double layer potential defined
-on $\Gamma$, i.e. setting $\bu = \bD_{k} \bmu$ for
-an unknown density $\bmu$. 
+on $\Gamma$, i.e. setting $\bu = \bD_{k} \bmu$ where
+$\bmu$ is an unknown density. 
 Substituting this expression
 into the boundary condition and applying
 \cref{lem:jump-conds}, we obtain
@@ -670,8 +692,8 @@ On simply connected domains, there is a one-to-one correspondance between
 the eigenvalues of the Dirichlet problem for
 the Stokes equation
 and the values of $k$ for which the operator $(\cI - 2\cD_{k} - 2\cW)$
-is not invertible. To prove this, we require the results
-above and the following lemma:
+is not invertible. To prove this, we also need the 
+following lemma:
 \begin{lem}
   \label{lem:nutracli}
   If $\bt^{-}$ is the surface traction associated
@@ -687,8 +709,6 @@ using Green's theorem, it follows that
 $\bS_{k}[\bt^{-}](\bx) = \bu(\bx) \neq 0$ for $\bx \in \Omega$ and
 thus $\bt^{-}$ and $\bnu$ are linearly independent.
 \end{proof}
-
-We now have
 
 \begin{thrm}
 \label{thm:dlmain}
@@ -726,14 +746,14 @@ denoted by $\bt^{-} = 0$ on $\Gamma$.
 Using~\cref{lem:jump-conds} again, we conclude that the exterior limit
 of the surface traction, $\bt^{+}$, is $0$ on $\Gamma$. 
 Note that $\bu$ is a radiating solution of the oscillatory
-Stokes equation in the exterior $E$, as $\cW[\mu] = 0$ implies
+Stokes equation in the exterior $E$, as $\cW[\bmu] = 0$ implies
 $\int_{\Gamma} \bmu \cdot \bnu = 0$.
 From the uniqueness of the Neumann problem in the
 exterior $E$, we conclude that $\bu \equiv 0$ in $E$ as well,
 which in particular implies that
 the exterior limit of the velocity, $\bu^{+}$, is $0$ on $\Gamma$.   
 Using the jump conditions in~\cref{lem:jump-conds} again, we
-get that $\bmu = \frac{1}{2}(\bu^{+} - \bu^{-}) = 0$.
+get that $\bmu = \bu^{-} - \bu^{+} = 0$.
 Thus $(\cI - 2\cD_{k} - 2\cW)$ is invertible if $k^2$
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
@@ -910,7 +930,9 @@ on $\Omega$, we conclude that $\bu \equiv 0$ in $\Omega$.
 This in particular implies that the interior limit of the
 surface traction, denoted by $\bt^{-}$, is $0$ on $\Gamma$.
 Using~\cref{lem:jump-conds} we observe that $\bt^{+}
-= i\eta \bmu(\xx)$ and $\bu^{+} = \bmu(\xx)$ on $\Gamma$.
+= -i\eta \bmu(\xx)$ and $\bu^{+} = -\bmu(\xx)$ on $\Gamma$, i.e.
+$\bt^{+}=i\eta u^{+}$ and $u^{+}$ satisfies the homogeneous
+exterior impedence problem.
 \begin{remark}
   Note that there is potential for confusion here
   in that the exterior limit with respect to $\Omega$ 
@@ -927,7 +949,7 @@ $\bu \equiv 0$ in $E_0$ as well, which in particular
 implies that $\bu^{+}=0$ on $\Gamma_{0}$.   
 Using the jump conditions in~\cref{lem:jump-conds}
 again, we get that
-$\bmu = \frac{1}{2}(\bu^{+} - \bu^{-}) = 0$ on
+$\bmu = \bu^{-} - \bu^{+} = 0$ on
 $\Gamma_{0}$. To show that $\bmu=0$ on
 $\Gamma_{j}$, we observe that $\bu$ is also a
 solution to the oscillatory Stokes equation in each
@@ -938,7 +960,7 @@ the interior limits with respect to $\Omega_{j}$
 of the surface traction and the velocity
 are $i\eta \bmu$ and $\bmu$ respectively, we get
 \begin{equation}
-\int_{\Omega_{j}} (|e(\bu)|^{2} - \overline{k}^{2} |\bu|^2) dV 
+\int_{\Omega_{j}} (|\be(\bu)|^{2} - \overline{k}^{2} |\bu|^2) dV 
 = \int_{\Gamma_{j}} \bu \cdot \overline{\bt} dS = 
 i\overline{\eta}\int_{\Gamma_{j}} |\bmu|^2 dS \, .
 \end{equation}

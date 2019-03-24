@@ -6,7 +6,7 @@ creeping flows in two dimensions.
 Let $\Omega \subset \R^2$
 be a bounded domain with $C^2$ boundary.
 %
-The Stokes eigenvalue problem seeks
+The Stokes eigenvalue problem is to find
 values $k^2$ such that 
 
 \begin{equation}
@@ -51,7 +51,7 @@ investigation
   polya1951isoperimetric,bramble1963pointwise,
   ashbaugh1996fundamental,leriche2004stokes,
   kelliher2009eigenvalues,antunes2011buckling},
-particularly as they relate to the eigenvalues and
+particularly how they relate to the eigenvalues and
 eigenfunctions of the drum.
 
 Historically, the Stokes eigenvalue problem serves as a
@@ -61,8 +61,7 @@ with a fourth order operator (here, the bi-Laplacian).
 Further, numerical simulation has long played an
 important role in the analyses described above --- both for
 estimating the eigenvalues on domains of practical
-interest and for exploring open conjectures
-and generating new conjectures.
+interest and for exploring open conjectures.
 
 Borrowing the language of~\cite{zhao2015robust},
 which concerns the Laplace or ``drum'' eigenvalue
@@ -70,21 +69,21 @@ problem,
 the numerical treatment of the Stokes eigenvalue
 problem can be divided into two basic approaches.
 %
-Type A
-methods perform a direct discretization of the
+The first class of methods
+directly discretize the
 Stokes operator, typically with a
 finite element basis, and the eigenvalues are found
 as the eigenvalues of the discrete system.
 %
-Type B
-methods utilize a boundary integral equation
-(BIE) re-formulation of the oscillatory Stokes
-equation which is then discretized, so that
-the eigenvalues are found by a nonlinear search
-for the values of $k$ where the BIE is not invertible.
+The second class of methods reformulate the 
+oscillatory Stokes equations as a boundary integral
+equations which are discretized.
+The eigenvalues are then found
+by a nonlinear search for the values of $k$ where the BIE 
+is not invertible.
 %
 
-There is a large body of research on type A methods
+There is a large body of research on the first class of methods
 for the Stokes eigenvalue problem.
 %
 We do not seek to review this literature here,
@@ -97,8 +96,8 @@ but point to \cite{johnson1974beam,
 for some representative examples.
 
 
-As noted in~\cite{zhao2015robust}, the type B
-methods provide some advantages.
+As noted in~\cite{zhao2015robust}, integral equation based
+methods provide several advantages.
 %
 Because the BIE is defined on the
 boundary alone, there is a reduction in the
@@ -112,7 +111,8 @@ high-frequency ``pollution'' when $k$ is large
 
 Further, Zhao and Barnett~\cite{zhao2015robust}
 show how to alleviate some of the costliness of the
-nonlinear optimization introduced by a type B method.
+nonlinear optimization introduced by formulating the 
+problem as an integral equation.
 %
 The standard approach searches for ``V''-shaped minima
 of the singular values of the BIE; see, for
@@ -133,7 +133,7 @@ to the discretized determinant.
 
 With the efficiency of the approach of
 \cite{zhao2015robust} for the drum problem in mind,
-we develop a type B method for the Stokes eigenvalue
+we develop an integral equation based method for the Stokes eigenvalue
 problem.
 %
 This requires that a layer
@@ -155,7 +155,7 @@ of this paper.
 
 \subsection{Relation to other work}
 
-While type B methods for the
+While integral equation based methods for the
 related ``buckling'' eigenvalue problem
 have been considered previously,
 these typically relied on first-kind integral
@@ -164,7 +164,8 @@ i.e. formulations in which the BIE operator is
 compact \cite{kitahara2014boundary,antunes2011buckling}.
 %
 This is unsatisfying from a theoretical
-perspective, because such operators are never invertible
+perspective, because such operators are never \note{Travis: why is this the case?} 
+invertible
 (though, they are not injective precisely when $k^2$ is an
 eigenvalue \cite{kitahara2014boundary,antunes2011buckling})
 so that the relation between the non-invertibility of the
@@ -206,7 +207,8 @@ properties of single and double layer potentials
 for the oscillatory Stokes equations.
 %
 Then, in \cref{sec:analysis}, we develop the necessary
-theory for proving \cref{thm:dlmain,thm:cfmain},
+theory for proving the main results of this work 
+(\cref{thm:dlmain,thm:cfmain}),
 which show that the BIEs resulting from these
 layer potential representations are not invertible
 precisely when $k^2$ is an eigenvalue.

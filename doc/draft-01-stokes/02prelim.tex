@@ -36,7 +36,7 @@ is the Neumann data, i.e.
 \end{equation}
 
 We seek solutions of \cref{eq:ostokes} in the space
-\note{make sure this is the correct space}
+\note{make sure this is the correct space: (MR - looks good to me)}
 \begin{equation}
   A(\Omega) = \{ (\bu,p) \textrm{ s.t. } \bu \in
   \left ( C^2(\Omega)\times C^2(\Omega) \right ) \cap
@@ -52,11 +52,11 @@ solution $G(\xx,\yy)$ of $\mathcal{L}_x$ satisfies the equation
 $\mathcal{L}_x G(\xx,\yy) = \delta_y(\xx)$ in the distributional sense, i.e.
 for sufficiently smooth $f$
 \begin{equation}
-  \mathcal{L}_x \int_{\R^2} G(\xx,\yy) f(\yy) \, dy = f(\xx) \; .
+  \mathcal{L}_x \int_{\R^2} G(\xx,\yy) f(\yy) \, d \by = f(\xx) \; .
   \nonumber
 \end{equation}
 We consider here
-``free-space'' Green's functions, i.e. fundamental solutions which satisfy
+free-space Green's functions, i.e. fundamental solutions which satisfy
 radiation conditions as $|\xx-\yy| \to \infty$.
 The Green's function of the oscillatory biharmonic equation,
 \begin{equation}
@@ -144,12 +144,7 @@ some of the relevant results here, translating to
 the present, oscillatory setting.
 
 \subsubsection{Oscillatory Stokeslets and stresslets}
-
-
-In this section, we review the derivation of the
-oscillatory Stokeslet, which is the appropriate setting for the Stokes
-eigenvalue problem.
- Consider the solution of
+Consider the solution of
 \cref{eq:ostokes} where a $\delta$-mass
 centered at $\yy$ with strength $\ff$
 has been added to the right-hand side of \cref{eq:ostokes}, i.e.
@@ -208,7 +203,7 @@ The stresslet $\TT$ is defined to be
   \nonumber \\
   & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{\ell j} +
   \partial_{x_\ell} \left(\partial_{x_j} \Gbh \right) \right)
-  \; . \label{eq:ostress} \nonumber
+  \; . \label{eq:ostress} 
 \end{align}
 Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} \Glap f_i$ be a
 solution of the Stokes equations induced by a Stokeslet.
@@ -330,9 +325,9 @@ the layer potentials $\bS$ and $\bD$ on the boundary $\Gamma$.
   Furthermore, for $\bx_{0} \in \Gamma$,
 
   \begin{align}
-    \lim_{h \downarrow 0} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
+    \lim_{h \downarrow 0^{+}} \bsigma_\bS[\bmu](\xx_0 \pm h\bnu(\xx_0)) \cdot \bnu(\xx_0)
     &= \mp \frac{1}{2} \bmu(\xx_0) + \cDt[\bmu](\xx_0) \\
-    \lim_{h \downarrow 0} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
+    \lim_{h \downarrow 0^{+}} \bD[\bmu](\xx_0 \pm h\bnu(\xx_0)) 
     &= \pm \frac{1}{2} \bmu(\xx_0) + \cD[\bmu](\xx_0)    \; .
   \end{align}
 \end{lem}
@@ -358,7 +353,7 @@ weakly singular.
 \subsubsection{Representation Theorem}
 
 In the following theorem, we sketch the proof of the equivalent of the
-Green's identity for oscillatory Stokes, which is well-known
+Green's identity for oscillatory Stokes setting, which is well-known
 in the Stokes and modified Stokes settings
 \cite{Pozrikidis1992,biros2002embedded,ladyzhenskaya1969mathematical}.
 
