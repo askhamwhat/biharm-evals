@@ -3,6 +3,7 @@
 %
 % 
 
+clear all; clc; clf;
 seed = 8675309;
 rng(seed);
 addpath('../src')
@@ -95,5 +96,5 @@ utarg2 = Strac-Du; utarg2 = reshape(utarg2,2,nt);
 
 %
 
-norm(utarg-utarg2,'fro')
+norm(utarg-utarg2,'fro')/norm(utarg,'fro')
 
