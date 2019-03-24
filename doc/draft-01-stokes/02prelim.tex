@@ -14,7 +14,8 @@ If $\xx = (x_1,x_2)^\intercal$, then $\xx^\bot = (-x_2,x_1)^\intercal$.
 Similarly, $\nabla^\bot = (-\partial_{x_2},\partial_{x_1})^\intercal$.
 Upper-case script characters (e.g. $\mathcal{K}$) are reserved for
 operators on Banach spaces, with $\mathcal{I}$ denoting the
-identity.
+identity. Given a set $X$, we denote the closure of $X$
+by $\overline{X}$.
 
 For a given velocity field $\bu$ and pressure $p$, let $\bsigma(\bu,p)$
 denote the Cauchy stress tensor, i.e.
@@ -42,10 +43,7 @@ We seek solutions of \cref{eq:ostokes} in the space
   \left ( C(\bar{\Omega}) \times C(\bar{\Omega}) \right ) \, , \,
   p \in C^1(\Omega) \times C(\bar{\Omega})\} \; ,
 \end{equation}
-where $\Omega$ is an open domain and $\bar{\Omega}$ denotes
-its closure.
-
-
+where $\Omega$ is an open domain.
 
 \subsection{Green's functions}
 
@@ -105,8 +103,8 @@ for every $\phi \in X$ and $\psi \in Y$.
   \cM\phi_0 = \phi\}$ and the null space $N(\cM)$ as the
   set $\{\phi \in X: \cM \phi = 0 \}$.
 \item An operator $\cA$ is said to be compact if
-  $\overbar{\cA V}$ is a compact set for any
-  
+  $\overline{\cA V}$ is a compact set for any
+  bounded subset $V\subset X$.
 \item Given a subspace $V\subset X$,
   we can define the subspace $V^\perp\subset Y$ as the
   set $V^\perp = \{ \psi \in Y: \langle \phi,\psi \rangle = 0

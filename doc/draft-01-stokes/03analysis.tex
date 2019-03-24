@@ -99,11 +99,19 @@ problem, i.e.
 \subsection{A radiation condition for the oscillatory Stokes
   equation}
 
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=0.4\textwidth]{media/ext_dom}
+  \caption{Example of an exterior domain with four obstacles.}
+  \label{fig:ext_dom}
+  \end{center}
+\end{figure}
+
 Let $\Omega$ be the union of a finite collection of
 simply connected domains, i.e. $\Omega = \bigcup_{i=1}^m \Omega_i$
 for some $m \in \N$,
 and let $E = \R^{2} \setminus \bar{\Omega}$ denote its
-exterior.
+exterior; see \cref{fig:ext_dom} for an example with $m=4$.
 %
 Let $\Gamma = \partial E$ denote the boundary of $E$ and
 $\bnu(\yy)$ denote the exterior normal to the point $\yy$ on
@@ -586,6 +594,14 @@ Dirichlet problem.
 
 \subsection{The integral equations and their null-spaces}
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.4\textwidth]{media/mc_dom}
+\end{center}
+\caption{Example of a multiply connected domain with four obstacles.}
+\label{fig:mc_dom}
+\end{figure}
+
 In this section, we establish the correspondence between
 Stokes eigenvalues and the invertibility of certain integral
 equations arising from layer potential representations
@@ -595,7 +611,9 @@ Let $\Omega$ be a bounded domain given as
 the intersection of a simply connected domain $\Omega_0$ and
 the exteriors of a finite collection of bounded,
 simply connected domains $\{ \Omega_i \}_{i=1}^m$
-whose closures are contained in $\Omega_0$. Note that the
+whose closures are contained in $\Omega_0$;
+see \cref{fig:mc_dom} for an example with four inclusions.
+Note that the
 exterior of $\Omega$, which we denote by $E$, is the
 disjoint union of the exterior of $\Omega_0$, which we
 denote $E_0$, with the sets $\{ \Omega_i \}_{i=1}^m$.
@@ -738,7 +756,7 @@ Thus $(\cI - 2\cD_{k} - 2\cW)$ is invertible if $k^2$
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
 From \cref{thrm:rep-theorem} we have 
-  \begin{equation} \label{eq:rep-theorem}
+  \begin{equation} 
     \bS_{k} [\bt](\xx) - \bD_{k}[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
     0 &\quad \xx \in E \; .
@@ -787,20 +805,19 @@ the extension to the general case is straightforward.
 \begin{thrm}
   Suppose that $\Omega$ is a multiply connected domain
   given by the intersection of a domain $\Omega_{0}$
-  and the exterior of a domain $\Omega_{1}$ with
-  $ \bar\Omega_1 \subset \Omega_0$
-  (see~\cref{fig:1ply}). 
+  and the exterior of a single domain $\Omega_{1}$ with
+  $ \bar\Omega_1 \subset \Omega_0$.
   Then, the operator $\cI - 2\cD_{k} - 2\cW$ has a non-trivial
   null space if $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
 \end{thrm}
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.3\linewidth]{media/multiply_final}
-\end{center}
-\caption{Example of a multiply connected domain with one obstacle.}
-\label{fig:1ply}
-\end{figure}
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=0.3\linewidth]{media/multiply_final}
+%\end{center}
+%\caption{Example of a multiply connected domain with one obstacle.}
+%\label{fig:1ply}
+%\end{figure}
 
 \begin{proof}
   Suppose that $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
@@ -832,15 +849,19 @@ vector for the operator $\cI - 2\cD^{\Gamma}_{k} -2\cW^{\Gamma}$
 on the boundary $\Gamma = \Gamma_{0} \cup \Gamma_{1}$.
 \end{proof}
 
+The spurious eigenvalues of the operator $\cI-2\cDk-2\cW$
+are demonstrated in \cref{subsec:spurannulus} on an annulus,
+where both the true and spurious eigenvalues can be
+determined semi-analytically. 
 Analogous with the observation in~\cite{zhao2015robust},
 this lack of one-to-one correspondance between
 the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
 and the Dirichlet eigenvalues of the Stokes operator on multiply
-connected domains causes non-robustness and introduces near 
+connected domains also causes non-robustness and introduces near 
 resonanaces for simply connected domains
 which are almost multiply connected.
 We demonstrate this issue numerically
-in~\cref{sec:numanalysis-nearly-mult-con}.
+in~\cref{subsec:crescent}.
 
 \subsubsection{Dirichlet eigenvalues --- combined-field representation}
 \label{subsec:mixedanalysis}
@@ -955,7 +976,7 @@ invertible when $k^2$ is not a Dirichlet eigenvalue
 for the Stokes equation on $\Omega$.
 
 From \cref{thrm:rep-theorem}, we have 
-\begin{equation} \label{eq:rep-theorem}
+\begin{equation} 
   \bS [\bt](\xx) - \bD[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
     0 &\quad \xx \in \Omega^{C} \; .
@@ -976,12 +997,12 @@ we get
 Combining these two identities, we get
 that
 \begin{equation}
-(-\cI - 2\cD_{k} -2i\eta \cS_{k}) \bt^{-} = 0 \, .
+(\cI - 2\cDkt -2i\eta \cS_{k}) \bt^{-} = 0 \, .
 \end{equation}
 As in the proof of~\cref{thm:dlmain}, letting
 $c = \left< \bt^{-} ,\bnu \right>$, it follows that
 \begin{equation}
-  (-\cI - 2\cD_{k} - 2i \eta \cS_{k} - 2\cW)
+  (\cI - 2\cDkt - 2i \eta \cS_{k} - 2\cW)
   (\bt^{-} - c\bnu) = 0 \, ,
 \end{equation}
 where $\bt^{-} - c\bnu \neq 0$.
