@@ -1,6 +1,83 @@
 \section{Uniqueness of the Neumann problem in the exterior
   of several obstacles}
 \label{app:neuuniqueness}
+In this section, we prove the uniqueness result for the oscillatory
+Stokes problem with Neumann boundary conditions on the exterior
+of several simply connected obstacles. 
+\begin{thrm}[Uniqueness of the Exterior Neumann Problem]
+  Suppose that $\Omega$ is the union of a finite collection 
+  of simply connected domains, i.e. $\Omega = \bigcup_{i=1}^m \Omega_{i}$
+  for some $m \in \N$, with $C^{2}$ boundaries, 
+  and let $E = \R^{2} \setminus \bar{\Omega}$ denote its exterior;
+  see~\cref{fig:ext_dom} for an example with $m=4$.
+  Let $\Gamma_{i}$ denote the boundary of $\Omega_{i}$, 
+  and $\Gamma = \bigcup_{i=1}^{m} \Gamma_{i}$ denote the boundary
+  of $\Omega$.
+  Suppose that $\Im(k)\geq 0$ and 
+  that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+  equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
+  $\bu \equiv 0$ in $E$.
+\end{thrm}
+
+\begin{proof}
+Since $\bt = 0$ on $\Gamma$, it follows
+from~\cref{eq:repinfest} that
+\begin{equation}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
+dV = 0 \; . \nonumber
+\end{equation}
+
+Suppose that $\Im(k) > 0$. It is then immediate
+that $\bu \equiv 0$ in $E$.
+
+Suppose that $k$ is real. It is clear that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
+\end{equation}
+Thus, the conditions on $\bu$ and $k$ in \cref{lem:rellich}
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
+in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
+condition becomes $0 = \bt = -p \bnu + 2 \nabla \partial_\nu p/k^2$.
+Because $0 = \btau \cdot \bt = 2\partial_{\tau\nu} p/k^2$,
+$\partial_\nu p  = c_{i}$ on $\Gamma_{i}$ for each $\Gamma_{i}$,
+where $c_{i}$ is a constant. 
+Observe that $|\bu|$ and $|\be(\bu)|$ must be $O(1/r)$ as
+$r\to\infty$. Thus,
+for a radiating pair $(\bu,p)$ with $p$ harmonic,
+we have that $|p| = O(1/r)$ and $|\nabla p| = O(1/r^2)$
+as $r\to\infty$.
+Since the boundary is $C^{2}$ and the boundary data for $p$
+is analytic, we conclude that $p$ is $C^{2}$ in
+$\overline{E}$.
+Furthermore, $\bt=0$ implies $p \bnu = 2\nabla \partial_{\nu} p/k^2$, 
+and taking the dot
+product with $\bnu$, we get
+$p = 2\partial_{\nu \nu}p/k^2$. 
+It then follows that
+$p = -2\partial_{\tau \tau}p/k^2$ on $\Gamma$ since 
+$p$ is harmonic in $E$ and $C^{2}$ in $\overline{E}$. 
+Since $p$ satisfies the radiation condition at $\infty$,
+we have
+\begin{equation}
+\begin{aligned}
+\int_{E} |\nabla p|^2 dV &= 
+\sum_{i=1}^{m} \int_{\Gamma_{i}} p \partial_{\nu}p \,dS \\
+&= \sum_{i=1}^{m} c_{i} \int_{\Gamma_{i}} p \,dS \quad \text{(Since $\partial_{\nu} p = c_{i}$ on
+$\Gamma_{i}$)} \\ 
+&= -\sum_{i=1}^{m} \frac{2c_{i}}{k^2} \int_{\Gamma_{i}} \partial_{\tau \tau} p \,dS 
+\quad \text{(Since $p = -\partial_{\tau \tau}p/k^2$ on $\Gamma$)} \\
+&= 0
+\end{aligned}
+\end{equation}
+Thus, $p$ is a constant in $E$. Furthermore, since $p\to 0$ at $\infty$, 
+we conclude that $p\equiv 0$ in $E$. 
+Finally, since $k^2 \bu = \nabla p$, we conclude that $\bu\equiv 0$ in 
+$E$.
+\end{proof}
+
 
 
 \section{Neumann eigenvalues and eigenfunctions on the unit disk}
@@ -28,14 +105,14 @@ $\bu$ is divergence free since
 \nabla \cdot \bu  = \Delta (\alpha r^{n} \sint - \beta r^{n} \cost) = 0 \, ,
 \end{equation}
 as $r^{n} \cost$,  $r^{n} \sint$ are harmonic functions. 
-To show that $(\bu,p)$ satisfies the PDE, observe that
+To show that $(\bu,p)$ satisfies the PDE, note that
+$r^{n} \cost$ and $r^{n} \sint$ are harmonic
+and $\jnkr \cost$, $\jnkr \sint$ satisfy Helmholtz's equation.
 \begin{equation}
 \begin{aligned}
 (\Delta + k^2) \bu &= (\Delta + k^2) \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) \, + \\
 \quad & \hspace*{15ex} (\Delta + k^2) \nabla^{\perp} (\gamma \jnkr \sint + \delta \jnkr \cost) \, , \\
-&= k^2 \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) \quad \bigg(\text{Since} \Delta (r^{n}\cost, r^{n}\sint) = 0 \quad
-\text{and} \, ,\\
-& \hspace*{25ex} (\Delta + k^2) (\jnkr \cost, \jnkr \sint) = 0 \bigg) \\
+&= k^2 \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) \\ 
 &= \nabla p
 \end{aligned}
 \end{equation}
@@ -47,40 +124,8 @@ The surface traction on the boundary of the unit disk is then given by
 \begin{equation}
 \bt = -p \hat{r} + \nabla (\bu \cdot \hat{r}) + \partial_{r} \bu \, .
 \end{equation}
-In particular
-\begin{equation}
-\begin{aligned}
-t_{r} = \bt \cdot \hat{r} &= -p + 2\partial_{r} (\bu \cdot \hat{r}) \, , \\
-t_{\theta} = \bt \cdot \hat{\theta} &= \frac{1}{r}\partial_{\theta}(\bu \cdot \hat{r}) + \partial_{r} (\bu \cdot \hat{\theta}) \, .
-\end{aligned}
-\end{equation}
-
-The $\hat{r},\hat{\theta}$ components of $\bu$ are given by
-\begin{equation}
-\begin{aligned}
-u_{r} = \bu \cdot \hat{r} &= \partial_{r} (\alpha r^{n} \sint - \beta r^{n} \cost) 
-- \frac{1}{r}\partial_{\theta}(\gamma \jnkr \sint + \delta \jnkr \cost) \\
-&= \sint \left(\alpha n r^{n-1} + \delta n \frac{\jnkr}{r} \right) 
-  - \cost \left(\beta n r^{n-1} + \gamma n \frac{\jnkr}{r} \right) \, , \\
-u_{\theta} = \bu \cdot \hat{\theta} &= \frac{1}{r} \partial_{\theta} (\alpha r^{n} \sint - \beta r^{n} \cost)
-+ \partial_{r} (\gamma \jnkr \sint + \delta \jnkr \cost) \\ 
-&= \cost \left( \alpha n r^{n-1} + \delta k \jnpkr \right) + \sint \left( \beta n r^{n-1} + \gamma k \jnpkr \right)
-\end{aligned}
-\end{equation}
-
-The relevant derivatives are given by
-\begin{equation}
-\begin{aligned}
-\partial_{r} u_{r} &= \sint \left( \alpha n (n-1) r^{n-2} + \delta n \ddr \left(\frac{\jnkr}{r}\right) \right)
-- \cost \left( \beta n (n-1) r^{n-2} + \gamma n \ddr \left( \frac{\jnkr}{r} \right) \right) \, , \\
-\frac{1}{r} \partial_{\theta} u_{r} &= n \cost \left(\alpha n r^{n-2} + \delta n \frac{\jnkr}{r^2} \right) + 
-n \sint \left(\beta n r^{n-2} + \gamma n\frac{\jnkr}{r^2} \right) \, , \\
-\partial_{r} u_{\theta} &= \cost(\alpha n(n-1) r^{n-2} + \delta k^2 \jnppkr) + 
-\sint (\beta n(n-1)r^{n-2} + \gamma k^2 \jnppkr) \, .
-\end{aligned}
-\end{equation}
-
-Now we finally get to the expressions for $t_{r},t_{\theta}$ 
+If $(\bu,p)$ are as defined above, then 
+a long but tedious calculation shows that
 \begin{equation}
 \begin{aligned}
 t_{r} &= \cost \left( \beta k^2 r^{n} -2\beta n(n-1)r^{n-2} - 2\gamma n \ddr \frac{\jnkr}{r}  \right) \, + \\
@@ -115,10 +160,3 @@ the interior Neumann eigenvalues of the unit disk satisfy
 \begin{equation}
 2n^2(2n-1)h_{k} - (n^2 \jnk + k^2 \jnppk)(-k^2 + 2n(n-1)) = 0 \, .
 \end{equation}
-A simple calculation shows that the zeros correpsonding to
-$n=0$ are the zeros of $\jnppk$, the first few of which are
-\begin{itemize}
-\item $k = 1.74118378134066$
-\item $k = 5.33144277352503$
-\item $k = 11.7060049025921$
-\end{itemize}
