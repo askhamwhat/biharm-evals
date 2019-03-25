@@ -57,7 +57,8 @@ As noted in the introduction, the
 eigenvalues of the Stokes operator are
 equivalent to the so-called
 ``buckling'' eigenvalues of the
-biharmonic operator \cite{kelliher2009eigenvalues}.
+biharmonic operator on simply connected
+domains~\cite{kelliher2009eigenvalues}.
 %
 This can be seen through the stream function
 formulation  of the oscillatory Stokes
@@ -74,16 +75,21 @@ condition on $\psi$
 \begin{equation*}
   \psi = \partial_\nu \psi = 0 \; \quad \textrm{on} \quad \Gamma.
 \end{equation*}
-Computing the stream function corresponding
-to an oscillatory Stokes layer potential can be
-done in a straightforward manner
-by adapting the approach of \cite{rachh2017integral}.
+On a multiply connected domain, it is possible for
+an eigenfield to have no corresponding stream
+function which is still clamped, so that the
+buckling eigenvalues are a subset of the Stokes
+eigenvalues.
+By adapting the approach of \cite{rachh2017integral},
+a suitable layer potential representation of the
+buckling problem can be derived based on the
+oscillatory Stokes layer potentials.
 %
-This is the subject of a note which is in
+This is the subject of a follow-up paper which is in
 preparation.
 
-There are some interesting questions in the
-use of Fredholm determinants in numerical
+There are some interesting questions to answer
+on the use of Fredholm determinants in numerical
 calculations.
 %
 As observed in \cite{zhao2015robust}, the
@@ -108,9 +114,8 @@ integral equations discretized with
 panel-corrected schemes (as described in
 \cref{sec:numerical}) is yet to be proved.
 %
-Finally, is there an alternative
-to the Fredholm determinant which
-has similar advantages?
-%
-
+Finally, it is worth exploring alternatives
+to the Fredholm determinant which perform well
+for layer potentials that are not trace class
+on the boundary.
 
