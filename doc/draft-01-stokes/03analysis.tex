@@ -1060,6 +1060,21 @@ is defined by
 \begin{equation}
 \text{det}(\cI +\cA) = \prod_{i=1}^{\infty} (1+\lambda_{i}) \, .
 \end{equation}
+
+So far, we have discussed the Fredholm theory in the space
+$C(\Gamma)\times C(\Gamma)$ equipped with the bilinear form~\cref{eq:bi_form}.
+However, it is more convenient to discuss the theory of Fredholm
+determinants on Hilbert spaces. 
+We note that both the operators $\cD_{k}$ and $\cS_{k}$ 
+are also compact operators mapping $Y \to Y$
+where $Y = \mathbb{L}^{2}(\Gamma) \times \mathbb{L}^{2}(\Gamma)$.
+Furthermore, it is well-known that the spectrum of compact
+operators with weakly singular kernels coincide on 
+$C(\Gamma)\times C(\Gamma)$ and $Y$ (see~\cite{kress1989linear},
+for example).
+So for the rest of the section, we present the discussion of 
+the relevant operators on $Y$ instead of $C(\Gamma)\times C(\Gamma)$.
+
 %It follows from standard results in complex
 %analysis, that the Fredholm determinant is finite and well-defined if 
 %$\text{det}(\cI+A) < \infty$ if $\sum_{i} |\lambda_{i}| < \infty$,
@@ -1068,32 +1083,34 @@ is defined by
 The operator $-2\cD_{k} - 2\cW$ is trace class:
 \begin{lemma}
   Suppose that $\Gamma$ is a $C^2$ curve.
-  Then, $-2\cD_{k} - 2\cW \in \cJ_1(L_2(\Gamma)\otimes L_2(\Gamma))$
-  for all $k$ 
+  Then, $-2\cD_{k} - 2\cW \in \cJ_1(Y)$
+  for all $k \in \mathbb{C} \setminus \{0\}$ 
 \end{lemma}
 \begin{proof}
 Using Bessel function asymptotics, we note that the
 kernel of $\cD_{k}$ given by $\TT_{\cdot,\cdot,\ell}\nu_{\ell}(\bx,\by)$
 has a leading order singularity of
-$|\bx-\by|^2 \log{|\bx-\by|^2}$ as $\bx\to \by$.
+$|\bx-\by|^2 \log{|\bx-\by|^2}$ as $\bx\to \by$ 
+for all $k \in \mathbb{C} \setminus \{ 0\}$.
 It follows from the criteria listed
 in~\cite[Sec. 2]{bornemann2010numerical} that $\cD_{k}$
-is a trace-class operator for all $k$.
+is a trace-class operator.
 Since $\cW$ is a rank-one perturbation independent of $k$,
 and trace-class operators are a vector space, we conclude
-that $-2\cD_{k} - 2\cW$ is also a trace-class operator for
-all $k$.
+that $-2\cD_{k} - 2\cW$ is also a trace-class operator.
 \end{proof}
 
 Let $f(k) = \text{det}(\cI - 2\cD_{k} - 2\cW)$.
 First, note that $f(k)$ is an analytic function of $k$
-for $k \in \mathbb{C} \setminus 0$, since the kernel
+for $k \in \mathbb{C} \setminus \{0 \}$, since the kernel
 of $\cD_{k}$ is an analytic function of $k$ on that domain, 
-and the Fredholm determinant is an analytic operator.
+and the Fredholm determinant of an analytic operator 
+is analytic on the domain of analyticity
+of the operator (see~\cite{zhao2015robust}, for example).
 
 The zeros of the Fredholm determinant indicate when the
-operator is not invertible. 
-This is summarized as 
+operator is not invertible.
+The following lemma summarizes this result.
 \begin{lem} \label{lem:detzeros}
   With $f(k)$ defined as above, $f(k) = 0$ if and only if
   $\cI - 2\cD_{k} -2\cW$ is not invertible.
@@ -1139,7 +1156,7 @@ the true Dirichlet eigenvalues for Laplace's equation.
 The proof presented in~\cite{zhao2015robust} carries
 forward for computing the Dirichlet eigenvalues of
 Stokes equation as well.
-We summarize the result as
+The result is summarized below.
 \begin{thrm}
 \label{thm:mainconvfreddet}
 Suppose that $\Omega$ is a simply connected
@@ -1150,8 +1167,9 @@ Suppose further that all the eigenvalues have multiplicity $1$.
 Let $f^{N}(k) = \text{det}(I+M^{N}_{k})$, where $M^{N}_{k}$ 
 is the Nystr\"{o}m discretzation of $-2\cD_{k} - 2\cW$ with Kress
 quadrature.
-Then $f^{N}(k)$ has exactly $M$ zeros on the interval $[a,b]$
-\note{Manas: for sufficiently large $N$?}. 
+Then there exists $N_{0} \in \mathbb{N}$ such
+that for all $N>N_{0}$, 
+$f^{N}(k)$ has exactly $M$ zeros on the interval $[a,b]$.
 Let $\omega_{j}$, $j=1,2\ldots M$ denote the zeros of $f^{N}$.
 Furthermore, there exist constants $a>0$ and $C$, 
 such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
@@ -1166,13 +1184,13 @@ such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
 In practice, using Kress-quadrature for large
 problems is problematic owing to the global
 nature of the quadrature rule.
-%
-\note{Manas: I do not understand the $O(N)$ cost per matrix entry
-  described here in the fast-direct case ... does it somehow
-  screw up compression?}
-Coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$ 
-determinant evaluation since evaluating each matrix entry costs $O(N)$, where 
-$N$ is the number of discretization points on the boundary.
+Coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$.
+where $N$ is the number of discretization points on the boundary.
+Typical fast direct solvers
+query $O(N)$ matrix entries to obtain a compressed representation,
+this combined with the fact that evaluating each matrix entry
+costs $O(N)$ for Kress-quadratures results in the sub-optimal
+complexity. 
 Over the last two decades, many high-order quadrature methods which are compatible with
 fast algorithms like the fast multipole method (and fast direct solvers as well, 
 since each matrix entry requires O(1) work) have been developed for solving
@@ -1191,9 +1209,9 @@ $\cI - 2 \cD_{k} - 2i\eta \cS_{k} - 2\cW$,
 since $\cS_{k}$ is not a trace class operator.
 For brevity, let $\cM_{k} = -2\cD_{k} - 2i\eta \cS_{k} - 2\cW$.
 The operator $\cM_{k}$ is 
-in $\cJ_{2}(\bL^{2}(\Gamma))$ where
-$\cJ_{2}(\bL^{2}(\Gamma))$ is the space of Hilbert-Schmidt operators
-on $\bL^{2}(\Gamma)$ (the singular values of the operator are square
+in $\cJ_{2}(Y)$ where
+$\cJ_{2}(Y)$ is the space of Hilbert-Schmidt operators
+on $Y$ (the singular values of the operator are square
 summable, as opposed to being summable).
 Thus the Fredholm determinant of $\cI + \cM_{k}$
 is not necessarily finite. 
