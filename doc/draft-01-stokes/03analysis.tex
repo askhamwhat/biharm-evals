@@ -1181,24 +1181,43 @@ such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
 \end{proof}
 
 \begin{remark}
-In practice, using Kress-quadrature for large
+In practice, using Kress quadrature for large
 problems is problematic owing to the global
 nature of the quadrature rule.
-Coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$.
-where $N$ is the number of discretization points on the boundary.
-Typical fast direct solvers
-query $O(N)$ matrix entries to obtain a compressed representation,
-this combined with the fact that evaluating each matrix entry
-costs $O(N)$ for Kress-quadratures results in the sub-optimal
-complexity. 
-Over the last two decades, many high-order quadrature methods which are compatible with
-fast algorithms like the fast multipole method (and fast direct solvers as well, 
-since each matrix entry requires O(1) work) have been developed for solving
-integral equations.
+%
+First, the use of a global rule does not allow
+for adaptive refinement at a complicated, local
+feature of the boundary.
+%
+Second, the integration weight in each entry
+of the matrix depends on both the column and the row
+in a non-separable way.
+%
+As a result, the fast multipole method is not
+directly applicable to the resulting matrix
+and many fast-direct methods for computing
+the determinant lose efficiency (for
+instance, the reasoning behind the use of a
+{\em proxy surface} \cite{cheng2005compression}
+no longer holds).
+%
+%Coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$.
+%where $N$ is the number of discretization points on the boundary.
+%Typical fast direct solvers
+%query $O(N)$ matrix entries to obtain a compressed representation,
+%this combined with the fact that evaluating each matrix entry
+%costs $O(N)$ for Kress quadratures results in the sub-optimal
+%complexity. 
+Over the last two decades, many high-order quadrature
+methods which are compatible with
+the fast multipole method and fast-direct solvers
+have been developed.
+%
 Extensive numerical evidence suggests that the zeros of the 
 determinants of linear systems discretized using 
-these quadrature methods are also high order approximations of Dirichlet eigenvalues
-for the Stokes PDE--- the error is observed to be proportional to the quadrature error
+these quadrature methods are also high order approximations
+of Dirichlet eigenvalues for the Stokes operator ---
+the error is observed to be proportional to the quadrature error
 for the eigenfunction $\bt^{-}$ associated with the eigenvalue.
 We leave a proof of this to future work.
 \end{remark}

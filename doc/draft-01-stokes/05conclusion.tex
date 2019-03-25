@@ -1,2 +1,116 @@
 \section{Conclusion}
 \label{sec:conclusion}
+
+In the preceding, we have demonstrated a
+BIE framework for computing the eigenvalues
+of the Stokes operator in the plane which
+is robust and scalable.
+%
+To justify the
+approach, we developed a uniqueness theory
+for the oscillatory Stokes equations in
+exterior domains in analogy with the
+discussion of the Helmholtz equation in
+\cite{colton1983integral}.
+%
+This lead to the primary theoretical
+results of the paper which show that the
+BIEs resulting from double layer and
+combined-field representations of the
+velocity field are 
+not invertible precisely when $k^2$ is
+an eigenvalue on simply connected
+and multiply connected domains, respectively.
+%
+As in \cite{zhao2015robust}, the costliness
+of performing the nonlinear minimization
+associated with computing these eigenvalues
+can be alleviated by computing instead the
+approximate zeros of the discrete Fredholm
+determinant.
+
+The results of this paper can be
+extended in a number of ways.
+%
+The theory
+extends directly to three dimensions, where
+computational efficiency and numerical
+implementation will be the primary concern.
+%
+In the numerical examples above, we
+consider only domains with differentiable
+boundaries for simplicity.
+%
+However, there has been recent progress
+toward efficient discretization of the
+layer potentials of elliptic operators
+on domains with corners
+\cite{helsing2008corner,serkh2016solution,rachh2017solution,helsing2018integral}
+which makes such problems tractable.
+%
+Of course, the theoretical considerations
+are a little different for such domains
+--- work in this area will be reported at
+a later date.
+
+As noted in the introduction, the
+eigenvalues of the Stokes operator are
+equivalent to the so-called
+``buckling'' eigenvalues of the
+biharmonic operator \cite{kelliher2009eigenvalues}.
+%
+This can be seen through the stream function
+formulation  of the oscillatory Stokes
+equation, i.e. setting $\bu = \nabla^\perp \psi$
+where $\psi$ now satisfies
+
+\begin{equation*}
+  -\Delta^2 \psi = k^2 \Delta \psi \quad \textrm{in} \quad \Omega\; .
+\end{equation*}
+Note that the buckling problem enforces the
+clamped, or first Dirichlet, boundary
+condition on $\psi$
+
+\begin{equation*}
+  \psi = \partial_\nu \psi = 0 \; \quad \textrm{on} \quad \Gamma.
+\end{equation*}
+Computing the stream function corresponding
+to an oscillatory Stokes layer potential can be
+done in a straightforward manner
+by adapting the approach of \cite{rachh2017integral}.
+%
+This is the subject of a note which is in
+preparation.
+
+There are some interesting questions in the
+use of Fredholm determinants in numerical
+calculations.
+%
+As observed in \cite{zhao2015robust}, the
+combined-field representation causes some
+difficulty in that the Fredholm determinant
+is not defined when the single layer, which
+is not trace-class, is included.
+%
+Zhao and Barnett~\cite{zhao2015robust}
+suggest looking into
+representations of the form $\cI-2\cD
+-2i\eta\cS^2-2\cW$,
+which would have a well-defined Fredholm
+determinant.
+%
+The relative performance of
+such an approach should be explored.
+%
+Further, as discussed above, the
+convergence of the determinant of
+integral equations discretized with
+panel-corrected schemes (as described in
+\cref{sec:numerical}) is yet to be proved.
+%
+Finally, is there an alternative
+to the Fredholm determinant which
+has similar advantages?
+%
+
+

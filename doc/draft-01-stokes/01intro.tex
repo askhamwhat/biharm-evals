@@ -156,7 +156,8 @@ of this paper.
 \subsection{Relation to other work}
 
 While integral equation based methods for the
-related ``buckling'' eigenvalue problem
+equivalent \cite{kelliher2009eigenvalue}
+``buckling'' eigenvalue problem
 have been considered previously,
 these typically relied on first-kind integral
 equation formulations of the underlying PDE,
@@ -164,21 +165,24 @@ i.e. formulations in which the BIE operator is
 compact \cite{kitahara2014boundary,antunes2011buckling}.
 %
 This is unsatisfying from a theoretical
-perspective, because such operators are never \note{Travis: why is this the case?} 
-invertible
-(though, they are not injective precisely when $k^2$ is an
-eigenvalue \cite{kitahara2014boundary,antunes2011buckling})
-so that the relation between the non-invertibility of the
-discrete system and the eigenvalues is obscured.
+perspective, because compact operators always
+have nontrivial nullspaces
+(though, by design, the representations in
+\cite{kitahara2014boundary,antunes2011buckling}
+are not injective precisely when
+$k^2$ is an eigenvalue).
 %
-Further,
-such representations create numerical challenges because
-common measures of the ``non-invertibility'' of a matrix,
-like the smallest singular value or the determinant, converge
-rapidly to zero for all values of $k^2$ as the boundary is
-refined. Therefore, the measure of whether $k^2$ is an
-approximate eigenvalue is {\em relative to the current grid}
-for first kind equations.
+This obscures the relation between
+the non-invertibility of the
+discrete system and the eigenvalues;
+in particular, common measures of the
+``non-invertibility'' of a matrix, like the
+smallest singular value or the determinant,
+converge rapidly to zero for all values
+of $k^2$ as the boundary is refined.
+The measure of whether $k^2$ is an
+approximate eigenvalue is then {\em relative to the
+  current grid} for first kind formulations.
 
 The classical single and double layer representations
 for oscillatory Stokes considered in this paper
