@@ -1,6 +1,83 @@
 \section{Uniqueness of the Neumann problem in the exterior
   of several obstacles}
 \label{app:neuuniqueness}
+In this section, we prove the uniqueness result for the oscillatory
+Stokes problem with Neumann boundary conditions on the exterior
+of several simply connected obstacles. 
+\begin{thrm}[Uniqueness of the Exterior Neumann Problem]
+  Suppose that $\Omega$ is the union of a finite collection 
+  of simply connected domains, i.e. $\Omega = \bigcup_{i=1}^m \Omega_{i}$
+  for some $m \in \N$, with $C^{2}$ boundaries, 
+  and let $E = \R^{2} \setminus \bar{\Omega}$ denote its exterior;
+  see~\cref{fig:ext_dom} for an example with $m=4$.
+  Let $\Gamma_{i}$ denote the boundary of $\Omega_{i}$, 
+  and $\Gamma = \bigcup_{i=1}^{m} \Gamma_{i}$ denote the boundary
+  of $\Omega$.
+  Suppose that $\Im(k)\geq 0$ and 
+  that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
+  equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
+  $\bu \equiv 0$ in $E$.
+\end{thrm}
+
+\begin{proof}
+Since $\bt = 0$ on $\Gamma$, it follows
+from~\cref{eq:repinfest} that
+\begin{equation}
+\lim_{r\to\infty}
+\int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
+2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |\be(\bu)|^2 \right)
+dV = 0 \; . \nonumber
+\end{equation}
+
+Suppose that $\Im(k) > 0$. It is then immediate
+that $\bu \equiv 0$ in $E$.
+
+Suppose that $k$ is real. It is clear that
+\begin{equation}
+\lim_{r\to\infty} \int_{|\by|=r} |\bu|^2 dS = 0 \, . \nonumber
+\end{equation}
+Thus, the conditions on $\bu$ and $k$ in \cref{lem:rellich}
+are satisfied, and each component of $\bu$ is a harmonic function
+with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
+in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
+condition becomes $0 = \bt = -p \bnu + 2 \nabla \partial_\nu p/k^2$.
+Because $0 = \btau \cdot \bt = 2\partial_{\tau\nu} p/k^2$,
+$\partial_\nu p  = c_{i}$ on $\Gamma_{i}$ for each $\Gamma_{i}$,
+where $c_{i}$ is a constant. 
+Observe that $|\bu|$ and $|\be(\bu)|$ must be $O(1/r)$ as
+$r\to\infty$. Thus,
+for a radiating pair $(\bu,p)$ with $p$ harmonic,
+we have that $|p| = O(1/r)$ and $|\nabla p| = O(1/r^2)$
+as $r\to\infty$.
+Since the boundary is $C^{2}$ and the boundary data for $p$
+is analytic, we conclude that $p$ is $C^{2}$ in
+$\overline{E}$.
+Furthermore, $\bt=0$ implies $p \bnu = 2\nabla \partial_{\nu} p/k^2$, 
+and taking the dot
+product with $\bnu$, we get
+$p = 2\partial_{\nu \nu}p/k^2$. 
+It then follows that
+$p = -2\partial_{\tau \tau}p/k^2$ on $\Gamma$ since 
+$p$ is harmonic in $E$ and $C^{2}$ in $\overline{E}$. 
+Since $p$ satisfies the radiation condition at $\infty$,
+we have
+\begin{equation}
+\begin{aligned}
+\int_{E} |\nabla p|^2 dV &= 
+\sum_{i=1}^{m} \int_{\Gamma_{i}} p \partial_{\nu}p \,dS \\
+&= \sum_{i=1}^{m} c_{i} \int_{\Gamma_{i}} p \,dS \quad \text{(Since $\partial_{\nu} p = c_{i}$ on
+$\Gamma_{i}$)} \\ 
+&= -\sum_{i=1}^{m} \frac{2c_{i}}{k^2} \int_{\Gamma_{i}} \partial_{\tau \tau} p \,dS 
+\quad \text{(Since $p = -\partial_{\tau \tau}p/k^2$ on $\Gamma$)} \\
+&= 0
+\end{aligned}
+\end{equation}
+Thus, $p$ is a constant in $E$. Furthermore, since $p\to 0$ at $\infty$, 
+we conclude that $p\equiv 0$ in $E$. 
+Finally, since $k^2 \bu = \nabla p$, we conclude that $\bu\equiv 0$ in 
+$E$.
+\end{proof}
+
 
 
 \section{Neumann eigenvalues and eigenfunctions on the unit disk}
