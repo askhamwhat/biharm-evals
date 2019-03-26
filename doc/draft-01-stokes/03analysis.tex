@@ -213,14 +213,14 @@ we have
 \end{equation}
 so that the Stokeslet satisfies the radiation condition.
 \end{proof}
-A consquence of the above lemma is that the oscillatory Stokes
+A consequence of the above lemma is that the oscillatory Stokes
 single layer potential satisfies the radiation condition.
 \begin{cor}
 Suppose that $\Gamma$ is the boundary of a region $\Omega$
 and is $C^{2}$. 
 Suppose that $\bmu \in C(\Gamma)\times C(\Gamma)$, then
 the oscillatory Stokes single layer potential $\bS[\bmu]$,
-as defined in~\cref{eq:singlelayer}, satisfies the radition condition.
+as defined in~\cref{eq:singlelayer}, satisfies the radiation condition.
 \end{cor}
 Unfortunately, the stresslet, as defined in~\cref{eq:ostress}, 
 does not necessarily satisfy the radiation condition.
@@ -235,9 +235,9 @@ The following lemma proves this result.
 \begin{lem}
 Suppose that $\Gamma$ is the boundary of a region $\Omega$
 and is $C^{2}$. 
-Suppose that $\bmu \in C(\Gamma) \times C(\Gamma)$ and satsifies
+Suppose that $\bmu \in C(\Gamma) \times C(\Gamma)$ and satisfies
 $\int_{\Gamma} \bmu \cdot \bnu dS = 0$, where
-$\bnu$ dentoes the outward normal to the curve $\Gamma$.
+$\bnu$ denotes the outward normal to the curve $\Gamma$.
 Then, the oscillatory Stokes 
 double layer potential $\bD[\bmu]$, as defined in \eqref{eq:doublelayer},
 also satisfies the radiation condition.
@@ -474,7 +474,7 @@ k^2 \bu &= \nabla p \label{eq:massconsred} \; .
 \begin{remark}
   It should be noted that in~\cref{lem:rellich}, $\bu$ need
   not be a radiating solution. All that is assumed of $\bu$
-  is that it satifies the PDE in $E$.
+  is that it satisfies the PDE in $E$.
 \end{remark}
 
 We now have the results needed to establish the
@@ -647,7 +647,7 @@ as approached from the exterior and interior, respectively.
 
 For the sake of brevity, we consider only the
 Dirichlet eigenvalue problem but a similar analysis
-could be applied to the Neumann eigenvale problem.
+could be applied to the Neumann eigenvalue problem.
 We analyze two different representations for the
 Dirichlet problem: a double layer potential,
 i.e. setting $\bu=\bD_{k} \bmu$, and a combined-field
@@ -706,7 +706,7 @@ Note that if $\ff$ satisfies the compatibility
 condition $\int_\Gamma \ff \cdot \bnu \, dS =0$, then
 \cref{eq:inteq_dir_int_mod} implies \cref{eq:inteq_dir_int}.
 
-On simply connected domains, there is a one-to-one correspondance between
+On simply connected domains, there is a one-to-one correspondence between
 the eigenvalues of the Dirichlet problem for
 the Stokes equation
 and the values of $k$ for which the operator $(\cI - 2\cD_{k} - 2\cW)$
@@ -874,11 +874,11 @@ are demonstrated in \cref{subsec:spurannulus} on an annulus,
 where both the true and spurious eigenvalues can be
 determined semi-analytically. 
 Analogous with the observation in~\cite{zhao2015robust},
-this lack of one-to-one correspondance between
+this lack of one-to-one correspondence between
 the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
 and the Dirichlet eigenvalues of the Stokes operator on multiply
 connected domains also causes non-robustness and introduces near 
-resonanaces for simply connected domains
+resonances for simply connected domains
 which are almost multiply connected.
 We demonstrate this issue numerically
 in~\cref{subsec:crescent}.
@@ -953,7 +953,7 @@ surface traction, denoted by $\bt^{-}$, is $0$ on $\Gamma$.
 Using~\cref{lem:jump-conds} we observe that $\bt^{+}
 = -i\eta \bmu(\xx)$ and $\bu^{+} = -\bmu(\xx)$ on $\Gamma$, i.e.
 $\bt^{+}=i\eta u^{+}$ and $u^{+}$ satisfies the homogeneous
-exterior impedence problem.
+exterior impedance problem.
 \begin{remark}
   Note that there is potential for confusion here
   in that the exterior limit with respect to $\Omega$ 
@@ -1165,7 +1165,7 @@ denote all the Dirichlet eigenvalues of Stokes equation
 on $\Omega$ contained in the interval $[a,b]$. 
 Suppose further that all the eigenvalues have multiplicity $1$.
 Let $f^{N}(k) = \text{det}(I+M^{N}_{k})$, where $M^{N}_{k}$ 
-is the Nystr\"{o}m discretzation of $-2\cD_{k} - 2\cW$ with Kress
+is the Nystr\"{o}m discretization of $-2\cD_{k} - 2\cW$ with Kress
 quadrature.
 Then there exists $N_{0} \in \mathbb{N}$ such
 that for all $N>N_{0}$, 
@@ -1176,7 +1176,7 @@ such that $\sup_{j=1}^{M} |\omega_{j} - k_{j}| < C e^{-aN}$.
 \end{thrm}
 
 \begin{proof}
-  The proof follows from small modificiations of the
+  The proof follows from small modifications of the
   proofs contained in~\cite{zhao2015robust}. 
 \end{proof}
 
@@ -1239,7 +1239,7 @@ result~\cref{thm:mainconvfreddet}
 should be true up to a logarithmic factor in the rate
 of convergence, since the singular values of the operator
 $\cM_{k}$ decay like $\frac{1}{n}$, and the
-Fredholm determinant divergers logarithmically. 
+Fredholm determinant diverges logarithmically. 
 In~\cref{subsec:convannulus}, we demonstrate this fact
 numerically on the annulus, where the eigenvalues are
 analytically known. 
