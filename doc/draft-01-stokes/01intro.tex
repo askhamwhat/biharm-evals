@@ -51,21 +51,21 @@ investigation
   polya1951isoperimetric,bramble1963pointwise,
   ashbaugh1996fundamental,leriche2004stokes,
   kelliher2009eigenvalues,antunes2011buckling},
-particularly how they relate to the eigenvalues and
-eigenfunctions of the drum.
+especially as they relate to the eigenvalues and
+eigenfunctions of the Laplacian.
 
 Historically, the Stokes eigenvalue problem serves as a
 common model problem for numerical eigenvalue analysis
 with a fourth order operator (here, the bi-Laplacian).
 %
 Further, numerical simulation has long played an
-important role in the analyses described above --- both for
+important role in the analyses cited above --- both for
 estimating the eigenvalues on domains of practical
-interest and for exploring open conjectures.
+interest and in forming new conjectures.
 
 Borrowing the language of~\cite{zhao2015robust},
-which concerns the Laplace or ``drum'' eigenvalue
-problem,
+which concerns the eigenvalues of the Laplacian
+(also known as the membrane or ``drum'' problem),
 the numerical treatment of the Stokes eigenvalue
 problem can be divided into two basic approaches.
 %
@@ -94,7 +94,6 @@ but point to \cite{johnson1974beam,
   lovadina2009posteriori,huang2011numerical,
   carstensen2014guaranteed}
 for some representative examples.
-
 
 As noted in~\cite{zhao2015robust}, integral equation based
 methods provide several advantages.
@@ -165,17 +164,18 @@ equation formulations of the underlying PDE,
 i.e. formulations in which the BIE operator is
 compact \cite{kitahara2014boundary,antunes2011buckling}.
 %
-This is unsatisfying from a theoretical
-perspective, because compact operators always
-have nontrivial nullspaces
-(though, by design, the representations in
+This is unsatisfying from a numerical
+perspective, because the spectrum of a
+compact operator either contains zero
+or has zero as a limit point
+(by design, the representations in
 \cite{kitahara2014boundary,antunes2011buckling}
 are not injective precisely when
 $k^2$ is an eigenvalue).
 %
 This obscures the relation between
-the non-invertibility of the
-discrete system and the eigenvalues;
+the non-invertibility of discrete approximations
+of the operator and the eigenvalues;
 in particular, common measures of the
 ``non-invertibility'' of a matrix, like the
 smallest singular value or the determinant,
