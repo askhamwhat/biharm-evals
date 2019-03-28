@@ -78,7 +78,64 @@ Finally, since $k^2 \bu = \nabla p$, we conclude that $\bu\equiv 0$ in
 $E$.
 \end{proof}
 
+\section{Dirichlet eigenvalues and eigenfunctions on the unit disk}
+In this section, we compute some of the Dirichlet eigenvalues
+corresponding to the a subset of radially symmetric eigenfunctions
+on the annulus. 
+In polar coordinates $(r,\theta)$, consider the annulus defined by 
+$R_{1}<r<R_{2}$. 
+Suppose that $\bu$ is of the form 
+\begin{equation}
+\bu = \nabla^{\perp}\left( \alpha H_{0}(kr) + \beta J_{0}(kr) \right) \, ,
+\label{eq:annulus_direig}
+\end{equation}
+and $p=0$.
 
+Clearly, this pair satisfies the osciallatory Stokes equation
+with parameter $k$, since $J_{0}(kr)$ and $H_{0}(kr)$ 
+satisfy the Helmholtz equation on the annulus.
+
+Let $\hat{r},\hat{\theta}$ denote the unit vectors in polar coordinates.
+A simple calculation shows that 
+\begin{equation}
+\begin{aligned}
+u_{r} &= \bu \cdot \hat{r}  = 0 \, \\
+u_{\theta} &= \bu \cdot \hat{\theta} = k(\alpha  H_{0}'(kr) + \beta J_{0}'(kr)) \, .
+\end{aligned}
+\end{equation}
+
+This in particular implies that on $r=R_{1}$,
+$u_{\theta}$ takes on the constant value,
+$k(\alpha H_{0}'(kR_{1}) + \beta J_{0}'(kR_{1}))$.
+Similarly, on $r=R_{2}$, 
+$u_{\theta}$ takes on the constant value,
+$k(\alpha H_{0}'(kR_{2}) + \beta J_{0}'(kR_{2}))$.
+
+Thus, if $k$ satisfies, 
+\begin{equation}
+H_{0}'(kR_{1}) J_{0}'(kR_{2}) - H_{0}'(kR_{2})J_{0}'(kR_{1}) = 0 \, ,
+\end{equation}
+and for those values of $k$ if 
+$\alpha,\beta$ are non-zero solutions to system of equations 
+\begin{equation}
+\begin{bmatrix}
+H_{0}'(kR_1) & J_{0}'(kR_{1}) \\
+H_{0}'(kR_{2}) & J_{0}'(kR_{2}) 
+\end{bmatrix}
+\begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0
+\end{bmatrix}
+\, ,
+\end{equation}
+then $k$ is a Dirichlet eigenvalue and $\bu$ 
+defined by~\cref{eq:annulus_direig}
+is the corresponding eigenfunction.
 
 \section{Neumann eigenvalues and eigenfunctions on the unit disk}
 In this section, we analytically compute some of the Neumann eigenvalues
