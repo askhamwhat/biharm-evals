@@ -117,11 +117,25 @@
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\abstract{The Stokes eigenvalue problem is a common
-  model problem in the numerical analysis of
-  the eigenvalues of higher-order partial differential
-  equations.
-  }
+\abstract{The boundary integral equation (BIE) framework
+  provides robust and scalable eigenvalue computations, which
+  owes to the fact that only the boundary of the domain
+  must be discretized and that there is no high frequency
+  ``pollution'' when using a Green's function to analytically
+  represent the propagation of oscillatory waves.
+  %
+  In this paper, we detail the theoretical justification
+  for a BIE approach to the Stokes eigenvalue problem on
+  simply and multiply-connected planar domains, which entails
+  a treatment of the uniqueness theory for oscillatory
+  Stokes equations on exterior domains. 
+  %
+  Then, using well-established techniques for
+  discretizing BIEs and fast linear algebra,
+  we present numerical results which confirm
+  the analytical claims of the paper and demonstrate
+  the efficiency of the overall approach.
+}
 
 
 \input{01intro}

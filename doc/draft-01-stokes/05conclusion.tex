@@ -116,8 +116,19 @@ integral equations discretized with
 panel-corrected schemes (as described in
 \cref{sec:numerical}) is yet to be proved.
 %
+When addressing high frequency problems,
+the fast-direct solver used to evaluate
+determinants in this paper will no longer
+have near-linear scaling~\cite{ho2012fast}.
+%
+The design of fast-direct solvers in this
+regime is the subject of ongoing research, and
+to the best of our knowledge, fast determinant
+computation at high frequency is an open
+question.
+%
 Finally, it is worth exploring alternatives
 to the Fredholm determinant which perform well
 for layer potentials that are not trace class
-on the boundary.
-
+on the boundary or for problems at higher
+frequencies.
