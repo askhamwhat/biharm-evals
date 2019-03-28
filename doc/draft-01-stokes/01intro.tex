@@ -40,12 +40,14 @@ counting multiplicities.
 The eigenvalues (and eigenfunctions)
 of the Stokes operator have applications in the
 stability analysis of stationary solutions of the
-Navier--Stokes equations \cite{osborn1976approximation}
-and in the study of decaying two dimensional turbulence
-\cite{schneider2008final}.
+Navier--Stokes equations \cite{osborn1976approximation},
+in the study of decaying two dimensional turbulence
+\cite{schneider2008final}, and as a trial basis for
+numerical simulations of the Navier--Stokes
+equations~\cite{batcho1994generalized}.
 %
 The eigenvalues and eigenfunctions of the Stokes
-operator are the subject of intense analytical
+operator are also the subject of intense analytical
 investigation
 \cite{taylor1933buckling,szego1950membranes,
   polya1951isoperimetric,bramble1963pointwise,
@@ -60,8 +62,9 @@ with a fourth order operator (here, the bi-Laplacian).
 %
 Further, numerical simulation has long played an
 important role in the analyses cited above --- both for
-estimating the eigenvalues on domains of practical
-interest and in forming new conjectures.
+computing the eigenvalues and eigenfunctions
+on domains of practical interest and in forming
+new conjectures.
 
 Borrowing the language of~\cite{zhao2015robust},
 which concerns the eigenvalues of the Laplacian
@@ -77,10 +80,10 @@ as the eigenvalues of the discrete system.
 %
 The second class of methods reformulate the 
 oscillatory Stokes equations as a boundary integral
-equations which are discretized.
+equation (BIE) which is discretized.
 The eigenvalues are then found
-by a nonlinear search for the values of $k$ where the BIE 
-is not invertible.
+by a nonlinear search for the values of
+$k$ where the BIE is not invertible.
 %
 
 There is a large body of research on the first class of methods
@@ -95,8 +98,8 @@ but point to \cite{johnson1974beam,
   carstensen2014guaranteed}
 for some representative examples.
 
-As noted in~\cite{zhao2015robust}, integral equation based
-methods provide several advantages.
+As noted in~\cite{zhao2015robust}, integral
+equation based methods provide several advantages.
 %
 Because the BIE is defined on the
 boundary alone, there is a reduction in the
@@ -132,8 +135,8 @@ to the discretized determinant.
 
 With the efficiency of the approach of
 \cite{zhao2015robust} for the drum problem in mind,
-we develop an integral equation based method for the Stokes eigenvalue
-problem.
+we develop an integral equation based method for the
+Stokes eigenvalue problem.
 %
 This requires that a layer
 potential representation of the solution
@@ -230,7 +233,12 @@ can be used in the oscillatory Stokes context.
 %
 In \cref{sec:numerical}, we describe the numerical
 methods we use to discretize the BIEs and to perform
-fast determinant calculations.
+determinant calculations.
+%
+At the moderate frequencies considered in this
+paper, we find that standard fast-direct
+solvers provide a reasonably efficient determinant
+evaluation.
 %
 That section also includes numerical experiments
 which demonstrate some of the paper's analytical

@@ -1023,3 +1023,145 @@ chunker.ders2 = ders2;
 chunker.hs = hs;  
 
 end
+
+@function chunker = chunkcorner(verts,opts)
+%CHUNKPOLY return a chunker corresponding to
+% the corner points specified by verts and the
+% opts structure. Can return a polygon with rounded
+% corners
+%
+% input
+%    verts - (ndim,nverts) array of vertices
+%            in order
+%    opts - options structure
+%    	  opts.widths = width of cut-out around
+%                 each piece of curve (defaults to
+%                                      1/10th of minimum
+%                                      of length of adjoining
+%				       edges)
+%         opts.autowidths = automatically compute widths (false)
+%         opts.autowidthsfac = if using autowidths, set widths
+%                             to autowidthsfac*minimum of adjoining
+%                             edges (0.1)
+%    	  opts.ifclosed = 1, closed polygon
+%                         0, open segment (1)
+%     	  opts.belltype = 'gauss', Gaussian curve
+%                         'ck', C^k regularity "bell"
+%                         ('gauss')
+%         opts.ckpars   = options for ck fit
+%  	  	opts.ckpars.order = regularity k (6)
+%         opts.nchmax - maximum number of chunks (10000)
+% 	  opts.eps - resolve curve to tolerance eps
+%                    resolve coordinates, arclength,
+%          	     and first and second derivs of coordinates
+%		     to this tolerance (1.0e-6) only used
+%                    with rounding 
+%	  opts.nover - once resolved, oversample nover times (0)
+%    	  opts.maxchunklen - maximum length of a chunk
+%                          (max edge length, i.e. not enforced)
+%         opts.k - order of underlying Gauss nodes on chunks
+%                  (16)
+%                  
+%
+
+[ndim,nvert] = size(verts);
+assert(ndim == 2, ...
+	    'corner description only implemented in 2D for now')
+
+belltype = 'gauss';
+ckpars = [];
+ckpars.order = 6;
+autowidths = false;
+autowidthsfac = 0.1;
+nchmax = 10000;
+ifclosed = 1;
+eps = 1e-6;
+k = 16;
+nover = 0;
+
+if isfield(opts,'ifclosed')
+   ifclosed = opts.ifclosed;
+end
+if isfield(opts,'belltype')
+   belltype = opts.belltype'
+end
+if isfield(opts,'ckpars')
+   if isfield(opts.ckpars,'order')
+      ckpars.order = opts.ckpars.order;
+   end
+end
+if isfield(opts,'nchmax')
+   nchmax = opts.nchmax;
+end
+if isfield(opts,'eps')
+   eps = opts.eps;
+end
+if isfield(opts,'k')
+   k = opts.k;
+end
+if isfield(opts,'nover')
+   nover = opts.nover;
+end
+   
+if (ifclosed == 1)
+   verts2 = [verts, verts(:,1)];
+   verts3 = [verts(:,end), verts, verts(:,1:2)];
+   edges2 = sum(diff(verts3,1,2).^2,1);
+else
+   verts2 = verts;
+   edges2 = [0, sum(diff(verts,1,2).^2,1), 0];
+end
+
+widths_not_set = true;
+
+if isfield(opts,'widths')
+   widths = opts.widths;
+   if (ifclosed == 1)
+      widths = [widths(:);widths(1)];
+   end
+   widths_not_set = false;
+end
+if isfield(opts,'autowidths')
+   autowidths = opts.autowidths;
+end
+if isfield(opts,'autowidthsfac')
+   autowidthsfac = opts.autowidthsfac;
+end
+
+if (autowidths || widths_not_set)
+   widths = autowidthsfac*...
+   	  min(edges2(1:end-1),edges2(2:end));
+end
+
+chunks = zeros(ndim,k,nchmax);
+ders = zeros(ndim,k,nchmax);
+ders2 = zeros(ndim,k,nchmax);
+adjs = zeros(2,nchmax);
+hs = zeros(nchmax,1);
+nch = 0;
+ier = 0;
+
+
+i1 = 0; i2 = 0; p1 = 0.0; p2 = 0.0;
+ibell = 1;
+nverts = size(verts2,2);
+if strcmpi(belltype,'ck')
+   ibell = 2;
+   i1 = ckpars.order;
+end
+
+# FORTRAN chunkpolysmooth(inout int[1] ier, double[1] eps, double[] widths, int[1] ibell, double[1] p1, double[1] p2, int[1] i1, int[1] i2, int[1] nverts, double[] verts2, int[1] ifclosed, int[1] nover, int[1] k, inout int[1] nch, inout double[] chunks, inout int[] adjs, inout double[] ders, inout double[] ders2, inout double[] hs);
+
+chunker = [];
+chunker.adjs = adjs(:,1:nch);
+chunker.k = k;
+chunker.nch = nch;
+chunks = reshape(chunks,ndim,k,nchmax);
+ders = reshape(ders,ndim,k,nchmax);
+ders2 = reshape(ders2,ndim,k,nchmax);
+chunker.chunks = chunks(:,:,1:nch);
+chunker.ders = ders(:,:,1:nch);
+chunker.ders2 = ders2(:,:,1:nch);
+chunker.hs = hs(1:nch);
+
+end
