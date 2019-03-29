@@ -48,6 +48,8 @@
 \def\TT{{\bf T}}
 \def\bS{{\bf S}}
 \def\bD{{\bf D}}
+\def\bC{{\bf C}}
+\def\bB{{\bf B}}
 \def\cN{{\mathcal N}}
 \def\cK{{\mathcal K}}
 \def\cB{{\mathcal B}}
@@ -118,11 +120,11 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \abstract{The boundary integral equation (BIE) framework
-  provides robust and scalable eigenvalue computations, which
-  owes to the fact that only the boundary of the domain
-  must be discretized and that there is no high frequency
-  ``pollution'' when using a Green's function to analytically
-  represent the propagation of oscillatory waves.
+  provides robust and scalable eigenvalue computations
+  due to (a) the reduction in the dimension of the problem to
+  be discretized and (b)
+  the absence of high frequency ``pollution'' when using
+  a Green's function to represent propagating waves.
   %
   In this paper, we detail the theoretical justification
   for a BIE approach to the Stokes eigenvalue problem on
