@@ -52,7 +52,7 @@ by its values at the discretization nodes,
 which we denote by
 $\sigma_{qp} \approx \sigma(\xx_q(t_p))$.
 %
-The basis of a GGQ is a set of 
+The basis of a GGQ rule is a set of 
 support nodes and weights for the
 contribution to the integral from the
 ``self'' panel (panel $j$) and the adjacent
@@ -108,15 +108,76 @@ interpolation point, which is a parallelizable
 $O(N)$ calculation. The ``far'' interactions
 are computed on-the-fly.
 
+Once the discretization is set, we can form
+a compressed representation of the system matrix
+using recursive skeletonization~\cite{ho2012fast}.
+%
+We use the recursive skeletonization algorithm
+included in the fast linear algebra in
+MATLAB (\texttt{FLAM}) package by
+Kenneth Ho~\cite{hoFLAM_1253582}.
+%
+At low-to-medium frequencies, the scaling
+of the recursive skeletonization algorithm
+is $O(N\log N)$ in operation count and
+storage and allows for a fast determinant
+calculation in $O(N\log N)$ time as a
+follow-up step, by using a generalization
+of the Sylvester determinant formula.
+%
+At higher-frequencies,
+the recursive skeletonization procedure,
+which is based on the assumption that off-diagonal
+blocks of the matrix are of low rank,
+breaks down and does not offer a speed advantage.
+%
+These algorithms take a precision parameter
+$\epsflam$ which determines the
+accuracy to which any sub-blocks of the matrix
+should be compressed. In all experiments,
+we set $\epsflam = 10^{-14}$.
+
+To estimate the eigenvalues, we fit a Chebyshev
+interpolant to the discretized determinant as a
+function of $k$ on intervals.
+%
+This is done adaptively so that the Chebyshev
+coefficients of the determinant have decayed
+to the point that the ratio of the last
+coefficient to the largest coefficient is below
+some threshold.
+%
+In all experiments, we set this threshold
+as $\epscheb = 10^{-13}$.
+%
+We perform this fit using the \texttt{chebfun}
+utility in the package of the same name
+\cite{driscoll2014chebfun}
+so that we can make use
+of the \texttt{roots} utility to approximate
+the roots of the determinant.
+
+Below, we let $D^N_k$, $S^N_k$ and $W^N$ denote
+the discretized versions of the $\cDk$,
+$\cSk$, and $\cW$ operators, respectively.
 
 
-\subsection{Spurious eigenvalues --- annulus}
+
+\subsection{Eigenvalues of an annulus}
+
+\subsubsection{Spurious eigenvalues}
 \label{subsec:spurannulus}
-  
-\subsection{Convergence study --- annulus}
+
+
+
+\subsubsection{Convergence study}
 \label{subsec:convannulus}
 
-\subsection{Robustness on a nearly multiply connected domain}
-\label{subsec:crescent}
+\subsection{Eigenvalues of a barbell-shaped domain}
+\label{subsec:barbell}
+
+%\subsection{Robustness on a nearly multiply connected domain}
+%\label{subsec:crescent}
 
 \subsection{Eigenvalues of a domain with several inclusions}
+
