@@ -22,22 +22,17 @@ value problems.
 To prove the uniqueness results, we follow the 
 structure presented in Colton and Kress~\cite[Ch. 3]{colton1983integral}
 for the scalar Helmholtz equation.
-%
-First, we define the interior boundary value problems
-of interest, which is straightforward.
-%
-For the exterior problems, we introduce a radiation condition
-for the equations and establish that, under certain assumptions,
-the standard layer potentials satisfy the radiation condition.
-%
-By including the radiation condition, it is then
-possible to define well-posed versions of the
-exterior boundary value problems.
-%
-Then we derive a number of uniqueness
-results for some standard boundary value problems
-on exterior domains.
-
+While uniqueness results for interior Dirchilet, Neumann, and impedance
+problems follow from energy considerations and compactness
+arguments, the proofs for uniqueness of exterior
+results are more involved. 
+In particular,
+this entails making the exterior problems
+well-posed by imposing an appropriate radiaiton condition.
+We present well-posed boundary value formulations 
+for both interior and exterior Dirichlet, Neumann and impedance
+boundary value problems, and also
+present uniqueness results for all of them.
 
 Along with the Fredholm alternative, these uniqueness
 results are sufficient to prove
@@ -92,6 +87,19 @@ problem, i.e.
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in \Omega \, ,  \\
     \bt &= \bg \quad \bx \in \Gamma \, .
+  \end{aligned}
+  \end{equation}
+\end{definition}
+
+\begin{definition}[Interior impedance problem]
+  Let $\bh \in C(\Omega)$ be given and suppose 
+  $\eta \in \mathbb{C}$ with $\Re{(\eta)},\Im{(\eta)}>0$. 
+  Find $(\bu,p) \in A(\Omega)$  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:neu_interior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in \Omega \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in \Omega \, ,  \\
+    \bt - i \eta \bu &= \bh \quad \bx \in \Gamma \, .
   \end{aligned}
   \end{equation}
 \end{definition}
@@ -158,7 +166,7 @@ satisfies the radiation condition in Definition \ref{def:radcond}.
 \end{lem}
 \begin{proof}
 Consider the Stokeslet induced by an arbitrary charge
-$k^2 \bpsi$ at the origin where $\psi \in \mathbb{C}^2$ 
+$k^2 \bpsi$ at the origin where $\bpsi \in \mathbb{C}^2$ 
 is a constant. Let $r = |\xx|$,
 $\bnu(\xx) = \xx/|\xx|$, and $\btau(\xx) = \bnu(\xx)^\perp$. We have
 
@@ -326,6 +334,22 @@ summarize in
   \cref{def:radcond}.
 \end{definition}
 
+\begin{definition}[Exterior Impedence problem]
+  \label{def:neu_exterior}  
+  Let $\bh \in C(\Gamma)$ be given and suppose that
+  $\eta \in \mathbb{C}$ with $\Re{(\eta)},\Im{(\eta)} >0$. 
+  Find $(\bu,p) \in A(E)$
+  such that
+  \begin{equation}
+  \begin{aligned} \label{eq:neu_exterior}
+    \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
+    \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
+    \bt - i\eta \bu &= \bh \quad \bx \in \Gamma \, ,
+  \end{aligned}
+  \end{equation}
+  and $(\bu,p)$ satisfies the radiation condition in
+  \cref{def:radcond}.
+\end{definition}
 
 
 \subsection{Uniqueness results}
@@ -353,6 +377,25 @@ are real-valued.
   zero. 
   Taking the real and imaginary parts of \cref{eq:greenlike},
   it is clear that $\bu \equiv 0$, if $\text{Im}(k) \neq 0$.
+\end{proof}
+
+In the following lemma, we prove uniqueness for the
+interior impedence problem.
+
+\begin{thrm}
+  Let $\Omega$ be a bounded domain and suppose that
+  $\Re(k),\Im (k) > 0$. Then the interior
+  impendence problem has a unique solution.
+\end{thrm}
+\begin{proof}
+  Plugging in $\bt = i\eta \bu$ in~\cref{eq:greenlike}
+  and taking the imaginary part, we get
+  \begin{equation}
+   2 \Re{(k)} \Im{(k)} \int_{\Omega} |\bu|^2\, dV + 2\Re{(\eta)} \int_{\Gamma}
+   |\bu|^2 \, dS = 0 \, ,
+  \end{equation}
+  from which it is is clear that $\bu \equiv 0$, since
+  $\Re{(\eta)}, \Re{(k)}, \Im{(k)} > 0$.
 \end{proof}
 
 The following lemmas are useful in establishing the uniqueness
@@ -516,8 +559,14 @@ in $E$.
 \end{proof}
 
 \begin{thrm}[Uniqueness of the Exterior Neumann Problem]
-  Let the unbounded region $E$ be given as the exterior
-  of one simply connected domain.
+  Suppose that $\Omega$ is the union of a finite collection 
+  of simply connected domains, i.e. $\Omega = \bigcup_{i=1}^m \Omega_{i}$
+  for some $m \in \N$, with $C^{2}$ boundaries, 
+  and let $E = \R^{2} \setminus \bar{\Omega}$ denote its exterior;
+  see~\cref{fig:ext_dom} for an example with $m=4$.
+  Let $\Gamma_{i}$ denote the boundary of $\Omega_{i}$, 
+  and $\Gamma = \bigcup_{i=1}^{m} \Gamma_{i}$ denote the boundary
+  of $\Omega$.
   Suppose that $\Im(k)\geq 0$ and 
   that $(\bu,p)$ is a radiating solution to the oscillatory Stokes
   equation in $E$ with $\bt = 0$ on the boundary $\Gamma$, then
@@ -547,30 +596,41 @@ with $\bu \to 0$ as $r \to \infty$. Furthermore, as observed
 in \cref{rmk:harmu}, $k^2 \bu = \nabla p$. Then, the boundary
 condition becomes $0 = \bt = -p \bnu + 2 \nabla \partial_\nu p/k^2$.
 Because $0 = \btau \cdot \bt = 2\partial_{\tau\nu} p/k^2$,
-$\partial_\nu p $ is a constant on $\Gamma$.
+$\partial_\nu p  = c_{i}$ on $\Gamma_{i}$ for each $\Gamma_{i}$,
+where $c_{i}$ is a constant. 
 Observe that $|\bu|$ and $|\be(\bu)|$ must be $O(1/r)$ as
 $r\to\infty$. Thus,
 for a radiating pair $(\bu,p)$ with $p$ harmonic,
 we have that $|p| = O(1/r)$ and $|\nabla p| = O(1/r^2)$
 as $r\to\infty$.
-Using this bound and that $p$ is harmonic,
-the divergence theorem implies that $\partial_\nu p=0$ on $\Gamma$.
-Thus, $\bt = -p\bnu$ so that $p = 0$ on $\Gamma$. By the uniqueness
-of solutions to the Dirichlet problem for Laplace's equation,
-we have that $p=0$ so that $\uu \equiv 0$.
+Since the boundary is $C^{2}$ and the boundary data for $p$
+is analytic, we conclude that $p$ is $C^{2}$ in
+$\overline{E}$.
+Furthermore, $\bt=0$ implies $p \bnu = 2\nabla \partial_{\nu} p/k^2$, 
+and taking the dot
+product with $\bnu$, we get
+$p = 2\partial_{\nu \nu}p/k^2$. 
+It then follows that
+$p = -2\partial_{\tau \tau}p/k^2$ on $\Gamma$ since 
+$p$ is harmonic in $E$ and $C^{2}$ in $\overline{E}$. 
+Since $p$ satisfies the radiation condition at $\infty$,
+we have
+\begin{equation}
+\begin{aligned}
+\int_{E} |\nabla p|^2 dV &= 
+\sum_{i=1}^{m} \int_{\Gamma_{i}} p \partial_{\nu}p \,dS \\
+&= \sum_{i=1}^{m} c_{i} \int_{\Gamma_{i}} p \,dS \quad \text{(Since $\partial_{\nu} p = c_{i}$ on
+$\Gamma_{i}$)} \\ 
+&= -\sum_{i=1}^{m} \frac{2c_{i}}{k^2} \int_{\Gamma_{i}} \partial_{\tau \tau} p \,dS 
+\quad \text{(Since $p = -\partial_{\tau \tau}p/k^2$ on $\Gamma$)} \\
+&= 0
+\end{aligned}
+\end{equation}
+Thus, $p$ is a constant in $E$. Furthermore, since $p\to 0$ at $\infty$, 
+we conclude that $p\equiv 0$ in $E$. 
+Finally, since $k^2 \bu = \nabla p$, we conclude that $\bu\equiv 0$ in 
+$E$.
 \end{proof}
-
-\begin{remark}
-For proving the correspondence between Stokes eigenvalues
-for bounded regions, $\Omega$, and the non-invertibility
-of corresponding second kind integral equations defined on
-the boundary, $\Gamma$, we only need the uniqueness result
-for the Neumann problem in the exterior of a single
-simply connected domain. The proof of the exterior
-Neumann problem in the exterior of several
-obstacles is more involved and presented
-in~\cref{app:neuuniqueness}.
-\end{remark}
 
 \begin{thrm}[Uniqueness of the Exterior Impedance Problem]
   Let the unbounded region $E$ be given as the exterior
@@ -775,7 +835,7 @@ get that $\bmu = \bu^{-} - \bu^{+} = 0$.
 Thus $(\cI - 2\cD_{k} - 2\cW)$ is invertible if $k^2$
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
-From \cref{thrm:rep-theorem} we have 
+To prove the converse, note that from \cref{thrm:rep-theorem} we have 
   \begin{equation} 
     \bS_{k} [\bt](\xx) - \bD_{k}[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
@@ -792,7 +852,7 @@ From \cref{thrm:rep-theorem} we have
   $(\bu,\bt^{-})$ and evaluating the surface traction
   using~\cref{lem:jump-conds}, we get
   \begin{equation}
-    \bt^{-} = (\cDt_{k} + \frac{1}{2} \cI) \bt^{-} \,
+    \bt^{-} = \left(\cDt_{k} + \frac{1}{2} \cI\right) \bt^{-} \,
     \implies \left(\cI - 2\cDt_{k} \right) 
     \bt^{-} = 0 \, .
   \end{equation}
@@ -841,7 +901,7 @@ the extension to the general case is straightforward.
 
 \begin{proof}
   Suppose that $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
-  Let $\tilde{\bu}$ be the eigenmode corresponding to $k^2$. 
+  Let $\tilde{\bu}$ be the eigenfunction corresponding to $k^2$. 
   Note that $\tilde{\bu}$ is not identically $0$ on the boundary
   of $\Omega_{1}$, which we denote by $\Gamma_1$.
   Since $\tilde{\bu}$ is an interior Neumann eigenfunction, we note that
@@ -975,24 +1035,13 @@ $\Gamma_{0}$. To show that $\bmu=0$ on
 $\Gamma_{j}$, we observe that $\bu$ is also a
 solution to the oscillatory Stokes equation in each
 of the obstacles $\Omega_{j}$.
-Applying the energy-type identity \cref{eq:greenlike}
-and using the fact that 
-the interior limits with respect to $\Omega_{j}$
-of the surface traction and the velocity
-are $i\eta \bmu$ and $\bmu$ respectively, we get
-\begin{equation}
-\int_{\Omega_{j}} (|\be(\bu)|^{2} - \overline{k}^{2} |\bu|^2) dV 
-= \int_{\Gamma_{j}} \bu \cdot \overline{\bt} dS = 
-i\overline{\eta}\int_{\Gamma_{j}} |\bmu|^2 dS \, .
-\end{equation}
-Taking the imaginary part of the above equation,
-we get
-\begin{equation}
-2 \text{Re}(k) \text{Im}(k) \int_{\Omega_{j}} |\bu|^2 + \text{Re}(\eta)
-\int_{\Gamma_{j}} |\bmu|^2 dS = 0 \, .
-\end{equation}
-Since $\text{Re}(\eta)>0$, this implies that
-$\bmu=0$ for $\xx \in \Gamma_{j}$, $j=1,2,\ldots m$. 
+Using the jump conditions in~\cref{lem:jump-conds},
+we get that $\bt^{+} = i\eta \bmu$ and $\bu^{+} = \bmu$.
+From the uniqueness of solutions to the interior 
+impedence problem, we conlcude that $\bu \equiv 0$
+in $\Omega_{j}$, which in particular implies
+that $\bmu = \bu^{+} = 0$ for $\xx \in \Gamma_{j}$,
+$j=1,2,\ldots m$.
 Thus, $\cI - 2\cD_{k} -2i\eta\cS_{k} -2\cW$ is
 invertible when $k^2$ is not a Dirichlet eigenvalue
 for the Stokes equation on $\Omega$.
