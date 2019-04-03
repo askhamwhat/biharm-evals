@@ -129,6 +129,7 @@ if opts.FLAM == 1
     cfprintf('time %5.2e\n',t5)
 
     cfprintf('total time %6.3e\n',t3+t4+t5)
+    cfprintf('determinant = %5.2e\n',d)
     
     varargout{1} = F_wpre;
 

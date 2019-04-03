@@ -112,18 +112,19 @@ Once the discretization is set, we can form
 a compressed representation of the system matrix
 using recursive skeletonization~\cite{ho2012fast}.
 %
-We use the recursive skeletonization algorithm
+We use the implementation of this procedure
 included in the fast linear algebra in
-MATLAB (\texttt{FLAM}) package by
-Kenneth Ho~\cite{hoFLAM_1253582}.
+MATLAB (\texttt{FLAM}) package
+\cite{hoFLAM_1253582}.
 %
 At low-to-medium frequencies, the scaling
 of the recursive skeletonization algorithm
 is $O(N\log N)$ in operation count and
-storage and allows for a fast determinant
+storage and, by using a generalization
+of the Sylvester determinant formula,
+allows for a fast determinant
 calculation in $O(N\log N)$ time as a
-follow-up step, by using a generalization
-of the Sylvester determinant formula.
+follow-up step.
 %
 At higher-frequencies,
 the recursive skeletonization procedure,
