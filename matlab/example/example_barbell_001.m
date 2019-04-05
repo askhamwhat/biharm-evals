@@ -2,7 +2,7 @@
 %EXAMPLE_BARBELL_001
 %
 % compute a chebfun representation of the fredholm determinant 
-% of the system I-2D for a domain on the interval [0.5,24.5]
+% of the system I-2D for a domain on the interval [0.5,6.5]
 % save chebfun, domain, and some settings to a file
 
 filebase = 'example_barbell_001'; 

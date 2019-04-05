@@ -1,6 +1,10 @@
 \section{Numerical Results}
 \label{sec:numerical}
 
+\subsection{Numerical methods}
+
+\subsubsection{Discretizing the BIE}
+
 In order to turn the BIEs analyzed
 above into discrete linear systems,
 we require some standard techniques
@@ -15,7 +19,7 @@ interval $[-1,1]$.
 %
 Each component of $\bx_j$ is taken to be
 a polynomial interpolant over the
-standard 16th order Legendre nodes on
+standard 16th-order Legendre nodes on
 $[-1,1]$, denoted by $t_n$, so that
 the total number of discretization
 points is $N=16N_p$.
@@ -28,9 +32,9 @@ arc-length density of a panel, which
 we denote by $s_j(t) := |\bx'_j(t)|$.
 %
 Finally, we denote the set of panels
-which are adjacent to panel $i$
-by $A(i)$. On a closed curve,
-$A(i)$ contains two integers.
+which are adjacent to panel $j$
+by $A(j)$. On a closed curve,
+$A(j)$ contains two integers.
 
 The integral kernels of the single and
 double layer potentials have weak
@@ -50,7 +54,7 @@ GGQ is a Nystr\"{o}m-type discretization ---
 the density is approximated 
 by its values at the discretization nodes,
 which we denote by
-$\sigma_{qp} \approx \sigma(\xx_q(t_p))$.
+$\sigma_{qp} := \sigma(\xx_q(t_p))$.
 %
 The basis of a GGQ rule is a set of 
 support nodes and weights for the
@@ -108,6 +112,24 @@ interpolation point, which is a parallelizable
 $O(N)$ calculation. The ``far'' interactions
 are computed on-the-fly.
 
+\begin{remark}
+  \label{rmk:levelrestrict}
+  We ensure that ``far'' interactions
+  are handled to high precision by requiring that
+  no two adjacent panels differ in length
+  by more than a factor of 2. On a domain which does
+  not nearly self-intersect this
+  guarantees that no ``far'' interactions occur
+  which are much closer than 1/2 of a panel away
+  (assuming panels are relatively flat).
+  Because the location of the singularity is
+  bounded away from the panel and the smooth
+  rule is of high order, we obtain a quadrature
+  rule with sufficient precision.
+\end{remark}
+
+\subsubsection{Fast determinant method}
+
 Once the discretization is set, we can form
 a compressed representation of the system matrix
 using recursive skeletonization~\cite{ho2012fast}.
@@ -138,6 +160,29 @@ accuracy to which any sub-blocks of the matrix
 should be compressed. In all experiments,
 we set $\epsflam = 10^{-14}$.
 
+The compressed representation also allows
+for fast applications of the system matrix,
+its transpose, the inverse of the system
+matrix, and the inverse transpose to
+vectors.
+%
+In particular, this allows us to estimate the
+smallest singular values by performing
+randomized subspace iteration, see
+\cite[Algorithm 4.4]{halko2011finding},
+on the inverse operator.
+%
+Below, we use the smallest singular value
+as a measure of the quality of the
+eigenvalues found by approximating the
+roots of the determinant.
+%
+We also evaluate the second smallest singular
+value if the root finding precedure suggests a
+possible double root. 
+
+\subsubsection{Interpolation and root-finding}
+
 To estimate the eigenvalues, we fit a Chebyshev
 interpolant to the discretized determinant as a
 function of $k$ on intervals.
@@ -158,10 +203,39 @@ so that we can make use
 of the \texttt{roots} utility to approximate
 the roots of the determinant.
 
-Below, we let $D^N_k$, $S^N_k$ and $W^N$ denote
-the discretized versions of the $\cDk$,
-$\cSk$, and $\cW$ operators, respectively.
-
+The \texttt{roots} utility returns the roots
+of the polynomial in the complex plane, with
+some minimal internal processing to remove
+spurious roots.
+%
+Because our numerical determinant evaluation
+is somewhat noisy and we fit the function up to
+precision $\epscheb$, we perform some
+further post-processing to eliminate remaining
+spurious roots.
+%
+We ignore any of the returned roots $z$ with $\imag(z)
+> \sqrt{\epscheb}$, as these are too far from real-valued
+to be non-spurious.
+%
+For the remaining roots, we inspect any
+pairs of roots which are closer than
+$\epsclose = 10^{-5}$.
+%
+For these roots, we compare the resulting
+eigenfunctions evaluated at a large number of points
+within the domain.
+%
+If the eigenfunctions are the same to
+reasonable precision, we declare that these
+roots correspond to a single root and
+retain the root for which the operator
+has the smallest singular value.
+%
+For these near double-roots, we also check
+that there is no two dimensional null-space
+corresponding to the root by estimating the
+second smallest singular value.
 
 
 \subsection{Eigenvalues of an annulus}
@@ -178,11 +252,115 @@ $\cSk$, and $\cW$ operators, respectively.
 \label{subsec:barbell}
 
 \begin{figure}
+  \centering
   \includegraphics[width=\textwidth]{fig/barbell_gallery}
-  \caption{Vorticity plots of the first 110 eigenfunctions
+  \caption{Vorticity plots of the first 119 eigenfunctions
     of the barbell-shaped domain.}
   \label{fig:barbell_gallery}
 \end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_barbell_001_sings_plot}
+    \caption{Smallest singular value corresponding to the
+    first 119 computed eigenfunctions of the barbell-shaped
+    domain.}
+    \label{subfig:barbell_sings}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_barbell_001_coeffs_plot}
+    \caption{Normalized Chebyshev coefficients of $f^N(k)$ on
+      3 different intervals in $k$.}
+    \label{subfig:barbell_coeffs}
+  \end{subfigure}
+  \caption{Diagnostics for the barbell eigenvalues.}
+  \label{fig:barbell_diagnostics}
+\end{figure}
+
+We consider the barbell-shaped domain in \cref{fig:barbell}.
+This domain is the union of a square of side-length 6,
+a square of side-length 3, and a ``bridge'' connecting
+them of height 1 and width 5/2.
+%
+For simplicity, we round the corners of the domain
+to obtain a smooth object.
+%
+Applying the approach described in~\cite{epstein2016smoothed},
+the corners of the domain are rounded using the Gaussian kernel
+\begin{equation}
+  \nonumber
+\phi(x) = \frac{1}{\sqrt{2\pi h}} e^{-x^2/(2 h^2)} \, ,
+\end{equation}
+with $h\approx 0.06$. This leaves the domain unperturbed
+outside of a radius of $0.1$ around each corner.
+%
+The eigenfunctions of such a domain display the well-known
+localization property~\cite{trefethen2006computed}:
+many of the eigenfunctions are approximately supported
+within one of the squares.
+%
+We compute these eigenfunctions corresponding to
+eigenvalues $k^2$ with $k$ in the range
+$0.5 \leq k \leq 6.5$.
+
+%
+The panels are chosen adaptively so that the coordinates,
+the first and second derivatives of the coordinates,
+and the arc-length function are resolved to a precision
+of $10^{-12}$ on each panel.
+%
+This results in $N_p = 412$ after enforcing the
+level-restriction property described in
+\cref{rmk:levelrestrict}
+and enforcing that no panel is larger than
+one wavelength for the largest $k$
+(here $\lambda=2\pi/6.5$).
+
+We compute the eigenvalues as the values of
+$k$ for which $\cI-2\cDk-2\cW$ is non-invertible.
+%
+Let $f^N(k) = \det (\cI^N-2\cDk^N-2\cW^N)$.
+To find the roots of $f^N(k)$, we fit a \texttt{chebfun}
+representation of $f^N(k)$ on each of the intervals
+$[j/2,(j+1)/2]$ for $j = 1,\ldots,12$.
+%
+We plot the absolute value of the Chebyshev coefficients
+of $f^N(k)$ on the intervals $[0.5,1.0]$, $[3.0,3.5]$,
+and $[6.0,6.5]$ in \cref{subfig:barbell_coeffs}.
+%
+As expected, the coefficients decay exponentially
+to zero, with more terms required at higher
+frequencies.
+%
+
+We compute the roots of these Chebyshev interpolants
+and apply the post-processing described above.
+%
+There were 135 total roots: 2 were removed because
+$\Im(z) > \sqrt{\epscheb}$ and 13 pairs were found
+with values within $\epsclose = 10^{-5}$ of each other.
+%
+For these 13 pairs, none corresponded to a double
+root.
+%
+This leaves 119 roots in the range $0\leq k \leq 6.5$.
+%
+We plot the smallest singular value of
+$\cI^N-\cDk^N-2\cW^N$ for each of these roots in
+\cref{subfig:barbell_sings}
+and plot the vorticity of the eigenfunctions
+in \cref{fig:barbell_gallery}.
+%
+The singular values suggest that the quality of the
+eigenvalues is good.
+From the plots, we see that localization occurs
+until about the 100th eigenvalue.
+
+%
 
 %\subsection{Robustness on a nearly multiply connected domain}
 %\label{subsec:crescent}
