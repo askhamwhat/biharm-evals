@@ -4,7 +4,7 @@ In this paper, vector-valued
 quantities are denoted by bold, lower-case letters
 (e.g. $\bh$), while tensor-valued quantities are bold
 and upper-case (e.g. $\mathbf{T}$). 
-Subscript indices of non-bold characters (e.g. $h_j$ or $T_{jkl}$)
+Subscript indices of non-bold characters (e.g. $h_j$ or $T_{ij\ell}$)
 are used to denote the entries within a vector ($\bh$) or tensor ($\bT$).
 We use the standard Einstein summation convention; in other words, 
 there is an implied sum taken over the repeated indices of 
@@ -140,7 +140,7 @@ The equations are well-studied in that setting and
 integral representations which lead to second kind
 integral equations have been developed. We review
 some of the relevant results here, translating to
-the present, oscillatory setting.
+the oscillatory setting.
 
 \subsubsection{Oscillatory Stokeslets and stresslets}
 Consider the solution of
@@ -285,30 +285,25 @@ and
 \end{equation}
 where the \pv indicates that the integral is to be
 evaluated in the principal value sense. 
+
 For two vector valued
 functions $\ff$ and $\bg$ defined on $\Gamma$, consider the bilinear
 form
-
 \begin{equation} \label{eq:bi_form}
   \langle \ff , \bg \rangle = \int_\Gamma \ff \cdot \bg dS \; .
 \end{equation}
 The definition of the adjoint used throughout the paper will be
 the one induced by this form.
-The adjoint of $\cD$ is of particular interest; we have
+
+
+The adjoint of $\cD$ with respect to the above bilinear form
+is of particular interest; and is given by
 \begin{equation}
   \cD^{\intercal} [\bmu](\bx) = 
   \pv \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)\nu_\ell(\xx)
   \right ) \bmu(\yy) \, dS(\yy) \; .
 \end{equation}
 
-
-\begin{remark}
-The operators $\bS,\bD,\cD$ and $\cD^{\intercal}$
-depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
-In places where it is essential to highlight this dependence, in a slight
-abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_{k}$ to 
-denote this dependence.
-\end{remark}
 
 In the following lemma, we review the limiting values of
 the layer potentials $\bS$ and $\bD$ on the boundary $\Gamma$.
@@ -458,7 +453,11 @@ for any $\xx \in \Gamma$. We have
 \end{proof}
 
 \begin{remark}
-The operators $\bS,\bD, \cS, \cD$, and $\cW$  depend on the boundary 
-of the region $\Gamma$. In places where it is necessary to highlight this dependence
-we will use $A^{\Gamma}$ instead of the operator $A$.
+The operators $\bS,\bD,\cD$ and $\cD^{\intercal}$
+depend on the Helmholtz parameter $k$ of the oscillatory Stokes equation.
+In places where it is essential to highlight this dependence, in a slight
+abuse of notation, we will use the symbols $\bS_{k}, \bD_{k},\cD_{k}$ and $\cDt_{k}$ to 
+denote this dependence.
+Similarly, we will use $A^{\Gamma}$ instead of the operator $A$ to highlight 
+the dependence of the operator $A$ on the boundary of the region $\Gamma$.
 \end{remark}

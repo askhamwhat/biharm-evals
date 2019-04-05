@@ -4,7 +4,7 @@ The planar incompressible Stokes equations describe
 creeping flows in two dimensions.
 %
 Let $\Omega \subset \R^2$
-be a bounded domain with $C^2$ boundary.
+be a bounded domain with $C^2$ boundary denoted by $\Gamma$.
 %
 The Stokes eigenvalue problem is to find
 values $k^2$ such that 
@@ -108,7 +108,9 @@ dimension of the domain to be discretized.
 This reduces the number of unknowns over finite
 element discretizations, particularly given
 that finite element methods suffer from
-high-frequency ``pollution'' when $k$ is large
+high-frequency ``pollution'' due to the 
+large number of unknowns required to resolve
+the computation when $k$ is large
 \cite{babuska1997pollution}.
 
 Further, Zhao and Barnett~\cite{zhao2015robust}
@@ -144,7 +146,7 @@ of \cref{eq:ostokes} be given and that the resulting BIE
 is not invertible precisely when $k^2$ is an eigenvalue.
 %
 The first requirement is straightforward to
-satisfy because the
+satisfy because 
 well-known layer potential representations for the
 modified Stokes equation~\cite{Pozrikidis1992,biros2002embedded,
   jiang2013second,ladyzhenskaya1969mathematical}
@@ -240,7 +242,7 @@ paper, we find that standard fast-direct
 solvers provide a reasonably efficient determinant
 evaluation.
 %
-That section also includes numerical experiments
+We also present numerical experiments
 which demonstrate some of the paper's analytical
 claims as well as the effectiveness of the overall
 framework.
