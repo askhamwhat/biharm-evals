@@ -7,7 +7,7 @@
 
 filebase = 'example_annulus_001'; 
 timeref = datestr(now,'_yyyymmdd_HHMMSS');
-fileout = [filebase, timeref, '.mat'];
+fileout = [filebase, '_5_convplots.mat'];
 
 % annulus params
 
@@ -15,12 +15,11 @@ r1 = 1.0;
 r2 = 1.7;
 
 
-chebabs = cell(16,1);
-for j = 1:length(chebabs)
-    chebabs{j} = [1.0*j 1.0*(j+1)];
-end
+ncells = 2;
 
-max_rzk = chebabs{end}(end); lam = 2*pi/max_rzk;
+chebabs = cell(ncells,1);
+chebabs{1} = [13 14];
+chebabs{2} = [14 15];
 
 seed = 8675309;
 rng(seed);
@@ -28,24 +27,25 @@ addpath('../src')
 addpath('../example')
 addpath('../../mwrap')
 
-cparams.eps = 1.0e-3;
+cparams.eps = 1.0;
 cparams.nchmax = 100000;
-cparams.maxchunklen = lam;
-cparams.nover = 2;
+cparams.nover = 1;
 narms = 3;
 amp = 0.25;
 W = 3.0; H = 2.0; p = 4.0;
 
 chunkers = {};
-chunkert = chunkfunc(@(t) circle(t,r2),cparams);
-chunkert = chunksort(chunkert);
+nchi = 8;
+ncho = ceil(nchi/r1*r2)+1;
+
+chunkert = circle_chunks(ncho,r2);
 chunkers{1} = chunkert;
 
 nw = 1;
 nh = 1;
 
 ind = 2;
-chunkert = chunkfunc(@(t) circle(t,r1),cparams);
+chunkert = circle_chunks(nchi,r1);
 chunkert = chunkreverse(chunkert);
 chunkert = chunksort(chunkert);
 chunkers{ind} = chunkert;
@@ -86,7 +86,7 @@ p.splitting=0; p.maxLength = 257;
 t1s = cell(size(chebabs));
 detchebs = cell(size(chebabs));
     
-parfor j = 1:length(chebabs)
+for j = 1:length(chebabs)
     fprintf('running on interval [ %5.2e %5.2e ]\n',chebabs{j}(1), ...
         chebabs{j}(2))
     start = tic; detchebs{j} = ...
@@ -95,5 +95,32 @@ parfor j = 1:length(chebabs)
     fprintf('%5.2e time for chebfun build\n',t1s{j})
 end
 
-save(fileout,'detchebs','chunker','nchs','cs','cd','opts','p','t1s',...
+
+
+%% Now compute everything using just double layer
+cd = -2.0 + 1i*0.0;
+cs = 0;
+ncomp = length(nchs);
+
+opts = []; opts.FLAM = 1; opts.verb = true;
+detfun = @(zk) ostokes_determinant(zk,chunker,nchs,cs, ...
+    cd,opts);   
+
+p = chebfunpref; p.chebfuneps = 1.0e-13;
+p.splitting=0; p.maxLength = 257;
+
+t1s = cell(size(chebabs));
+detchebs2 = cell(size(chebabs));
+    
+for j = 1:length(chebabs)
+    fprintf('running on interval [ %5.2e %5.2e ]\n',chebabs{j}(1), ...
+        chebabs{j}(2))
+    start = tic; detchebs2{j} = ...
+        chebfun(detfun,chebabs{j},p); 
+    t1s{j} = toc(start);
+    fprintf('%5.2e time for chebfun build\n',t1s{j})
+end
+
+
+save(fileout,'detchebs','detchebs2','chunker','nchs','cs','cd','opts','p','t1s',...
     'chebabs','r1','r2');
