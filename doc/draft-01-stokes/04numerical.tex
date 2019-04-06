@@ -214,7 +214,7 @@ precision $\epscheb$, we perform some
 further post-processing to eliminate remaining
 spurious roots.
 %
-We ignore any of the returned roots $z$ with $\imag(z)
+We ignore any of the returned roots $z$ with $|\imag(z)|
 > \sqrt{\epscheb}$, as these are too far from real-valued
 to be non-spurious.
 %
@@ -320,7 +320,8 @@ and enforcing that no panel is larger than
 one wavelength for the largest $k$
 (here $\lambda=2\pi/6.5$).
 
-We compute the eigenvalues as the values of
+As this is a simply-connected domain,
+the eigenvalues are estimated by finding the values
 $k$ for which $\cI-2\cDk-2\cW$ is non-invertible.
 %
 Let $f^N(k) = \det (\cI^N-2\cDk^N-2\cW^N)$.
@@ -341,7 +342,7 @@ We compute the roots of these Chebyshev interpolants
 and apply the post-processing described above.
 %
 There were 135 total roots: 2 were removed because
-$\Im(z) > \sqrt{\epscheb}$ and 13 pairs were found
+the imaginary part was too large and 13 pairs were found
 with values within $\epsclose = 10^{-5}$ of each other.
 %
 For these 13 pairs, none corresponded to a double
