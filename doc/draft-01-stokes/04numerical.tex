@@ -214,28 +214,35 @@ precision $\epscheb$, we perform some
 further post-processing to eliminate remaining
 spurious roots.
 %
-We ignore any of the returned roots $z$ with $\imag(z)
+Let $\kcheb_l$ denote the roots of the interpolants.
+%
+We ignore any of the returned roots with $|\imag(\kcheb_l)|
 > \sqrt{\epscheb}$, as these are too far from real-valued
 to be non-spurious.
 %
-For the remaining roots, we inspect any
-pairs of roots which are closer than
-$\epsclose = 10^{-5}$.
+For the remaining roots, we consider the
+properties of $\real(\kcheb_l)$.
 %
-For these roots, we compare the resulting
-eigenfunctions evaluated at a large number of points
-within the domain.
+We inspect any pairs of roots $(\kcheb_p,\kcheb_q)$
+for which $|\real(\kcheb_p-\kcheb_q)| < \sqrt{\epscheb}$,
+as these are possibly spurious double roots.
 %
-If the eigenfunctions are the same to
-reasonable precision, we declare that these
-roots correspond to a single root and
-retain the root for which the operator
-has the smallest singular value.
+For these pairs, we compare the right singular
+vector of the appropriate BIE operator corresponding
+to the smallest singular value for each of $k=\real(\kcheb_p)$
+and $k=\real(\kcheb_p)$, which we denote by
+$\bv_p$ and $\bv_q$.
+%
+If $\|\bv_p - \bv_q \bv_q^* \bv_p \| < 10^{-5}$, then
+we consider the pair to be spurious.
 %
 For these near double-roots, we also check
 that there is no two dimensional null-space
 corresponding to the root by estimating the
-second smallest singular value.
+second smallest singular value of the BIE operator.
+%
+If this is larger than $10^{-5}$, then we declare
+it to be a simple root.
 
 
 \subsection{Eigenvalues of an annulus}
@@ -296,7 +303,8 @@ the corners of the domain are rounded using the Gaussian kernel
 \phi(x) = \frac{1}{\sqrt{2\pi h}} e^{-x^2/(2 h^2)} \, ,
 \end{equation}
 with $h\approx 0.06$. This leaves the domain unperturbed
-outside of a radius of $0.1$ around each corner.
+to high precision outside of a radius of $0.1$ around
+each corner.
 %
 The eigenfunctions of such a domain display the well-known
 localization property~\cite{trefethen2006computed}:
@@ -308,10 +316,8 @@ eigenvalues $k^2$ with $k$ in the range
 $0.5 \leq k \leq 6.5$.
 
 %
-The panels are chosen adaptively so that the coordinates,
-the first and second derivatives of the coordinates,
-and the arc-length function are resolved to a precision
-of $10^{-12}$ on each panel.
+The panels are divided adaptively so that the smallest
+panels in the rounded corner are smaller than $10^{-2}$.
 %
 This results in $N_p = 412$ after enforcing the
 level-restriction property described in
@@ -320,7 +326,8 @@ and enforcing that no panel is larger than
 one wavelength for the largest $k$
 (here $\lambda=2\pi/6.5$).
 
-We compute the eigenvalues as the values of
+As this is a simply-connected domain,
+the eigenvalues are estimated by finding the values
 $k$ for which $\cI-2\cDk-2\cW$ is non-invertible.
 %
 Let $f^N(k) = \det (\cI^N-2\cDk^N-2\cW^N)$.
@@ -340,12 +347,13 @@ frequencies.
 We compute the roots of these Chebyshev interpolants
 and apply the post-processing described above.
 %
-There were 135 total roots: 2 were removed because
-$\Im(z) > \sqrt{\epscheb}$ and 13 pairs were found
+There were 135 total roots: 3 were removed because
+the imaginary part was too large and 13 pairs were found
 with values within $\epsclose = 10^{-5}$ of each other.
 %
-For these 13 pairs, none corresponded to a double
-root.
+For these 13 pairs, none represented two distinct
+eigenvalues or a double root and all were in fact
+much closer than $\epsclose$.
 %
 This leaves 119 roots in the range $0\leq k \leq 6.5$.
 %
@@ -367,3 +375,129 @@ until about the 100th eigenvalue.
 
 \subsection{Eigenvalues of a domain with several inclusions}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{fig/many_inclusions_gallery}
+  \caption{Vorticity plots of...}
+  \label{fig:many_inclusions_gallery}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_many_holes_004_sings_plot}
+    \caption{Smallest singular value corresponding to the
+    first.}
+    \label{subfig:many_inclusions_sings}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_many_holes_004_coeffs_plot}
+    \caption{Normalized Chebyshev coefficients of $f^N(k)$ on
+      3 different intervals in $k$.}
+    \label{subfig:many_inclusions_coeffs}
+  \end{subfigure}
+  \caption{Diagnostics for the ... eigenvalues.}
+  \label{fig:many_inclusions_diagnostics}
+\end{figure}
+
+We now consider the multiply-connected domain in
+\cref{fig:many_holes}.
+% 
+The domain is defined by a smooth rectangular region
+of width 3 and height 2,
+with an array of randomly rotated ``starfish'' shapes
+removed. 
+%
+Such shapes are of interest in
+materials design and micro-fluidics \note{cite}.
+%
+We compute the eigenfunctions corresponding to
+eigenvalues $k^2$ with $k$ in the range
+$3 \leq k \leq 9$ (this range includes the smallest
+eigenvalue).
+
+%
+For this smooth shape, the panels are chosen
+adaptively so that the coordinates, the first
+and second derivatives of the coordinates, and
+the arc-length function are resolved to a precision
+of $10^{-3}$ on each panel.
+%
+This results in $N_p = 224$ after enforcing the
+level-restriction property described in
+\cref{rmk:levelrestrict}
+and enforcing that no panel is larger than
+one wavelength for the largest $k$
+(here $\lambda=2\pi/9$).
+
+As this is a multiply-connected domain,
+the eigenvalues are estimated by finding the values
+$k$ for which $\cI-2\cDk-2i\cSk-2\cW$ is non-invertible.
+%
+Let $f^N(k) = \det (\cI^N-2\cDk^N-2i\cSk^N-2\cW^N)$.
+To find the roots of $f^N(k)$, we fit a \texttt{chebfun}
+representation of $f^N(k)$ on each of the intervals
+$[j/2,(j+1)/2]$ for $j = 6,\ldots,13$ and the intervals
+$[j/4,(j+1)/4]$ for $j = 28,\ldots,35$.
+%
+It should be noted that, due to the relative sizes
+of the domains,
+this represents a lower frequency problem than
+that for the barbell when measured in the number
+of wavelengths across the object.
+%
+Thus, the use of a finer grid here results from
+the difficulty in resolving the Fredholm determinant
+when the kernel is not trace-class.
+%
+We plot the absolute value of the Chebyshev coefficients
+of $f^N(k)$ on the intervals $[3,3.5]$, $[6.5,7]$,
+and $[8.75,9]$ in \cref{subfig:barbell_coeffs}.
+%
+As expected, the coefficients decay exponentially
+to zero, with more terms required at higher
+frequencies (note that the interval $[8.75,9]$ is
+smaller than the others).
+%
+
+We compute the roots of these Chebyshev interpolants
+and apply the post-processing described above.
+%
+There were 103 total roots: 21 were removed because
+the imaginary part was too large and 6 pairs were found
+with values within $\epsclose = 10^{-5}$ of each other.
+%
+For these 6 pairs, none represented two distinct
+eigenvalues or a double root and all were in fact
+much closer than $\epsclose$.
+%
+This leaves 76 roots in the range $0\leq k \leq 9$.
+%
+We plot the smallest singular value of
+$\cI^N-\cDk^N-2i\cSk^n-2\cW^N$ for each of these roots in
+\cref{subfig:many_inclusions_sings}
+and plot the vorticity of the eigenfunctions
+in \cref{fig:many_inclusions_gallery}.
+%
+The singular values suggest that the quality of the
+eigenvalues is good, with a few outliers.
+%
+These outliers correspond to eigenvalues 9 through 12,
+which have 
+The conditioning of the eigenvalue problem depends
+on the distance to the nearest eigenvalue. For
+the 8th through 13th eigenvalues, the average
+spacing between consecutive roots is 0.0447,
+which is much smaller than the average spacing of
+the roots for the first 20 eigenvalues, given by
+0.1132.
+In the plots, we observe a different type of
+localization property, with many of the eigenfunctions
+approximately supported in a small, connected subset
+of the domain. This is consistent with other studies
+\note{cite}
+
+%
