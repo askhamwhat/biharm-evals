@@ -229,14 +229,14 @@ as these are possibly spurious double roots.
 %
 For these pairs, we compare the right singular
 vector of the appropriate BIE operator corresponding
-to the smallest singular value for each of $k=\real(k^{(p)}_\cheb)$
-and $k=\real(k^{(p)}_\cheb)$, which we denote by
+to the smallest singular value for each of $\real(k^{(p)}_\cheb)$
+and $\real(k^{(p)}_\cheb)$, which we denote by
 $\bv_p$ and $\bv_q$.
 %
 If $\|\bv_p - \bv_q \bv_q^* \bv_p \| < 10^{-5}$, then
 we consider the pair to be spurious.
 %
-For these near double-roots, we also check
+For these near double roots, we also check
 that there is no two dimensional null-space
 corresponding to the root by estimating the
 second smallest singular value of the BIE operator.
@@ -448,9 +448,10 @@ this represents a lower frequency problem than
 that for the barbell when measured in the number
 of wavelengths across the object.
 %
-Thus, the use of a finer grid here results from
+Thus, the use of a finer grid in frequency results from
 the difficulty in resolving the Fredholm determinant
-when the kernel is not trace-class.
+for this problem, which has a larger dynamical range
+than that for the barbell.
 %
 We plot the absolute value of the Chebyshev coefficients
 of $f^N(k)$ on the intervals $[3,3.5]$, $[6.5,7]$,
@@ -483,15 +484,8 @@ in \cref{fig:many_inclusions_gallery}.
 The singular values suggest that the quality of the
 eigenvalues is good, with a few outliers.
 %
-These outliers correspond to eigenvalues 9 through 12,
-which have 
-The conditioning of the eigenvalue problem depends
-on the distance to the nearest eigenvalue. For
-the 8th through 13th eigenvalues, the average
-spacing between consecutive roots is 0.0447,
-which is much smaller than the average spacing of
-the roots for the first 20 eigenvalues, given by
-0.1132.
+These outliers are from the interval $[4.5,5]$.
+%
 In the plots, we observe a different type of
 localization property, with many of the eigenfunctions
 approximately supported in a small, connected subset
