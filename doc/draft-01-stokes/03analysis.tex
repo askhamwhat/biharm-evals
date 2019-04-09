@@ -344,7 +344,7 @@ summarize in
   \begin{aligned} \label{eq:neu_exterior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
-    \bt - i\eta \bu &= \bh \quad \bx \in \Gamma \, ,
+    \bt + i\eta \bu &= \bh \quad \bx \in \Gamma \, ,
   \end{aligned}
   \end{equation}
   and $(\bu,p)$ satisfies the radiation condition in
@@ -414,8 +414,8 @@ of oscillatory Stokes boundary value problems.
     \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
     2 \Im(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
     dV \\
-    = 2 \Im \left( k \int_{\Gamma} \bu \cdot
-\overline{\bt} dS  \right) 
+    + 2 \Im \left( k \int_{\Gamma} \bu \cdot 
+\overline{\bt} dS  \right) = 0
   \end{multline}
   
 \end{lem}
@@ -432,7 +432,7 @@ Since $\bu$ satisfies the oscillatory Stokes equation $E \cap B_{r}(0)$,
 using a couple of applications of the divergence theorem, we have that
 \begin{equation}
 \int_{E\cap B_{r}(0)} |2 \be(\bu)|^2 dV =
-\int_{\Gamma} \bu \cdot \overline{\bt} dS
+-\int_{\Gamma} \bu \cdot \overline{\bt} dS
 + \int_{|\by|=r} \bu \cdot \overline{\bt} dS + \overline{k}^2 
 \int_{E \cap B_{r}(0)} |\bu|^2 dV \,. \label{eq:raddecayproof2}
 \end{equation}
@@ -441,7 +441,7 @@ Combining~\cref{eq:raddecayproof1,eq:raddecayproof2}, we get
 \lim_{r\to\infty} \int_{|\by|=r}\left(|\bt|^2 + |k|^2 |\bu|^2 \right) dS 
 + 2 \Im(k)\int_{E \cap B_{r}(0)} \left(|2\be(\bu)|^2 + |k|^2 |\bu|^2 
 \right) dV \\
-= 2\Im \left ( k \int_{\Gamma} \bu \cdot \overline{\bt} dS \right) \, .
++ 2\Im \left ( k \int_{\Gamma} \bu \cdot \overline{\bt} dS \right) = 0 \, .
 \end{multline*}
 \end{proof}
 
@@ -642,7 +642,7 @@ $E$.
   oscillatory Stokes equation in $E$ which satisfies
   the homogeneous impedance boundary condition
   \begin{equation}
-\bt - i \eta \bu = 0 \quad \xx \in \Gamma \, . \nonumber
+\bt + i \eta \bu = 0 \quad \xx \in \Gamma \, . \nonumber
 \end{equation}
 Then $\bu \equiv 0$ for $\xx \in E$.
 \end{thrm}
@@ -655,7 +655,7 @@ on $\Gamma$, it follows from~\cref{eq:repinfest} that
 \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
 2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
 dV \nonumber \\
-& \qquad - 2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\bt} dS  \right) \\
+& \qquad + 2 \text{Im} \left( k \int_{\Gamma} \bu \cdot \overline{\bt} dS  \right) \\
 &= 
 \int_{|\by|=r} \left( |\bt|^2 + |k|^2 |\bu|^2 \right) dS +
 2 \text{Im}(k) \int_{E \cap B_{r}(0)} \left(|k|^2 |\bu|^2 + |2\be(\bu)|^2 \right)
@@ -831,7 +831,7 @@ exterior $E$, we conclude that $\bu \equiv 0$ in $E$ as well,
 which in particular implies that
 the exterior limit of the velocity, $\bu^{+}$, is $0$ on $\Gamma$.   
 Using the jump conditions in~\cref{lem:jump-conds} again, we
-get that $\bmu = \bu^{-} - \bu^{+} = 0$.
+get that $2\bmu = \bu^{-} - \bu^{+} = 0$.
 Thus $(\cI - 2\cD_{k} - 2\cW)$ is invertible if $k^2$
 is not a Dirichlet eigenvalue for the Stokes equation on $\Omega$.
 
@@ -932,7 +932,7 @@ on the boundary $\Gamma = \Gamma_{0} \cup \Gamma_{1}$.
 The spurious eigenvalues of the operator $\cI-2\cDk-2\cW$
 are demonstrated in \cref{subsec:spurannulus} on an annulus,
 where both the true and spurious eigenvalues can be
-determined semi-analytically. 
+determined analytically. 
 Analogous with the observation in~\cite{zhao2015robust},
 this lack of one-to-one correspondence between
 the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
@@ -1010,16 +1010,12 @@ Since $k^2$ is not a Dirichlet eigenvalue for the Stokes equation
 on $\Omega$, we conclude that $\bu \equiv 0$ in $\Omega$. 
 This in particular implies that the interior limit of the
 surface traction, denoted by $\bt^{-}$, is $0$ on $\Gamma$.
+
+
 Using~\cref{lem:jump-conds} we observe that $\bt^{+}
-= -i\eta \bmu(\xx)$ and $\bu^{+} = -\bmu(\xx)$ on $\Gamma$, i.e.
-$\bt^{+}=i\eta \bu^{+}$ and $\bu^{+}$ satisfies the homogeneous
+= 2i\eta \bmu(\xx)$ and $\bu^{+} = -2\bmu(\xx)$ on $\Gamma$, i.e.
+$\bt^{+}+i\eta \bu^{+}=0$ and $\bu^{+}$ satisfies the homogeneous
 exterior impedance problem.
-\begin{remark}
-  Note that there is potential for confusion here
-  in that the exterior limit with respect to $\Omega$ 
-  for the boundary $\Gamma_{j}$ is the traditional interior 
-  limit with respect to the obstacle region $\Omega_{j}$.
-\end{remark}
 We first show that $\bmu=0$ on $\Gamma_{0}$. 
 To this end, note that $\bu$ is a radiating solution
 of the oscillatory Stokes equation in the exterior $E$,
@@ -1030,17 +1026,32 @@ $\bu \equiv 0$ in $E_0$ as well, which in particular
 implies that $\bu^{+}=0$ on $\Gamma_{0}$.   
 Using the jump conditions in~\cref{lem:jump-conds}
 again, we get that
-$\bmu = \bu^{-} - \bu^{+} = 0$ on
-$\Gamma_{0}$. To show that $\bmu=0$ on
+$2\bmu = \bu^{-} - \bu^{+} = 0$ on
+$\Gamma_{0}$. 
+
+\begin{remark}
+  Note that there is potential for confusion here
+  in that the exterior limit with respect to $\Omega$ 
+  for the boundary $\Gamma_{j}$ is the traditional interior 
+  limit with respect to the obstacle region $\Omega_{j}$.
+\end{remark}
+
+To show that $\bmu=0$ on
 $\Gamma_{j}$, we observe that $\bu$ is also a
 solution to the oscillatory Stokes equation in each
 of the obstacles $\Omega_{j}$.
 Using the jump conditions in~\cref{lem:jump-conds},
-we get that $\bt^{+} = i\eta \bmu$ and $\bu^{+} = \bmu$.
+we get that $\bt^{+} = 2i\eta \bmu$ and $\bu^{+} = -2\bmu$.
+However, the normal is inward pointing inside $\Omega_{j}$
+on the boundary $\Gamma_{j}$. 
+If we revert back to the normal being defined as 
+an outward normal to $\Omega_{j}$, then
+the boundary conditions on $\Gamma_{j}$ 
+is $\bt - i \eta \bu = 0$. 
 From the uniqueness of solutions to the interior 
 impedence problem, we conlcude that $\bu \equiv 0$
 in $\Omega_{j}$, which in particular implies
-that $\bmu = \bu^{+} = 0$ for $\xx \in \Gamma_{j}$,
+that $2\bmu = \bu^{-}-\bu^{+} = 0$ for $\xx \in \Gamma_{j}$,
 $j=1,2,\ldots m$.
 Thus, $\cI - 2\cD_{k} -2i\eta\cS_{k} -2\cW$ is
 invertible when $k^2$ is not a Dirichlet eigenvalue

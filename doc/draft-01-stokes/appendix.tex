@@ -58,82 +58,30 @@ defined by~\cref{eq:annulus_direig}
 is the corresponding eigenfunction.
 
 \section{Neumann eigenvalues and eigenfunctions on the unit disk}
-In this section, we analytically compute some of the Neumann eigenvalues
-on the unit disk for the Stokes operator.
+In this section, we analytically compute some of the radially symmetric 
+Neumann eigenvalues on the unit disk for the Stokes operator.
 
 Suppose that $\bu$ is of the form
 \begin{equation}
-\bu = \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) + \nabla^{\perp}(\gamma \jnkr \sint + \delta \jnkr \cost) \, ,
+\bu = \nabla^{\perp} \jkr \, ,
 \end{equation}
-and the pressure is given by
-\begin{equation}
-p = k^2 (\alpha r^{n} \sint - \beta r^{n} \cost) \, ,
-\end{equation}
-where $\alpha,\beta,\gamma,\delta$ are constants.
+and the pressure is given by $p=0$, since
+$\bu$ satisfies $(\Delta + k^2)\bu = 0$.
 
-We first show that this pair satisfies the oscillatory Stokes equation
-in the unit disk.
-\begin{lemma}
-$(\bu,p)$ satisfy the oscillatory Stokes equation.
-\end{lemma}
-\begin{proof}
-$\bu$ is divergence free since
+Then, the surface traction $\bt$ on the disk of radius $r$ 
+is given by
 \begin{equation}
-\nabla \cdot \bu  = \Delta (\alpha r^{n} \sint - \beta r^{n} \cost) = 0 \, ,
+\bt = 
+\left( -\frac{k}{r}\jpkr  + \frac{k^2}{r^2} \jppkr\right)
+\begin{bmatrix}
+\sint \\
+-\cost
+\end{bmatrix} \, .
 \end{equation}
-as $r^{n} \cost$,  $r^{n} \sint$ are harmonic functions. 
-To show that $(\bu,p)$ satisfies the PDE, note that
-$r^{n} \cost$ and $r^{n} \sint$ are harmonic
-and $\jnkr \cost$, $\jnkr \sint$ satisfy Helmholtz's equation.
-\begin{equation}
-\begin{aligned}
-(\Delta + k^2) \bu &= (\Delta + k^2) \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) \, + \\
-\quad & \hspace*{15ex} (\Delta + k^2) \nabla^{\perp} (\gamma \jnkr \sint + \delta \jnkr \cost) \, , \\
-&= k^2 \nabla (\alpha r^{n} \sint - \beta r^{n} \cost) \\ 
-&= \nabla p
-\end{aligned}
-\end{equation}
-\end{proof}
 
-Let $\hat{r}, \hat{\theta}$ denote the unit vectors in polar coordinates.
-Then  $\hat{r}$ is the unit normal on the boundary of the unit disk.
-The surface traction on the boundary of the unit disk is then given by 
+Thus, $k$ which satisfies
 \begin{equation}
-\bt = -p \hat{r} + \nabla (\bu \cdot \hat{r}) + \partial_{r} \bu \, .
+-k \jpk + k^2 \jppk = 0 \, ,
 \end{equation}
-If $(\bu,p)$ are as defined above, then 
-a long but tedious calculation shows that
-\begin{equation}
-\begin{aligned}
-t_{r} &= \cost \left( \beta k^2 r^{n} -2\beta n(n-1)r^{n-2} - 2\gamma n \ddr \frac{\jnkr}{r}  \right) \, + \\
-& \hspace*{15ex} \sint \left(-\alpha k^2 r^{n} + 2 \alpha n(n-1)r^{n-2} + 2 \delta n \ddr \frac{\jnkr}{r} \right) \, , \\
-t_{\theta} &= \cost \left( \alpha r^{n-2} (n^2 + n(n-1)) + \delta \left( \frac{n^2}{r^2} \jnkr + k^2 \jnppkr \right)  \right) + \\
-& \hspace*{15ex} \sint \left( \beta r^{n-2} (n^2 + n(n-1)) + \gamma \left( \frac{n^2}{r^2} \jnkr + k^2 \jnppkr \right) \right) \, .
-\end{aligned}
-\end{equation}
-Let $h_{k} = \ddr (\jnkr/r)|_{r=1}$.
-The values of $k$ for which there exists a non-zero solution $\alpha,\beta,\gamma,\delta$ 
-to the following system of equations
-\begin{equation}
-\begin{bmatrix}
-0 & 0 & k^2 - 2n(n-1) & -2nh_{k} \\
-0 & 0 & 2n^2 -n & n^2 \jnk + k^2 \jnppk \\
--k^2 + 2n(n-1) & 2nh_{k} & 0 & 0 \\
-2n^2 -n & n^2 \jnk + k^2 \jnppk & 0 & 0
-\end{bmatrix}
-\begin{bmatrix}
-\alpha \\ \delta \\ \beta \\ \gamma
-\end{bmatrix}
-=
-\begin{bmatrix}
-0 \\ 0 \\ 0 \\ 0
-\end{bmatrix}
-\, ,
-\end{equation}
-are the Neumann eigenvalues of the unit disk.
+are Neumann eigenvalues on the unit disk.
 
-A corollary of the above statement and the structure of the matrix is that
-the interior Neumann eigenvalues of the unit disk satisfy
-\begin{equation}
-2n^2(2n-1)h_{k} - (n^2 \jnk + k^2 \jnppk)(-k^2 + 2n(n-1)) = 0 \, .
-\end{equation}
