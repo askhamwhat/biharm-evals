@@ -214,23 +214,23 @@ precision $\epscheb$, we perform some
 further post-processing to eliminate remaining
 spurious roots.
 %
-Let $\kcheb_l$ denote the roots of the interpolants.
+Let $k^{(l)}_\cheb$ denote the roots of the interpolants.
 %
-We ignore any of the returned roots with $|\imag(\kcheb_l)|
+We ignore any of the returned roots with $|\imag(k^{(l)}_\cheb)|
 > \sqrt{\epscheb}$, as these are too far from real-valued
 to be non-spurious.
 %
 For the remaining roots, we consider the
-properties of $\real(\kcheb_l)$.
+properties of $\real(k^{(l)}_\cheb)$.
 %
-We inspect any pairs of roots $(\kcheb_p,\kcheb_q)$
-for which $|\real(\kcheb_p-\kcheb_q)| < \sqrt{\epscheb}$,
+We inspect any pairs of roots $(k^{(p)}_\cheb,k^{(q)}_\cheb)$
+for which $|\real(k^{(p)}_\cheb-k^{(q)}_\cheb)| < \sqrt{\epscheb}$,
 as these are possibly spurious double roots.
 %
 For these pairs, we compare the right singular
 vector of the appropriate BIE operator corresponding
-to the smallest singular value for each of $k=\real(\kcheb_p)$
-and $k=\real(\kcheb_p)$, which we denote by
+to the smallest singular value for each of $k=\real(k^{(p)}_\cheb)$
+and $k=\real(k^{(p)}_\cheb)$, which we denote by
 $\bv_p$ and $\bv_q$.
 %
 If $\|\bv_p - \bv_q \bv_q^* \bv_p \| < 10^{-5}$, then
@@ -349,11 +349,10 @@ and apply the post-processing described above.
 %
 There were 135 total roots: 3 were removed because
 the imaginary part was too large and 13 pairs were found
-with values within $\epsclose = 10^{-5}$ of each other.
+with values within $\sqrt{\epscheb}$ of each other.
 %
 For these 13 pairs, none represented two distinct
-eigenvalues or a double root and all were in fact
-much closer than $\epsclose$.
+eigenvalues or a double root.
 %
 This leaves 119 roots in the range $0\leq k \leq 6.5$.
 %
@@ -468,16 +467,15 @@ and apply the post-processing described above.
 %
 There were 103 total roots: 21 were removed because
 the imaginary part was too large and 6 pairs were found
-with values within $\epsclose = 10^{-5}$ of each other.
+with values within $\sqrt{\epscheb}$ of each other.
 %
 For these 6 pairs, none represented two distinct
-eigenvalues or a double root and all were in fact
-much closer than $\epsclose$.
+eigenvalues or a double root.
 %
 This leaves 76 roots in the range $0\leq k \leq 9$.
 %
 We plot the smallest singular value of
-$\cI^N-\cDk^N-2i\cSk^n-2\cW^N$ for each of these roots in
+$\cI^N-\cDk^N-2i\cSk^N-2\cW^N$ for each of these roots in
 \cref{subfig:many_inclusions_sings}
 and plot the vorticity of the eigenfunctions
 in \cref{fig:many_inclusions_gallery}.
