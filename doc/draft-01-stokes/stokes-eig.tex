@@ -22,6 +22,7 @@
 
 \def\bz{{\boldsymbol 0}}
 \def\br{{\boldsymbol r}}
+\def\bv{{\boldsymbol v}}
 \def\bc{{\boldsymbol c}}
 \def\bh{{\boldsymbol h}}
 \def\bn{{\boldsymbol n}}
@@ -67,13 +68,14 @@
 \def\cM{{\mathcal M}}
 \def\bL{{\mathbb L}}
 \def\bK{{\mathbf K}}
-\def\sint{{\sin{(n \theta)}}}
-\def\cost{{\cos{(n \theta)}}}
-\def\jnkr{J_{n}(kr)}
-\def\jnk{J_{n}(k)}
-\def\jnpkr{J_{n}'(kr)}
-\def\jnppkr{J_{n}''(kr)}
-\def\jnppk{J_{n}''(k)}
+\def\sint{{\sin{(\theta)}}}
+\def\cost{{\cos{(\theta)}}}
+
+\def\jkr{J_{0}(kr)}
+\def\jpkr{J_{0}'(kr)}
+\def\jpk{J_{0}'(k)}
+\def\jppkr{J_{0}''(kr)}
+\def\jppk{J_{0}''(k)}
 \def\ddr{\frac{d}{dr}}
 
 \def\bsigma{{\boldsymbol \sigma}}
@@ -91,6 +93,8 @@
 \def\epsflam{{\epsilon_{\texttt{FLAM}}}}
 \def\epscheb{{\epsilon_{\texttt{CHEB}}}}
 \def\epsclose{{\epsilon_{\textrm{close}}}}
+
+\def\kcheb{{k^\texttt{CHEB}}}
 
 \newcommand\dwdn{\frac{\partial w}{\partial n}}
 \newcommand{\cI}{\mathcal I}
@@ -127,14 +131,15 @@
 \abstract{
   The eigenvalues and eigenfunctions of the Stokes 
   operator have been the subject of intense analytical
-  investigation and also have many applications
-  in studying turbulence in numerical simulation
-  of Navier Stokes equations.
-  Since the Stokes operator is a fourth-order operator,
-  the numerical computation of these eigenvalues 
-  and the corresponding eigenfunctions 
-  is a challenging task particularly in complex
-  geometries and at high frequencies.
+  investigation and they have applications in the study
+  and simulation of the Navier--Stokes equations.
+  %
+  As the Stokes operator is inherently a fourth-order
+  operator,
+  computing these eigenvalues and the corresponding
+  eigenfunctions is a challenging task, particularly in
+  complex geometries and at high frequencies.
+  %
   The boundary integral equation (BIE) framework
   provides robust and scalable eigenvalue computations
   due to (a) the reduction in the dimension of the problem to
