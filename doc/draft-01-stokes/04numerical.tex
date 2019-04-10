@@ -287,14 +287,66 @@ as $\epscheb \|P\|_\infty$ so that $\epscheb \|P\|_\infty/
 for the error in the root.
 
 \subsection{Eigenvalues of an annulus}
-
-\subsubsection{Spurious eigenvalues}
-\label{subsec:spurannulus}
-
-
+We test our numerical machinery and validate our analytical 
+and numerical claims
+by comparing the results to the true eigenvalues on the annulus
+which are known analytically (see~\cref{sec:annul_dir_exact}).
+In all of the examples below, we work on the annulus $r_{1}<r<r_{2}$
+with $r_{1} = 1$ and $r_{2} = 1.7$.
+If the inner boundary is discretized using $N_{1}$ panels, 
+then the outer boundary is discretized using $N_{2} = 
+\lceil r_{2}/r_{1} N_{1} \rceil +1$ panels to ensure that the
+panels are approximately the same length on both the boundaries. 
+The total number of discretization points 
+is then given by $N = 16(N_{1} + N_{2})$.
+Let $D^{N}_{k}$ denote the linear system corresponding
+to the Nystr\"{o}m discretization of
+$-2\cD_{k} -2\cW$ using generalized Gaussian quadrature, 
+and let $C^{N}_{k}$ denote the linear system corresponding
+to the Nystr\"{o}m discretization of 
+$-2\cD_{k} - 2i\cS_{k} -2\cW$.
+Let $f_{D}^{N}(k) = \text{det}(I+D^{N}_{k})$, and 
+$f_{C}^{N}(k) = \text{det}(I+C^{N}_{k})$.
 
 \subsubsection{Convergence study}
 \label{subsec:convannulus}
+We demonstrate that 
+for sufficiently large $N$, if $k_{0}$ is a Dirichlet 
+eigenvalue of the annulus, 
+then $f_{D}^{N}(k_{D}) = 0$ and $f_{C}^{N}(k_{C}) = 0$
+where $|k_{D} - k_{0}| \lsim N^{-20}$, 
+and $|k_{C} - k_{0}| \lsim N^{-20}$.
+Note that N^{-20} is the observed order of
+convergence for Generalized Gaussiuan quadratures for weakly 
+singular integrals.
+In~\cref{fig:conv}, we show this result for $k_{0} = 13.48025717955055$
+and plot the errors $|k_{D}-k_{0}|$ and $|k_{C}-k_{0}|$ as a function
+of $N$. 
+
+\subsubsection{Spurious eigenvalues}
+\label{subsec:spurannulus}
+As noted in~\cref{subsec:dlanalysis},
+if $k_{0}$ is a Neumann eigenvalue corresponding to the interior
+inclusion, which in our case is the disk $r\leq r_{1}$, then
+$f_{D}(N)(k_{0}) is O(\varepsilon)$ even though $k_{0}$ 
+is not a Dirichlet eigenvalue of the annulus, i.e.
+the integral equation $-\cI - 2\cD_{k} -2\cW$ has a spurious eigenvalue.
+In~\cref{fig:spur}, we demonstrate this result and also show that 
+$f_{C}^{N}(k_{0}) \neq 0$, i.e., the combined field representation is
+robust and invertible at all values of $k$ which are not the Dirichlet
+eigenvalues of the annulus. 
+
+\subsubsection{Speed}
+\label{subsec:speed}
+In this section, we demonstrate the O(N\log{N}) scaling of evaluating
+$f^{N}_{C}(k)$ as long as $N$ is large enough to resolve the interactions
+at the Helmholtz parameter $k$. 
+When $N$ is smaller than that, we observe a worse scaling since the
+assumption that far-interactions are low-rank is no longer valid at
+the tolerance of FLAM.
+We plot the timing results corresponding to three different values of 
+$k$ in~\cref{fig:speed}.
+
 
 \subsection{Eigenvalues of a barbell-shaped domain}
 \label{subsec:barbell}
