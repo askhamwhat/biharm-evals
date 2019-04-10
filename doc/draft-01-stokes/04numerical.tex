@@ -1,7 +1,16 @@
 \section{Numerical Results}
 \label{sec:numerical}
 
+In this section, we demonstrate the analytical
+claims above with numerical examples and
+highlight the performance of the BIE approach
+to Stokes eigenvalues.
+
 \subsection{Numerical methods}
+
+First, we describe the numerical tools needed
+to compute Stokes eigenvalues in a BIE
+framework.
 
 \subsubsection{Discretizing the BIE}
 
@@ -244,6 +253,37 @@ second smallest singular value of the BIE operator.
 If this is larger than $10^{-5}$, then we declare
 it to be a simple root.
 
+We can obtain an a posteriori estimate of the
+error in a computed root as follows.
+%
+Let $f$ denote an analytic function,
+$P$ be the polynomial interpolant
+of that function over some interval,
+$\delta f = f-P$ be the difference,
+and $k_\cheb$ denote a computed root
+of $P$.
+%
+The algorithm used by \texttt{chebfun}
+to approximate the roots of $P$ is
+backward stable~\cite{noferini2017chebyshev}.
+Therefore the error in the roots will be
+small relative to the error of the fit and
+we set $P(k_\cheb) = 0$ below.
+%
+Suppose that
+$f(k_\cheb + \delta k) = 0$ for some
+small $\delta k$. Then
+
+\begin{align*}
+  0 &= f(k_\cheb + \delta k) \\
+  0 &= P(k_\cheb + \delta k) + \delta f(k_\cheb + \delta k) \\
+  \delta k &= -\frac{\delta f(k_\cheb + \delta k)}{P'(k_\cheb)} + O(\delta k^2) .
+\end{align*}
+In practice, we can obtain an approximate upper
+bound for $|\delta f(k_\cheb+\delta k)|$
+as $\epscheb \|P\|_\infty$ so that $\epscheb \|P\|_\infty/
+|P'(k_\cheb)|$ provides an approximate upper bound
+for the error in the root.
 
 \subsection{Eigenvalues of an annulus}
 
@@ -271,20 +311,18 @@ it to be a simple root.
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
     \includegraphics[width=\textwidth]{fig/ex_barbell_001_sings_plot}
-    \caption{Smallest singular value corresponding to the
-    first 119 computed eigenfunctions of the barbell-shaped
-    domain.}
+    \caption{Smallest singular value of the BIE operator.}
     \label{subfig:barbell_sings}
   \end{subfigure}
   ~
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
     \includegraphics[width=\textwidth]{fig/ex_barbell_001_coeffs_plot}
-    \caption{Normalized Chebyshev coefficients of $f^N(k)$ on
-      3 different intervals in $k$.}
+    \caption{Normalized Chebyshev coefficients of the
+      determinant on 3 intervals in $k$.}
     \label{subfig:barbell_coeffs}
   \end{subfigure}
-  \caption{Diagnostics for the barbell eigenvalues.}
+  \caption{Diagnostics for the first 119 barbell eigenvalues.}
   \label{fig:barbell_diagnostics}
 \end{figure}
 
@@ -293,11 +331,12 @@ This domain is the union of a square of side-length 6,
 a square of side-length 3, and a ``bridge'' connecting
 them of height 1 and width 5/2.
 %
-For simplicity, we round the corners of the domain
+For the sake of simplicity, we round the corners of the domain
 to obtain a smooth object.
 %
 Applying the approach described in~\cite{epstein2016smoothed},
-the corners of the domain are rounded using the Gaussian kernel
+the corners of the domain are rounded by convolving with
+the Gaussian kernel
 \begin{equation}
   \nonumber
 \phi(x) = \frac{1}{\sqrt{2\pi h}} e^{-x^2/(2 h^2)} \, ,
@@ -317,7 +356,8 @@ $0.5 \leq k \leq 6.5$.
 
 %
 The panels are divided adaptively so that the smallest
-panels in the rounded corner are smaller than $10^{-2}$.
+panels in the rounded corners are smaller than $10^{-2}$,
+which keeps the panels relatively flat.
 %
 This results in $N_p = 412$ after enforcing the
 level-restriction property described in
@@ -336,6 +376,7 @@ representation of $f^N(k)$ on each of the intervals
 $[j/2,(j+1)/2]$ for $j = 1,\ldots,12$.
 %
 We plot the absolute value of the Chebyshev coefficients
+(normalized by the absolute value of the first coefficient)
 of $f^N(k)$ on the intervals $[0.5,1.0]$, $[3.0,3.5]$,
 and $[6.0,6.5]$ in \cref{subfig:barbell_coeffs}.
 %
@@ -377,7 +418,8 @@ until about the 100th eigenvalue.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{fig/many_inclusions_gallery}
-  \caption{Vorticity plots of...}
+  \caption{Vorticity plots of the eigenfunctions corresponding
+  to the first 76 eigenvalues of a domain with several inclusions.}
   \label{fig:many_inclusions_gallery}
 \end{figure}
 
@@ -386,8 +428,9 @@ until about the 100th eigenvalue.
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
     \includegraphics[width=\textwidth]{fig/ex_many_holes_004_sings_plot}
-    \caption{Smallest singular value corresponding to the
-    first.}
+    \caption{Smallest singular value of the BIE operator
+      corresponding to the first 76 eigenvalues of a
+      domain with several inclusions.}
     \label{subfig:many_inclusions_sings}
   \end{subfigure}
   ~
@@ -398,7 +441,8 @@ until about the 100th eigenvalue.
       3 different intervals in $k$.}
     \label{subfig:many_inclusions_coeffs}
   \end{subfigure}
-  \caption{Diagnostics for the ... eigenvalues.}
+  \caption{Diagnostics for the eigenvalues of a domain
+    with several inclusions.}
   \label{fig:many_inclusions_diagnostics}
 \end{figure}
 
@@ -419,18 +463,15 @@ $3 \leq k \leq 9$ (this range includes the smallest
 eigenvalue).
 
 %
-For this smooth shape, the panels are chosen
-adaptively so that the coordinates, the first
-and second derivatives of the coordinates, and
-the arc-length function are resolved to a precision
-of $10^{-3}$ on each panel.
+For this smooth shape, ensuring that no panel is
+larger than one wavelength for the largest $k$
+(here $\lambda=2\pi/9$) is sufficient to resolve
+the object to high precision.
 %
-This results in $N_p = 224$ after enforcing the
+After enforcing the
 level-restriction property described in
-\cref{rmk:levelrestrict}
-and enforcing that no panel is larger than
-one wavelength for the largest $k$
-(here $\lambda=2\pi/9$).
+\cref{rmk:levelrestrict}, we end up with
+$N_p = 224$.
 
 As this is a multiply-connected domain,
 the eigenvalues are estimated by finding the values
@@ -481,15 +522,89 @@ $\cI^N-\cDk^N-2i\cSk^N-2\cW^N$ for each of these roots in
 and plot the vorticity of the eigenfunctions
 in \cref{fig:many_inclusions_gallery}.
 %
-The singular values suggest that the quality of the
-eigenvalues is good, with a few outliers.
-%
-These outliers are from the interval $[4.5,5]$.
-%
-In the plots, we observe a different type of
-localization property, with many of the eigenfunctions
+In the vorticity plots, we observe a different type of
+localization property than that seen in the barbell,
+with many of the eigenfunctions
 approximately supported in a small, connected subset
 of the domain. This is consistent with other studies
 \note{cite}
+
+%
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_many_holes_004_sings_plot_west}
+    \caption{Smallest singular value of the BIE operator
+      for the computed roots (original intervals)
+      along with an estimate of the error in the root (dotted).}
+    \label{subfig:many_inclusions_sings_west}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{fig/ex_many_holes_004_sings_plot_ref}
+    \caption{Smallest singular value of the BIE operator
+      for the computed roots on the original intervals (\textbullet)
+      and the values obtained on the refined interval ($\times$).}
+    \label{subfig:many_inclusions_sings_ref}
+  \end{subfigure}
+  \caption{Further diagnostics for the eigenvalues of a domain
+    with several inclusions.}
+  \label{fig:many_inclusions_diagnostics_2}
+\end{figure}
+
+The singular values suggest that the quality of the
+eigenvalues is good, with a few outliers.
+%
+To explain these outliers, we consider two quantities
+which affect the singular value at a computed root.
+%
+As described above, we can approximate the
+error in the computed root at $k_\cheb$ by
+$\epscheb \|P\|_\infty/|P'(k_\cheb)|$,
+where $P$ is the interpolating polynomial.
+%
+The singular value estimate itself is affected by
+the error incurred in applying the inverse of the
+compressed BIE matrix, which can be hard to quantify
+\cite{ho2012fast}.
+%
+We approximate this error by $O(\sqrt{N})\epsflam$
+and assume this is the order of the error in
+the singular value estimate.
+We plot the maximum of these two estimates
+along with the computed singular values in
+\cref{subfig:many_inclusions_sings_west}.
+There is a reasonably good correlation between
+the maximum of the error estimates and the
+observed smallest singular value for the BIE,
+especially for larger errors.
+
+The worst outliers are from the left half
+of the interval $[4.5,5]$.
+%
+Because the determinant is much larger on the
+right half than the left half of $[4.5,5]$,
+we can improve the estimate for the error
+in the roots by subdividing the interval. 
+We plot the smallest singular value of the
+BIE for the roots obtained by fitting a polynomial
+on $[4.5,4.75]$ in \cref{subfig:many_inclusions_sings_ref};
+the roots on the refined interval
+are of significantly higher quality.
+
+\begin{remark}
+  The above experience suggests that
+  the ratio $\|P\|_\infty/|P'(k_\cheb)|$
+  is a useful diagnostic for performing
+  automated eigenvalue estimation.
+  Note that at a multiple root, this ratio
+  will be more difficult to bound.
+\end{remark}
+%
+
+
 
 %
