@@ -36,6 +36,15 @@ points is $N=16N_p$.
 %
 See \cref{fig:panels} for an example
 discretization.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{media/annulus_discretization.pdf}
+\caption{Sample discretization of an annulus 1<r<1.7, where the inner
+circle, $r=1$ is discretized using $6$ panels and the outer circle $r=1.7$
+is discretized using $10$ panels.}
+\label{fig:panels}
+\end{figure}
 %
 Another important quantity below is the
 arc-length density of a panel, which
@@ -339,7 +348,7 @@ of $N$.
 As noted in~\cref{subsec:dlanalysis},
 if $k_{0}$ is a Neumann eigenvalue corresponding to the interior
 inclusion, which in our case is the disk $r\leq r_{1}$, then
-$f_{D}(N)(k_{D}) = 0$ with $|k_{D}-k_{0}| = O(\varepsilon)$, even though $k_{0}$ 
+$f_{D}^{N}(k_{D}) = 0$ with $|k_{D}-k_{0}| = O(\varepsilon)$, even though $k_{0}$ 
 is not a Dirichlet eigenvalue of the annulus, i.e.
 the integral equation $-\cI - 2\cD_{k} -2\cW$ has a spurious eigenvalue.
 In~\cref{fig:spur}, we demonstrate this result and also show that 

@@ -39,6 +39,7 @@ Dirichlet, Neumann and impedance boundary
 conditions and present uniqueness results for
 each.
 
+
 Along with the Fredholm alternative, these uniqueness
 results are sufficient to prove
 \cref{thm:dlmain,thm:cfmain}.
@@ -56,10 +57,11 @@ context for completeness.
 
 Let $\Omega$ be a bounded domain with a $C^2$ boundary
 denoted by $\Gamma$.
-The Dirichlet problem specifies the
-velocity of the fluid on the boundary, i.e.
+We summarize the interior Dirichlet, Neumann and impedance
+boundary value problems in~\cref{def:int_dir,def:int_neu,def:int_imp} below.
 
 \begin{definition}[Interior Dirichlet problem]
+  \label{def:int_dir}
   Let $\ff \in C(\Omega)$ be given. Find $(\bu,p) \in A(\Omega)$
   such that
   \begin{equation}
@@ -78,13 +80,8 @@ Dirichlet data $\ff$, namely that
 \end{equation}
 
 
-Let $\bsigma$ denote the stress tensor associated with the
-pair $(\bu,p)$. 
-Specifying the surface traction, $\bt = \bsigma \cdot \bnu$,
-on the boundary gives the Neumann boundary value
-problem, i.e.
-
 \begin{definition}[Interior Neumann problem]
+  \label{def:int_neu}
   Let $\bg \in C(\Omega)$ be given. Find $(\bu,p) \in A(\Omega)$
   such that
   \begin{equation}
@@ -97,6 +94,7 @@ problem, i.e.
 \end{definition}
 
 \begin{definition}[Interior impedance problem]
+\label{def:int_imp}
   Let $\bh \in C(\Omega)$ be given and suppose 
   $\eta \in \mathbb{C}$ with $\Re{(\eta)},\Im{(\eta)}>0$. 
   Find $(\bu,p) \in A(\Omega)$  such that
@@ -216,7 +214,7 @@ as $r\to \infty$, we have
 \left (H_0^{(1)} (kr) \right ) \right)\bpsi \right | =
 o ( 1/\sqrt{r} ) \; . \nonumber
 \end{equation}
-Finally, because $H_0^{(1)}(kr)$ is radially symmetric,
+Finally, since $H_0^{(1)}(kr)$ is radially symmetric,
 we have
 
 \begin{equation}
@@ -339,7 +337,7 @@ summarize in
   \cref{def:radcond}.
 \end{definition}
 
-\begin{definition}[Exterior Impedence problem]
+\begin{definition}[Exterior impedance problem]
   \label{def:imp_exterior}  
   Let $\bh \in C(\Gamma)$ be given and suppose that
   $\eta \in \mathbb{C}$ with $\Re{(\eta)},\Im{(\eta)} >0$. 
@@ -385,7 +383,7 @@ are real-valued.
 \end{proof}
 
 In the following lemma, we prove uniqueness for the
-interior impedence problem.
+interior impedance problem.
 
 \begin{thrm}
   Let $\Omega$ be a bounded domain and suppose that
@@ -403,8 +401,9 @@ interior impedence problem.
   $\Re{(\eta)}, \Re{(k)}, \Im{(k)} > 0$.
 \end{proof}
 
-The following lemmas are useful in establishing the uniqueness
-of oscillatory Stokes boundary value problems.
+We now turn our attention to the proofs of the exterior boundary value problems
+for the oscillatory Stokes equation. The following lemmas are useful for
+proving these results.
 
 \begin{lem}
   \label{lem:rep}
@@ -499,12 +498,13 @@ second kind of order $n$.
 Since $a_{j,n}(r)$ satisfy~\cref{eq:adecay}, and using the asymptotic 
 expansion of $H_{n}^{(1),(2)}(kr)$ when $k$ and $r$ are real-valued, we note
 that the projection of $a_{j,n}$ on $r^{|n|}$, and $H_{n}^{1,2}(k r)$
-must be zero. Thus, 
+must be zero. Thus, for sufficiently large $r$,
 \begin{equation}
 u_{j}(r,\theta) = \sum_{n=-\infty}^{\infty} \frac{a_{j,n} e^{i n \theta}}{r^{|n|}} 
 \, , \nonumber
 \end{equation}
-for sufficiently large $r$.
+i.e. $u_{j}$ is harmonic 
+in $B_{r}(0)^{c}$.
 Finally, by \cref{cor:analytic}, $\bu$ is
 analytic in $E$. Therefore, each $u_j$ is harmonic
 throughout $E$.
@@ -522,7 +522,7 @@ k^2 \bu &= \nabla p \label{eq:massconsred} \; .
 \begin{remark}
   It should be noted that in~\cref{lem:rellich}, $\bu$ need
   not be a radiating solution. All that is assumed of $\bu$
-  is that it satisfies the PDE in $E$.
+  is that it satisfies the oscillatory Stokes equations in $E$.
 \end{remark}
 
 We now have the results needed to establish the
@@ -749,9 +749,9 @@ into the boundary condition and applying
 
 The rank deficiency of $\cI-2\cDk$ is
 well-known~\cite{biros2002embedded} and we summarize it
-in
+in the lemma below.
 
-\begin{lem}[\cite{biros2002embedded}]
+\begin{lem}
   \label{lem:nunull} In the notation above,
   $\bnu \in \cN(\cI - 2\cDkt)$.
 \end{lem}
@@ -823,7 +823,7 @@ Thus~\cref{eq:dlproofrep} reduces to
 Suppose now $\bu = -2\bD_{k}[\bmu]$ in $\Omega$.
 Then $\bu$ is a solution to the oscillatory Stokes equation in $\Omega$,
 and applying~\cref{lem:jump-conds}, we get that the interior
-limit of the velocity $\bu^{-}$, is given by $(\cI - 2\cD_{k}) \bmu = 0$
+limit of the velocity $\bu^{-}=(\cI - 2\cD_{k}) \bmu = 0$
 on $\Gamma$. Since $k^2$ is not a Dirichlet eigenvalue for the Stokes
 equation on $\Omega$, we conclude that $\bu \equiv 0$ in $\Omega$. 
 In particular, this implies that the interior limit of the surface traction
@@ -833,8 +833,8 @@ of the surface traction, $\bt^{+}$, is $0$ on $\Gamma$.
 Note that $\bu$ is a radiating solution of the oscillatory
 Stokes equation in the exterior $E$, as $\cW[\bmu] = 0$ implies
 $\int_{\Gamma} \bmu \cdot \bnu = 0$.
-From the uniqueness of the Neumann problem in the
-exterior $E$, we conclude that $\bu \equiv 0$ in $E$ as well,
+From the uniqueness of solutions to the exterior Neumann problem, 
+we conclude that $\bu \equiv 0$ in $E$ as well,
 which in particular implies that
 the exterior limit of the velocity, $\bu^{+}$, is $0$ on $\Gamma$.   
 Using the jump conditions in~\cref{lem:jump-conds} again, we
@@ -894,8 +894,8 @@ the extension to the general case is straightforward.
   given by the intersection of a domain $\Omega_{0}$
   and the exterior of a single domain $\Omega_{1}$ with
   $ \bar\Omega_1 \subset \Omega_0$.
-  Then, the operator $\cI - 2\cD_{k} - 2\cW$ has a non-trivial
-  null space if $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
+  Then, the operator $\cI - 2\cD_{k} - 2\cW$ is not invertible
+  if $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
 \end{thrm}
 
 %\begin{figure}
@@ -907,8 +907,8 @@ the extension to the general case is straightforward.
 %\end{figure}
 
 \begin{proof}
-  Suppose that $k^2$ is a Neumann eigenvalue of $\Omega_{1}$.
-  Let $\tilde{\bu}$ be the eigenfunction corresponding to $k^2$. 
+  Suppose that $k^2$ is a Neumann eigenvalue of $\Omega_{1}$, and
+  let $\tilde{\bu}$ denote the corresponding eigenfunction. 
   Note that $\tilde{\bu}$ is not identically $0$ on the boundary
   of $\Omega_{1}$, which we denote by $\Gamma_1$.
   Since $\tilde{\bu}$ is an interior Neumann eigenfunction, we note that
@@ -954,7 +954,7 @@ multiply-connected.
 \label{subsec:mixedanalysis}
 
 The non-robustness in using the double layer
-potential representation observed above can be
+potential representation can be
 remedied by using a combined-field, or mixed layer potential,
 representation, i.e. setting $\bu = (\bD_{k} + i\eta \bS_{k})
 \bmu$, with $\eta$ real and positive.
@@ -1056,7 +1056,7 @@ an outward normal to $\Omega_{j}$, then
 the boundary conditions on $\Gamma_{j}$ 
 is $\bt - i \eta \bu = 0$. 
 From the uniqueness of solutions to the interior 
-impedence problem, we conlcude that $\bu \equiv 0$
+impedance problem, we conlcude that $\bu \equiv 0$
 in $\Omega_{j}$, which in particular implies
 that $2\bmu = \bu^{-}-\bu^{+} = 0$ for $\xx \in \Gamma_{j}$,
 $j=1,2,\ldots m$.
@@ -1146,11 +1146,11 @@ the relevant operators on $Y$ instead of $C(\Gamma)\times C(\Gamma)$.
 %i.e. if $A$ is in trace class.
 
 The operator $-2\cD_{k} - 2\cW$ is trace class:
-\begin{lemma}
+\begin{lem}
   Suppose that $\Gamma$ is a $C^2$ curve.
-  Then, $-2\cD_{k} - 2\cW \in \cJ_1(Y)$
+  Then $-2\cD_{k} - 2\cW \in \cJ_1(Y)$
   for all $k \in \mathbb{C} \setminus \{0\}$ 
-\end{lemma}
+\end{lem}
 \begin{proof}
 Using Bessel function asymptotics, we note that the
 kernel of $\cD_{k}$ given by $\TT_{\cdot,\cdot,\ell}\nu_{\ell}(\bx,\by)$
@@ -1194,10 +1194,10 @@ finding the roots of an analytic function.
 
 We now show how this fact can be used to numerically
 estimate the Dirichlet eigenvalues.
-Suppose that $M_{k}^{N}$ is a Nystr\"{o}m discretization 
+Suppose that $D_{k}^{N}$ is a Nystr\"{o}m discretization 
 of the operator $-2\cD_{k} - 2\cW$ when the boundary 
 $\Gamma$ is discretized with $N$ points. 
-Let $f^{N}(k) = \text{det}(I + M_{k}^{N})$
+Let $f^{N}(k) = \text{det}(I + D_{k}^{N})$
 where here $\text{det}$ is the standard matrix determinant.
 Note that the discretized matrix also depends on the choice
 of quadrature rule used in the Nystr\"{o}m discretization
@@ -1230,7 +1230,7 @@ domain with an analytic boundary. Let $k_{j}^2$, $j=1,2,\ldots M$
 denote all the Dirichlet eigenvalues of Stokes equation
 on $\Omega$ contained in the interval $[a,b]$. 
 Suppose further that all the eigenvalues have multiplicity $1$.
-Let $f^{N}(k) = \text{det}(I+M^{N}_{k})$, where $M^{N}_{k}$ 
+Let $f^{N}(k) = \text{det}(I+D^{N}_{k})$, where $D^{N}_{k}$ 
 is the Nystr\"{o}m discretization of $-2\cD_{k} - 2\cW$ with Kress
 quadrature.
 Then there exists $N_{0} \in \mathbb{N}$ such
@@ -1266,17 +1266,9 @@ the determinant lose efficiency (for
 instance, the reasoning behind the use of a
 {\em proxy surface} \cite{cheng2005compression}
 no longer holds).
-%
-%Coupling with fast direct solvers for computing determinants also results in $O(N^2 \log{N})$.
-%where $N$ is the number of discretization points on the boundary.
-%Typical fast direct solvers
-%query $O(N)$ matrix entries to obtain a compressed representation,
-%this combined with the fact that evaluating each matrix entry
-%costs $O(N)$ for Kress quadratures results in the sub-optimal
-%complexity. 
 Over the last two decades, many high-order quadrature
 methods which are compatible with
-the fast multipole method and fast-direct solvers
+the fast multipole method and fast-direct methods
 have been developed.
 %
 Our numerical experiments, see \cref{subsec:convannulus},
@@ -1293,19 +1285,19 @@ We leave a proof of this to future work.
 The same analysis does not carry through for the operator
 $\cI - 2 \cD_{k} - 2i\eta \cS_{k} - 2\cW$, 
 since $\cS_{k}$ is not a trace class operator.
-For brevity, let $\cM_{k} = -2\cD_{k} - 2i\eta \cS_{k} - 2\cW$.
-The operator $\cM_{k}$ is 
+For brevity, let $\cC_{k} = -2\cD_{k} - 2i\eta \cS_{k} - 2\cW$.
+The operator $\cC_{k}$ is 
 in $\cJ_{2}(Y)$ where
 $\cJ_{2}(Y)$ is the space of Hilbert-Schmidt operators
 on $Y$ (the singular values of the operator are square
 summable, as opposed to being summable).
-Thus the Fredholm determinant of $\cI + \cM_{k}$
+Thus the Fredholm determinant of $\cI + \cC_{k}$
 is not necessarily finite. 
 However, as noted in~\cite{zhao2015robust}, the convergence
 result~\cref{thm:mainconvfreddet}
 should be true up to a logarithmic factor in the rate
 of convergence, since the singular values of the operator
-$\cM_{k}$ decay like $\frac{1}{n}$, and the
+$\cC_{k}$ decay like $\frac{1}{n}$, and the
 Fredholm determinant diverges logarithmically. 
 In~\cref{subsec:convannulus}, we demonstrate this fact
 numerically on the annulus, where the eigenvalues are

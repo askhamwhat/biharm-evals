@@ -74,7 +74,7 @@ problem can be divided into two basic approaches.
 %
 The first class of methods
 directly discretize the
-Stokes operator, typically with a
+differential operator, typically with a
 finite element basis, and the eigenvalues are found
 as the eigenvalues of the discrete system.
 %
@@ -105,13 +105,13 @@ Because the BIE is defined on the
 boundary alone, there is a reduction in the
 dimension of the domain to be discretized.
 %
-This reduces the number of unknowns over finite
-element discretizations, particularly given
-that finite element methods suffer from
-high-frequency ``pollution'' due to the 
+This approach reduces the number of unknowns over finite
+element discretizations, and does not suffer
+from high-frequency ``pollution'' due to the 
 large number of unknowns required to resolve
 the computation when $k$ is large
-\cite{babuska1997pollution}.
+\cite{babuska1997pollution} (which typically affects
+finite element approaches to determining the eigenvalues).
 
 Further, Zhao and Barnett~\cite{zhao2015robust}
 show how to alleviate some of the costliness of the
@@ -212,7 +212,7 @@ modes of thin, clamped plates~\cite{lindsay2018boundary}.
 The rest of this paper proceeds as follows.
 %
 In \cref{sec:prelim}, we set the notation, provide some
-mathematical preliminaries, and review the
+mathematical preliminaries, and review 
 properties of single and double layer potentials
 for the oscillatory Stokes equations.
 %
