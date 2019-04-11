@@ -10,6 +10,9 @@ useful code which has been pulled out and will
 be maintained more professionally under a different
 name (more to come on this!)
 
+The primary files of interest are located in matlab/example
+but compiling the mexfiles is necessary.
+
 ### Compiling the mexfiles
 
 
@@ -27,4 +30,8 @@ routines
 The software in this repository contained
 in the src, mwrap, and matlab directories
 is available under the terms of the FreeBSD
-3 clause license. 
+3 clause license.
+
+The software in the external folder is available
+under different licenses and is housed here for archiving
+purposes.
