@@ -22,17 +22,22 @@ value problems.
 To prove the uniqueness results, we follow the 
 structure presented in Colton and Kress~\cite[Ch. 3]{colton1983integral}
 for the scalar Helmholtz equation.
-While uniqueness results for interior Dirchilet, Neumann, and impedance
-problems follow from energy considerations and compactness
-arguments, the proofs for uniqueness of exterior
-results are more involved. 
-In particular,
-this entails making the exterior problems
-well-posed by imposing an appropriate radiaiton condition.
-We present well-posed boundary value formulations 
-for both interior and exterior Dirichlet, Neumann and impedance
-boundary value problems, and also
-present uniqueness results for all of them.
+%
+While uniqueness results for interior Dirchilet,
+Neumann, and impedance problems follow from energy
+considerations and compactness arguments, the proofs
+for the uniqueness of exterior problems are more
+involved.
+%
+In particular, the exterior problems are only 
+well-posed after imposing an appropriate radiation
+condition.
+%
+We formulate well-posed boundary value problems 
+for both interior and exterior domains with
+Dirichlet, Neumann and impedance boundary
+conditions and present uniqueness results for
+each.
 
 Along with the Fredholm alternative, these uniqueness
 results are sufficient to prove
@@ -49,7 +54,7 @@ context for completeness.
 
 \subsection{Boundary value problems --- interior}
 
-Let $\Omega$ be a bounded domain with $C^2$ boundary
+Let $\Omega$ be a bounded domain with a $C^2$ boundary
 denoted by $\Gamma$.
 The Dirichlet problem specifies the
 velocity of the fluid on the boundary, i.e.
@@ -73,8 +78,8 @@ Dirichlet data $\ff$, namely that
 \end{equation}
 
 
-Let $\bsigma$ denote the stress tensor associated with
-field $(\bu,p)$. 
+Let $\bsigma$ denote the stress tensor associated with the
+pair $(\bu,p)$. 
 Specifying the surface traction, $\bt = \bsigma \cdot \bnu$,
 on the boundary gives the Neumann boundary value
 problem, i.e.
@@ -303,7 +308,7 @@ Let $E$ and $\Gamma$ be as in the previous subsection.
 The radiation condition allows for a well-posed formulation
 of the exterior boundary value problems, which we
 summarize in
-\cref{def:dir_exterior,def:neu_exterior} below.
+\cref{def:dir_exterior,def:neu_exterior,def:imp_exterior} below.
 
 \begin{definition}[Exterior Dirichlet problem]
   \label{def:dir_exterior}
@@ -335,13 +340,13 @@ summarize in
 \end{definition}
 
 \begin{definition}[Exterior Impedence problem]
-  \label{def:neu_exterior}  
+  \label{def:imp_exterior}  
   Let $\bh \in C(\Gamma)$ be given and suppose that
   $\eta \in \mathbb{C}$ with $\Re{(\eta)},\Im{(\eta)} >0$. 
   Find $(\bu,p) \in A(E)$
   such that
   \begin{equation}
-  \begin{aligned} \label{eq:neu_exterior}
+  \begin{aligned} \label{eq:imp_exterior}
     \Delta \bu + k^{2} \bu &= \nabla p \quad \bx \in E \, ,\\
     \nabla \cdot \bu &= 0 \quad \bx \in E \, ,  \\
     \bt + i\eta \bu &= \bh \quad \bx \in \Gamma \, ,
@@ -780,9 +785,11 @@ following lemma:
 \end{lem}
 \begin{proof}
 We first note that $\bS_{k}[\bnu](\bx) = 0$ for all $\bx \in \Omega$.
-This follows from the application of the divergence theorem and the fact that
+This follows from an application of the divergence
+theorem and the fact that
 oscillatory Stokeslet is divergence free in $\Omega$. 
-If $\bt^{-}$ is a surface traction associated with a Stokes eigenvalue, then
+If $\bt^{-}$ is a surface traction associated with
+a Stokes eigenvalue, then
 using Green's theorem, it follows that
 $\bS_{k}[\bt^{-}](\bx) = \bu(\bx) \neq 0$ for $\bx \in \Omega$ and
 thus $\bt^{-}$ and $\bnu$ are linearly independent.
@@ -937,11 +944,11 @@ Analogous with the observation in~\cite{zhao2015robust},
 this lack of one-to-one correspondence between
 the invertibility of the integral operator $\cI - 2\cD_{k} - 2\cW$
 and the Dirichlet eigenvalues of the Stokes operator on multiply
-connected domains also causes non-robustness and introduces near 
-resonances for simply connected domains
-which are almost multiply connected.
-We demonstrate this issue numerically
-in~\cref{subsec:crescent}.
+connected domains also causes non-robustness and introduces
+near-resonances for simply-connected domains which are almost
+multiply-connected.
+%We demonstrate this issue numerically
+%in~\cref{subsec:crescent}.
 
 \subsubsection{Dirichlet eigenvalues --- combined-field representation}
 \label{subsec:mixedanalysis}
@@ -1061,7 +1068,7 @@ From \cref{thrm:rep-theorem}, we have
 \begin{equation} 
   \bS [\bt](\xx) - \bD[\bu](\xx) = \begin{cases} 
     \bu(\xx) &\quad \xx \in \Omega \, , \\
-    0 &\quad \xx \in \Omega^{C} \; .
+    0 &\quad \xx \in \R^2 \setminus \bar{\Omega} \; .
     \end{cases}
   \end{equation}
 Suppose that $k^2$ is Dirichlet eigenvalue for
@@ -1199,7 +1206,8 @@ of the operator.
 In~\cite{zhao2015robust}, the authors prove that
 for computing the Laplace eigenvalues on regions with 
 analytic boundaries, when the integral operators are
-discretized using Kress quadrature, see~\cite{kress1991boundary},
+discretized using Kress quadrature --- a spectrally accurate
+quadrature rule for such kernels, see~\cite{kress1991boundary} ---
 the determinant of the Nystr\"{o}m discretized operators
 at the true eigenvalues converge to $0$ exponentially
 in $N$.
@@ -1211,9 +1219,9 @@ of the determinant of the Nystr\"{o}m discretization
 of the linear operator converge exponentially to
 the true Dirichlet eigenvalues for Laplace's equation.
 
-The proof presented in~\cite{zhao2015robust} carries
-forward for computing the Dirichlet eigenvalues of
-Stokes equation as well.
+The proof presented in~\cite{zhao2015robust} applies
+to the BIE approach for computing the Dirichlet eigenvalues
+of the Stokes operator as well.
 The result is summarized below.
 \begin{thrm}
 \label{thm:mainconvfreddet}
@@ -1271,7 +1279,8 @@ methods which are compatible with
 the fast multipole method and fast-direct solvers
 have been developed.
 %
-Extensive numerical evidence suggests that the zeros of the 
+Our numerical experiments, see \cref{subsec:convannulus},
+suggest that the zeros of the 
 determinants of linear systems discretized using 
 these quadrature methods are also high order approximations
 of Dirichlet eigenvalues for the Stokes operator ---

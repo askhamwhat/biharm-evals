@@ -1,19 +1,30 @@
-### Biharmonic eigenvalue problem
+### Stokes eigenvalues
 
-This directory is early days. 
+This directory contains the code used to generate
+the figures in the paper "A boundary integral equation 
+approach to computing eigenvalues of the Stokes operator".
+This repository is meant to be a snapshot of the
+code as used in the paper.
+The software development for this paper led to some
+useful code which has been pulled out and will
+be maintained more professionally under a different
+name (more to come on this!)
 
-The test values for the difference kernel functions 
-can be generated from the files mathematica/HelmBHTest.nb
-and mathematica/HelmBHDerTests.nb. They are already included
-in tests/test-data
+### Compiling the mexfiles
 
-### Running tests
 
-The test directory contains makefiles for running 
-many tests. Most accept a command line argument
-for the system (either linux or mac), e.g.
+From this top-level folder, run
 
-make testhbhstokesgreenid SYSTEM=mac
+```
+make mexfiles
+```
+to generate the mexfiles used by the MATLAB
+routines
 
-will compile with the correct flags for mac.
 
+### Licenses
+
+The software in this repository contained
+in the src, mwrap, and matlab directories
+is available under the terms of the FreeBSD
+3 clause license. 
