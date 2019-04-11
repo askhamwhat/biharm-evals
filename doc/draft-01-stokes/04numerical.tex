@@ -314,31 +314,54 @@ We demonstrate that
 for sufficiently large $N$, if $k_{0}$ is a Dirichlet 
 eigenvalue of the annulus, 
 then $f_{D}^{N}(k_{D}) = 0$ and $f_{C}^{N}(k_{C}) = 0$
-where $|k_{D} - k_{0}| \lsim N^{-20}$, 
-and $|k_{C} - k_{0}| \lsim N^{-20}$.
-Note that N^{-20} is the observed order of
+where $|k_{D} - k_{0}| \lesssim N^{-20}$, 
+and $|k_{C} - k_{0}| \lesssim N^{-20}$.
+Note that $N^{-20}$ is the expected order of
 convergence for Generalized Gaussiuan quadratures for weakly 
 singular integrals.
 In~\cref{fig:conv}, we show this result for $k_{0} = 13.48025717955055$
 and plot the errors $|k_{D}-k_{0}|$ and $|k_{C}-k_{0}|$ as a function
 of $N$. 
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.98\textwidth]{media/conv-studies.pdf}
+  \caption{Convergence studies for the Dirichlet eigenvalues
+  computed using the integral equations 
+  $\cI - 2\cD_{k} - 2\cW$ (left) and
+  $\cI - 2\cD_{k} - 2i \cS_{k} - 2\cW$ (right).}
+  \label{fig:conv}
+\end{figure}
+
 \subsubsection{Spurious eigenvalues}
 \label{subsec:spurannulus}
 As noted in~\cref{subsec:dlanalysis},
 if $k_{0}$ is a Neumann eigenvalue corresponding to the interior
 inclusion, which in our case is the disk $r\leq r_{1}$, then
-$f_{D}(N)(k_{0}) is O(\varepsilon)$ even though $k_{0}$ 
+$f_{D}(N)(k_{D}) = 0$ with $|k_{D}-k_{0}| = O(\varepsilon)$, even though $k_{0}$ 
 is not a Dirichlet eigenvalue of the annulus, i.e.
 the integral equation $-\cI - 2\cD_{k} -2\cW$ has a spurious eigenvalue.
 In~\cref{fig:spur}, we demonstrate this result and also show that 
 $f_{C}^{N}(k_{0}) \neq 0$, i.e., the combined field representation is
 robust and invertible at all values of $k$ which are not the Dirichlet
-eigenvalues of the annulus. 
+eigenvalues of the annulus.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.98\linewidth]{media/det_spur.pdf}
+\caption{The values of the discretized determinants $f_{C}^{N}(k)$ (left)
+and $f_{D}^{N}(k)$ on the interval $k=[13,14]$ with $N=368$. The vertical
+dotted line denotes the spurious eigenvalue $k_{0} = 14.79595178235126$ 
+and $f_{D}^{N}(k_{D}) = 0$ with $|k_{D}-k_{0}|=6.8\times 10^{-12}$.
+On the other hand $|f_{C}^{N}(k_{0})|=0.42$, and thus $\cI-2\cD_{k}-2i\cS_{k} 
+-2\cW$ has no 
+spurious eigenvalue in the neighborhood of $k=k_{0}$.}
+\label{fig:spur}
+\end{figure}
 
 \subsubsection{Speed}
 \label{subsec:speed}
-In this section, we demonstrate the O(N\log{N}) scaling of evaluating
+In this section, we demonstrate the $O(N\log{N})$ scaling of evaluating
 $f^{N}_{C}(k)$ as long as $N$ is large enough to resolve the interactions
 at the Helmholtz parameter $k$. 
 When $N$ is smaller than that, we observe a worse scaling since the
@@ -346,7 +369,13 @@ assumption that far-interactions are low-rank is no longer valid at
 the tolerance of FLAM.
 We plot the timing results corresponding to three different values of 
 $k$ in~\cref{fig:speed}.
-
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{media/speed_res.pdf}
+\caption{Time taken $(t)$ in seconds to evaluate the determinant $f_{C}^{N}(k)$ as
+a function of $N$ for three different values of $k$.}
+\label{fig:speed}
+\end{figure}
 
 \subsection{Eigenvalues of a barbell-shaped domain}
 \label{subsec:barbell}
