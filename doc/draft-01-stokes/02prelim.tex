@@ -15,8 +15,8 @@ operators on Banach spaces, with $\mathcal{I}$ denoting the
 identity. Given a set $X$, we denote the closure of $X$
 by $\overline{X}$.
 
-For a given velocity field $\bu$ and pressure $p$, let $\bsigma(\bu,p)$
-denote the Cauchy stress tensor, i.e.
+For a velocity field $\bu$ and pressure $p$, let $\bsigma(\bu,p)$
+denote the Cauchy stress tensor is given by
 \begin{equation}
 \bsigma(\uu,p) = -p \II + 2 \be(\bu) \, ,
 \end{equation}
@@ -53,7 +53,7 @@ for sufficiently smooth $f$
   \nonumber
 \end{equation}
 We consider here
-free-space Green's functions, i.e. fundamental solutions which satisfy
+free-space Green's functions, i.e. fundamental solutions which satisfy appropriate
 radiation conditions as $|\xx-\yy| \to \infty$.
 The Green's function of the oscillatory biharmonic equation,
 \begin{equation}
@@ -127,7 +127,7 @@ we present the version provided in \cite{colton1983integral}.
 \subsection{Properties of the oscillatory Stokes layer
   potentials}
 
-Recall that, in the case that $k=i\alpha$ for some real-valued $\alpha$,
+Recall that, in the case $k=i\alpha$ for some real-valued $\alpha$,
 the oscillatory Stokes equations \cref{eq:ostokes}
 are known as the modified Stokes equations and are of particular
 interest for their application to the analysis and numerical
@@ -370,7 +370,7 @@ in the Stokes and modified Stokes settings
   Suppose that $\xx \in \Omega$.
   By the definitions of $\GG$ and $\Glap$, we have
   \begin{equation*}
-    \bu(\xx) = \int_\Omega -(\Delta_x + k^2) \GG(\xx,\yy) \bu(\yy)
+    \bu(\xx) = \int_\Omega -(\Delta + k^2) \GG(\xx,\yy) \bu(\yy)
     + \nabla \otimes \nabla \Glap(\xx,\yy) \bu(\yy) \, dV(\yy) \; .
   \end{equation*}
   Applying Green's identity and the divergence theorem, we
@@ -417,7 +417,7 @@ that for the Helmholtz case; see \cite[Theorem 3.5]{colton1983integral}.
 Without modification, the standard layer potentials
 can result in rank-deficient representations for
 the boundary value problems. The nature of this deficiency
-is treated below but for now we introduce a standard
+is treated in~\cref{sec:analysis} but for now we introduce a standard
 operator used to correct this. For any integrable density
 $\bmu$, let $\cW[\bmu]$ be defined by
 
