@@ -42,7 +42,7 @@ endif
 
 SRC_DIR = src
 BIN_DIR = bin
-TEST_DIR = test
+TEST_DIR = ye-olde-fortran-test
 TMP_DIR = tmp
 MDIR = matlab
 MWRAP_DIR = mwrap

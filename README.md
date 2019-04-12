@@ -22,7 +22,15 @@ From this top-level folder, run
 make mexfiles
 ```
 to generate the mexfiles used by the MATLAB
-routines
+routines. You may have to edit the flags for
+compiling. The current version requires gfortran
+and mex.
+
+### Running the examples
+
+The examples were run with MATLAB R2018a.
+
+See instructions in the matlab/example folder
 
 
 ### Licenses
@@ -30,7 +38,7 @@ routines
 The software in this repository contained
 in the src, mwrap, and matlab directories
 is available under the terms of the FreeBSD
-3 clause license.
+3 clause license, unless otherwise noted.
 
 The software in the external folder is available
 under different licenses and is housed here for archiving
