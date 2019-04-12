@@ -7,7 +7,8 @@
 
 filebase = 'example_many_holes_005';
 timeref = datestr(now,'_yyyymmdd_HHMMSS');
-fileout = [filebase, timeref, '.mat'];
+%fileout = [filebase, timeref, '.mat'];
+fileout = [filebase, '.mat'];
 
 chebabs = cell(1,1);
 chebabs{1} = [4.5,4.75];

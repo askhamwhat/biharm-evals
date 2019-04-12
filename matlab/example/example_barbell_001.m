@@ -6,8 +6,9 @@
 % save chebfun, domain, and some settings to a file
 
 filebase = 'example_barbell_001'; 
-timeref = datestr(now,'_yyyymmdd_HHMMSS');
-fileout = [filebase, timeref, '.mat'];
+%timeref = datestr(now,'_yyyymmdd_HHMMSS');
+%fileout = [filebase, timeref, '.mat'];
+fileout = [filebase, '.mat'];
 
 
 chebabs = cell(12,1);
