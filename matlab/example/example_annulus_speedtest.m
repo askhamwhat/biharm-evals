@@ -1,9 +1,9 @@
 
-%EXAMPLE_ANNULUS_001
+%EXAMPLE_ANNULUS_SPEEDTEST
 %
-% compute a chebfun representation of the fredholm determinant 
-% of the system I-2D-2iS for a domain on the intervals [j,j+1] j=1,...,8
-% save chebfun, domain, and some settings to a file
+% record some timing information as the frequency and number 
+% of discretization points is varied
+
 
 % annulus params
 
@@ -25,9 +25,11 @@ detvals = zeros(length(zkvals),length(nchvals));
 
 seed = 8675309;
 rng(seed);
-addpath('../src')
-addpath('../example')
-addpath('../../mwrap')
+% addpath('../src')
+% addpath('../example')
+% addpath('../../mwrap')
+
+addpaths_loc();
 
 for ii=1:length(nchvals)
 
@@ -36,6 +38,7 @@ for ii=1:length(nchvals)
     ncho = ceil(nchi/r1*r2)+1;
 
     chunkert = circle_chunks(ncho,r2);
+    checkchunker(chunkert);
     chunkers{1} = chunkert;
 
     nw = 1;
@@ -48,7 +51,7 @@ for ii=1:length(nchvals)
     chunkers{ind} = chunkert;
         
     [chunker,nchs] = chunkermerge(chunkers);
-
+    
 %
 
 

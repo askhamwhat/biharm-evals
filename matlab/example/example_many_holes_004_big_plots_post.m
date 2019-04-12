@@ -1,10 +1,12 @@
-%EXAMPLE_MANY_HOLES_004_BIG_PLOTS_POST
+%EXAMPLE_MANY_HOLES_004_and_005_BIG_PLOTS_POST
 %
 % process saved vorticity and singular value data
 
 clear all
 
-addpath('../src','../test','../../mwrap');
+% addpath('../src','../test','../../mwrap');
+
+addpaths_loc();
 
 filein1 = 'example_many_holes_004.mat';
 filein2 = 'example_many_holes_004_big_plots.mat';
@@ -33,10 +35,10 @@ end
 
 %
 
-indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
-nnz(indimagbig)
-find(indimagbig)
-sings(indimagbig)
+% indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
+% nnz(indimagbig)
+% find(indimagbig)
+% sings(indimagbig)
 
 %
 
@@ -88,38 +90,6 @@ for ii = 1:mrow*ncol
 end
 
 %%
-
-tempi = [97, 98];
-
-mmrow = 1; nncol =2;
-
-for ii = 1:2
-    i =  tempi(ii);
-    subplot(mmrow,nncol,ii)
-    vort = nan(size(vorts{i}));
-    
-    vort(in) = vorts{i}(in); iin = find(in); isel = randperm(length(iin),nsamp);
-    vort = vort/(mean(vort(iin(isel))));
-    norm(imag(vort(in)),'fro')/norm(vort(in),'fro')
-    vort = real(vort);
-    vmax = max(max(abs(vort))); vort = vort/vmax;
-    hold off
-    h = pcolor(xx,yy,vort); set(h,'EdgeColor','none');
-    hold on
-    for i = 1:length(chunkers)
-        chnkr = chunkers{i};
-        plot(chnkr.chunks(1,:),chnkr.chunks(2,:),'-k')
-    end
-    
-    axis equal
-    colormap(redblue)
-    caxis([-1 1])
-
-    set(gca,'XTick',[], 'YTick', [])
-    axis equal    
-    axis tight
-    axis equal
-end
 
 %%
 

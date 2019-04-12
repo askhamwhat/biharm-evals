@@ -1,13 +1,15 @@
-%EXAMPLE_MANY_HOLES_004_BIG_PLOTS
+%EXAMPLE_MANY_HOLES_005_BIG_PLOTS
 %
 % batch make images of vorticity 
 
-addpath('../src','../test','../../mwrap');
+% addpath('../src','../test','../../mwrap');
 
 filein = 'example_many_holes_005.mat';
 fileout = 'example_many_holes_005_big_plots.mat';
-addpath('~/Dropbox/MATLAB/chebfun')
-addpath(genpath('~/Dropbox/MATLAB/FLAM'))
+% addpath('~/Dropbox/MATLAB/chebfun')
+% addpath(genpath('~/Dropbox/MATLAB/FLAM'))
+
+addpaths_loc();
 
 load(filein);
 

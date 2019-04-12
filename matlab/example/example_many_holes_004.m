@@ -24,9 +24,12 @@ max_rzk = chebabs{end}(end); lam = 2*pi/max_rzk;
 
 seed = 8675309;
 rng(seed);
-addpath('../src')
-addpath('../example')
-addpath('../../mwrap')
+% addpath('../src')
+% addpath('../example')
+% addpath('../../mwrap')
+% 
+
+addpaths_loc();
 
 cparams.eps = 1.0e-3;
 cparams.nchmax = 100000;

@@ -1,9 +1,7 @@
 
-%EXAMPLE_ANNULUS_001
-%
-% compute a chebfun representation of the fredholm determinant 
-% of the system I-2D-2iS for a domain on the intervals [j,j+1] j=1,...,8
-% save chebfun, domain, and some settings to a file
+%PLOT_ANNULUS
+
+addpaths_loc();
 
 filebase = 'example_annulus_001'; 
 timeref = datestr(now,'_yyyymmdd_HHMMSS');

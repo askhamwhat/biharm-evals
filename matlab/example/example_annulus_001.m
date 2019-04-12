@@ -2,7 +2,7 @@
 %EXAMPLE_ANNULUS_001
 %
 % compute a chebfun representation of the fredholm determinant 
-% of the system I-2D-2iS for a domain on the intervals [j,j+1] j=1,...,8
+% of the system I-2D-2iS for a domain on the intervals [j,j+1] j=13,14
 % save chebfun, domain, and some settings to a file
 
 filebase = 'example_annulus_001'; 
@@ -23,9 +23,11 @@ chebabs{2} = [14 15];
 
 seed = 8675309;
 rng(seed);
-addpath('../src')
-addpath('../example')
-addpath('../../mwrap')
+%addpath('../src')
+%addpath('../example')
+%addpath('../../mwrap')
+
+addpaths_loc();
 
 cparams.eps = 1.0;
 cparams.nchmax = 100000;

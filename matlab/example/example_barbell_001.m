@@ -19,12 +19,13 @@ max_rzk = chebabs{end}(end); lam = 2*pi/max_rzk;
 
 seed = 8675309;
 rng(seed);
-addpath('../src')
-addpath('../example')
-addpath('../../mwrap')
-addpath('~/Dropbox/MATLAB/chebfun/')
-addpath(genpath('~/Dropbox/MATLAB/FLAM'))
+% addpath('../src')
+% addpath('../example')
+% addpath('../../mwrap')
+% addpath('~/Dropbox/MATLAB/chebfun/')
+% addpath(genpath('~/Dropbox/MATLAB/FLAM'))
 
+addpaths_loc();
 
 opts = [];
 opts.autowidths = false;

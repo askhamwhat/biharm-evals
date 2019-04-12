@@ -1,13 +1,16 @@
 %EXAMPLE_BARBELL_001_BIG_PLOTS
 %
-% batch make images of vorticity 
+% batch make images of vorticity (this will take a while, an adaptive
+% routine is used which ensures accuracy).
 
-addpath('../src','../test','../../mwrap');
+% addpath('../src','../test','../../mwrap');
 
 filein = 'example_barbell_001.mat';
 fileout = 'example_barbell_001_big_plots.mat';
-addpath('~/Dropbox/MATLAB/chebfun')
-addpath(genpath('~/Dropbox/MATLAB/FLAM'))
+% addpath('~/Dropbox/MATLAB/chebfun')
+% addpath(genpath('~/Dropbox/MATLAB/FLAM'))
+
+addpaths_loc();
 
 load(filein);
 

@@ -1,9 +1,10 @@
 
 % replace with location of chebfun/flam on your computer
 
-addpath('../src','../../mwrap','~/Dropbox/MATLAB/chebfun');
-addpath(genpath('~/Dropbox/MATLAB/FLAM'));
+% addpath('../src','../../mwrap','~/Dropbox/MATLAB/chebfun');
+% addpath(genpath('~/Dropbox/MATLAB/FLAM'));
 
+addpaths_loc();
 
 %%
 

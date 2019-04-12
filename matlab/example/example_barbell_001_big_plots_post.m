@@ -2,7 +2,9 @@
 %
 % process saved vorticity and singular value data
 
-addpath('../src','../test','../../mwrap');
+% addpath('../src','../test','../../mwrap');
+
+addpaths_loc();
 
 filein1 = 'example_barbell_001.mat';
 filein2 = 'example_barbell_001_big_plots.mat';
@@ -17,14 +19,14 @@ for i = 1:length(ss)
     sings(i) = ss{i}(end);
 end
 
-%%
+%
 
-indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
-nnz(indimagbig)
-find(indimagbig)
-sings(indimagbig)
+% indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
+% nnz(indimagbig)
+% find(indimagbig)
+% sings(indimagbig)
 
-%%
+%
 %
 
 [iplot,ichkdbl] = find_unique_evals(rts,sings,1e-5,...
@@ -70,45 +72,13 @@ end
 
 %%
 
-tempi = [97, 98];
-
-mmrow = 1; nncol =2;
-
-for ii = 1:2
-    i =  tempi(ii);
-    subplot(mmrow,nncol,ii)
-    vort = nan(size(vorts{i}));
-    
-    vort(in) = vorts{i}(in); iin = find(in); isel = randperm(length(iin),nsamp);
-    vort = vort/(mean(vort(iin(isel))));
-    norm(imag(vort(in)),'fro')/norm(vort(in),'fro')
-    vort = real(vort);
-    vmax = max(max(abs(vort))); vort = vort/vmax;
-    hold off
-    h = pcolor(xx,yy,vort); set(h,'EdgeColor','none');
-    hold on
-    for i = 1:length(chunkers)
-        chnkr = chunkers{i};
-        plot(chnkr.chunks(1,:),chnkr.chunks(2,:),'-k')
-    end
-    
-    axis equal
-    colormap(redblue)
-    caxis([-1 1])
-
-    set(gca,'XTick',[], 'YTick', [])
-    axis equal    
-    axis tight
-    axis equal
-end
-
 %%
 
 % Run through and check for double roots at suspicious sings
 
 pord = 10;
 q = 40;
-ss2 = zeros(p,length(ichkdbl));
+ss2 = zeros(pord,length(ichkdbl));
 
 for ii = 1:length(ichkdbl)
     i = ichkdbl(ii,1);
@@ -132,10 +102,14 @@ for ii =  1:length(ichkdbl)
     v1 = vorts{i1}(in); v2 = vorts{i2}(in);
     v1 = v1/norm(v1,'fro');
     projs(ii) = norm(v2-v1*v1'*v2);
+    x1 = xnulls{i1}(:,1); x2 =xnulls{i2}(:,1);
+    x1 = x1/norm(x1,'fro');
+    x2 = x2/norm(x2,'fro');
+    projsx(ii) = norm(x2-x1*x1'*x2);
 end
 
 
-%%
+%% PRINT OUT SINGULAR VALUES TO TEX FILES
 
 fileout = 'ex_barbell_001_sings.tex';
 fid = fopen(fileout,'w'); 
@@ -163,15 +137,15 @@ for i = 1:length(chebabs)
 end
 
 %% 
-
-figure(1)
-clf
-hold on
-for i = 1:length(detchebs)
-    semilogy(abs(detchebs{i}),'b')
-end
-axis tight
-
+% 
+% figure(1)
+% clf
+% hold on
+% for i = 1:length(detchebs)
+%     semilogy(abs(detchebs{i}),'b')
+% end
+% axis tight
+% 
 
 %% 
 
@@ -189,24 +163,24 @@ end
 
 %% 
 
-
-
-nperab = 400;
-xxtot = [];
-yytot = [];
-for i = 1:length(detchebs)
-    ab = chebabs{i};
-    xx = linspace(ab(1),ab(2),nperab);
-    xxtot = [xxtot; xx(:)];
-    yytot = [yytot; detchebs{i}(xx(:))];
-end
-    
-figure(1)
-clf
-hold on
-plot(xxtot,real(yytot),'r')
-plot(xxtot,imag(yytot),'b')
-
-figure(2)
-clf
-semilogy(xxtot,abs(yytot))
+% 
+% 
+% nperab = 400;
+% xxtot = [];
+% yytot = [];
+% for i = 1:length(detchebs)
+%     ab = chebabs{i};
+%     xx = linspace(ab(1),ab(2),nperab);
+%     xxtot = [xxtot; xx(:)];
+%     yytot = [yytot; detchebs{i}(xx(:))];
+% end
+%     
+% figure(1)
+% clf
+% hold on
+% plot(xxtot,real(yytot),'r')
+% plot(xxtot,imag(yytot),'b')
+% 
+% figure(2)
+% clf
+% semilogy(xxtot,abs(yytot))
