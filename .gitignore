@@ -5,9 +5,9 @@
 *.save
 
 mathematica/*.txt
-test/test*Data*
-test/fort*
-test/plot*
+*test/test*Data*
+*test/fort*
+*test/plot*
 tmp/*
 lit/*
 
