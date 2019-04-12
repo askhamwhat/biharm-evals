@@ -1,6 +1,6 @@
 \section{Dirichlet eigenvalues and eigenfunctions on the annulus \label{sec:annul_dir_exact}}
 In this section, we compute some of the Dirichlet eigenvalues
-corresponding to the a subset of radially symmetric eigenfunctions
+corresponding to a subset of the radially symmetric eigenfunctions
 on the annulus. 
 In polar coordinates $(r,\theta)$, consider the annulus defined by 
 $R_{1}<r<R_{2}$. 
@@ -58,14 +58,15 @@ defined by~\cref{eq:annulus_direig}
 is the corresponding eigenfunction.
 
 \section{Neumann eigenvalues and eigenfunctions on the unit disk}
-In this section, we analytically compute some of the radially symmetric 
+In this section, we derive an analytical expression which
+can be used to compute some of the radially symmetric 
 Neumann eigenvalues on the unit disk for the Stokes operator.
 
 Suppose that $\bu$ is of the form
 \begin{equation}
 \bu = \nabla^{\perp} \jkr \, ,
 \end{equation}
-and the pressure is given by $p=0$, since
+and the pressure is given by $p=0$, as
 $\bu$ satisfies $(\Delta + k^2)\bu = 0$.
 
 Then, the surface traction $\bt$ on the disk of radius $r$ 
@@ -81,16 +82,22 @@ is given by
 
 Thus, $k$ which satisfies
 \begin{equation}
+  \label{eq:neu_roots}
 -k \jpk + k^2 \jppk = 0 \, ,
 \end{equation}
 are Neumann eigenvalues on the unit disk.
-The first $4$ roots of the above equation are 
-\begin{equation}
-\begin{aligned}
-k &= 5.135622301840683 \\
-  &= 8.417244140399865 \\
-  &= 11.61984117214906 \\
-  &= 14.79595178235126
-\end{aligned}
-\end{equation}
+The first $4$ roots of the \cref{eq:neu_roots} are
+in \cref{tab:neu_roots}.
+\begin{table}
+  \centering
+  \begin{tabular}{c}
+    k  \\ \hline
+    5.135622301840683 \\
+    8.417244140399865 \\
+    11.61984117214906 \\
+    14.79595178235126 
+  \end{tabular}
+  \caption{Roots of \cref{eq:neu_roots}.}
+  \label{tab:neu_roots}
+\end{table}
 
