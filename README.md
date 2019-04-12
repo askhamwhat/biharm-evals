@@ -37,9 +37,10 @@ See instructions in the matlab/example folder
 
 The software in this repository contained
 in the src, mwrap, and matlab directories
+(except for the matlab/external subdirectory)
 is available under the terms of the FreeBSD
-3 clause license, unless otherwise noted.
+3 clause license
 
-The software in the external folder is available
+The software in the "external" folders is available
 under different licenses and is housed here for archiving
 purposes.
