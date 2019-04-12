@@ -5,6 +5,18 @@ figures in the paper "A boundary integral equation
 approach to computing eigenvalues of the Stokes 
 operator".
 
+## Requirements
+
+The examples were run with MATLAB R2018a. We rely on
+two external packages (included in this repo) as described
+below. We also make use of the parallel computing
+toolbox in MATLAB.
+
+For the mexfiles, you will need a fortran and mex
+compiler. Using a reasonably new gfortran version
+(we used gcc v 5.4.0)
+and the mex shipped with R2018a should work 
+
 ## Before running the examples
 
 First, you must build the mexfiles used by these
