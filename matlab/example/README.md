@@ -60,3 +60,57 @@ The post processing script is best run interactively
 to see what information is produced for plotting.
 See example_many_holes_004_and_005_big_plots_post.m
 
+
+### Annulus eigenvalue convergence studies
+Run example_annulus_eig_conv.m.
+This will take around 30 mins.
+
+On output, figure 1 plots the error 
+in convergence to an eigenvalue for
+the combined field representation,
+figure 2 plots the error in convergence 
+to an eigenvalue for the double layer representation,
+and figure 3 plots the error in convergence
+to a spurious eigenvalue for the double layer
+representation. 
+In all the three plots, the dashed line indicates
+the expected convergence rate of $N^{-20}$. 
+Figure 4,5 plot the normalized determinant on the interval
+[14,15] for combined field and double layer 
+representation reprectively.
+
+The results are also stored in mat-files/annulus_eig_conv.mat
+which can be loaded for post processing.
+
+
+### Annulus quadrature convergence studies
+
+Run example_annulus_solv_conv.m. 
+This will take a few minutes
+
+On output, figure 1 plots the error in the vorticity
+at a random point in the interior as a function of 
+N, for the combined field representation 
+and figure 2 plots the error for the double 
+layer representation. 
+The dashed line in both the plots indicates the 
+expected convergence rate of $N^{-20}$.
+The results are also stored as res-files/solv-conv-comb.pdf
+and res-files/solv-conv-dl.pdf
+
+The results are also stored in mat-files/annulus_solv_conv.mat
+which can be loaded for post processing
+
+### Annulus speed tests
+Run example_annulus_speedtest.m, followed by
+python plot_speed.py
+This test will approximately take an hour.
+
+The result is the time taken to compute the determinant
+as a function of $N$ for three oscillatory stokes
+parameters. The result is also stored as res-files/speed_res.pdf
+
+The results are also stored in example_annulus_speedtest.mat
+which can be loaded for post-processing
+
+
