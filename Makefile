@@ -98,7 +98,7 @@ OBJS = hank103.o \
 LOBJS = $(patsubst %.o,../$(BIN_DIR)/%.o,$(OBJS))
 # targets
 
-all: lib
+all: lib mexfiles
 
 .PHONY : all lib profile release \
   install install-strip uninstall clean distclean setup_dir\
@@ -131,27 +131,19 @@ distclean: clean
 printflags: 
 	@echo $(DBG) $(OPENMP)
 
-## tests
-
-# note that, without install, we need to point to the library
-# at run-time as well... (see the -Wl,-rpath part)
-test%: setup_dir lib
-	cd $(TMP_DIR); $(FC) $(FFLAGS) -o $@ ../$(TEST_DIR)/$@.f $(PREO) ../$(BIN_DIR)/$(LIBNAME) $(POSTO) -Wl,-rpath=../$(BIN_DIR)
-	cd $(TMP_DIR); ./$@
-
 ## matlab
+
+# all mex-ing
+
+# easier just to link against object files than library,
+# if it's not being installed (I think)
+
+mexfiles: mexfile mexfile2 mexfile3
 
 $(GATEWAY).c: $(MWRAP_DIR)/$(MWRAPFILE).mw Makefile
 	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -list -mex $(GATEWAY) -mb $(MWRAPFILE).mw
 	cd $(MWRAP_DIR); $(MWRAP) $(MWFLAGS) -mex $(GATEWAY) -c $(GATEWAY).c $(MWRAPFILE).mw
 
-
-# all mex-ing
-
-mexfiles: mexfile mexfile2 mexfile3
-
-# easier just to link against object files than library,
-# if it's not being installed (I think)
 mexfile: $(GATEWAY).c $(OBJS) Makefile
 	cd $(MWRAP_DIR); $(MEX) $(GATEWAY).c $(LOBJS) -largeArrayDims -lgfortran -lmwblas -lgomp -lm
 
