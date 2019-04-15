@@ -40,7 +40,9 @@ in the src, mwrap, and matlab directories
 (except for the matlab/external subdirectory)
 is available under the terms of the FreeBSD
 3 clause license unless otherwise noted
-(see LICENSE.md) for details.
+(see LICENSE.md) for details. Many of the files
+src folder are from FMMLIB2D, which is subject to
+the terms of src/COPYING. 
 
 The software in the "external" folders is available
 under different licenses and is housed here for archiving
