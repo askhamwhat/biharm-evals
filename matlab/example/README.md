@@ -37,12 +37,16 @@ under "extensions".)
 
 ## Running the examples
 
+The barbell and many inclusions examples take
+a long time. The annulus examples run relatively
+quickly.
 
 ### Barbell example
 
-Run example_barbell_001.m then
-example_barbell_001_big_plots.m,
-which will take a few hours.
+Run example_barbell_001.m (which will take a couple
+hours) then example_barbell_001_big_plots.m (which
+takes several hours, most of which is spent performing
+adaptive integration to visualize the vorticity).
 
 The post processing script is best run interactively
 to see what information is produced for plotting.
@@ -50,8 +54,11 @@ See example_barbell_001_big_plots_post.m
 
 ### Many inclusions example
 
-Run example_many_holes_004.m then
-example_many_holes_004_big_plots.m.
+Run example_many_holes_004.m (which will take a
+few hours) then example_many_holes_004_big_plots.m
+(which takes several hours, most of which is spent
+performing adaptive integration to visualize the
+vorticity).
 Run example_many_holes_005.m
 then example_many_holes_005_big_plots.m.
 This will take a few hours.
