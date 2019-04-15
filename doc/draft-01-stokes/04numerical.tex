@@ -97,8 +97,8 @@ We denote these nodes and weights
 by $\tilde{t}_n$ and $\tilde{w}_n$, respectively,
 for $1 \leq n \leq N_a$.
 %
-For the rules we used, $N_s = 16$ and
-$N_a = 48$.
+For the 20th-order rule we used, $N_s = 16$ and
+$N_a = 48$. 
 %
 The contribution of other panels is assumed
 to be given to high accuracy by the standard
@@ -147,6 +147,10 @@ are computed on-the-fly.
   bounded away from the panel and the smooth
   rule is of high order, we obtain a quadrature
   rule with sufficient precision.
+
+  The overall order of accuracy of the GGQ we use
+  is 20th-order, up to the precision of the ``far''
+  interactions.
 \end{remark}
 
 \subsubsection{Fast determinant method}
@@ -328,9 +332,11 @@ eigenvalue of the annulus,
 then $f_{D}^{N}(k_{D}) = 0$ and $f_{C}^{N}(k_{C}) = 0$
 where $|k_{D} - k_{0}| \lesssim N^{-20}$, 
 and $|k_{C} - k_{0}| \lesssim N^{-20}$.
-Note that $N^{-20}$ is the expected order of
-convergence for Generalized Gaussian quadrature for weakly 
-singular integrals.
+Recall that the GGQ we use has an expected order
+of convergence of $N^{-20}$ for evaluating convolutions
+with such integral kernels,
+so that the error of the roots is observed to have the
+same order as the quadrature rule.
 In~\cref{fig:conv}, we show this result for $k_{0} = 13.48025717955055$
 and plot the errors $|k_{D}-k_{0}|$ and $|k_{C}-k_{0}|$ as a function
 of $N$. 

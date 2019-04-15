@@ -66,8 +66,6 @@ tar-arxiv: $(FNAME).bbl
 	cp *.cls $(ARXIV_DIR) || :
 	cp *.bst $(ARXIV_DIR) || :
 	cp *.sty $(ARXIV_DIR) || :
-	cp *.bib $(ARXIV_DIR) || :
-	cp *.bbl $(ARXIV_DIR) || :
 	cd $(ARXIV_DIR); tar -cvf $(FNAME).tar *
 	rm $(FNAME_FLAT).tex
 	rm flatex
