@@ -1,5 +1,6 @@
 
 FNAME=stokes-eig
+FNAME_FLAT=stokes-eig-flat
 
 TAR_DIR=tardir
 ARXIV_DIR=arxiv
@@ -57,8 +58,10 @@ tar-flat: pdf
 
 tar-arxiv: $(FNAME).bbl
 	@mkdir -p $(ARXIV_DIR)
+	cc flatex.c -o flatex
+	flatex $(FNAME).tex > $(FNAME_FLAT).tex
 	cd $(ARXIV_DIR); rm -f *
-	sed 's_fig/__g' $(FNAME).tex > $(ARXIV_DIR)/$(FNAME).tex
+	sed 's_fig/__g' $(FNAME).flt > $(ARXIV_DIR)/$(FNAME).tex
 	cp fig/* $(ARXIV_DIR) || :
 	cp *.cls $(ARXIV_DIR) || :
 	cp *.bst $(ARXIV_DIR) || :
@@ -66,6 +69,8 @@ tar-arxiv: $(FNAME).bbl
 	cp *.bib $(ARXIV_DIR) || :
 	cp *.bbl $(ARXIV_DIR) || :
 	cd $(ARXIV_DIR); tar -cvf $(FNAME).tar *
+	rm $(FNAME_FLAT).tex
+	rm flatex
 
 clean:
 	rm -f *.log

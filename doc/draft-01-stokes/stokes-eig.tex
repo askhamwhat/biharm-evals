@@ -7,6 +7,8 @@
 
 \usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{authblk}
+\renewcommand\Affilfont{\itshape\small}
 
 \usepackage{cleveref}
 \crefname{equation}{}{}
@@ -17,6 +19,8 @@
 \crefname{lem}{lemma}{lemmas}
 \crefname{cor}{corollary}{corollaries}
 \crefname{thrm}{theorem}{theorems}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -113,20 +117,23 @@
 \newtheorem{thrm}{Theorem}
 \newtheorem{definition}{Definition}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \title{A boundary integral equation approach to
   computing eigenvalues of the Stokes operator}
-%A Fredholm integral equation approach to
-%  computing Stokes eigenvalues in the plane
-\author{Travis Askham and Manas Rachh}
-\date{\today}
+\author{Travis Askham\thanks{
+Department of Mathematical Sciences, New Jersey Institute of
+Technology, USA.\\ 
+email: travis.l.askham@njit.edu} ,\, 
+Manas Rachh\thanks{Center for Computational Mathematics,
+Flatiron Institute, USA. \\
+email: mrachh@flatironinstitute.org}}
+
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
 \maketitle
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \abstract{
   The eigenvalues and eigenfunctions of the Stokes 
@@ -166,6 +173,7 @@
 \input{03analysis}
 \input{04numerical}
 \input{05conclusion}
+\input{06acknowledgements}
 
 \appendix
 
