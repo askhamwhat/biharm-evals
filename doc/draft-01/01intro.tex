@@ -5,7 +5,7 @@ Consider the pure bending of an isotropic and homogeneous thin clamped
 plate. 
 Let $\Omega$ denote the midline of the plate, $\Gamma$ denote the 
 boundary of $\Omega$ and $w$ denote the vertical displacement.
-The buckling problem consists of finding 
+The buckling eigenvalue problem consists of finding 
 values $k^{2}$ such that the boundary value problem
 
 \begin{align}
@@ -13,12 +13,10 @@ values $k^{2}$ such that the boundary value problem
 w &= 0 \quad \textrm{on} \quad \Gamma \label{eq:buck2} \; ,\\
 \dwdn &=0 \quad \textrm{on} \quad \Gamma \label{eq:buck3} 
 \end{align}
-has a non-trivial solution. In a slight abuse of notation,
-these values and the corresponding solutions are often
-referred to as ``eigenvalues'' and ``eigenfunctions'',
-respectively. 
-It is well known that the buckling problem has a
-countable collection of such values
+has a non-trivial solution $w$. 
+It is well known that the values $k^2$ are necessarily real 
+and positive and there is a countable collection
+of such values 
 $0 < k_{1}^{2} \leq k_{2}^2 \leq \ldots \uparrow \infty$,
 counting multiplicites.
 
@@ -50,6 +48,33 @@ In contrast, it is possible for the first buckling
 eigenfunction of a convex domain with analytic boundary
 to take both positive and negative values \cite{antunes2011buckling}.
 
+A related problem is that of the Stokes eigenvalue problem
+which is to find values $k^2$ such that
+\begin{align}
+\Delta (\Delta + k^2) w &= 0 \quad \textrm{in} \quad \Omega \label{eq:stokes1} \; , \\
+\nabla w &= 0 \quad \textrm{on} \quad \Gamma \label{eq:stokes2} \; ,\\
+\end{align}
+has a non-trivial solution $w$.
+While the buckling eigenvalues are identical to the Stokes
+eigenvalues on simply connected domains, on multiply
+connected domains it turns out that the buckling eigenvalues
+are a subset of the Stokes eigenvalues.
+
+In this note, we derive integral conditions on the stream function 
+associated with the Stokes eigenfunction
+to determine whether the Stokes eigenvalue is also a 
+buckling eigenvalue on multiply connected domains.
+Thus, given the Stokes eigenvalues 
+of the domain and the stream functions associated with the 
+corresponding eigenfunctions, 
+the buckling eigenvalues can be determined using a simple
+post-processing step.
+Given $k^2$ to be a Stokes eigenvalue, we also derive
+a well-conditioned second-kind integral equation for computing 
+the stream function associated with the 
+Stokes eigenfunction. 
+
+
 Numerical simulations have long played an important
 role in the analyses described above and there are a number
 of available methods (note that some of the references
@@ -70,91 +95,8 @@ The eigenvalues $k^2$ are then
 approximated by the eigenvalues of the discrete
 model \cite{johnson1974beam,rannacher1979nonconforming,
   jia2009approximation,carstensen2014guaranteed}.
-Because of the fourth order term in \cref{eq:buck1},
-the system matrices resulting from a finite element
-discretization can have large condition numbers (growing
-like $1/h^4$ where $h$ is the diameter of a typical element
-in the discretization) which can cause numerical instability.
 
-Integral equation methods \cite{kress1989linear,
-  atkinson2009numerical,kitahara2014boundary} present
-a natural alternative to the finite element method
-for the buckling problem, because (a) the
-integral representation acts as an analytical preconditioner
-for the fourth order term and (b) the problem is reduced
-to one defined on the boundary of the domain alone,
-requiring fewer degrees of freedom to resolve the solution
-on a complex domain. In an integral equation method,
-the solution $w$ is represented in terms of a sum of
-two layer potentials (which a priori satisfy
-\cref{eq:buck1}) with unknown densities. Substituting this
-representation into the boundary conditions
-\cref{eq:buck2,eq:buck3} results in an integral equation
-for the unknown densities, which
-is in turn discretized using numerical quadrature.
-Unlike the original equation \cref{eq:buck1} and the weak
-formulation used in a finite element method, the integral
-equation for the unknown densities has a nonlinear dependence
-on the parameter $k^2$. In an integral equation method, then,
-the eigenvalues are found by searching for the values
-of $k^2$ where the discrete system for the unknown densities
-is no longer invertible.
-
-While integral equation methods for the buckling problem
-have been considered previously, the existing formulations
-have resulted in first kind integral equations, i.e. equations
-in which the operator is compact \cite{kitahara2014boundary,
-  antunes2011buckling}. This is unsatisfying from a theoretical
-perspective, because such operators are never invertible
-(though, they are injective precisely when $k^2$ is an
-eigenvalue \cite{kitahara2014boundary}) so that the
-relation between the non-invertibility of the discrete system
-and the eigenvalues is obscured. Further, such representations
-create numerical challenges because common measures of the
-``non-invertibility'' of a matrix, like the smallest singular
-value or the determinant, converge rapidly to zero for all
-values of $k^2$ as the boundary is refined. Therefore, the
-measure of whether $k^2$ is an approximate eigenvalue is
-{\em relative to the current grid} for first kind equations.
-
-Second kind integral equations, i.e. integral equations
-of the form $\mathcal{I} + \mathcal{K}$ where $\mathcal{K}$
-is compact, have a more satisfying theory
-\cite{reed1972methods,kress1989linear},
-which translates well to numerical implementation
-\cite{atkinson2009numerical,bornemann2010numerical,
-  hackbusch2012integral,zhao2015robust}. Two facts are
-of particular importance here: with an appropriately
-chosen representation, (a) the Fredholm determinant of the
-integral equation will be a well-defined analytic function
-of $k^2$ with zeros precisely at the eigenvalues and (b) the 
-determinant of the matrix resulting from
-a Nystr\"{o}m discretization of the integral equation
-will converge to the Fredholm determinant of the operator
-\cite{bornemann2010numerical}.
-In \cite{zhao2015robust}, Zhao and Barnett demonstrated
-that the eigenvalues of the drum problem can be
-computed with such a framework, resulting in
-methods which are spectrally accurate with respect
-to both the sampling of the boundary and the sampling
-in $k^2$. There are natural extensions of existing second
-kind integral
-equations for the biharmonic \cite{farkas1989mathematical}
-and modified biharmonic \cite{jiang2013second} equations
-which would be appropriate for the buckling problem, but
-these representations suffer from instability for
-high curvature domains, limiting their applicability
-\cite{rachh2017integral}.
-
-In this paper, we develop a second kind integral
-equation for the buckling problem based on Stokeslet
-and stresslet inspired kernels, as was done for the
-$k=0$ case in \cite{rachh2017integral}. This allows
-for a robust approach to computing the eigenvalues
-of the buckling problem, modeled after the approach for
-the drum problem in \cite{zhao2015robust}, which we
-demonstrate with a number of examples from the
-literature.
+\note{needs work}
 
 The rest of this paper is organized as follows ...
 

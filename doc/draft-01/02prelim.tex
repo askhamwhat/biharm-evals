@@ -1,12 +1,10 @@
 \section{Mathematical Preliminaries}
-
-In this paper, vector-valued
-quantities are denoted by bold, lower-case letters
-(e.g. $\bh$), while tensor-valued quantities are bold
-and upper-case (e.g. $\mathbf{T}$). 
-Subscript indices of non-bold characters (e.g. $h_j$ or $T_{jkl}$)
-are used to denote the entries within a vector ($\bh$) or tensor ($\bT$).
-We use the standard Einstein summation convention; in other words, 
+\label{sec:prelim}
+In this paper, vector- and tensor-valued quantities
+are denoted by bold letters (e.g. $\bh$ and $\mathbf{T}$). 
+Subscript indices of non-bold characters (e.g. $h_j$ or $T_{ij\ell}$)
+are used to denote the entries within a vector or tensor.
+We use the standard Einstein summation convention; i.e., 
 there is an implied sum taken over the repeated indices of 
 any term (e.g. the symbol $a_{j} b_{j}$ is used to represent the sum
 $\sum_{j} a_{j} b_{j}$).
@@ -14,208 +12,288 @@ If $\xx = (x_1,x_2)^\intercal$, then $\xx^\bot = (-x_2,x_1)^\intercal$.
 Similarly, $\nabla^\bot = (-\partial_{x_2},\partial_{x_1})^\intercal$.
 Upper-case script characters (e.g. $\mathcal{K}$) are reserved for
 operators on Banach spaces, with $\mathcal{I}$ denoting the
-identity.
+identity. Given a set $X$, we denote the closure of $X$
+by $\overline{X}$.
 
+In the rest of the paper, 
+suppose that $\Omega$ is a multiply connected region defined by
+the intersection of a simply connected domain $\Omega_{0}$ 
+and the exteriors of a finite collection of bounded
+simply connected domains $\{ \Omega_{i} \}_{i=1}^{m}$. 
+Let $\Gamma_{i}$, denote the boundary of $\Omega_{i}$, and 
+let $\Gamma = \cup_{i=0}^{m} \Gamma_{i}$ denote the boundary of $\Omega$.
+Let $\bnu(\bx)$ denote the outward normal at $\bx \in \Gamma$.
 
-\subsection{Green's functions}
-
-Let $\mathcal{L}_x$ denote a linear differential operator. A fundamental
-solution $G(\xx,\yy)$ of $\mathcal{L}_x$ satisfies the equation
-$\mathcal{L}_x G(\xx,\yy) = \delta_y(\xx)$ in the distributional sense, i.e.
-for sufficiently smooth $f$
+\section{Stokes eigenvalue problem}
+The Stokes Dirichlet eigenvalue problem is to find values $k^2$ such that
 \begin{equation}
-  \mathcal{L}_x \int_{\R^2} G(\xx,\yy) f(\yy) \, dy = f(\xx) \; .
+\begin{aligned}
+  -\Delta \uu + \nabla p &= k^2 \uu \quad \textrm{in} \quad
+  \Omega \label{eq:ostokes} \; , \\
+  \nabla \cdot \uu &= 0 \; , \\
+  \bu &=0 \quad \textrm{on} \quad \Gamma \, ,
+\end{aligned}
 \end{equation}
-We consider here
-``free-space'' Green's functions, i.e. fundamental solutions which satisfy
-some natural growth or decay conditions as $|\xx-\yy| \to \infty$.
-The Green's function of the oscillatory biharmonic equation
-\cref{eq:buck1} is given by 
+has a non-trivial solution $(\bu,p)$.
+Since the Stokes eigenfunction $\bu$ is divergence free, 
+and satisfies 
+$\int_{\Gamma_{i}} \bu \cdot \bnu \, ds = 0$ 
+for all $i=0,1,2\ldots m$, there exists a single valued
+stream function $\psi$ associated with $\bu$, i.e., 
+$\bu = \nabla^{\perp} \psi$ for all $\bx \in \Omega$.  
+
+The Stokes eigenvalue problem can be reformulated as a buckling
+eigenvalue problem with gradient boundary conditions for
+the stream function $\psi$.
+Plugging in $\bu = \nabla^{\perp} \psi$ and applying $\nabla^{\perp} \cdot$
+to~\cref{eq:ostokes}, we observe that $\psi$ satisfies the following 
+differential equation.
+
+\begin{equation}
+\begin{aligned}
+\Delta (\Delta + k^2) \psi &= 0 \, \quad \textrm{in} \quad \Omega \, , \\
+\nabla \psi &=0 \, ,\quad \textrm{in} \quad \Gamma \, .
+\end{aligned}
+\end{equation}
+
+\section{Connection to buckling eigenvalues}
+It is clear that if $w$ is a buckling eigenfunction with
+eigenvalue $k^2$, then $\bu = \nabla^{\perp} w$ is a Stokes eigenfunction
+with the same eigenvalue. 
+Thus, for a given region $\Omega$,
+the buckling eigenvalues are a subset of the Stokes eigenvalue. 
+
+However, the converse is not necessarily true. 
+The reason is the following.
+As before, suppose that $\bu$ is a Stokes eigenfunction
+with eigenvalue $k^2$.
+Note that a single valued stream function $\psi$ associated with
+$\bu$ always exists. 
+Moreover, on each component $\Gamma_{i}$, 
+$\psi$ satisfies $\partial_{\tau} \psi = 0$, which implies that
+$\psi$ is a constant on $\Gamma_{i}$, for each $i=0,1,2\ldots m$.
+If the domain is simply connected, then since $\psi$ is only
+well-defined upto a constant, we can adjust to constant term 
+to ensure that $\psi$ also satisfies $\psi = 0$ on $\Gamma_{0}$.
+However, on multiply connected domains, this is not always 
+the case since $\psi$ might be different constants on different
+boundary components. 
+In the following lemma, we identify necessary and sufficient 
+conditions on the stream function $\psi$ to guarantee that
+$\psi$ (upto a constant) is also a buckling eigenfunction.
+
+\begin{lem}
+\label{lem:mainlem}
+Suppose that $k^2$ is a Stokes eigenvalue for the region $\Omega$ and 
+let $\bu$ be the corresponding eigenfunction. 
+Then, the stream function associated with the velocity $\bu$ defined by
+$\psi = \left(\nabla^{\perp} \right)^{-1} \bu$ exists and is single valued. 
+Furthermore, $k^2$ is also a buckling eigenvalue if and only if
+there exists a constant $c$ such that
+\begin{equation}
+\frac{1}{\Gamma_{j}}\int_{\Gamma_{j}} \psi\, ds = c \quad \forall j=0,1,\ldots m \, .
+\end{equation}
+\end{lem}
+
+\begin{proof}
+Since $\bu$ is a Stokes eigenfunction, it satisfies
+\begin{equation}
+\int_{\Gamma_{j}} \bu \cdot \bn ds = 0 \quad j=1,2\ldots n \, .
+\end{equation}
+Thus, there exists a single valued stream function associated with the
+velocity field $\bu$ such that 
+\begin{equation}
+\nabla^{\perp} w = \bu \, .
+\end{equation}
+Furthermore, since $\bu$ satisfies the oscillatory Stokes equations, 
+$w$ satisfies
+\begin{align}
+\Delta (\Delta + k^{2} ) w &= 0 \, , \quad \bx \in \Omega \\
+\nabla^{\perp} w = \bu &=0 \, ,\quad \bx \in \Gamma \, ,
+\end{align}
+In particular $\psi= c_{j}$ for $\bx \in \Gamma_{j}$ for
+some constant $c_{j}$.
+Thus $k$ is also a buckling eigenvalue if and only if 
+\begin{equation}
+c_{j} = \frac{1}{|\Gamma_{j}|}\int_{\Gamma_{j}} w ds =  c \, .
+\end{equation}
+The buckling eigenfunction is then given by $\psi -c$. 
+\end{proof}
+
+
+\section{Computing the stream function}
+Given $k^2$ to be a Stokes eigenvalue, in this section, we describe
+an integral formulation for computing the eigenfunction $\bu$
+and the corresponding stream function $\psi$. 
+
+Following the approach in~\cite{askhameig2019}, we
+first reformulate the oscillatory Stokes equation
+as an integral equation on the boundary using the combined
+field representation.
+
+Let $\GG(\bx,\by)$ denote the Stokeslet for the oscillatory
+Stokes equation and $T_{ij\ell}(\bx,\by)$ denote the corresponding
+Stresslet. 
+These are given by the formulae
+\begin{align} 
+  \GG &= - \II \Delta \Gbh + \nabla \otimes \nabla \Gbh 
+\label{eq:ostokeslet} \\
+  T_{ij\ell} &= - \partial_{x_j} \Glap \delta_{i\ell}
+  + \partial_{x_\ell} \left ( -\Delta \Gbh \delta_{ij} +
+  \partial_{x_i} \left(\partial_{x_j} \Gbh \right) \right)
+  \nonumber \\
+  & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{\ell j} +
+  \partial_{x_\ell} \left(\partial_{x_j} \Gbh \right) \right)
+  \; . \label{eq:ostress} 
+\end{align}
+$\Gbh$ is the Green's function for the oscillatory
+biharmonic equation given by
 \begin{equation}
   \Gbh(\xx,\yy) = \frac{1}{k^2}
   \left (\frac{1}{2\pi} \log |\xx-\yy| +
-  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, , 
+  \frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \right ) \, ,
+  \label{eq:Gbh}
 \end{equation}
-where $k$ is the Helmholtz paramater in the oscillatory biharmonic equation,
-and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero.
-Note that this is a scaled difference of the Green's function for
-Laplace, i.e.
-
+where $k$ is the Helmholtz parameter in the oscillatory biharmonic equation,
+and $H_{0}^{1}(r)$ is the Hankel function of the first kind of order zero,
+and $\Glap(\xx,\yy)$ is the Laplace Green's function given by
 \begin{equation}
-  \Glap(\xx,\yy) = \frac{1}{2\pi} \log |\xx-\yy| \; ,
+  \Glap(\xx,\yy) = \frac{1}{2\pi} \log |\xx-\yy| \; . \nonumber
 \end{equation}
-and the Green's function for the Helmholtz equation
 
+Given a density $\bmu$, the oscillatory Stokes single and double layer
+potentials denoted by $\bS[\bmu](\bx)$ and $\bD[\bmu](\bx)$ respectively,
+are given by
+\begin{align} \label{eq:singlelayer}
+  \bS [\bmu] (\xx) &= \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+  \, dS(\yy) \; , \\
+  \bD [\bmu] (\xx) &= \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\xx,\yy)
+  \nu_\ell(\yy)\right )^\intercal \bmu(\yy) \, dS(\yy) \; .
+\end{align}
+When solving the velocity boundary value problem for the oscillatory
+Stokes equation on multiply connected domains, the velocity
+is represented as a bomcinbed field layer potential, i.e.
+setting $\bu = (i\eta \bS_{k} + \bD_{k})[\bmu]$, where
+$\eta>0$ is a constant and $\bmu$ now is an unknown density.
+By construction, this velocity field satisfies the oscillatory
+Stokes equation.
+On imposing the velocity boundary condition, and using the jump
+conditions for the layer potentials (see~\cref{askhameig2019}, 
+for example)
+we obtain the following integral equation for the unknown density
+$\bmu$,
 \begin{equation}
-  \Ghelm(\xx,\yy) = -\frac{i}{4} H_0^{(1)}(k|\xx-\yy|) \; .
+\label{eq:inteq0}
+(\cI - 2\cD_{k} -2i \eta \cS_{k})\bmu = 0 \, \quad \textrm{on} \quad \Gamma \,,
 \end{equation}
-
-\subsection{An integral representation for the Stokes eigenvalue
-  problem}
-
-The Stokes eigenvalue problem (with ``no-slip'' boundary conditions)
-seeks values $k^2$ such that the equations
+where $\cS_{k}$ and $\cD_{k}$ are the restrictions of the layer potentials
+$\bS_{k}$ and $\bD_{k}$ on the boundary $\Gamma$ respectively, and are given
+by
 \begin{align}
-  \nabla p - \Delta \uu - k^2 \uu &= 0 \quad \textrm{in} \quad \Omega
-  \; , \label{eq:helmstokes}\\
-  \nabla \cdot \uu &= 0 \quad \textrm{in} \quad \Omega
-  \; , \label{eq:helmstokescty} \\
-  \uu &= 0 \quad \textrm{on} \quad \Gamma \; \label{eq:helmstokesnoslip}
+  \cS [\bmu] (\xx) &= \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
+  \, dS(\yy) \\
+  \cD [\bmu] (\xx) &= \pv \int_\Gamma \left ( \TT_{\cdot,\cdot,\ell}(\bx,\by)
+  \nu_\ell(\yy)
+  \right )^\intercal \bmu(\yy) \, dS(\yy) \; .
 \end{align}
-have a non-trivial solution. In the case that $k=i\alpha$ for
-some real-valued $\alpha$, the equations \cref{eq:helmstokes,eq:helmstokescty}
-are known as the modified Stokes equations and are of particular
-interest for their application to numerical simulations of unsteady
-flow
-\cite{pozrikidis1992boundary,biros2002embedded,jiang2013second}.
-In the absence of a preferred name for the case of real-valued $k$,
-we will refer to \cref{eq:helmstokes,eq:helmstokescty} as the
-oscillatory Stokes equations.
+Here \pv indicates that the integral is to be
+evaluated in the principal value sense.
+The integral equation~\cref{eq:inteq0} is known to be rank-deficient
+for all values of $k$ due to the divergence-free condition
+on $\bu$, and a standard approach is to use the following integral 
+equation instead
 
+\begin{equation}
+\label{eq:inteq}
+(\cI - 2\cD_{k} -2i \eta \cS_{k}-2\cW)\bmu = 0 \, \quad \textrm{on} \quad \Gamma \,,
+\end{equation}
+where $\cW$ is the operator given by
+\begin{equation}
+\cW[\bmu](\bx) = \frac{\bnu(x)}{|\Gamma|}\int_{\Gamma} \bmu(\by) \cdot \bnu(\by) \, ds \, .
+\end{equation}
 
+In~\cite{askhameig2019}, the authors show that the operator 
+$\cI -2\cD_{k} -2i \cS_{k} -2\cW$ is not invertible if and only
+if $k^2$ is a Stokes eigenvalue.
+Furthermore if $\bmu$ is a non-zero null-vector of $\cI - 2\cD_{k} -2i \cS_{k} 
+-2 \cW$, then 
+$\bu = (i \eta \bS_{k} + \bD_{k})[\bmu]$ is the Stokes eigenfunction.
 
-\subsubsection{Stokeslets and stresslets}
-
-In this section, we review the derivation of the
-modified Stokeslet, but for the imaginary parameter
-regime, which is the appropriate setting for the Stokes
-eigenvalue problem.
-The original modified Stokeslet is more well known,
-and is of particular interest for its application to
-numerical simulations of the unsteady Stokes equations
-\cite{pozrikidis1992boundary,biros2002embedded}.
-
- Consider the solution of
-\cref{eq:helmstokes,eq:helmstokescty} where a $\delta$-mass
-centered at $\yy$ with strength $\ff$
-has been added to the right-hand side of \cref{eq:helmstokes}, i.e.
-
+In order to verify the conditions in~\cref{lem:mainlem}, we
+need to be able to compute the stream function associated with
+the velocity $\bmu$ defined above.
+If $\bmu = \mu_{\tau} \btau + \mu_{\nu} \bnu$, where $\btau=\bnu^{\perp}$
+is the positively oriented tangential vector then the
+layer potentials $\bS_{k}[\bmu]$ and $\bD_{k}[\bmu]$ can be rewritten as
 \begin{align}
-  \nabla p - \Delta \uu - k^2 \uu &= \delta_\yy \ff \; ,
-  \label{eq:helmstokes_charge} \\
-  \nabla \cdot \uu &= 0 \; .
+\bS_{k}[\bmu] &=  
+\nabla^{\perp} 
+\int_{\Gamma} (\partial_{\tau} \Gbh(\xx,\yy) \mu_{\tau}(\yy) -
+\partial_{\nu} \Gbh(\xx,\yy) \mu_{\nu}(\yy)) \, ds \\
+\bD_{k}[\bmu] &= 
+-\nabla 
+\int_{\Gamma} \Glap(\xx,\yy) \mu_{\nu}(\yy) \, ds 
++ \nabla^{\perp} 
+\int_{\Gamma} \big( 2 \partial_{\nu\tau} \Gbh(\xx,\yy) \mu_{\nu}(\yy) 
++ \\
+& \hspace*{35ex}(\partial_{\tau\tau} -\partial_{\nu\nu})\Gbh(\xx,\yy) \mu_{\tau}(\yy) 
+\big) \, ds \, .
 \end{align}
-Recall that
 
+From the expressions above, it is clear that the stream function 
+$\psi_{S}[\bmu]$ associated with the single layer potential is given
+by
 \begin{equation}
- \Delta \Glap(\xx,\yy) = \delta_\yy(\xx) \; .
+\psi_{S}[\bmu] = 
+\int_{\Gamma} (\partial_{\tau} \Gbh(\xx,\yy) \mu_{\tau}(\yy) -
+\partial_{\nu} \Gbh(\xx,\yy) \mu_{\nu}(\yy)) \, ds \, . 
 \end{equation}
-If we substitute this expression into
-\eqref{eq:helmstokes_charge} and take the divergence,
-we obtain
 
-\begin{equation}
-  p = \nabla \Glap(\xx,\yy) \cdot \ff \; .
-\end{equation}
-We then have, formally,
-
+The situation with the double layer potential is a little trickier. 
+We write the double layer potential as $\bD_{k}[\bmu] = \nabla \phi_{D}[\bmu]
++ \nabla^{\perp} \xi_{D}[\bmu]$, 
+where 
 \begin{align}
-  \uu &= - (\Delta + k^2)^{-1} ( \Delta \Glap \ff
-  - \nabla (\nabla \Glap \cdot \ff ) ) \\
-  &= \left ( -\Delta + \nabla \otimes \nabla \right )
-  \Gbh \ff \; .
-\end{align}
-The tensor
-
-\begin{equation} \label{eq:stokeslet}
-  \GG = - \II \Delta \Gbh + \nabla \otimes \nabla \Gbh
-\end{equation}
-is then the equivalent of a Stokeslet
-\cite{pozrikidis1992boundary} for the problem
-\eqref{eq:helmstokes}.
-
-A related object is the stresslet, which is defined
-in terms of the stress tensor of a velocity, pressure
-pair induced by a Stokeslet. For these tensors, we find
-that it is more convenient to express them in index notation
-with the Einstein index summing convention.
-Recall that the stress tensor $\bsigma$ is defined as 
-
-\begin{equation}
-  \sigma_{ij} = -p \delta_{ij} + \left ( \partial_{x_j}u_i
-  +\partial_{x_i} u_j \right ) \; ,
-\end{equation}
-where $\delta_{ij}$ is the standard Kronecker delta notation.
-The stresslet $\TT$ is defined to be
-
-\begin{align}
-  T_{ijk} &= - \partial_{x_j} \Glap \delta_{ik}
-  + \partial_{x_k} \left ( -\Delta \Gbh \delta_{ij} +
-  \partial_{x_i} \left(\partial_{x_j} \Gbh \right) \right)
-  \nonumber \\
-  & \qquad+ \partial_{x_i} \left ( -\Delta \Gbh \delta_{kj} +
-  \partial_{x_k} \left(\partial_{x_j} \Gbh \right) \right)
-  \; .
-\end{align}
-Let $u_i = G_{ij} f_j$ and $p = \partial_{x_i} \Glap f_i$ be a
-solution of the Stokes equations induced by a Stokeslet.
-Then the corresponding stress tensor is given by
-$\sigma_{ik} = T_{ijk} f_j$.
-
-For the layer potentials of the next section, the following
-formulas are useful. Let $\bnu$ be a given vector. When
-summing over the third index, we obtain
-
-\begin{equation}
-  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
-  + \partial_\nu \left ( -\Delta \Gbh \II
-  + \nabla \otimes \nabla \Gbh \right)
-  + \nabla \otimes \left ( -\Delta \Gbh \bnu
-  + \partial_{\nu} \nabla \Gbh \right) \; .
-\end{equation}
-%\begin{align}
-% -\Delta \Gbh \bnu
-% + \partial_{\nu} \nabla \Gbh &=
-% ( (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_1 \Gbh +
-% (\partial_{x_1x_1}\nu_1 + \partial_{x_2x_1} \nu_2 )\Gbh,
-% (-\partial_{x_1x_1}-\partial_{x_2x_2}) \nu_2 \Gbh +
-% (\partial_{x_1x_2}\nu_1 + \partial_{x_2x_2} \nu_2 )\Gbh) \\
-% &= (-\partial_{x_2} \partial_\tau \Gbh,
-% \partial_{x_1} \partial_\tau \Gbh)
-%\end{align}
-%\begin{equation}
-%  \begin{pmatrix}
-%    -\partial_{x_2x_2} & \partial_{x_1x_2} \\
-%    \partial_{x_1x_2} & -\partial_{x_1x_1}
-%  \end{pmatrix} = -\nabla^\bot \otimes \nabla^\bot
-%\end{equation}
-Let $\btau = \bnu^\bot$. Then
-
-\begin{equation}
-  \TT_{\cdot,\cdot,k} \nu_k = -\bnu \otimes \nabla \Glap
-  - \nabla^\bot \otimes \nabla^\bot \partial_\nu \Gbh
-  +\nabla \otimes \nabla^\bot \partial_\tau \Gbh \; .
-\end{equation}
-
-\subsubsection{Layer potentials and integral representation}
-
-We now use the Stokeslet and stresslet definitions
-of the previous section to define the standard single
-and double layer potentials of the Stokes eigenvalue
-problem. The single layer potential is defined to
-be
-
-\begin{equation}
-  \SS \bmu (\xx) = \int_\Gamma \GG (\xx,\yy) \bmu(\yy)
-  \, dS(\yy) \; .
-\end{equation}
-The double layer potential is defined to be
-
-\begin{equation} \label{eq:doublelayer}
-  \DD \bmu (\xx) = \int_\Gamma \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy)
-  \right )^\intercal \bmu(\yy) \, dS(\yy) \; ,
-\end{equation}
-where $\bnu$ denotes the outward unit normal to the boundary.
-If we write $\bmu = \bnu \mu_\nu + \btau \mu_\tau$,
-where $\btau = \bmu^\bot$ is the positively oriented unit
-tangent to the curve, then we have
-
-\begin{align} \label{eq:stokesdlkernel}
-  \left ( \TT_{\cdot,\cdot,k}\nu_k(\yy) \right )^\intercal
-  \bmu(\yy) &= \left ( - \nabla \Glap(\xx,\yy) + 2 \nabla^\bot
-  \partial_{\nu\tau} \Gbh(\xx,\yy) \right ) \mu_\nu(\yy) \nonumber \\
-  & \qquad+
-  \nabla^\bot \left (\partial_{\tau\tau}-\partial_{\nu\nu} \right )
-  \Gbh(\xx,\yy) \mu_\tau(\yy) \; .
+\label{eq:phiddef}
+\phi_{D}[\bmu] &= 
+-\int_{\Gamma} \Glap(\xx,\yy) \mu_{\nu}(\yy) \, ds  \, , \\
+\xi_{D}[\bmu] &= 
+\int_{\Gamma} \big( 2 \partial_{\nu\tau} \Gbh(\xx,\yy) \mu_{\nu}(\yy) 
++ (\partial_{\tau\tau} -\partial_{\nu\nu})\Gbh(\xx,\yy) \mu_{\tau}(\yy) ) \,
+ds \, . 
 \end{align}
 
+If we can find a function $\tilde{\psi}_{D}[\bmu]$ such
+that 
+\begin{equation}
+\label{eq:perptogradperp}
+\nabla^{\perp} \tilde{\psi}_{D}[\bmu] = \nabla \phi_{D} [\bmu] \, ,
+\end{equation}
+then the stream function $\psi_{D}[\bmu]$ 
+associated with the double layer potential would
+be given by $\psi_{D}[\bmu] = \tilde{\psi}_{D}[\bmu] + \xi_{D}[\bmu]$.
+However, on multiply connected domains, it is not necessarily true, 
+that given a function $\phi_{D}[\bmu]$ of the form~\cref{eq:phiddef} 
+there exists a single valued function $\tilde{\psi}_{D}[\bmu]$ 
+which satisfies the condition~\cref{eq:perptogradperp} for
+every $\bmu$.
+Turns out, in the case where $\bmu$ satisfies the conditions
+\begin{equation}
+\label{eq:inteqconst}
+\int_{\Gamma_{i}} \mu_{\nu} \, ds = 0 \, ,\quad i=0,1,2\ldots m \, ,
+\end{equation}
+then there exists a single valued function $\tilde{\psi}_{D}[\bmu]$
+which satisfies~\cref{eq:perptogradperp} (see~\cite{rachh2015integral}, 
+for example).
+In the following lemma, we show that every null-vector of 
+$\cI - 2\cD_{k} -2i \eta \cS_{k} - 2\cW$ satisfies the above integral
+constraints.
+
+\begin{lem}
+Suppose $\bmu$ is a null-vector of 
+$\cI - 2\cD_{k} - 2i \eta \cS_{k} -2\cW$, then
+$\bmu$ satisfies~\cref{eq:inteqconst}.
+\end{lem}
+\begin{proof}
+Insert proof here
+\end{proof}

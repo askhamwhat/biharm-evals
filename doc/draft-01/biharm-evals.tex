@@ -6,17 +6,27 @@
 \usepackage{empheq}
 
 \usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{authblk}
+\renewcommand\Affilfont{\itshape\small}
 
 \usepackage{cleveref}
 \crefname{equation}{}{}
 \Crefname{equation}{}{}
 \crefname{eqnarray}{}{}
 \Crefname{eqnarray}{}{}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{lem}{lemma}{lemmas}
+\crefname{cor}{corollary}{corollaries}
+\crefname{thrm}{theorem}{theorems}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\def\bz{{\boldsymbol 0}}
 \def\br{{\boldsymbol r}}
+\def\bv{{\boldsymbol v}}
 \def\bc{{\boldsymbol c}}
 \def\bh{{\boldsymbol h}}
 \def\bn{{\boldsymbol n}}
@@ -33,6 +43,7 @@
 \def\be{{\boldsymbol e}}
 \def\bl{{\boldsymbol \ell}}
 \def\ff{{\boldsymbol f}}
+\def\bg{{\boldsymbol g}}
 \def\GG{{\bf G}}
 \def\Gbh{G^{\textrm{BH}}}
 \def\Glap{G^{\textrm{L}}}
@@ -40,29 +51,81 @@
 \def\Kfark{K^{\textrm{F}}}
 \def\II{{\bf I}}
 \def\TT{{\bf T}}
-\def\SS{{\bf S}}
-\def\DD{{\bf D}}
+\def\bS{{\bf S}}
+\def\bD{{\bf D}}
+\def\bC{{\bf C}}
+\def\bB{{\bf B}}
+\def\cN{{\mathcal N}}
+\def\cK{{\mathcal K}}
+\def\cB{{\mathcal B}}
+\def\cA{{\mathcal A}}
+\def\cS{{\mathcal S}}
+\def\cSk{{\mathcal S}_k}
+\def\cD{{\mathcal D}}
+\def\cDt{{\mathcal D}^{\intercal}}
+\def\cDk{{\mathcal D}_{k}}
+\def\cDkt{{\mathcal D}_{k}^{\intercal}}
+\def\cW{{\mathcal W}}
+\def\cJ{{\mathcal J}}
+\def\cL{{\mathcal L}}
+\def\cA{{\mathcal A}}
+\def\cM{{\mathcal M}}
+\def\bL{{\mathbb L}}
+\def\bK{{\mathbf K}}
+\def\sint{{\sin{(\theta)}}}
+\def\cost{{\cos{(\theta)}}}
+
+\def\jkr{J_{0}(kr)}
+\def\jpkr{J_{0}'(kr)}
+\def\jpk{J_{0}'(k)}
+\def\jppkr{J_{0}''(kr)}
+\def\jppk{J_{0}''(k)}
+\def\ddr{\frac{d}{dr}}
+
 \def\bsigma{{\boldsymbol \sigma}}
 \def\bpsi{{\boldsymbol \psi}}
 \def\bmu{{\boldsymbol \mu}}
 \def\bnu{{\boldsymbol \nu}}
+\def\brho{{\boldsymbol \rho}}
 \def\btau{{\boldsymbol \tau}}
 \def\bigo{\mathcal{O}}
 \def\littleo{o}
 
 \def\Im{{\textrm{\textup{Im}}}}
 
+
+\def\epsflam{{\epsilon_{\texttt{FLAM}}}}
+\def\epscheb{{\epsilon_{\texttt{cheb}}}}
+\def\epsclose{{\epsilon_{\textrm{close}}}}
+\def\cheb{{\texttt{cheb}}}
+
+
 \newcommand\dwdn{\frac{\partial w}{\partial n}}
+\newcommand{\cI}{\mathcal I}
 \newcommand{\cC}{\mathcal C}
 \newcommand{\bbmat}{\begin{bmatrix}}
 \newcommand{\ebmat}{\end{bmatrix}}
 
+\newcommand{\note}[1]{ {\color{red} #1 }}
+
+\def\pv{\textrm{P.V.} }
+
 \newtheorem{remark}{Remark}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
 \newtheorem{thrm}{Theorem}
 \newtheorem{definition}{Definition}
 
+\title{A boundary integral equation approach to
+  computing eigenvalues of the Stokes operator}
+\author{Travis Askham\thanks{
+Department of Mathematical Sciences, New Jersey Institute of
+Technology, USA.\\ 
+email: travis.l.askham@njit.edu} ,\, 
+Manas Rachh\thanks{Center for Computational Mathematics,
+Flatiron Institute, USA. \\
+email: mrachh@flatironinstitute.org}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,15 +141,15 @@
 
 \input{01intro}
 \input{02prelim}
-\input{03inteq}
-\input{04analyze}
-\input{05numerics}
-\input{06results}
-\input{07conclude}
+%\input{03inteq}
+%\input{04analyze}
+%\input{05numerics}
+%\input{06results}
+%\input{07conclude}
 
 \bibliographystyle{plain}
 \bibliography{refs}
 
-\input{08append}
+%\input{08append}
 
 \end{document}
