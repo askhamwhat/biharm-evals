@@ -11,7 +11,7 @@ addpath('../../mwrap')
 
 cparams.eps = 1.0e-3;
 cparams.nchmax = 100000;
-cparams.nover = 2;
+cparams.nover = 3;
 narms = 5;
 amp = 0.5;
 chunker = chunkfunc(@(t) starfish(t,narms,amp),cparams);
