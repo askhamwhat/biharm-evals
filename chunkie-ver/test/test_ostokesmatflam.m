@@ -10,7 +10,7 @@ addpaths_loc();
 
 cparams = [];
 cparams.eps = 1.0e-10;
-cparams.nover = 5;
+cparams.nover = 3;
 pref = []; 
 pref.k = 30;
 narms = 3;
