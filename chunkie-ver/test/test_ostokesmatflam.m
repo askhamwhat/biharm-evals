@@ -83,6 +83,9 @@ t1 = toc(start);
 
 fprintf('%5.2e s : time to assemble matrix\n',t1)
 
+w = whos('D');
+fprintf('dense build mem: %6.2f (MB)\n',w.bytes/1e6)
+
 sys = -0.5*eye(chnkr.k*chnkr.nch*opdims(2)) + D;
 
 % build sparse tridiag part 
@@ -110,9 +113,15 @@ pxyfun = @(x,slf,nbr,l,ctr) proxyfun(slf,nbr,l,ctr,chnkr,wts, ...
     fkern,opdims,pr,ptau,pw,pin,ifaddtrans);
 start = tic; F = rskelf(matfun,xflam,200,1e-14,pxyfun); t1 = toc(start);
 
+% start = tic; Fh = hifie2(matfun,xflam,200,1e-14,pxyfun);
+% toc(start)
+
 afun = @(x) rskelf_mv(F,x);
 
 fprintf('%5.2e s : time for flam compress\n',t1)
+w = whos('F');
+fprintf('compressed mem: %6.2f (MB)\n',w.bytes/1e6)
+
 
 err2 = norm(sys2-sys,'fro')/norm(sys,'fro');
 fprintf('%5.2e   : fro error of build \n',err2)

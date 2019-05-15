@@ -1,4 +1,4 @@
-@function mat = ostokes2dkern(zk,src,targ,srctau,targtau,type,addw)
+function mat = ostokes2dkern(zk,src,targ,srctau,targtau,type,addw)
 
 if nargin < 7
    addw = false;
