@@ -1,0 +1,86 @@
+\section{Proof of convergence for general case}
+Let $T_{n}$ denote the space of trignometric polynomials
+$\{ e^{-inx}, \ldots e^{inx} \}$. Let $K_{n}: T_{n} \to T_{n}$ 
+denote a discretization of the Helmholtz double layer kernel
+using kress quadrature. Let $\phi_{0}$ denote the null vector
+of $I+ K$, and let $\psi_{0}$ denote the null vector
+of $I+K^{\ast}$. 
+Let $P_{n}$ denote the orthogonal 
+projection operator from $L^{2} \to T_{n}$.
+Let $P_{n,\phi_{0}^{\perp}}: T_{n} \to T_{n}$ denote the orthogonal
+projection on to the orthogonal complement of $P_{n} \phi_{0}$.
+Let $P_{n,\psi_{0}^{\perp}}: T_{n} \to T_{n}$ denote the
+analogous operator for $\psi_{0}$. 
+
+The matrix $I+K_{n}$ can be rewritten as a map from the
+following two bases for $T_{n}: \{ P_{n} \phi_{0}, \text{basis for }
+P_{n}\phi_{0}^{\perp} \}$, and for the range the basis:
+$\{ P_{n} \psi_{0}, \text{basis for } P_{n} \psi_{0}^{\perp} \}$.
+In these bases, the linear operator $I_{n} + K_{n}$ is given by
+\begin{equation}
+\begin{bmatrix}
+A_{n} & B_{n} \\
+C_{n} & D_{n} 
+\end{bmatrix} \, .
+\end{equation}
+
+The operator $A_{n}$
+is the restriction of $I_{n} + K_{n}$ as a map from $P_{n} \phi_{0}$ 
+to $P_{n} \psi_{0}$. Thus, it is just a number and it is given by
+\begin{equation}
+A_{n} = \left(P_{n} \psi_{0}, (I_{n} + K_{n}) P_{n} \phi_{0} \right) \,.
+\end{equation}
+
+The operator $D_{n}$ is the restriction of $I_{n} + K_{n}$ 
+as a map from $P_{n} \phi_{0}^{\perp}$ 
+to $P_{n} \psi_{0}^{\perp}$. 
+As $n \to \infty$, $D_{n}$ converges pointwise to the restriction
+of $I + K: \phi_{0}^{\perp} \to R(I+K)$. Moreover, the collection
+of operators $K_{n}$ are collectively compact, and hence their restrictions
+are also collectively compact. 
+Since the operator $I+K: \phi_{0}^{\perp} \to R(I+K)$ is an invertible
+operator, by standard estimates, for $n$ large enough $D_{n}$ is also 
+an invertible operator. 
+
+The operator $B_{n}$ is the restriction of $I_{n} + K_{n}$ as a map from 
+$P_{n} \phi_{0} ^{\perp} \to P_{n} \psi_{0}$ and is given by
+\begin{equation}
+B_{n} \phi = \left( P_{n} \psi_{0}, (I_{n} + K_{n}) 
+(P_{n} \phi -( P_{n} \phi, P_{n} \phi_{0}) P_{n} \phi_{0}) \right) P_{n} \psi_{0}  \, .
+\end{equation}
+
+And finally the operator $C_{n}$ is the restriction of $I_{n} + K_{n}$ as a map from
+$P_{n} \phi_{0} \to P_{n} \psi_{0}^{\perp}$ and is its adjoint is given by
+\begin{equation}
+C_{n}^{\ast}\psi = \left( (I_{n} + K_{n}^{\ast}) \left(P_{n} \psi - (P_{n} \psi, P_{n} \psi_{0}) P_{n} \psi_{0} \right), P_{n} \phi_{0} \right)
+\end{equation}
+
+In this setting, $\phi_{0}$ and $\psi_{0}$ are known to be linearly independent.
+Thus for large enough $n$, 
+$f_{n} = P_{n} \phi_{0} - (P_{n} \phi_{0}, P_{n} \psi_{0}) P_{n} \psi_{0} \neq 0$
+and $f_{n} \in P_{n} \psi_{0}^{\perp}$.
+Similarly $g_{n} = P_{n} \psi_{0} - (P_{n}\phi_{0}, P_{n} \psi_{0}) P_{n} \phi_{0} \neq 0$
+and $g_{n} \in P_{n} \phi_{0}^{\perp}$.
+
+By block linear algebra, the determinant of the matrix above is also given by
+\begin{equation}
+\det{
+\begin{bmatrix}
+A_{n} & B_{n} \\
+C_{n} & D_{n} 
+\end{bmatrix} 
+}
+= \det{D_{n}} \cdot (A_{n} - C_{n} D_{n}^{-1} B_{n}) \,.
+\end{equation}
+Note that $C_{n} D_{n}^{-1} B_{n}$ is a number and can be evaluated as 
+\begin{equation}
+\begin{aligned}
+C_{n} D_{n}^{-1} B_{n} &= 
+\left( f_{n} \cdot  C_{n} D_{n}^{-1} B_{n} g_{n} \right) \\
+&= \left( C_{n}^{\ast} f_{n}, D_{n}^{-1} B_{n} g_{n} \right) \\
+&= \left( \left((I_{n} + K_{n}^{\ast})f_{n}, P_{n} \phi_{0}\right) P_{n} \phi_{0}, D_{n}^{-1} B_{n} g_{n} \right) \\
+&= \left(f_{n}, (I_{n} + K_{n})P_{n} \phi_{0} \right) \cdot (P_{n} \phi_{0}, D_{n}^{-1} B_{n} g_{n}) \\
+&= \left(f_{n}, (I_{n} + K_{n})P_{n} \phi_{0} \right) \cdot (P_{n} \phi_{0}, D_{n}^{-1} P_{n} \psi_{0})  \cdot 
+\left((I_{n} + K_{n}^{\ast})P_{n} \psi_{0}, g_{n}  \right) \\
+\end{aligned}
+\end{equation}
