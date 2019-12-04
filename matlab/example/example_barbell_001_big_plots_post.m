@@ -16,21 +16,13 @@ chunkers = multichunksort(chunker,nchs,true);
 
 sings = zeros(length(ss),1);
 for i = 1:length(ss)
-    sings(i) = ss{i}(end);
+    sings(i) = ss{i}(1);
 end
 
-%
 
-% indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
-% nnz(indimagbig)
-% find(indimagbig)
-% sings(indimagbig)
+iplot = 1:length(rts);
 
 %
-%
-
-[iplot,ichkdbl] = find_unique_evals(rts,sings,1e-5,...
-    sqrt(p.chebfuneps));
 
 %% 
 
@@ -68,44 +60,6 @@ for ii = 1:min(length(iplot),mrow*ncol)
     axis equal    
     axis tight
     axis equal
-end
-
-%%
-
-%%
-
-% Run through and check for double roots at suspicious sings
-
-pord = 10;
-q = 40;
-ss2 = zeros(pord,length(ichkdbl));
-
-for ii = 1:length(ichkdbl)
-    i = ichkdbl(ii,1);
-    zk = real(rts(i));
-    start = tic; [d,F] = ostokes_determinant(zk,chunker,nchs,cs,cd,opts);
-    toc(start)
-    nsys = 2*chunker.nch*chunker.k;
-    start = tic; xnull = rskelf_nullvec(F,nsys,pord,q); toc(start)
-    ynull = rskelf_mv(F,xnull);
-    ss2(:,ii) = sqrt(sum(abs(ynull).^2,1));
-end
-
-%%
-
-% compare computed vorticity at suspicious sings
-
-projs = zeros(length(ichkdbl),1);
-
-for ii =  1:length(ichkdbl)
-    i1 = ichkdbl(ii,1); i2 = ichkdbl(ii,2);
-    v1 = vorts{i1}(in); v2 = vorts{i2}(in);
-    v1 = v1/norm(v1,'fro');
-    projs(ii) = norm(v2-v1*v1'*v2);
-    x1 = xnulls{i1}(:,1); x2 =xnulls{i2}(:,1);
-    x1 = x1/norm(x1,'fro');
-    x2 = x2/norm(x2,'fro');
-    projsx(ii) = norm(x2-x1*x1'*x2);
 end
 
 
