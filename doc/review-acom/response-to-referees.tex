@@ -1,0 +1,296 @@
+\documentclass{article} 
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{cleveref}
+
+\usepackage{color}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\Crefname{equation}{}{}
+\crefname{equation}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\dn}{dn}
+\DeclareMathOperator{\cn}{cn}
+\DeclareMathOperator{\sn}{sn}
+
+\newcommand*\C{\mathbb{C}}
+\newcommand*\R{\mathbb{R}}
+\def\bx{{\mathbf x}}
+\def\bX{{\mathbf X}}
+\def\bf{{\mathbf f}}
+\def\bg{{\mathbf g}}
+\def\bc{{\mathbf c}}
+\def\by{{\mathbf y}}
+\def\bxi{{\boldsymbol \xi}}
+\def\bPhi{{\boldsymbol \Phi}}
+\def\bSigma{{\boldsymbol \Sigma}}
+\def\btheta{{\boldsymbol \theta}}
+\def\bTheta{{\boldsymbol \Theta}}
+\def\bC{{\mathbf C}}
+\def\balpha{{\boldsymbol \alpha}}
+\def\bB{{\mathbf B}}
+\def\bigo{\mathcal{O}}
+
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\title{Response to referees}
+\author{Travis Askham, Manas Rachh}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+In this document, we respond to the referees' comments
+for the paper ``A boundary integral equation approach to computing
+eigenvalues of the Stokes operator''.
+We believe that the referees' suggestions improve the
+quality of the paper and that we have been able to
+address their concerns. Changes made to address these concerns
+are marked in {\color{red} red} in the revised manuscript.
+
+\section{Reviewer 1}
+
+A general concern of the first reviewer was the discussion
+of what we originally called ``spurious double roots''.
+We appreciate the reviewer pressing us on this issue, as it
+has clarified the results of the paper.
+
+To explain what had happened, we computed the roots using a rootfinding
+utility in another software package, \texttt{chebfun}. In our
+numerical experiments, we were puzzled that the output of the
+utility consistently gave us pairs of roots which seemed to
+be identical. Yet, they did not actually seem to correspond to
+a double root of the Fredholm determinant in any meaningful sense
+(indeed, the derivative of our interpolant was not particularly
+close to zero for these points). We performed some other tests
+(including checking whether there truly was a corresponding
+two-dimensional eigenspace) and no other tests suggested a double
+root existed. Thus, in the original submission, we made a note
+suggesting that rounding errors may explain this strange behavior
+and we described our ad hoc methods for determining true roots.
+To confuse matters, we mentioned the existence of roots that
+were computed and had large imaginary part as being part of
+the same phenomenon (they are not).
+
+It turns out that this behavior can be suppressed rather
+simply. By default, the \texttt{roots}
+utility in \texttt{chebfun} first divides the interval on
+which the interpolant is defined into smaller intervals on which
+the interpolant can be represented by a shorter Chebyshev series.
+The roots on these subintervals can then be computed more efficiently.
+However, the roots for neighboring intervals can be found twice
+by this procedure and there is some internal processing to eliminate
+double roots. This processing seems to fail in our case (perhaps because
+we are using the complex roots mode, which is more experimental) and
+we observe the fake double roots described above. Fortunately, the
+subdivision procedure can be turned off. When this was done, such
+roots disappeared (aside from double roots introduced by our
+own splitting into subintervals). Once aware of this issue,
+a much simpler procedure for identifying the roots which are actually
+contained on a real subinterval can be employed.
+
+We describe this simplified root finding procedure in the updated
+manuscript. The eigenvalues/eigenvectors in the examples
+did not change.
+
+We respond to other comments from Reviewer 1 below. Original
+reviewer comments in {\color{blue} blue}
+
+\begin{itemize}
+\item[1.] {\color{blue} In different parts of the paper the connection between the eigenvalue
+problem of the Stokes operator and the biharmonic eigenvalue problem
+1is addressed and utilized. Therefore for me it is strange that just in
+the last section of the paper (“Conclusions”) this connection is elabo-
+rated. It would be better that this elaboration is done somewhere at
+the beginning of the paper and not in the end.}
+
+We appreciate this suggestion and have moved this elaboration to
+the introduction. 
+
+\item[2.] {\color{blue}
+  In the abstract the Stokes operator is denoted as fourth-order operator.
+This is unusual and in my opinion not the case (even if there is an
+equivalence to a forth-order operator).}
+
+We see how this could be confusing and have adjusted this phrasing.
+
+\item[3.] {\color{blue} I would appreciate it if the following issue would be addressed in the
+paper: under which weaker conditions (not analytic boundary, non-
+simple eigenvalues) convergence of the discretization of the eigenvalues
+can be proven. (Are there results concerning the convergence of the
+eigenfunctions?)}
+
+
+\item[4.] {\color{blue} In the paper it is not explicitly mentioned that both presented bound-
+ary integral equations may have non-trivial null-spaces for certain $k$
+with ${\rm Im}(k) < 0$. These $k$s correspond to the eigenvalues of some re-
+lated eigenvalue problems in the exterior domain. It is possible that
+these $k$s are also be detected by the root search method and that these
+eigenvalues may be some of those “spurious eigenvalues too far from
+real-valued” which are blamed to be caused by “noisy numerical de-
+terminant evaluation” but are actually caused by the used boundary
+integral formulation.}
+
+Thank you for pointing this out. This is indeed the case, as can be seen
+by the dependence of many of the results on ${\rm Im}(k) \geq 0$. We have
+added a remark about this after Theorem 10 and updated the theorems and lemmas
+as suggested in other comments below. These are indeed detected by the
+root finding procedure, though they are easy to identify as
+being distinct from the real-valued roots which correspond to
+eigenvalues (the imaginary part of the real-valued roots is several
+orders of magnitued smaller than the imaginary part of the
+spurious roots we observed).
+
+\item[5.] {\color{blue}
+  In general it would be of interest which kind of spurious eigenvalues may
+occur from a“noisy numerical determinant evaluation”. In the paper
+only two kinds are specified, namely spurious eigenvalues with “large”
+imaginary part (which may result also from the boundary integral for-
+mulation itself as pointed out above) and spurious “double roots” on
+the real line. Isn’t it possible that for example spurious single roots
+occur on the real line?}
+
+Again, thank you for pressing this point. We believe that this
+is mostly resolved by the discussion above. In the case of a spurious
+single root on the real line, we imagine that this could happen, though it
+was not observed, i.e. one can imagine a pathological domain for which a
+true spurious root exists that is within, say, $10^{-7}$ of the real line.
+Such a root would be hard to distinguish from a true root.
+In all cases, we also computed the smallest singular
+value of the BIE corresponding to the real part of a given root.
+This singular value was found to be quite small. Because we believe
+that the integral equation was well-resolved
+by our discretization, this is rather convincing evidence that an
+eigenvalue of the PDE has been found.
+
+\item[6.] {\color{blue}
+  For me it is not clear why with the suggested procedure spurious ``double roots''
+  may be detected. What is actually the argument that this
+  procedure detects spurious double roots?}
+
+The original procedure was designed to test whether a root was
+an eigenvalue in a manner independent of the interpolant we had
+computed for the Fredholm determinant. Thus, we checked the several smallest
+singular values to see if any eigenspaces of dimension larger
+than one were associated
+with the weird double roots. None were found. We thus chose what
+seemed to be the better root in an ad hoc way. As noted above, this
+procedure is no longer necessary when calling \texttt{roots} with
+the subdivision procedure suppressed.
+
+\item[7.] {\color{blue}In the caption of figure 5 the given interval for $k$
+  does not match with the plots. Moreover, in each plot of figure
+  5 two functions are given but in the caption only one function is described.}
+
+
+\item[8.] {\color{blue}Subsection 1.1 (”Relation to other work“) may
+  lead to the false impression that boundary integral equations of the
+  second kind combined with the proposed root finding method is the only
+  profound and reasonable boundary integral equation approach for the Stokes
+  eigenvalue problem. The authors seem not be aware of works which deal with
+  boundary integral equation methods based on integral equations of the
+  first kind (for several types of eigenvalue problems(Laplacian, Maxwell,
+  fluid-solid interaction, plasmonics, ....)) which are well analyzed and for
+  which a rigorous and comprehensive convergence theory is established.
+  Such kind of an approach could be also applied to the Stokes eigen-
+  value problem. Moreover, in these works instead of the root search for
+  the determinant the contour integral method for nonlinear eigenvalue
+  problem is used for which multiple and spurious eigenvalues seem not
+  to be a problematic issue. In some way these alternatives should be
+  briefly mentioned in the paper.}
+
+  This comment is well taken.
+  We did not mean to give this impression but had intended this section
+  to be focused on methods specifically for the Stokes eigenvalue problem.
+  We have added some references to applications treated using integral
+  equation methods in the literature. 
+  We note that in the original submission this subsection started with
+  a paragraph that cited previous, first kind integral equation
+  formulations for the buckling problem. There were also references to
+  the Laplace eigenvalue problem and alternative root finding methods
+  earlier in the introduction. 
+
+\item[9.] {\color{blue}
+  I cannot follow the ”formal“ derivation of the fundamental solution from
+  equation (8) to (10). Is it possible to describe the derivation in more
+  detail? (It would be also good to mention the reference [7] between
+  equation (8) and (10)).}
+
+  We've added some more steps and added the suggested
+  reference in that section.
+
+\item[10.] {\color{blue}
+  Lemma 4 only seems to hold for $k$ with ${\rm Im}(k) \geq 0$,
+  see the asymptotic expansion of the Hankel function.}
+
+  Thank you for pointing out this ommission. It's been fixed
+  in the revision.
+
+\item[11.] {\color{blue} In the proof of Theorem 3 and 4 only the
+  uniqueness of the solution is shown but not the existence.
+  (The existence follow for example from the Fredholm theory.)}
+
+  Thank you for pointing this out. We adjusted the
+  phrasing of these.
+
+\item[12.] {\color{blue}
+  Theorem 8, 9 and 10 only seem to be valid for $k$ with
+  ${\rm Im}(k) \geq 0$.}
+
+  Again, thank you for this. This is certainly true for theorems
+  8 and 10. We think that the demonstrated null vector in
+  theorem 9 works for general $k$.
+
+\end{itemize}
+
+We also appreciate the reviewer alerting us to some typos, which have
+been fixed.
+
+\section{Reviewer 2}
+
+
+Comments by the second reviewer. Original reviewer comments
+in {\color{blue} blue}.
+
+\begin{itemize}
+\item[1.] {\color{blue} In the abstract and introduction the authors talk about the so-called pollution effect
+with no reference to the Helmholtz problem or what high frequency regime means for
+this problem. Thus unless the reader has experience with Helmholtz problems (may
+not be the case for people interested in Stokes problems), they will not understand the
+associated numerical challenges. This should be clarified.}
+
+  We appreciate this suggestion and agree it may have been confusing.
+  We have added a brief description of the phenomenon to the
+  introduction.
+  
+\item[2.] {\color{blue} On page 3 line 31, what is meant by “current grid?”}
+
+  Thank you for pointing out this vagueness. The current grid referred
+  to the current boundary discretization. We have reworked this section
+  in response to comments by the other reviewer and have dropped this more
+  philosophical point altogether.
+  
+\item[3.] {\color{blue} On page 5 line 36, should $\exists \phi_0$ read $\exists \phi_0 \in X$?}
+
+  Thank you for pointing this out. It's been fixed.
+  
+\item[4.] {\color{blue} On page 28 line 38, is the linear system $C_k^N$
+  also discretized with generalized Gaussian quadrature?}
+
+  Yes, this has been clarified in the revision.
+  
+\item[5.] {\color{blue} In Figure 6, a plot of $O(N \log N )$
+  would be more helpful than $O(N )$ since that is the expected scaling.}
+
+  Good point. This has been adjusted.
+  
+\end{itemize}
+
+\end{document}

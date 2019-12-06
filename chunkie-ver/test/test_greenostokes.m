@@ -59,7 +59,7 @@ scatter(targets(1,:),targets(2,:),'x')
 axis equal 
 
 
-%%
+%
 
 % kernel defs
 
