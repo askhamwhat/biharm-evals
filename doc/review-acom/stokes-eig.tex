@@ -429,7 +429,7 @@ the accuracy of the Galerkin solution of
 a problem does indeed differ by a constant factor from
 the error in the best approximation of the true
 solution in the finite element space but this factor
-grows as a function of the frequency $k$
+{\it grows} as a function of the frequency $k$
 \cite{babuska1997pollution}.
 Thus, at higher frequencies, a finite element method
 requires more degrees of freedom than suggested
@@ -2186,6 +2186,7 @@ is also not invertible.
 \qed
 \end{proof}
 
+{\color{red}
 \begin{remark}
   The results above hold provided that ${\rm Im}(k) \geq 0$.
   There are indeed values of $k$ with ${\rm Im}(k) < 0$ such
@@ -2197,7 +2198,7 @@ is also not invertible.
   identify, having imaginary parts which are several orders
   in magnitude larger than the imaginary parts for roots
   corresponding to non-spurious $k$.
-\end{remark}
+\end{remark}}
 
 \subsection{Fredholm determinants}
 \label{sec:dets}
@@ -3310,7 +3311,7 @@ Suppose that $\bu$ is of the form
 \end{equation}
 and $p=0$.
 
-Clearly, this pair satisfies the osciallatory Stokes equation
+Clearly, this pair satisfies the oscillatory Stokes equation
 with parameter $k$, since $J_{0}(kr)$ and $H_{0}(kr)$ 
 satisfy the Helmholtz equation on the annulus.
 
@@ -3324,10 +3325,10 @@ u_{\theta} &= \bu \cdot \hat{\theta} = k(\alpha  H_{0}'(kr) + \beta J_{0}'(kr)) 
 \end{equation}
 
 This in particular implies that on $r=R_{1}$,
-$u_{\theta}$ takes on the constant value,
+$u_{\theta}$ takes on the constant value
 $k(\alpha H_{0}'(kR_{1}) + \beta J_{0}'(kR_{1}))$.
 Similarly, on $r=R_{2}$, 
-$u_{\theta}$ takes on the constant value,
+$u_{\theta}$ takes on the constant value
 $k(\alpha H_{0}'(kR_{2}) + \beta J_{0}'(kR_{2}))$.
 
 Thus, if $k$ satisfies, 
@@ -3335,7 +3336,7 @@ Thus, if $k$ satisfies,
 H_{0}'(kR_{1}) J_{0}'(kR_{2}) - H_{0}'(kR_{2})J_{0}'(kR_{1}) = 0 \, ,
 \end{equation}
 and for those values of $k$ if 
-$\alpha,\beta$ are non-zero solutions to system of equations 
+$\alpha,\beta$ are non-zero solutions to the system of equations 
 \begin{equation}
 \begin{bmatrix}
 H_{0}'(kR_1) & J_{0}'(kR_{1}) \\
@@ -3379,13 +3380,13 @@ is given by
 \end{bmatrix} \, .
 \end{equation}
 
-Thus, $k$ which satisfies
+Thus, the values $k$ which satisfy
 \begin{equation}
   \label{eq:neu_roots}
 -k \jpk + k^2 \jppk = 0 \, ,
 \end{equation}
 are Neumann eigenvalues on the unit disk.
-The first $4$ roots of the \cref{eq:neu_roots} are
+The first $4$ roots of \cref{eq:neu_roots} are
 in \cref{tab:neu_roots}.
 \begin{table}
   \centering
