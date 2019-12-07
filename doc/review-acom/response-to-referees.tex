@@ -127,6 +127,28 @@ simple eigenvalues) convergence of the discretization of the eigenvalues
 can be proven. (Are there results concerning the convergence of the
 eigenfunctions?)}
 
+The question of addressing this problem under weaker assumptions of smoothness of the boundary
+is a very interesting one. To the best of our knowledge, this question hasn't even been addressed 
+Laplace's equation.
+We have a sketch of a proof for the eigenvalues and eigenfunctions
+for the Laplace operator where we can show that the eigenvalues and eigenfunctions
+converge at an algebraic rate (dependent on the smoothness of curves) for $C^{\ell}$, $\ell\geq 2$ boundaries.
+The procedure of using the Fredholm determinant as stated does not work on Lipchitz boundaries, since
+the corresponding operators are not second kind. 
+
+However, we feel that the discussion would be fairly technical and take away from the main results of 
+the paper --- demonstrating the use of Fredholm determinants and second kind formulations for 
+computing the Stokes eigenvalues and eigenfunctions.  For this reason we feel that this analysis should be carried out in a separate note for the use of Fredholm determinants for the computation of eigenvalues and eigenvectors of Laplace's and Stoke's equation.
+
+We've included a sketch of the proof below. 
+
+The sketch of the proof goes as follows. The main estimate needed is to show that the error in
+computing the Fredholm determinant at the eigenvalues of the Stokes operator is directly proportional
+to the quadrature error applied to the null vector of the second kind Fredholm equation. 
+Based on Fredholmness of the operator from $C^{m,\alpha} \to C^{m,\alpha}$ for some $m<\ell$ and $\alpha>0$, 
+when the boundary is $C^{\ell}$, one can show that the resulting null vector must be at least in $C^{m,\alpha}$.
+The quadrature error using Kress quadratures converges algebraically when both the boundary and density being
+approximated are $C^{m,\alpha}$. 
 
 \item[4.] {\color{blue} In the paper it is not explicitly mentioned that both presented bound-
 ary integral equations may have non-trivial null-spaces for certain $k$
@@ -189,6 +211,8 @@ the subdivision procedure suppressed.
   does not match with the plots. Moreover, in each plot of figure
   5 two functions are given but in the caption only one function is described.}
 
+Apologies about that. The caption for figure 5 has now been fixed. The two curves
+correspond to the real and the imaginary part of the Fredholm determinant. 
 
 \item[8.] {\color{blue}Subsection 1.1 (”Relation to other work“) may
   lead to the false impression that boundary integral equations of the
