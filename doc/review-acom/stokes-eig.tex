@@ -421,22 +421,24 @@ element discretizations. Further, it is known
 that standard finite element approaches suffer from
 high-frequency ``pollution'' in two and three dimensions
 for oscillatory problems and, hence, the computation
-of larger eigenvalues. In the original context, 
-the term pollution refers to the fact that,
-when solving the Helmholtz equation in dimension
+of larger eigenvalues. In the original context,
+pollution refers to the following phenomenon.
+When solving the Helmholtz equation in dimension
 greater than one,
 the accuracy of the Galerkin solution of
-a problem does indeed differ by a constant factor from
+a problem is indeed optimal in the sense that it
+differs by a constant factor from
 the error in the best approximation of the true
-solution in the finite element space but this factor
+solution in the finite element space.
+But this factor
 {\it grows} as a function of the frequency $k$
 \cite{babuska1997pollution}.
 Thus, at higher frequencies, a finite element method
 requires more degrees of freedom than suggested
 by the number of degrees of freedom required to
 resolve the solution.
-In constrast, a BIE does not suffer from this
-effect.}
+In constrast, a standard BIE discretization does not
+suffer from this effect.}
 
 Further, Zhao and Barnett~\cite{zhao2015robust}
 show how to alleviate some of the costliness of the
@@ -2469,7 +2471,7 @@ $A(j)$ contains two integers.
 
 The integral kernels of the single and
 double layer potentials have weak
-singularities of the form $|\xx-\yy|^p\log |\xx-\yy|$
+singularities of the form $|\xx-\yy|^{2p}\log |\xx-\yy|$
 for some $p \in \N_0$, which require special
 quadrature rules to achieve high-order accuracy.
 %
@@ -2507,8 +2509,11 @@ We denote these nodes and weights
 by $\tilde{t}_n$ and $\tilde{w}_n$, respectively,
 for $1 \leq n \leq N_a$.
 %
-For the 20th-order rule we used, $N_s = 16$ and
-$N_a = 48$. 
+For the {\color{red} 16th-order} rule we used
+{\color{red} (i.e. a rule which integrates
+  $p(\yy)\log|\xx-\yy| + q(\yy)$ for $p$ and $q$
+  polynomials of degree up to 15)}, $N_s = 16$ and
+  $N_a = 48$. 
 %
 The contribution of other panels is assumed
 to be given to high accuracy by the standard
@@ -2559,7 +2564,7 @@ are computed on-the-fly.
   rule with sufficient precision.
 
   The overall order of accuracy of the GGQ we use
-  is 20th-order, up to the precision of the ``far''
+  is {\color{red}16th-order}, up to the precision of the ``far''
   interactions.
 \end{remark}
 
@@ -2764,11 +2769,16 @@ eigenvalue of the annulus,
 then $f_{D}^{N}(k_{D}) = 0$ and $f_{C}^{N}(k_{C}) = 0$
 where $|k_{D} - k_{0}| \lesssim N^{-20}$, 
 and $|k_{C} - k_{0}| \lesssim N^{-20}$.
-Recall that the GGQ we use has an expected order
-of convergence of $N^{-20}$ for evaluating convolutions
-with such integral kernels,
-so that the error of the roots is observed to have the
-same order as the quadrature rule.
+Recall that the GGQ we use {\color{red} is designed to
+evaluate integrals of the form $p(\yy)\log|\xx-\yy|
++ q(\yy)$ with $p$ and $q$ polynomials of degree up
+to 15, so that the observed convergence rate
+for the roots is of slightly higher order than the
+order of the quadrature rule. In our experience, the $N^{-20}$
+rate is common for these kernels and may be a result of the
+fact that the singularity for these kernels is of the form
+$|\xx-\yy|^2\log|\xx-\yy|$, which is smoother than
+$\log|\xx-\yy|$ itself.}
 In~\cref{fig:conv}, we show this result for $k_{0} = 13.48025717955055$
 and plot the errors $|k_{D}-k_{0}|$ and $|k_{C}-k_{0}|$ as a function
 of $N$. 
