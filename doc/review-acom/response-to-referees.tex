@@ -55,6 +55,20 @@ quality of the paper and that we have been able to
 address their concerns. Changes made to address these concerns
 are marked in {\color{red} red} in the revised manuscript.
 
+We have also marked in {\color{red} red} a couple of
+changes around the explanation of the order of convergence
+of the generalized Gaussian quadrature rule we used.
+The rule is designed to be 16th order, i.e. it is designed
+to integrate $p(y)\log|x-y| + q(y)$ for $p$ and
+$q$ polynomials of degree up to 15. Our kernel is actually
+smoother than $\log|x-y|$ (with leading order
+singularity $|x-y|^2\log|x-y|$) and in our experience the
+convergence rate is typically higher (20th order in
+the example in the paper). In the revised text, we have clarified
+that the rule is not designed to be 20th order but that this is
+the behavior we observed. 
+
+
 \section{Reviewer 1}
 
 A general concern of the first reviewer was the discussion

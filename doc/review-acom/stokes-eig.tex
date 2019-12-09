@@ -2511,8 +2511,9 @@ for $1 \leq n \leq N_a$.
 %
 For the {\color{red} 16th-order} rule we used
 {\color{red} (i.e. a rule which integrates
-  $p(\yy)\log|\xx-\yy| + q(\yy)$ for $p$ and $q$
-  polynomials of degree up to 15)}, $N_s = 16$ and
+  $\Phi(s)\log|t-s| + \Psi(s)$ over $[-1,1]$ exactly
+  for $\Phi$ and $\Psi$ polynomials of degree up
+  to 15)}, $N_s = 16$ and
   $N_a = 48$. 
 %
 The contribution of other panels is assumed
@@ -2617,8 +2618,6 @@ as a measure of the quality of the
 eigenvalues found by approximating the
 roots of the determinant.
 %
-We also evaluate the second smallest singular
-value to check for possible double eigenvalues.
 
 \subsubsection{Interpolation and root-finding}
 
@@ -2769,16 +2768,15 @@ eigenvalue of the annulus,
 then $f_{D}^{N}(k_{D}) = 0$ and $f_{C}^{N}(k_{C}) = 0$
 where $|k_{D} - k_{0}| \lesssim N^{-20}$, 
 and $|k_{C} - k_{0}| \lesssim N^{-20}$.
-Recall that the GGQ we use {\color{red} is designed to
-evaluate integrals of the form $p(\yy)\log|\xx-\yy|
-+ q(\yy)$ with $p$ and $q$ polynomials of degree up
-to 15, so that the observed convergence rate
-for the roots is of slightly higher order than the
-order of the quadrature rule. In our experience, the $N^{-20}$
-rate is common for these kernels and may be a result of the
-fact that the singularity for these kernels is of the form
-$|\xx-\yy|^2\log|\xx-\yy|$, which is smoother than
-$\log|\xx-\yy|$ itself.}
+Recall that the GGQ we use {\color{red} is 16th order
+  for $\log$ singularities, so that the observed convergence
+  rate for the roots is of higher order than the
+  order of the quadrature rule. This behavior is a bit
+  surprising but may owe to the fact that the integral
+  kernels are actually smoother than $\log|\xx-\yy|$
+  (with leading order singularity $|\xx-\yy|^2\log|\xx-\yy|$).
+  Alternatively, the asymptotic convergence rate may simply
+  not be apparent before the maximum precision is reached.}
 In~\cref{fig:conv}, we show this result for $k_{0} = 13.48025717955055$
 and plot the errors $|k_{D}-k_{0}|$ and $|k_{C}-k_{0}|$ as a function
 of $N$. 
