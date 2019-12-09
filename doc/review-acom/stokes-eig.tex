@@ -2675,7 +2675,7 @@ roots
   maps $[a,b]$ to $[-1,1]$.
   We then keep only the roots such that
   $T(k_\cheb)$ is contained in the Bernstein
-  ellipse $E_\rho$ with $\rho = 1+\sqrt{\epscheb}$.
+  ellipse $E_\rho$ with $\rho = 1+10\sqrt{\epscheb}$.
   While it is still possible to obtain two copies
   of a root if it is almost equal to an
   endpoint of one of the subintervals,
@@ -3051,14 +3051,7 @@ smaller than the others).
 We compute the roots of these Chebyshev interpolants
 and apply the post-processing described above.
 %
-There were 103 total roots: 21 were removed because
-the imaginary part was too large and 6 pairs were found
-with values within $\sqrt{\epscheb}$ of each other.
-%
-For these 6 pairs, none represented two distinct
-eigenvalues or a double root.
-%
-This leaves 76 roots in the range $0\leq k \leq 9$.
+{\color{red} There were 76 roots in the range $0 \leq k \leq 9$.}
 %
 We plot the smallest singular value of
 $\cI^N-\cDk^N-2i\cSk^N-2\cW^N$ for {\color{red}$k$ equal to the real part of}

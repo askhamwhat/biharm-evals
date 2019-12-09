@@ -34,7 +34,7 @@ for i = 1:nints
     fmax = norm(f,'inf');
     rtstemp = roots(f,'complex','norecursion');
     rtstemp_trans = (rtstemp-a)*2/(b-a)-1;
-    rho = 1+sqrt(p.chebfuneps); aell = (rho+1/rho)/2; bell = (rho-1/rho)/2;
+    rho = 1+10*sqrt(p.chebfuneps); aell = (rho+1/rho)/2; bell = (rho-1/rho)/2;
     indkeep = and(real(rtstemp_trans).^2/aell^2 + imag(rtstemp_trans).^2/bell^2 <= 1, ...
         and(real(rtstemp) >= chebabs{i}(1),real(rtstemp) <= chebabs{i}(2)));
     rtstemp(~indkeep);

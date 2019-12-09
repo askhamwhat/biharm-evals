@@ -35,15 +35,6 @@ end
 
 %
 
-% indimagbig = abs(imag(rts)) > sqrt(p.chebfuneps);
-% nnz(indimagbig)
-% find(indimagbig)
-% sings(indimagbig)
-
-%
-
-[iplot,ichkdbl] = find_unique_evals(rts,sings,1e-5, ...
-    sqrt(p.chebfuneps));
 
 %% 
 
@@ -58,10 +49,10 @@ nsamp=10;
 for ii = 1:mrow*ncol
     axes(ha(ii))
     
-    if ii > length(iplot)
+    if ii > length(rts)
         axis off
     else
-        i = iplot(ii);
+        i = ii;
 
         vort = nan(size(vorts{i}));
 
@@ -93,40 +84,15 @@ end
 
 %%
 
-% Run through and check for double roots at suspicious sings
-
-sings2 = zeros(length(ss),1);
-for i = 1:length(ss)
-    sings2(i) = ss{i}(2);
-end
-
-[sings(ichkdbl(:,1)), sings2(ichkdbl(:,1))]
-
 %%
-
-% compare computed vorticity at suspicious sings
-
-projs = zeros(length(ichkdbl),1);
-projsx = zeros(length(ichkdbl),1);
-
-for ii =  1:length(ichkdbl)
-    i1 = ichkdbl(ii,1); i2 = ichkdbl(ii,2);
-    v1 = vorts{i1}(in); v2 = vorts{i2}(in);
-    x1 = xnulls{i1}(:,1); x2 =xnulls{i2}(:,1);
-    v1 = v1/norm(v1,'fro');
-    projs(ii) = norm(v2-v1*v1'*v2,'fro')/norm(v2,'fro');
-    x1 = x1/norm(x1,'fro');
-    x2 = x2/norm(x2,'fro');
-    projsx(ii) = norm(x2-x1*x1'*x2);
-end
 
 
 %%
 
 fileout = 'ex_many_holes_004_sings.tex';
 fid = fopen(fileout,'w'); 
-fprintf(fid,'%7.4e %7.4e\n',[1.0*(1:length(iplot)); ...
-    reshape(abs(sings(iplot)),1,length(iplot))]);
+fprintf(fid,'%7.4e %7.4e\n',[1.0*(1:length(sings)); ...
+    reshape(abs(sings),1,length(sings))]);
 fclose(fid);
 
 %%
@@ -182,12 +148,10 @@ end
 
 %%
 
-rtsp = rts(iplot);
-
 for i = 1:length(detchebs)
     ab = chebabs{i};
     a = ab(1); b = ab(2);
-    iiii = and(rtsp > a,rtsp < b);
+    iiii = and(rts > a,rts < b);
     subplot(4,4,i)
     plot(real(diff(detchebs{i})),'r')
     hold on 
@@ -195,27 +159,26 @@ for i = 1:length(detchebs)
     plot(rtsp(iiii),zeros(nnz(iiii),1),'go')
 end
 
-%%
+%% error estimate
 
 
-rtsp = rts(iplot);
-reldir = zeros(length(iplot),1);
+reldir = zeros(length(rts),1);
 
 for i = 1:length(detchebs)
     ab = chebabs{i}
     a = ab(1); b = ab(2);
-    iiii = and(rtsp > a,rtsp < b);
+    iiii = and(rts > a,rts < b);
     
     ff = detchebs{i};
     dff = diff(ff);
-    reldir(iiii) = norm(ff,'inf')./abs(dff(rtsp(iiii)));
+    reldir(iiii) = norm(ff,'inf')./abs(dff(rts(iiii)));
 end
 
 %
 
 figure(1)
 clf
-semilogy(abs(sings(iplot)))
+semilogy(abs(sings))
 hold on
 
 sing_err_estimate = max(reldir*p.chebfuneps, ...
@@ -229,13 +192,13 @@ semilogy(sing_err_estimate)
 
 fileout = 'ex_many_holes_004_sings_est.tex';
 fid = fopen(fileout,'w'); 
-fprintf(fid,'%7.4e %7.4e\n',[1.0*(1:length(iplot)); ...
-    reshape(sing_err_estimate,1,length(iplot))]);
+fprintf(fid,'%7.4e %7.4e\n',[1.0*(1:length(rts)); ...
+    reshape(sing_err_estimate,1,length(rts))]);
 fclose(fid);
 
 fileout = 'ex_many_holes_005_sings.tex';
 fid = fopen(fileout,'w'); 
-fprintf(fid,'%7.4e %7.4e\n',[1.0*find(any(abs(bsxfun(@plus,rts(iplot).',-rts5(:)))<1e-7))
+fprintf(fid,'%7.4e %7.4e\n',[1.0*find(any(abs(bsxfun(@plus,rts.',-rts5(:)))<1e-7))
 ; ...
     reshape(abs(sings5),1,length(sings5))]);
 fclose(fid);

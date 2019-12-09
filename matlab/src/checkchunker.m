@@ -15,4 +15,4 @@ assert(numel(chunker.ders)==2*nch*k);
 assert(numel(chunker.ders2)==2*nch*k);
 assert(numel(chunker.adjs)==2*nch);
 assert(numel(chunker.hs)==nch);
-assert(checkadjinfo(chunker)==0);
+%assert(checkadjinfo(chunker)==0);
