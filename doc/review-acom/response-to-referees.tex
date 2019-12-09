@@ -161,9 +161,9 @@ We've included a sketch of the proof below.
 
 The main estimate needed is to show that the error in computing
 the Fredholm determinant at an eigenvalue of the Stokes operator
-is directly proportional to the quadrature error for evaluating
-the convolution of the integral kernel with the true null vector
-of the integral operator with $k$ corresponding to that eigenvalue.
+is directly proportional to the quadrature error in 
+evaluating the integral operator applied to the null vector (A proof of this result for the 
+Laplace case is contained in~\cref{sec:appb}). 
 Based on the second-kind nature of the operator from $C^{m,\alpha} \to C^{m,\alpha}$
 for $m<\ell$ and $\alpha>0$ (when the boundary is $C^{\ell}$) one can show
 that the resulting null vector must be at least in $C^{m,\alpha}$.
@@ -329,7 +329,9 @@ associated numerical challenges. This should be clarified.}
   would be more helpful than $O(N )$ since that is the expected scaling.}
 
   Good point. This has been adjusted.
-  
+
+
+\input{../draft-01-stokes/appendix-b}
 \end{itemize}
 
 \end{document}

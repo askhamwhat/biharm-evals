@@ -1,10 +1,26 @@
 \section{Proof of convergence for general case}
 Let $T_{n}$ denote the space of trignometric polynomials
-$\{ e^{-inx}, \ldots e^{inx} \}$. Let $K_{n}: T_{n} \to T_{n}$ 
-denote a discretization of the Helmholtz double layer kernel
-using kress quadrature. Let $\phi_{0}$ denote the null vector
-of $I+ K$, and let $\psi_{0}$ denote the null vector
-of $I+K^{\ast}$. 
+$\{ e^{-inx}, \ldots e^{inx} \}$. 
+Let $\mathcal{K}$ denote the Helmholtz double layer integral operator
+given by
+\begin{equation}
+\mathcal{K}[\phi] = \frac{i}{2}\int_{\Gamma} k H_{1}^{1}(k|x-y|) \frac{(x-y)\cdot n(y)}{|x-y|} \phi(y) dS_{y} \,
+\end{equation}
+where $k$ the Helmholtz parameter is assumed to be a dirichlet eigenvalue of the simply connected
+domain $\Omega$ whose boundary is given by $\Gamma$, and $H_{1}^{1}$ is the Hankel function
+of the first kind of order $1$.
+It is well known that if $\Gamma$ is of class $C^{\ell,\alpha}$, then the
+integral operator $\mathcal{K}: C^{\ell-1,\alpha} \to C^{\ell-1,\alpha}$ is a compact operator.
+Furthermore, as shown in Zhao and Barnett, at the simple Dirichlet eigenvalues of the operator
+$I + \mathcal{K}$ is not invertible and has a one dimensional null-space. Let $\phi_{0}$ denote
+the null vector. 
+By Fredholm theory, the adjoint $I + \mathcal{K}^{\ast}$ also has a one-dimensional null space.
+Let $\psi_{0}$ denote the null vector of $I+\mathcal{K}^{\ast}$.
+
+
+Let $K_{n}: T_{n} \to T_{n}$ 
+denote a discretization of $\mathcal{K}$ 
+using kress quadrature. 
 Let $P_{n}$ denote the orthogonal 
 projection operator from $L^{2} \to T_{n}$.
 Let $P_{n,\phi_{0}^{\perp}}: T_{n} \to T_{n}$ denote the orthogonal
@@ -33,14 +49,15 @@ A_{n} = \left(P_{n} \psi_{0}, (I_{n} + K_{n}) P_{n} \phi_{0} \right) \,.
 
 The operator $D_{n}$ is the restriction of $I_{n} + K_{n}$ 
 as a map from $P_{n} \phi_{0}^{\perp}$ 
-to $P_{n} \psi_{0}^{\perp}$. 
-As $n \to \infty$, $D_{n}$ converges pointwise to the restriction
+to $P_{n} \psi_{0}^{\perp}$.
+The following statement requires a more careful proof.
+{\color{red} As $n \to \infty$, $D_{n}$ converges pointwise to the restriction
 of $I + K: \phi_{0}^{\perp} \to R(I+K)$. Moreover, the collection
 of operators $K_{n}$ are collectively compact, and hence their restrictions
 are also collectively compact. 
 Since the operator $I+K: \phi_{0}^{\perp} \to R(I+K)$ is an invertible
 operator, by standard estimates, for $n$ large enough $D_{n}$ is also 
-an invertible operator. 
+an invertible operator.}
 
 The operator $B_{n}$ is the restriction of $I_{n} + K_{n}$ as a map from 
 $P_{n} \phi_{0} ^{\perp} \to P_{n} \psi_{0}$ and is given by
@@ -83,4 +100,17 @@ C_{n} D_{n}^{-1} B_{n} &=
 &= \left(f_{n}, (I_{n} + K_{n})P_{n} \phi_{0} \right) \cdot (P_{n} \phi_{0}, D_{n}^{-1} P_{n} \psi_{0})  \cdot 
 \left((I_{n} + K_{n}^{\ast})P_{n} \psi_{0}, g_{n}  \right) \\
 \end{aligned}
+\end{equation}
+
+First, we observe that $D_{n}$ is the restriction of an operator in trace class
+with a kernel whose leading order singularity is $r^{2} \log{r}$. 
+Thus, $D_{n}$ is itself in trace class, and extending the proof of Bornemann to this case,
+we observe that the discrete determinant of $D_{n}$ converges to the Fredholm determinant
+of $D$ at a rate of at least $O(1/n)$. This in particular implies that
+$\sup_{n} |\det{D_{n}}| <\infty$.
+Using Cauchy-Schwarz, the quantities $A_{n}, C_{n}D_{n}^{-1}B_{n}$ are bounded by
+$|(I_{n} + K_{n})\phi_{n}|$.
+Combining these results together, we get that
+\begin{equation}
+\left| \det{\begin{bmatrix} A_{n} & B_{n} \\ C_{n} & D_{n} \end{bmatrix}} \right| \leq C |(I_{n} + K_{n})\phi_{n}|
 \end{equation}
