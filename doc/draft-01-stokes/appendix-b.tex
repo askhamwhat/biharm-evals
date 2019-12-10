@@ -1,14 +1,15 @@
-\section{Proof of convergence for general case}
+\section{Sketch of proof}
 \label{sec:appb}
-Let $T_{n}$ denote the space of trignometric polynomials
-$\{ e^{-inx}, \ldots e^{inx} \}$. 
+Let $T_{n}$ denote the space of trigonometric polynomials
+$\{ e^{-int}, \ldots e^{int} \}$. 
 Let $\mathcal{K}$ denote the Helmholtz double layer integral operator
 given by
 \begin{equation}
-\mathcal{K}[\phi] = \frac{i}{2}\int_{\Gamma} k H_{1}^{1}(k|x-y|) \frac{(x-y)\cdot n(y)}{|x-y|} \phi(y) dS_{y} \,
+\mathcal{K}[\phi] = \frac{i}{2}\int_{\Gamma} k H_{1}^{1}(k|x(t)-y(t)|) \frac{(x(t)-y(t))\cdot n(y(t))}{|x(t)-y(t)|} \phi(y(t)) dS_{y} \,
 \end{equation}
 where $k$ the Helmholtz parameter is assumed to be a dirichlet eigenvalue of the simply connected
-domain $\Omega$ whose boundary is given by $\Gamma$, and $H_{1}^{1}$ is the Hankel function
+domain $\Omega$ whose boundary is given by $\Gamma$, $(x(t),y(t)): [0,2\pi] \to \Gamma$ is
+an arclength parameterization of the boundary, and $H_{1}^{1}$ is the Hankel function
 of the first kind of order $1$.
 It is well known that if $\Gamma$ is of class $C^{\ell,\alpha}$, then the
 integral operator $\mathcal{K}: C^{\ell-1,\alpha} \to C^{\ell-1,\alpha}$ is a compact operator.
@@ -17,6 +18,14 @@ $I + \mathcal{K}$ is not invertible and has a one dimensional null-space. Let $\
 the null vector. 
 By Fredholm theory, the adjoint $I + \mathcal{K}^{\ast}$ also has a one-dimensional null space.
 Let $\psi_{0}$ denote the null vector of $I+\mathcal{K}^{\ast}$.
+
+In order to prove the regularity of the eigenfunctions, we need to analyze
+the kernels in $C^{\ell-1,\alpha}$ space. 
+However in order to obtain a bound for the magnitude of the Fredholm
+determinant, it is more convenient to work in $L^{2}$. It is well known
+that the integral operator $I + \mathcal{K}$ is a second kind
+Fredholm operator from $L^{2} \to L^{2}$ as well.
+For the remainder of the section, we will work with $L^{2}$.
 
 
 Let $K_{n}: T_{n} \to T_{n}$ 
@@ -68,12 +77,10 @@ B_{n} \phi = \left( P_{n} \psi_{0}, (I_{n} + K_{n})
 \end{equation}
 
 And finally the operator $C_{n}$ is the restriction of $I_{n} + K_{n}$ as a map from
-$P_{n} \phi_{0} \to P_{n} \psi_{0}^{\perp}$ and is its adjoint is given by
+$P_{n} \phi_{0} \to P_{n} \psi_{0}^{\perp}$ and is given by
 \begin{equation}
-C_{n}^{\ast}\psi = \left( (I_{n} + K_{n}^{\ast}) \left(P_{n} \psi - (P_{n} \psi, P_{n} \psi_{0}) P_{n} \psi_{0} \right), P_{n} \phi_{0} \right)
+C_{n}P_{n} \phi_{0} = (I_{n} + K_{n}) P_{n} \phi_{0} - \left( (I_{n} + K_{n}) \phi_{0}, P_{n} \psi_{0} \right)P_{n} \psi_{0}
 \end{equation}
-
-In this setting, $\phi_{0}$ and $\psi_{0}$ are known to be linearly independent.
 
 %Thus for large enough $n$, 
 %$f_{n} = P_{n} \phi_{0} - (P_{n} \phi_{0}, P_{n} \psi_{0}) P_{n} \psi_{0} \neq 0$
@@ -89,30 +96,28 @@ A_{n} & B_{n} \\
 C_{n} & D_{n} 
 \end{bmatrix} 
 }
-= \det{D_{n}} \cdot (A_{n} - C_{n} D_{n}^{-1} B_{n}) \,.
-\end{equation}
-Note that $C_{n} D_{n}^{-1} B_{n}$ is a number and can be evaluated as 
-\begin{equation}
-\begin{aligned}
-C_{n} D_{n}^{-1} B_{n} &= 
-\left( f_{n} \cdot  C_{n} D_{n}^{-1} B_{n} g_{n} \right) \\
-&= \left( C_{n}^{\ast} f_{n}, D_{n}^{-1} B_{n} g_{n} \right) \\
-&= \left( \left((I_{n} + K_{n}^{\ast})f_{n}, P_{n} \phi_{0}\right) P_{n} \phi_{0}, D_{n}^{-1} B_{n} g_{n} \right) \\
-&= \left(f_{n}, (I_{n} + K_{n})P_{n} \phi_{0} \right) \cdot (P_{n} \phi_{0}, D_{n}^{-1} B_{n} g_{n}) \\
-&= \left(f_{n}, (I_{n} + K_{n})P_{n} \phi_{0} \right) \cdot (P_{n} \phi_{0}, D_{n}^{-1} P_{n} \psi_{0})  \cdot 
-\left((I_{n} + K_{n}^{\ast})P_{n} \psi_{0}, g_{n}  \right) \\
-\end{aligned}
+= \det{D_{n}} \cdot (A_{n} - B_{n} D_{n}^{-1} C_{n}) \,.
 \end{equation}
 
 First, we observe that $D_{n}$ is the restriction of an operator in trace class
 with a kernel whose leading order singularity is $r^{2} \log{r}$. 
-Thus, $D_{n}$ is itself in trace class, and extending the proof of Bornemann to this case,
+{\color{red} Thus, $D_{n}$ is itself in trace class, and extending the proof of Bornemann to this case,
 we observe that the discrete determinant of $D_{n}$ converges to the Fredholm determinant
 of $D$ at a rate of at least $O(1/n)$. This in particular implies that
-$\sup_{n} |\det{D_{n}}| <\infty$.
-Using Cauchy-Schwarz, the quantities $A_{n}, C_{n}D_{n}^{-1}B_{n}$ are bounded by
-$|(I_{n} + K_{n})\phi_{n}|$.
+$\sup_{n} |\det{D_{n}}| <\infty$}.
+Using Cauchy-Schwarz, we get that
+\begin{equation}
+\begin{aligned}
+|A_{n}| &\leq |P_{n} \psi_{0}|_{2} |(I_{n} + K_{n})P_{n} \phi_{0}|_{2} \\
+|B_{n}D_{n}^{-1} C_{n}| &\leq |B_{n}||D_{n}^{-1}|(1+ |P_{n} \psi_{0}|^2) |(I_{n} + K_{n})P_{n} \phi_{0}| \,.
+\end{aligned}
+\end{equation}
+$B_{n}$ is a discretized block of a bounded operator and hence is bounded, 
+and $D_{n}^{-1}$ is a bounded operator by the discussion above. 
+
 Combining these results together, we get that
 \begin{equation}
-\left| \det{\begin{bmatrix} A_{n} & B_{n} \\ C_{n} & D_{n} \end{bmatrix}} \right| \leq C |(I_{n} + K_{n})\phi_{n}|
+\left| \det{\begin{bmatrix} A_{n} & B_{n} \\ C_{n} & D_{n} \end{bmatrix}} \right| \leq C |(I_{n} + K_{n})\phi_{n}| \, ,
 \end{equation}
+where $C = \det{D_{n}} |B_{n}||D_{n}^{-1}| (1 + |P_{n} \psi_{0}|^2)$.
+
