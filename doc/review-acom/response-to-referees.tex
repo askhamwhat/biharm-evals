@@ -76,7 +76,8 @@ of what we originally called ``spurious double roots''.
 We appreciate the reviewer pressing us on this issue, as it
 has clarified the results of the paper.
 
-To explain what had happened, we computed the roots using a rootfinding
+To explain what happened originally, we computed the
+roots using a rootfinding
 utility in another software package, \texttt{chebfun}. In our
 numerical experiments, we were puzzled that the output of the
 utility consistently gave us pairs of roots which seemed to
@@ -186,7 +187,7 @@ as suggested in other comments below. These are indeed detected by the
 root finding procedure, though they are easy to identify as
 being distinct from the real-valued roots which correspond to
 eigenvalues (the imaginary part of the real-valued roots is several
-orders of magnitued smaller than the imaginary part of the
+orders of magnitude smaller than the imaginary part of the
 spurious roots we observed).
 
 \item[5.] {\color{blue}
@@ -202,7 +203,7 @@ Again, thank you for pressing this point. We believe that this
 is mostly resolved by the discussion above. In the case of a spurious
 single root on the real line, we imagine that this could happen, though it
 was not observed, i.e. one can imagine a pathological domain for which a
-true spurious root exists that is within, say, $10^{-7}$ of the real line.
+spurious root exists that is within, say, $10^{-7}$ of the real line.
 Such a root would be hard to distinguish from a true root.
 In all cases, we also computed the smallest singular
 value of the BIE corresponding to the real part of a given root.
@@ -331,6 +332,7 @@ associated numerical challenges. This should be clarified.}
   Good point. This has been adjusted.
 
 
+  \appendix
 \input{../draft-01-stokes/appendix-b}
 \end{itemize}
 
