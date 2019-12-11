@@ -13,14 +13,18 @@ an arclength parameterization of the boundary, and $H_{1}^{1}$ is the Hankel fun
 of the first kind of order $1$.
 It is well known that if $\Gamma$ is of class $C^{\ell,\alpha}$, then the
 integral operator $\mathcal{K}: C^{\ell-1,\alpha} \to C^{\ell-1,\alpha}$ is a compact operator.
-Furthermore, as shown in Zhao and Barnett, at the simple Dirichlet eigenvalues of the operator
-$I + \mathcal{K}$ is not invertible and has a one dimensional null-space. Let $\phi_{0}$ denote
+Furthermore, as shown in Zhao and Barnett, at the Dirichlet eigenvalues, the operator
+$I + \mathcal{K}$ is not invertible and has a $p-$dimensional null-space, where
+$p$ is the multiplicity of the eigenvalue. 
+By Fredholm theory, the adjoint $I + \mathcal{K}^{\ast}$ also has a $p$-dimensional null space.
+For convenience, we restrict our attention to the case $p=1$. This
+part of the analysis extends to non-simple eigenvalues as well. 
+Let $\phi_{0}$ denote
 the null vector. 
-By Fredholm theory, the adjoint $I + \mathcal{K}^{\ast}$ also has a one-dimensional null space.
 Let $\psi_{0}$ denote the null vector of $I+\mathcal{K}^{\ast}$.
 
 In order to prove the regularity of the eigenfunctions, we need to analyze
-the kernels in $C^{\ell-1,\alpha}$ space. 
+the problem in $C^{\ell-1,\alpha}$ space. 
 However in order to obtain a bound for the magnitude of the Fredholm
 determinant, it is more convenient to work in $L^{2}$. It is well known
 that the integral operator $I + \mathcal{K}$ is a second kind
@@ -79,7 +83,7 @@ B_{n} \phi = \left( P_{n} \psi_{0}, (I_{n} + K_{n})
 And finally the operator $C_{n}$ is the restriction of $I_{n} + K_{n}$ as a map from
 $P_{n} \phi_{0} \to P_{n} \psi_{0}^{\perp}$ and is given by
 \begin{equation}
-C_{n}P_{n} \phi_{0} = (I_{n} + K_{n}) P_{n} \phi_{0} - \left( (I_{n} + K_{n}) \phi_{0}, P_{n} \psi_{0} \right)P_{n} \psi_{0}
+C_{n}P_{n} \phi_{0} = (I_{n} + K_{n}) P_{n} \phi_{0} - \left( (I_{n} + K_{n}) P_{n}\phi_{0}, P_{n} \psi_{0} \right)P_{n} \psi_{0}
 \end{equation}
 
 %Thus for large enough $n$, 
@@ -105,10 +109,12 @@ with a kernel whose leading order singularity is $r^{2} \log{r}$.
 we observe that the discrete determinant of $D_{n}$ converges to the Fredholm determinant
 of $D$ at a rate of at least $O(1/n)$. This in particular implies that
 $\sup_{n} |\det{D_{n}}| <\infty$}.
+
+
 Using Cauchy-Schwarz, we get that
 \begin{equation}
 \begin{aligned}
-|A_{n}| &\leq |P_{n} \psi_{0}|_{2} |(I_{n} + K_{n})P_{n} \phi_{0}|_{2} \\
+|A_{n}| &\leq |P_{n} \psi_{0}| |(I_{n} + K_{n})P_{n} \phi_{0}| \\
 |B_{n}D_{n}^{-1} C_{n}| &\leq |B_{n}||D_{n}^{-1}|(1+ |P_{n} \psi_{0}|^2) |(I_{n} + K_{n})P_{n} \phi_{0}| \,.
 \end{aligned}
 \end{equation}
